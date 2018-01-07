@@ -24,7 +24,7 @@ public class GeneratorServiceEntity {
 
     public static void main(String[] args) {
         String packageName = "com.slxy.www";
-        generateByTables(packageName, "sys_user");
+        generateByTables(packageName, "select_department","select_major");
     }
 
     private static void generateByTables(String packageName, String... tableNames){
@@ -39,7 +39,7 @@ public class GeneratorServiceEntity {
                 .setFileOverride(true);
 
         //数据源配置
-        String dbUrl = "jdbc:mysql://127.0.0.1:3306/mybatis-plus?useUnicode=true&characterEncoding=UTF-8";
+        String dbUrl = "jdbc:mysql://127.0.0.1:3306/slxy-select?useUnicode=true&characterEncoding=UTF-8";
         String username = "root";
         String password = "root";
         String drivername = "com.mysql.jdbc.Driver";
@@ -67,8 +67,6 @@ public class GeneratorServiceEntity {
                 .setPackageInfo(
                         new PackageConfig()
                                 .setParent(packageName)
-                                .setEntity("domain/po")
-
                 ).execute();
     }
 }

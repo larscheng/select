@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.slxy.www.mapper.SelectDepartmentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.slxy.www.entity.SelectDepartment">
+        <id column="id" property="id" />
+        <result column="dep_name" property="depName" />
+        <result column="dep_status" property="depStatus" />
+        <result column="gmt_create" property="gmtCreate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, dep_name, dep_status, DATE_FORMAT(gmt_create, '%Y-%m-%d') AS gmt_create,
+    </sql>
+
+</mapper>

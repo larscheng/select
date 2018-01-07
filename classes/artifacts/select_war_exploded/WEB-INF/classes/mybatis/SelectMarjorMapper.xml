@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.slxy.www.mapper.SelectMarjorMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.slxy.www.model.SelectMarjor">
+        <id column="id" property="id" />
+        <result column="mar_name" property="marName" />
+        <result column="dep_id" property="depId" />
+        <result column="mar_class_num" property="marClassNum" />
+        <result column="gmt_create" property="gmtCreate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, mar_name AS marName, dep_id AS depId, mar_class_num AS marClassNum, gmt_create AS gmtCreate
+    </sql>
+
+</mapper>
