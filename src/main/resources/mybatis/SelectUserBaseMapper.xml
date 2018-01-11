@@ -53,4 +53,7 @@
     <select id="selectUserBaseList" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List1"/> FROM select_user_base
     </select>
+    <select id="getUserByPage" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List1"/> FROM select_user_base
+    </select>
 </mapper>

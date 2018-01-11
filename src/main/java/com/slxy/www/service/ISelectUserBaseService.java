@@ -1,7 +1,9 @@
-package com.slxy.www.service.system;
+package com.slxy.www.service;
 
 import com.slxy.www.model.SelectUserBase;
 import com.baomidou.mybatisplus.service.IService;
+import com.slxy.www.model.SelectUserBaseVo;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * <p>
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface ISelectUserBaseService extends IService<SelectUserBase> {
 
+    ModelAndView userList(ModelAndView modelAndView, SelectUserBaseVo userBaseVo);
 }

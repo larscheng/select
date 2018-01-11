@@ -755,7 +755,7 @@ header .header-data .hdata em{
 
 .sidebar #nav > li > a { 
   display: block; 
-  padding: 10px 20px;
+  padding: 5px 10px;
   font-size: 13px;
   color: #777;
   text-decoration: none;
@@ -804,7 +804,7 @@ header .header-data .hdata em{
 .sidebar #nav li ul li a { 
   display: block; 
   background: none;
-  padding: 10px 0px;
+  padding: 5px 0px;
   padding-left: 30px;
   text-decoration: none;
   color: #777;
@@ -821,13 +821,13 @@ header .header-data .hdata em{
 
 .mainbar{
 	position: relative;
-	margin-left: 230px;
+	margin-left: 0px;
 	margin-right: 0px;
 	width: auto;
 	background:#eee url("../img/main-back.png") repeat;
 	border-left: 1px solid #ccc;
 	z-index: 50;
-	min-height: 640px;
+	min-height: 660px;
 }
 
 .mainbar .container{

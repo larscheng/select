@@ -3,7 +3,7 @@
 <mapper namespace="com.slxy.www.mapper.SelectDepartmentMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.slxy.www.entity.SelectDepartment">
+    <resultMap id="BaseResultMap" type="com.slxy.www.model.SelectDepartment">
         <id column="id" property="id" />
         <result column="dep_name" property="depName" />
         <result column="dep_status" property="depStatus" />

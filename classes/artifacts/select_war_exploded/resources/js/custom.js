@@ -7,12 +7,12 @@ $(document).ready(function(){
 
   $(window).resize(function()
   {
-    if($(window).width() >= 765){
-      $(".sidebar #nav").slideDown(350);
-    }
-    else{
-      $(".sidebar #nav").slideUp(350); 
-    }
+    // if($(window).width() >= 765){
+    //   $(".sidebar #nav").slideDown(350);
+    // }
+    // else{
+    //   $(".sidebar #nav").slideUp(350);
+    // }
   });
 
 

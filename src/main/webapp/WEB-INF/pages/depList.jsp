@@ -16,19 +16,6 @@
 <body>
 
 
-<!-- Header starts -->
-<header>
-    <%@include file="/WEB-INF/pages/top.jsp" %>
-</header>
-<!-- Header ends -->
-
-<!-- Main content starts -->
-
-<div class="content">
-
-    <!-- Sidebar -->
-    <%@include file="/WEB-INF/pages/sider.jsp" %>
-    <!-- Sidebar ends -->
 
     <div class="mainbar">
 
@@ -164,15 +151,7 @@
 
     <div class="clearfix"></div>
 
-</div>
-<!-- Content ends -->
 
-<!-- Footer starts -->
-<%@include file="/WEB-INF/pages/common/footer.jsp" %>
-<!-- Footer ends -->
-
-<!-- Scroll to top -->
-<span class="totop"><a href="#"><i class="icon-chevron-up"></i></a></span>
 
 <%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>
 </body>

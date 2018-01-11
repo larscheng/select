@@ -1,8 +1,7 @@
-package com.slxy.www.service.system.impl;
+package com.slxy.www.service.impl;
 
 import com.slxy.www.mapper.system.UserMapper;
 import com.slxy.www.model.system.User;
-import com.slxy.www.service.system.IUserService;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;

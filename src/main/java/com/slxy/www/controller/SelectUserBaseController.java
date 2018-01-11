@@ -3,6 +3,8 @@ package com.slxy.www.controller;
 
 import com.slxy.www.mapper.SelectUserBaseMapper;
 import com.slxy.www.model.SelectUserBase;
+import com.slxy.www.model.SelectUserBaseVo;
+import com.slxy.www.service.ISelectUserBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
@@ -26,7 +28,10 @@ import java.util.List;
 public class SelectUserBaseController {
 
     @Autowired
+    private ISelectUserBaseService selectUserBaseService;
+    @Autowired
     private SelectUserBaseMapper selectUserBaseMapper;
+
     @RequestMapping("/login")
     public ModelAndView index(SelectUserBase userBase,ModelAndView  modelAndView) {
         SelectUserBase selectUserBase = selectUserBaseMapper.selectOne((userBase));
@@ -35,17 +40,15 @@ public class SelectUserBaseController {
             modelAndView.addObject("msg","请重新登录");
             return modelAndView;
         }
-        modelAndView.setViewName("home");
+        modelAndView.setViewName("main");
         modelAndView.addObject("user",selectUserBase);
-        modelAndView.addObject("userList", selectUserBaseMapper.selectUserBaseList());
         return modelAndView;
     }
 
+
     @RequestMapping("/userList")
-    public ModelAndView userList(ModelAndView  modelAndView) {
-        modelAndView.setViewName("home");
-        modelAndView.addObject("userList", selectUserBaseMapper.selectUserBaseList());
-        return modelAndView;
+    public ModelAndView userList(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
+        return selectUserBaseService.userList(modelAndView,userBaseVo);
     }
 
 }

@@ -8,7 +8,6 @@
     <meta charset="utf-8">
     <!-- Title and other stuffs -->
     <title>Mac风格响应式后台管理模版演示 - 源码之家</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="">
     <%@include file="/WEB-INF/pages/common/macTopCommon.jsp" %>
 </head>
@@ -16,16 +15,24 @@
 <body>
 
 
+<!-- Header starts -->
+<%--<header>--%>
+    <%--<%@include file="/WEB-INF/pages/top.jsp" %>--%>
+<%--</header>--%>
+<!-- Header ends -->
+
+<!-- Main content starts -->
+
 
     <div class="mainbar">
 
         <!-- Page heading -->
         <div class="page-head">
-            <h2 class="pull-left"><i class="icon-home"></i> 系别管理</h2>
+            <h2 class="pull-left"><i class="icon-home"></i> 首页</h2>
 
             <!-- Breadcrumb -->
             <div class="bread-crumb pull-right">
-                <a href="#"><i class="icon-home"></i> 系别管理</a>
+                <a href="#"><i class="icon-home"></i> 首页</a>
                 <!-- Divider -->
                 <span class="divider">/</span>
                 <a href="#" class="bread-current">控制台</a>
@@ -43,10 +50,19 @@
             <div class="container">
 
                 <!-- 搜索页 ================================================== -->
-                <div class="row center">
-                    <form class="navbar-form" role="add">
-                        <button type="button" class="btn btn-info pull-left"><i class="icon-remove"> </i>批量删除</button>
-                        <button type="submit" class="btn btn-success pull-left"><i class="icon-edit"> </i>添加系别</button>
+                <div class="row small">
+                    <form class="navbar-form center" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="学号/姓名">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="学号/姓名">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="学号/姓名">
+                        </div>
+                        <button type="button" class="btn btn-default">搜索</button>
+                        <button type="button" class="btn btn-info pull-left"><i class="icon-remove"></i>批量删除</button>
                     </form>
                 </div>
                 <!-- Table -->
@@ -57,7 +73,7 @@
                         <div class="widget">
 
                             <div class="widget-head">
-                                <div class="pull-left">Tables</div>
+                                <div class="pull-left">用户列表</div>
                                 <div class="widget-icons pull-right">
                                     <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                     <a href="#" class="wclose"><i class="icon-remove"></i></a>
@@ -65,28 +81,32 @@
                                 <div class="clearfix"></div>
                             </div>
 
-                            <div class="widget-content">
+                            <div class="widget-content ">
 
                                 <table class="table table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
-                                        <th><input type="checkbox" id="selectAll" name="check"/>序号</th>
-                                        <th>系别名称</th>
-                                        <th>系别状态</th>
-                                        <th>创建时间</th>
+                                        <th class=" text-center"><input type="checkbox" id="selectAll"></th>
+                                        <th>序号</th>
+                                        <th>姓名</th>
+                                        <th>邮箱</th>
+                                        <th>电话</th>
+                                        <th>qq</th>
+                                        <th>状态</th>
                                         <th>操作</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach var="dep" items="${depList}" varStatus="index">
+                                    <c:forEach var="user" items="${userList}" varStatus="index">
                                         <tr>
+                                            <td  class=" text-center"><input type="checkbox" value="${user.id}" /></td>
+                                            <td>${index.count}</td>
+                                            <td>${user.userName}</td>
+                                            <td>${user.userMail}</td>
+                                            <td>${user.userPhone}</td>
+                                            <td>${user.gmtCreate}</td>
                                             <td>
-                                                <input type="checkbox" value=""/>
-                                                    ${index.count}
-                                            </td>
-                                            <td>${dep.depName}</td>
-                                            <td>
-                                                <c:set var="status" value="${dep.depStatus}"/>
+                                                <c:set var="status" value="${user.userStatus}"/>
                                                 <c:choose>
                                                     <c:when test="${status eq 1}">
                                                         <span class="label label-success">启用</span>
@@ -96,9 +116,8 @@
                                                     </c:otherwise>
                                                 </c:choose>
                                             </td>
-                                            <td>${dep.gmtCreate}</td>
-
                                             <td>
+                                                <c:set var="status" value="${user.userStatus}"/>
                                                 <c:choose>
                                                     <c:when test="${status eq 0}">
                                                         <button class="btn btn-xs btn-success"><i class="icon-ok"></i>启用</button>
@@ -107,8 +126,7 @@
                                                         <button class="btn btn-xs btn-danger"><i class="icon-remove"></i>禁用</button>
                                                     </c:otherwise>
                                                 </c:choose>
-                                                <button class="btn btn-xs btn-warning"><i class="icon-pencil">编辑</i>
-                                                </button>
+                                                <button class="btn btn-xs btn-warning"><i class="icon-pencil"></i>编辑</button>
                                                 <button class="btn btn-xs btn-danger"><i class="icon-remove">删除</i>
                                                 </button>
 
@@ -121,12 +139,30 @@
 
                                 <div class="widget-foot center">
                                     <ul class="pagination ">
-                                        <li><a href="#">Prev</a></li>
-                                        <li><a href="#">1</a></li>
-                                        <li><a href="#">2</a></li>
-                                        <li><a href="#">3</a></li>
-                                        <li><a href="#">4</a></li>
-                                        <li><a href="#">Next</a></li>
+                                        <c:if test="${page.current-1 eq 0}">
+                                            <li><a href="#" class="btn  disabled">上一页</a></li>
+                                        </c:if>
+                                        <c:if test="${page.current-1 > 0}">
+                                            <li><a class="disabled" href="/selectUserBase/userList?page=${page.current-1}">上一页</a></li>
+                                            <li><a href="/selectUserBase/userList?page=${page.current-1}">${page.current-1}</a></li>
+                                        </c:if>
+
+
+                                        <li><a href="/selectUserBase/userList?page=${page.current}">${page.current}</a></li>
+
+                                        <c:if test="${page.current+1 <= page.pages}">
+                                            <li><a href="/selectUserBase/userList?page=${page.current+1}">${page.current+1}</a></li>
+                                        </c:if>
+                                        <c:if test="${page.current+2 <= page.pages}">
+                                            <li><a href="/selectUserBase/userList?page=${page.current+2}">${page.current+2}</a></li>
+                                        </c:if>
+                                        <c:if test="${page.current+1 <= page.pages}">
+                                            <li><a href="/selectUserBase/userList?page=${page.current+1}">下一页</a></li>
+                                        </c:if>
+                                        <c:if test="${page.current+1 > page.pages}">
+                                            <li><a class="btn  disabled" href="#">下一页</a></li>
+                                        </c:if>
+
                                     </ul>
 
                                     <div class="clearfix"></div>
@@ -145,14 +181,13 @@
         </div>
 
         <!-- Matter ends -->
-
     </div>
 
 
     <div class="clearfix"></div>
-
-
-
 <%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>
+
+
+
 </body>
 </html>

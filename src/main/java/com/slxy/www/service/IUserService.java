@@ -1,4 +1,4 @@
-package com.slxy.www.service.system;
+package com.slxy.www.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.slxy.www.model.system.User;
