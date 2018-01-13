@@ -4,6 +4,7 @@ import com.slxy.www.model.SelectDepartment;
 import com.slxy.www.mapper.SelectDepartmentMapper;
 import com.slxy.www.service.ISelectDepartmentService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,4 +18,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class SelectDepartmentServiceImpl extends ServiceImpl<SelectDepartmentMapper, SelectDepartment> implements ISelectDepartmentService {
 
+    @Autowired
+    private SelectDepartmentMapper selectDepartmentMapper;
+    @Override
+    public void userDisable(SelectDepartment selectDepartment) {
+        selectDepartmentMapper.userDisable(selectDepartment);
+    }
 }

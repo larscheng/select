@@ -437,6 +437,8 @@ text-decoration:none;
     border: 1px solid #ddd;
     border-bottom: 1px solid #d2d2d2;
     box-shadow: inset 0px 1px 2px #fff;
+	height: 25px;
+	margin-top: -2px;
 }  
 
 .dropdown-menu li{

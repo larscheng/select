@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface ISelectDepartmentService extends IService<SelectDepartment> {
 
+    void userDisable(SelectDepartment selectDepartments);
 }

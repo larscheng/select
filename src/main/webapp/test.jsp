@@ -61,7 +61,7 @@
                                     <a href="/resources/img/photos/s2.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/t2.jpg" alt=""></a>
                                     <a href="/resources/img/photos/s3.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/t3.jpg" alt=""></a>
                                     <a href="/resources/img/photos/s4.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/t4.jpg" alt=""></a>
-                                    <a href="/resources/img/photos/s5.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/mg/photos/t5.jpg" alt=""></a>
+                                    <a href="/resources/img/photos/s5.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/t5.jpg" alt=""></a>
                                     <a href="/resources/img/photos/s6.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/t6.jpg" alt=""></a>
                                     <a href="/resources/img/photos/s7.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/t7.jpg" alt=""></a>
                                     <a href="/resources/img/photos/s8.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/t8.jpg" alt=""></a>

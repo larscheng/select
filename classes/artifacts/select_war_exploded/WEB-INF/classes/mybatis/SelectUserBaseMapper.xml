@@ -45,7 +45,7 @@
         stu_class, stu_year, tea_position, tea_major_name,
         tea_education, tea_direction, tea_dep_name, tea_info,
         user_status, user_type, operator_id,
-        DATE_FORMAT(gmt_create, '%Y-%m-%d') AS gmt_create,
+        DATE_FORMAT(gmt_create, '%Y-%m-%d %h:%i:%s') AS gmt_create,
         DATE_FORMAT(gmt_modify, '%Y-%m-%d') AS gmt_modify
     </sql>
 

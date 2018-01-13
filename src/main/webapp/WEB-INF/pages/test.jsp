@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html lang="en">
@@ -104,7 +105,7 @@
                                             <td>${user.userName}</td>
                                             <td>${user.userMail}</td>
                                             <td>${user.userPhone}</td>
-                                            <td>${user.gmtCreate}</td>
+                                            <td><fmt:formatDate value="${user.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                             <td>
                                                 <c:set var="status" value="${user.userStatus}"/>
                                                 <c:choose>

@@ -25,7 +25,7 @@ public class SelectMajorController {
 
     @RequestMapping("/MajList")
     public ModelAndView userList(ModelAndView  modelAndView) {
-        modelAndView.setViewName("majList");
+        modelAndView.setViewName("depmaj/majList");
         modelAndView.addObject("majList", selectMajorService.selectList(null));
         return modelAndView;
     }

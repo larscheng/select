@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * <p>
@@ -18,7 +18,6 @@ import java.sql.Date;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("select_user_base")
 public class SelectUserBaseVo extends PageVo {
 
     /**

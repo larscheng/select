@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,11 +22,11 @@
 
         <!-- Page heading -->
         <div class="page-head">
-            <h2 class="pull-left"><i class="icon-home"></i> 系别管理</h2>
+            <h2 class="pull-left"><i class="icon-home"></i> 专业管理</h2>
 
             <!-- Breadcrumb -->
             <div class="bread-crumb pull-right">
-                <a href="#"><i class="icon-home"></i> 系别管理</a>
+                <a href="#"><i class="icon-home"></i> 专业管理</a>
                 <!-- Divider -->
                 <span class="divider">/</span>
                 <a href="#" class="bread-current">控制台</a>
@@ -46,7 +47,7 @@
                 <div class="row center">
                     <form class="navbar-form" role="add">
                         <button type="button" class="btn btn-info pull-left"><i class="icon-remove"> </i>批量删除</button>
-                        <button type="submit" class="btn btn-success pull-left"><i class="icon-edit"> </i>添加系别</button>
+                        <button type="submit" class="btn btn-success pull-left"><i class="icon-edit"> </i>添加专业</button>
                     </form>
                 </div>
                 <!-- Table -->
@@ -71,22 +72,26 @@
                                     <thead>
                                     <tr>
                                         <th><input type="checkbox" id="selectAll" name="check"/>序号</th>
-                                        <th>系别名称</th>
-                                        <th>系别状态</th>
+                                        <th>专业名称</th>
+                                        <th>专业班级数量</th>
+                                        <th>所属系别</th>
+                                        <th>专业状态</th>
                                         <th>创建时间</th>
                                         <th>操作</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach var="dep" items="${depList}" varStatus="index">
+                                    <c:forEach var="maj" items="${majList}" varStatus="index">
                                         <tr>
                                             <td>
-                                                <input type="checkbox" value=""/>
+                                                <input type="checkbox" value="${maj.id}"/>
                                                     ${index.count}
                                             </td>
-                                            <td>${dep.depName}</td>
+                                            <td>${maj.majName}</td>
+                                            <td>${maj.majClassNum}</td>
+                                            <td>${maj.depId}</td>
                                             <td>
-                                                <c:set var="status" value="${dep.depStatus}"/>
+                                                <c:set var="status" value="${maj.majStatus}"/>
                                                 <c:choose>
                                                     <c:when test="${status eq 1}">
                                                         <span class="label label-success">启用</span>
@@ -96,7 +101,7 @@
                                                     </c:otherwise>
                                                 </c:choose>
                                             </td>
-                                            <td>${dep.gmtCreate}</td>
+                                            <td><fmt:formatDate value="${maj.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 
                                             <td>
                                                 <c:choose>
@@ -150,8 +155,6 @@
 
 
     <div class="clearfix"></div>
-
-
 
 <%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>
 </body>
