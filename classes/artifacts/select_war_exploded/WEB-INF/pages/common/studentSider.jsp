@@ -35,7 +35,7 @@
         <li class="has_sub"><a href="#"><i class="icon-list-alt"></i> 院系专业  <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
             <ul>
                 <li><a href="/selectDepartment/depList" target="mainFrame" >系别</a></li>
-                <li><a href="/selectMarjor/MajList" target="mainFrame" >专业</a></li>
+                <li><a href="/selectMarjor/majList" target="mainFrame" >专业</a></li>
             </ul>
         </li>
 

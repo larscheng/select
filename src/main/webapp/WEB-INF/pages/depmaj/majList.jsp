@@ -46,8 +46,8 @@
                 <!-- 搜索页 ================================================== -->
                 <div class="row center">
                     <form class="navbar-form" role="add">
-                        <button type="button" class="btn btn-info pull-left"><i class="icon-remove"> </i>批量删除</button>
-                        <button type="submit" class="btn btn-success pull-left"><i class="icon-edit"> </i>添加专业</button>
+                        <button type="button" onclick="majDeleteAll()" class="btn btn-info pull-left"><i class="icon-remove"> </i>批量删除</button>
+                        <button type="button" onclick="window.location.href='/selectMajor/majInitAdd';"  class="btn btn-success pull-left"><i class="icon-edit"> </i>添加专业</button>
                     </form>
                 </div>
                 <!-- Table -->
@@ -58,7 +58,7 @@
                         <div class="widget">
 
                             <div class="widget-head">
-                                <div class="pull-left">Tables</div>
+                                <div class="pull-left">专业列表</div>
                                 <div class="widget-icons pull-right">
                                     <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                     <a href="#" class="wclose"><i class="icon-remove"></i></a>
@@ -71,7 +71,8 @@
                                 <table class="table table-striped table-bordered table-hover">
                                     <thead>
                                     <tr>
-                                        <th><input type="checkbox" id="selectAll" name="check"/>序号</th>
+                                        <th class="center"><input type="checkbox" id="selectAll" name="check"/></th>
+                                        <th>序号</th>
                                         <th>专业名称</th>
                                         <th>专业班级数量</th>
                                         <th>所属系别</th>
@@ -81,15 +82,15 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach var="maj" items="${majList}" varStatus="index">
+                                    <c:forEach var="maj" items="${requestScope.majList}" varStatus="index">
                                         <tr>
-                                            <td>
-                                                <input type="checkbox" value="${maj.id}"/>
-                                                    ${index.count}
+                                            <td class="center">
+                                                <input name="ids" type="checkbox" value="${maj.id}"/>
                                             </td>
+                                            <td>${index.count}</td>
                                             <td>${maj.majName}</td>
                                             <td>${maj.majClassNum}</td>
-                                            <td>${maj.depId}</td>
+                                            <td>${maj.depName}</td>
                                             <td>
                                                 <c:set var="status" value="${maj.majStatus}"/>
                                                 <c:choose>
@@ -106,15 +107,15 @@
                                             <td>
                                                 <c:choose>
                                                     <c:when test="${status eq 0}">
-                                                        <button class="btn btn-xs btn-success"><i class="icon-ok"></i>启用</button>
+                                                        <button class="btn btn-xs btn-success"  onclick="majAble('${maj.id}')"><i class="icon-ok"></i>启用</button>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <button class="btn btn-xs btn-danger"><i class="icon-remove"></i>禁用</button>
+                                                        <button class="btn btn-xs btn-danger"  onclick="majDisAble('${maj.id}')"><i class="icon-remove"></i>禁用</button>
                                                     </c:otherwise>
                                                 </c:choose>
-                                                <button class="btn btn-xs btn-warning"><i class="icon-pencil">编辑</i>
+                                                <button class="btn btn-xs btn-warning" onclick="window.location.href='/selectMajor/majInitUpdate?Id=${maj.id}';"><i class="icon-pencil">编辑</i>
                                                 </button>
-                                                <button class="btn btn-xs btn-danger"><i class="icon-remove">删除</i>
+                                                <button class="btn btn-xs btn-danger" onclick="majDelete('${maj.id}')"><i class="icon-remove">删除</i>
                                                 </button>
 
                                             </td>
@@ -126,13 +127,32 @@
 
                                 <div class="widget-foot center">
                                     <ul class="pagination ">
-                                        <li><a href="#">Prev</a></li>
-                                        <li><a href="#">1</a></li>
-                                        <li><a href="#">2</a></li>
-                                        <li><a href="#">3</a></li>
-                                        <li><a href="#">4</a></li>
-                                        <li><a href="#">Next</a></li>
+                                        <c:if test="${page.current-1 eq 0}">
+                                            <li><a href="#" class="btn  disabled">上一页</a></li>
+                                        </c:if>
+                                        <c:if test="${page.current-1 > 0}">
+                                            <li><a class="disabled" href="${ctx}/selectMajor/majList?page=${page.current-1}">上一页</a></li>
+                                            <li><a href="${ctx}/selectMajor/majList?page=${page.current-1}">${page.current-1}</a></li>
+                                        </c:if>
+
+
+                                        <li><a href="${ctx}/selectMajor/majList?page=${page.current}">${page.current}</a></li>
+
+                                        <c:if test="${page.current+1 <= page.pages}">
+                                            <li><a href="${ctx}/selectMajor/majList?page=${page.current+1}">${page.current+1}</a></li>
+                                        </c:if>
+                                        <c:if test="${page.current+2 <= page.pages}">
+                                            <li><a href="${ctx}/selectMajor/majList?page=${page.current+2}">${page.current+2}</a></li>
+                                        </c:if>
+                                        <c:if test="${page.current+1 <= page.pages}">
+                                            <li><a href="${ctx}/selectMajor/majList?page=${page.current+1}">下一页</a></li>
+                                        </c:if>
+                                        <c:if test="${page.current+1 > page.pages}">
+                                            <li><a class="btn  disabled" href="#">下一页</a></li>
+                                        </c:if>
+
                                     </ul>
+
 
                                     <div class="clearfix"></div>
 
@@ -155,6 +175,95 @@
 
 
     <div class="clearfix"></div>
+
+    <script type="text/javascript">
+
+        function majAble(id){
+            $.ajax({
+                type:"POST",
+                url:"/selectMajor/majDisable",
+                data:{"id":id,"majStatus":1},
+                dataType:"json",
+                success:function(msg){
+                    if("OK"!=msg){
+                        alert(msg);
+                    }
+                    location.href="/selectMajor/majList";
+                },
+                error:function(e){
+                    alert("启用失败2！");
+                }
+            });
+        }
+
+        function majDisAble(id){
+            $.ajax({
+                type:"POST",
+                url:"/selectMajor/majDisable",
+                data:{"id":id,"majStatus":0},
+                dataType:"json",
+                success:function(msg){
+                    if("OK"!=msg){
+                        alert(msg);
+                    }
+                    location.href="/selectMajor/majList";
+                },
+                error:function(e){
+                    alert("启用失败2！");
+                }
+            });
+        }
+
+        function majDelete(id){
+            $.ajax({
+                type:"POST",
+                url:"/selectMajor/majDelete",
+                data:{"id":id},
+                dataType:"json",
+                success:function(msg){
+                    if("OK"!=msg){
+                        alert(msg);
+                    }else{
+                        location.href="/selectMajor/majList";
+                    }
+                },
+                error:function(e){
+                    alert("删除失败！");
+                }
+            });
+        }
+
+        function majDeleteAll(){
+            var arrayId = new Array();
+            $('input[name="ids"]:checked').each(function(){arrayId.push($(this).val());});
+            if(arrayId.length==0){
+                alert("无实例选中");
+                event.preventDefault(); // 兼容标准浏览器
+                window.event.returnValue = false; // 兼容IE6~8
+            }else{
+                $.ajax({
+                    type:"POST",
+                    url:"/selectMajor/majDeleteAll",
+                    data: { "selectedIDs": arrayId },
+                    dataType:"json",
+                    traditional: true,
+                    success:function(msg){
+                        if("OK"!=msg){
+                            alert(msg);
+                        }else{
+                            location.href="/selectMajor/majList";
+                        }
+
+                    },
+                    error:function(e){
+                        alert("后台异常！");
+                    }
+                });
+            }
+
+        }
+
+    </script>
 
 <%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>
 </body>

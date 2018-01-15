@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
  *  服务类
  * </p>
  *
- * @author zhengql123
+ * @author zhengql
  * @since 2018-01-06
  */
 public interface ISelectUserBaseService extends IService<SelectUserBase> {

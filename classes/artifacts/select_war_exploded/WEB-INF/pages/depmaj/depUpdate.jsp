@@ -125,17 +125,17 @@
         $("#updateSubmit").click(function(){
             $.ajax({
                 type: "post",
-                url: "/selectDepartment/depDisable",
+                url: "/selectDepartment/depUpdate",
                 data: $("#updateForm").serialize(),
                 dataType:"json",
                 success:function(msg){
                     if("OK"!=msg){
-                        alert("12313");
+                        alert(msg);
                     }
                     location.href="/selectDepartment/depList";
                 },
                 error: function(e) {
-                    alert("111");
+                    alert("后台异常");
                 }
             });
         });

@@ -13,7 +13,7 @@ import java.util.List;
  *  Mapper 接口
  * </p>
  *
- * @author zhengql123
+ * @author zhengql
  * @since 2018-01-07
  */
 public interface SelectDepartmentMapper extends BaseMapper<SelectDepartment> {

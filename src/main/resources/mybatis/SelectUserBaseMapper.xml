@@ -45,8 +45,8 @@
         stu_class, stu_year, tea_position, tea_major_name,
         tea_education, tea_direction, tea_dep_name, tea_info,
         user_status, user_type, operator_id,
-        DATE_FORMAT(gmt_create, '%Y-%m-%d %h:%i:%s') AS gmt_create,
-        DATE_FORMAT(gmt_modify, '%Y-%m-%d') AS gmt_modify
+        DATE_FORMAT(gmt_create, '%Y-%m-%d %H:%i:%s') AS gmt_create,
+        DATE_FORMAT(gmt_modify, '%Y-%m-%d %H:%i:%s') AS gmt_modify
     </sql>
 
 
@@ -54,6 +54,6 @@
         SELECT <include refid="Base_Column_List1"/> FROM select_user_base
     </select>
     <select id="getUserByPage" resultMap="BaseResultMap">
-        SELECT <include refid="Base_Column_List1"/> FROM select_user_base
+        SELECT <include refid="Base_Column_List1"/> FROM select_user_base  ORDER BY user_status DESC, gmt_create DESC
     </select>
 </mapper>

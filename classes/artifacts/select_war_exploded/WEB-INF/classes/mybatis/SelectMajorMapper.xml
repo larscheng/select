@@ -9,12 +9,56 @@
         <result column="dep_id" property="depId" />
         <result column="maj_class_num" property="majClassNum" />
         <result column="maj_status" property="majStatus" />
+        <result column="maj_info" property="majInfo" />
         <result column="gmt_create" property="gmtCreate" />
+        <result column="gmt_modify" property="gmtModify" />
+    </resultMap>
+
+    <resultMap id="DTOResultMap" type="com.slxy.www.model.dto.SelectMajorDTO">
+        <id column="id" property="id" />
+        <result column="maj_name" property="majName" />
+        <result column="dep_id" property="depId" />
+        <result column="maj_class_num" property="majClassNum" />
+        <result column="maj_status" property="majStatus" />
+        <result column="maj_info" property="majInfo" />
+        <result column="gmt_create" property="gmtCreate" />
+        <result column="gmt_modify" property="gmtModify" />
+        <result column="dep_name" property="depName" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, maj_name, dep_id, maj_class_num, maj_status, DATE_FORMAT(gmt_create, '%Y-%m-%d') AS gmt_create,
+        id, maj_name, dep_id, maj_class_num, maj_status, DATE_FORMAT(gmt_create, '%Y-%m-%d %H:%i:%s') AS gmt_create,DATE_FORMAT(gmt_modify, '%Y-%m-%d %H:%i:%s') AS gmt_modify
     </sql>
 
+    <select id="getMajByPage" resultMap="DTOResultMap">
+        SELECT  a.id,
+                a.maj_name,
+                a.dep_id,
+                a.maj_class_num,
+                a.maj_status,
+                a.maj_info,
+                DATE_FORMAT(a.gmt_create, '%Y-%m-%d %H:%i:%s') AS gmt_create,
+                DATE_FORMAT(a.gmt_modify, '%Y-%m-%d %H:%i:%s') AS gmt_modify,
+                b.dep_name
+         FROM select_major a ,select_department b
+         WHERE a.dep_id = b.id
+
+         ORDER BY a.maj_status DESC ,a.gmt_create DESC
+    </select>
+    <select id="selectMajDto" resultMap="DTOResultMap">
+        SELECT  a.id,
+                a.maj_name,
+                a.dep_id,
+                a.maj_class_num,
+                a.maj_status,
+                a.maj_info,
+                DATE_FORMAT(a.gmt_create, '%Y-%m-%d %H:%i:%s') AS gmt_create,
+                DATE_FORMAT(a.gmt_modify, '%Y-%m-%d %H:%i:%s') AS gmt_modify,
+                b.dep_name
+         FROM select_major a ,select_department b
+         WHERE a.dep_id = b.id
+          AND a.id= #{id}
+         ORDER BY a.maj_status DESC ,a.gmt_create DESC
+    </select>
 </mapper>

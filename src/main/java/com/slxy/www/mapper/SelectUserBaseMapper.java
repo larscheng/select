@@ -12,7 +12,7 @@ import java.util.List;
  *  Mapper 接口
  * </p>
  *
- * @author zhengql123
+ * @author zhengql
  * @since 2018-01-06
  */
 public interface SelectUserBaseMapper extends BaseMapper<SelectUserBase> {

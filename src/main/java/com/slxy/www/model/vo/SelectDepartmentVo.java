@@ -16,7 +16,7 @@ import java.util.Date;
  *
  * </p>
  *
- * @author zhengql123
+ * @author zhengql
  * @since 2018-01-07
  */
 @Data
@@ -45,5 +45,5 @@ public class SelectDepartmentVo extends  PageVo{
 
     private Date gmtCreate;
 
-
+    private Date gmtModify;
 }

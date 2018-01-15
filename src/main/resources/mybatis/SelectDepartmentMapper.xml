@@ -17,10 +17,8 @@
         id, dep_name, dep_status, dep_info,DATE_FORMAT(gmt_create, '%Y-%m-%d %H:%i:%s') AS gmt_create,DATE_FORMAT(gmt_modify, '%Y-%m-%d %H:%i:%s') AS gmt_modify
     </sql>
 
-    <select id="userDisable">
-        UPDATE select_department SET dep_status=#{depStatus} WHERE id=#{id}
-    </select>
+
     <select id="getDepByPage" resultMap="BaseResultMap">
-        SELECT <include refid="Base_Column_List"/> FROM select_department ORDER BY gmt_create DESC ,dep_status
+        SELECT <include refid="Base_Column_List"/> FROM select_department ORDER BY dep_status DESC, gmt_create DESC
     </select>
 </mapper>

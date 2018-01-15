@@ -25,7 +25,7 @@ import java.util.*;
  * 前端控制器
  * </p>
  *
- * @author zhengql123
+ * @author zhengql
  * @since 2018-01-07
  */
 @Controller
@@ -34,68 +34,60 @@ public class SelectDepartmentController {
 
     @Autowired
     private ISelectDepartmentService selectDepartmentService;
-    @Autowired
-    private SelectMajorServiceImpl selectMajorService;
 
-    @Autowired
-    private SelectDepartmentMapper selectDepartmentMapper;
 
+
+    /**
+     * 系别列表
+     * @param modelAndView
+     * @param vo
+     * @return
+     */
     @RequestMapping("/depList")
-    public ModelAndView userList(ModelAndView modelAndView, SelectDepartmentVo vo) {
-        modelAndView.setViewName("depmaj/depList");
-        Page<SelectDepartment> page = new Page<>(vo.getPage(), vo.getPageSize());
-        List<SelectDepartment> list = selectDepartmentMapper.getDepByPage(page, vo);
-        page.setRecords(list);
-        modelAndView.addObject("depList", list);
-        modelAndView.addObject("page", page);
-        return modelAndView;
+    public ModelAndView depList(ModelAndView modelAndView, SelectDepartmentVo vo) {
+        return selectDepartmentService.depList(modelAndView,vo);
     }
 
+    /**
+     * 跳转添加
+     * @param modelAndView
+     * @return
+     */
     @RequestMapping("/depInitAdd")
     public ModelAndView depInitAdd(ModelAndView modelAndView) {
         modelAndView.setViewName("depmaj/depAdd");
         return modelAndView;
     }
 
-
+    /**
+     * 添加系别
+     * @param selectDepartment
+     * @return
+     */
     @RequestMapping("/depAdd")
     @ResponseBody
     public String depAdd(SelectDepartment selectDepartment) {
-        //校验重复性
-        SelectDepartment department = new SelectDepartment();
-        department.setDepName(selectDepartment.getDepName());
-        List<SelectDepartment> departments = selectDepartmentService.selectList(
-                new EntityWrapper<>(department));
-        if (departments.size() < 1) {
-            selectDepartment.setGmtCreate(new Date());
-            if (selectDepartmentService.insert(selectDepartment)) {
-                //添加成功
-                return Constant.SUCCESS;
-            }
-        }
-        return Constant.DEP_EXIST;
-
-
+        return selectDepartmentService.depAdd(selectDepartment);
     }
 
-    @RequestMapping("/depDisable")
+
+    /**
+     * 系别启禁用、编辑系别
+     * @param selectDepartment
+     * @return
+     */
+    @RequestMapping(value={"/depDisable","/depUpdate"})
     @ResponseBody
-    public String depDisable(SelectDepartment selectDepartment) {
-        if (selectDepartment.getDepStatus() != null && selectDepartment.getDepStatus().equals(0)) {
-            //是否有启用中的所属专业
-            SelectMajor selectMajor = new SelectMajor();
-            selectMajor.setDepId(selectDepartment.getId());
-            selectMajor.setMajStatus(1);
-            List<SelectMajor> selectMajors = selectMajorService.selectList(new EntityWrapper<SelectMajor>(selectMajor));
-            if (!CollectionUtils.isEmpty(selectMajors)) {
-                return Constant.DEP_DISABLE_ERROR;
-            }
-        }
-        selectDepartmentService.updateById(selectDepartment);
-        return Constant.SUCCESS;
+    public String depDisableAndUpdate(SelectDepartment selectDepartment) {
+         return selectDepartmentService.depDisableAndUpdate(selectDepartment);
     }
 
-
+    /**
+     * 初始化系别编辑
+     * @param id
+     * @param modelAndView
+     * @return
+     */
     @RequestMapping("/depInitUpdate")
     public ModelAndView depInitUpdate(Integer id, ModelAndView modelAndView) {
         SelectDepartment selectDepartment = selectDepartmentService.selectById(id);
@@ -104,38 +96,28 @@ public class SelectDepartmentController {
         return modelAndView;
     }
 
+
+    /***
+     * 系别删除
+     * @param selectDepartment
+     * @return
+     */
     @RequestMapping("/depDelete")
     @ResponseBody
     public String depDelete(SelectDepartment selectDepartment) {
-        //是否有启用中的所属专业
-        SelectMajor selectMajor = new SelectMajor();
-        selectMajor.setDepId(selectDepartment.getId());
-        selectMajor.setMajStatus(EnumEnOrDis.ENABLED.getValue());
-        List<SelectMajor> selectMajors = selectMajorService.selectList(new EntityWrapper<SelectMajor>(selectMajor));
-        if (!CollectionUtils.isEmpty(selectMajors)) {
-            return Constant.DEP_DELETE_ERROR;
-        }
-        selectDepartmentService.deleteById(selectDepartment);
-        return Constant.SUCCESS;
+        return selectDepartmentService.depDelete(selectDepartment);
     }
 
+
+    /**
+     * 系别批量删除
+     * @param selectedIDs
+     * @return
+     */
     @RequestMapping("/depDeleteAll")
     @ResponseBody
     public String depDeleteAll(Integer[] selectedIDs) {
-        //是否有启用中的所属专业
-        for (Integer id : selectedIDs) {
-            SelectDepartment selectDepartment =selectDepartmentService.selectById(id);
-            SelectMajor selectMajor = new SelectMajor();
-            selectMajor.setDepId(id);
-            selectMajor.setMajStatus(EnumEnOrDis.ENABLED.getValue());
-            List<SelectMajor> selectMajors = selectMajorService.selectList(new EntityWrapper<SelectMajor>(selectMajor));
-            if (!CollectionUtils.isEmpty(selectMajors)) {
-                return Constant.DEP_DELETE_ERROR_NAME+selectDepartment.getDepName();
-            }
-        }
-        List<Integer> ids = Arrays.asList(selectedIDs);
-        selectDepartmentService.deleteBatchIds(ids);
-        return Constant.SUCCESS;
+        return selectDepartmentService.depDeleteAll(selectedIDs);
     }
 }
 

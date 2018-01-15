@@ -63,7 +63,7 @@
                         <div class="widget">
 
                             <div class="widget-head">
-                                <div class="pull-left">Tables</div>
+                                <div class="pull-left">系别列表</div>
                                 <div class="widget-icons pull-right">
                                     <a href="" class="wminimize"><i class="icon-chevron-up"></i></a>
                                     <a href="#" class="wclose"><i class="icon-remove"></i></a>
@@ -132,21 +132,21 @@
                                             <li><a href="#" class="btn  disabled">上一页</a></li>
                                         </c:if>
                                         <c:if test="${page.current-1 > 0}">
-                                            <li><a class="disabled" href="/selectDepartment/depList?page=${page.current-1}">上一页</a></li>
-                                            <li><a href="/selectDepartment/depList?page=${page.current-1}">${page.current-1}</a></li>
+                                            <li><a class="disabled" href="${ctx}/selectDepartment/depList?page=${page.current-1}">上一页</a></li>
+                                            <li><a href="${ctx}/selectDepartment/depList?page=${page.current-1}">${page.current-1}</a></li>
                                         </c:if>
 
 
-                                        <li><a href="/selectDepartment/depList?page=${page.current}">${page.current}</a></li>
+                                        <li><a href="${ctx}/selectDepartment/depList?page=${page.current}">${page.current}</a></li>
 
                                         <c:if test="${page.current+1 <= page.pages}">
-                                            <li><a href="/selectDepartment/depList?page=${page.current+1}">${page.current+1}</a></li>
+                                            <li><a href="${ctx}/selectDepartment/depList?page=${page.current+1}">${page.current+1}</a></li>
                                         </c:if>
                                         <c:if test="${page.current+2 <= page.pages}">
-                                            <li><a href="/selectDepartment/depList?page=${page.current+2}">${page.current+2}</a></li>
+                                            <li><a href="${ctx}/selectDepartment/depList?page=${page.current+2}">${page.current+2}</a></li>
                                         </c:if>
                                         <c:if test="${page.current+1 <= page.pages}">
-                                            <li><a href="/selectDepartment/depList?page=${page.current+1}">下一页</a></li>
+                                            <li><a href="${ctx}/selectDepartment/depList?page=${page.current+1}">下一页</a></li>
                                         </c:if>
                                         <c:if test="${page.current+1 > page.pages}">
                                             <li><a class="btn  disabled" href="#">下一页</a></li>
@@ -187,24 +187,26 @@
                 alert("无实例选中");
                 event.preventDefault(); // 兼容标准浏览器
                 window.event.returnValue = false; // 兼容IE6~8
-            }
-            console.log(arrayid);
-            $.ajax({
-                type:"POST",
-                url:"/selectDepartment/depDeleteAll",
-                data: { "selectedIDs": arrayid },
-                dataType:"json",
-                traditional: true,
-                success:function(msg){
-                    if("OK"!=msg){
-                        alert(msg);
+            }else{
+                console.log(arrayid);
+                $.ajax({
+                    type:"POST",
+                    url:"/selectDepartment/depDeleteAll",
+                    data: { "selectedIDs": arrayid },
+                    dataType:"json",
+                    traditional: true,
+                    success:function(msg){
+                        if("OK"!=msg){
+                            alert(msg);
+                        }
+                        location.href="/selectDepartment/depList";
+                    },
+                    error:function(e){
+                        alert("后台异常！");
                     }
-                    location.href="/selectDepartment/depList";
-                },
-                error:function(e){
-                    alert("后台异常！");
-                }
-            });
+                });
+            }
+
         }
 
         function depDisable(id){
@@ -220,7 +222,7 @@
                     location.href="/selectDepartment/depList";
                 },
                 error:function(e){
-                    alert("禁用失败2！");
+                    alert("后台异常！");
                 }
             });
         }
