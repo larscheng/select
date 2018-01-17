@@ -823,8 +823,8 @@ header .header-data .hdata em{
 
 .mainbar{
 	position: relative;
-	margin-left: 0px;
-	margin-right: 0px;
+	/*margin-left: 0px;*/
+	/*margin-right: 0px;*/
 	width: auto;
 	background:#eee url("../img/main-back.png") repeat;
 	border-left: 1px solid #ccc;
@@ -1728,7 +1728,7 @@ footer .copy{
 		width: 200px;
 	}
 	.mainbar{
-		margin-left: 200px;
+		/*margin-left: 200px;*/
 	}
    
    header{

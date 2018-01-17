@@ -1,14 +1,9 @@
-package com.slxy.www.model;
+package com.slxy.www.model.dto;
 
-import com.baomidou.mybatisplus.enums.IdType;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -19,124 +14,107 @@ import java.util.Date;
  * @author zhengql
  * @since 2018-01-06
  */
-@Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@TableName("select_user_base")
-public class SelectUserBase implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+public class SelectUserBaseDto {
 
     /**
      * 用户id
      */
-    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     /**
      * 账号
      */
-    @TableField("user_code")
     private String userCode;
     /**
      * 密码
      */
-    @TableField("user_password")
     private String userPassword;
     /**
      * 姓名
      */
-    @TableField("user_name")
     private String userName;
     /**
      * 性别 1男，2女
      */
-    @TableField("user_sex")
     private Integer userSex;
     /**
      * 邮箱
      */
-    @TableField("user_mail")
     private String userMail;
     /**
      * 电话
      */
-    @TableField("user_phone")
     private String userPhone;
     /**
      * qq
      */
-    @TableField("user_qq")
     private String userQq;
     /**
      * 学生专业名称
      */
-    @TableField("stu_major_name")
     private String stuMajorName;
     /**
      * 学生班级
      */
-    @TableField("stu_class")
     private Integer stuClass;
     /**
      * 学生届别
      */
-    @TableField("stu_year")
     private String stuYear;
     /**
      * 教师职称 1教授，2副教授，3讲师，4助教
      */
-    @TableField("tea_position")
     private Integer teaPosition;
+    private String teaPositionZ;
     /**
      * 教师专业名称
      */
-    @TableField("tea_major_name")
     private String teaMajorName;
     /**
      * 教师学历 1博士，2硕士，3本科
      */
-    @TableField("tea_education")
     private Integer teaEducation;
+    private String teaEducationZ;
+
     /**
      * 教师研究方向
      */
-    @TableField("tea_direction")
     private String teaDirection;
     /**
      * 教师所属系别
      */
-    @TableField("tea_dep_name")
     private String teaDepName;
     /**
      * 教师个人简介
      */
-    @TableField("tea_info")
     private String teaInfo;
     /**
      * 用户状态 0禁用，1启用
      */
-    @TableField("user_status")
     private Integer userStatus;
     /**
      * 用户类型 1管理员，2教师，3学生
      */
-    @TableField("user_type")
     private Integer userType;
     /**
      * 操作人员id
      */
-    @TableField("operator_id")
     private Integer operatorId;
     /**
      * 创建时间
      */
-    @TableField("gmt_create")
     private Date gmtCreate;
     /**
      * 修改时间
      */
-    @TableField("gmt_modify")
     private Date gmtModify;
+    /**
+     * 性别
+     */
+    private String sex;
+
+    public SelectUserBaseDto() {
+    }
 
     public Integer getId() {
         return this.id;
@@ -185,6 +163,9 @@ public class SelectUserBase implements Serializable {
     public Integer getTeaPosition() {
         return this.teaPosition;
     }
+    public String getTeaPositionZ() {
+        return this.teaPositionZ;
+    }
 
     public String getTeaMajorName() {
         return this.teaMajorName;
@@ -192,6 +173,9 @@ public class SelectUserBase implements Serializable {
 
     public Integer getTeaEducation() {
         return this.teaEducation;
+    }
+    public String getTeaEducationZ() {
+        return this.teaEducationZ;
     }
 
     public String getTeaDirection() {
@@ -226,120 +210,166 @@ public class SelectUserBase implements Serializable {
         return this.gmtModify;
     }
 
-    public SelectUserBase setId(Integer id) {
+
+    public String getSex() {
+        return this.sex;
+    }
+
+    public SelectUserBaseDto setId(Integer id) {
         this.id = id;
         return this;
     }
 
-    public SelectUserBase setUserCode(String userCode) {
+    public SelectUserBaseDto setUserCode(String userCode) {
         this.userCode = userCode;
         return this;
     }
 
-    public SelectUserBase setUserPassword(String userPassword) {
+    public SelectUserBaseDto setUserPassword(String userPassword) {
         this.userPassword = userPassword;
         return this;
     }
 
-    public SelectUserBase setUserName(String userName) {
+    public SelectUserBaseDto setUserName(String userName) {
         this.userName = userName;
         return this;
     }
 
-    public SelectUserBase setUserSex(Integer userSex) {
+    public SelectUserBaseDto setUserSex(Integer userSex) {
         this.userSex = userSex;
         return this;
     }
 
-    public SelectUserBase setUserMail(String userMail) {
+    public SelectUserBaseDto setUserMail(String userMail) {
         this.userMail = userMail;
         return this;
     }
 
-    public SelectUserBase setUserPhone(String userPhone) {
+    public SelectUserBaseDto setUserPhone(String userPhone) {
         this.userPhone = userPhone;
         return this;
     }
 
-    public SelectUserBase setUserQq(String userQq) {
+    public SelectUserBaseDto setUserQq(String userQq) {
         this.userQq = userQq;
         return this;
     }
 
-    public SelectUserBase setStuMajorName(String stuMajorName) {
+    public SelectUserBaseDto setStuMajorName(String stuMajorName) {
         this.stuMajorName = stuMajorName;
         return this;
     }
 
-    public SelectUserBase setStuClass(Integer stuClass) {
+    public SelectUserBaseDto setStuClass(Integer stuClass) {
         this.stuClass = stuClass;
         return this;
     }
 
-    public SelectUserBase setStuYear(String stuYear) {
+    public SelectUserBaseDto setStuYear(String stuYear) {
         this.stuYear = stuYear;
         return this;
     }
 
-    public SelectUserBase setTeaPosition(Integer teaPosition) {
+    public SelectUserBaseDto setTeaPosition(Integer teaPosition) {
         this.teaPosition = teaPosition;
         return this;
     }
 
-    public SelectUserBase setTeaMajorName(String teaMajorName) {
+    public SelectUserBaseDto setTeaPositionZ(String teaPositionZ) {
+        this.teaPositionZ = teaPositionZ;
+        return this;
+    }
+
+    public SelectUserBaseDto setTeaMajorName(String teaMajorName) {
         this.teaMajorName = teaMajorName;
         return this;
     }
 
-    public SelectUserBase setTeaEducation(Integer teaEducation) {
+    public SelectUserBaseDto setTeaEducation(Integer teaEducation) {
         this.teaEducation = teaEducation;
         return this;
     }
 
-    public SelectUserBase setTeaDirection(String teaDirection) {
+    public SelectUserBaseDto setTeaEducationZ(String teaEducationZ) {
+        this.teaEducationZ = teaEducationZ;
+        return this;
+    }
+
+    public SelectUserBaseDto setTeaDirection(String teaDirection) {
         this.teaDirection = teaDirection;
         return this;
     }
 
-    public SelectUserBase setTeaDepName(String teaDepName) {
+    public SelectUserBaseDto setTeaDepName(String teaDepName) {
         this.teaDepName = teaDepName;
         return this;
     }
 
-    public SelectUserBase setTeaInfo(String teaInfo) {
+    public SelectUserBaseDto setTeaInfo(String teaInfo) {
         this.teaInfo = teaInfo;
         return this;
     }
 
-    public SelectUserBase setUserStatus(Integer userStatus) {
+    public SelectUserBaseDto setUserStatus(Integer userStatus) {
         this.userStatus = userStatus;
         return this;
     }
 
-    public SelectUserBase setUserType(Integer userType) {
+    public SelectUserBaseDto setUserType(Integer userType) {
         this.userType = userType;
         return this;
     }
 
-    public SelectUserBase setOperatorId(Integer operatorId) {
+    public SelectUserBaseDto setOperatorId(Integer operatorId) {
         this.operatorId = operatorId;
         return this;
     }
 
-    public SelectUserBase setGmtCreate(Date gmtCreate) {
+    public SelectUserBaseDto setGmtCreate(Date gmtCreate) {
         this.gmtCreate = gmtCreate;
         return this;
     }
 
-    public SelectUserBase setGmtModify(Date gmtModify) {
+    public SelectUserBaseDto setGmtModify(Date gmtModify) {
         this.gmtModify = gmtModify;
         return this;
     }
 
-    public String toString() {
-        return "SelectUserBase(id=" + this.getId() + ", userCode=" + this.getUserCode() + ", userPassword=" + this.getUserPassword() + ", userName=" + this.getUserName() + ", userSex=" + this.getUserSex() + ", userMail=" + this.getUserMail() + ", userPhone=" + this.getUserPhone() + ", userQq=" + this.getUserQq() + ", stuMajorName=" + this.getStuMajorName() + ", stuClass=" + this.getStuClass() + ", stuYear=" + this.getStuYear() + ", teaPosition=" + this.getTeaPosition() + ", teaMajorName=" + this.getTeaMajorName() + ", teaEducation=" + this.getTeaEducation() + ", teaDirection=" + this.getTeaDirection() + ", teaDepName=" + this.getTeaDepName() + ", teaInfo=" + this.getTeaInfo() + ", userStatus=" + this.getUserStatus() + ", userType=" + this.getUserType() + ", operatorId=" + this.getOperatorId() + ", gmtCreate=" + this.getGmtCreate() + ", gmtModify=" + this.getGmtModify() + ")";
+
+
+    public SelectUserBaseDto setSex(String sex) {
+        this.sex = sex;
+        return this;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "SelectUserBaseDto{" +
+                "id=" + id +
+                ", userCode='" + userCode + '\'' +
+                ", userPassword='" + userPassword + '\'' +
+                ", userName='" + userName + '\'' +
+                ", userSex=" + userSex +
+                ", userMail='" + userMail + '\'' +
+                ", userPhone='" + userPhone + '\'' +
+                ", userQq='" + userQq + '\'' +
+                ", stuMajorName='" + stuMajorName + '\'' +
+                ", stuClass=" + stuClass +
+                ", stuYear='" + stuYear + '\'' +
+                ", teaPosition=" + teaPosition +
+                ", teaPositionZ='" + teaPositionZ + '\'' +
+                ", teaMajorName='" + teaMajorName + '\'' +
+                ", teaEducation=" + teaEducation +
+                ", teaEducationZ='" + teaEducationZ + '\'' +
+                ", teaDirection='" + teaDirection + '\'' +
+                ", teaDepName='" + teaDepName + '\'' +
+                ", teaInfo='" + teaInfo + '\'' +
+                ", userStatus=" + userStatus +
+                ", userType=" + userType +
+                ", operatorId=" + operatorId +
+                ", gmtCreate=" + gmtCreate +
+                ", gmtModify=" + gmtModify +
+                ", sex='" + sex + '\'' +
+                '}';
+    }
 }

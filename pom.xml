@@ -174,6 +174,19 @@
 			<artifactId>velocity</artifactId>
 			<version>1.7</version>
 		</dependency>
+
+		<!-- mapstruct -->
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-jdk8</artifactId>
+			<version>1.1.0.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
+			<version>1.1.0.Final</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

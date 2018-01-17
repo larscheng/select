@@ -16,4 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 public interface ISelectUserBaseService extends IService<SelectUserBase> {
 
     ModelAndView userList(ModelAndView modelAndView, SelectUserBaseVo userBaseVo);
+
+    String stuListAjax(SelectUserBaseVo userBaseVo);
 }

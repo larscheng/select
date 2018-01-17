@@ -21,7 +21,6 @@ public class Constant {
     public static final String DEP_DELETE_ERROR = "该系别下有专业正在启用中，不可删除!";
     public static final String DEP_DELETE_ERROR_NAME = "该系别下有专业正在启用中，不可删除！系别名：";
 
-
     //专业
     public static final String MAJ_ABLE_ERROR = "启用失败！原因：该专业所属系别已被禁用";
     public static final String MAJ_NAME_EXIST = "该专业已存在！";

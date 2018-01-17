@@ -4,11 +4,13 @@ package com.slxy.www.controller;
 import com.slxy.www.mapper.SelectUserBaseMapper;
 import com.slxy.www.model.SelectUserBase;
 import com.slxy.www.model.SelectUserBaseVo;
+import com.slxy.www.model.enums.EnumUserType;
 import com.slxy.www.service.ISelectUserBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -48,6 +50,29 @@ public class SelectUserBaseController {
 
     @RequestMapping("/userList")
     public ModelAndView userList(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
+        modelAndView.setViewName("test");
+        return selectUserBaseService.userList(modelAndView,userBaseVo);
+    }
+
+    @RequestMapping("/stuList")
+    public ModelAndView stuList(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
+        userBaseVo.setUserType(EnumUserType.STUDENT.getValue());
+        modelAndView.setViewName("/stuModule/stuList");
+        return selectUserBaseService.userList(modelAndView,userBaseVo);
+    }
+
+
+    @RequestMapping("/stuListAjax")
+    @ResponseBody
+    public String stuListAjax(SelectUserBaseVo userBaseVo) {
+        userBaseVo.setUserType(EnumUserType.STUDENT.getValue());
+        return selectUserBaseService.stuListAjax(userBaseVo);
+    }
+
+    @RequestMapping("/teaList")
+    public ModelAndView teaList(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
+        userBaseVo.setUserType(EnumUserType.TEACHER.getValue());
+        modelAndView.setViewName("/teaModule/teaList");
         return selectUserBaseService.userList(modelAndView,userBaseVo);
     }
 

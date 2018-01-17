@@ -8,13 +8,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <!-- Title and other stuffs -->
-    <title>Mac风格响应式后台管理模版演示 - 源码之家</title>
+    <title></title>
     <meta name="author" content="">
     <%@include file="/WEB-INF/pages/common/macTopCommon.jsp" %>
-    <%--<link href="${ctx}/resources/style/style.css" rel="stylesheet">--%>
-    <%--<link href="${ctx}/resources/style/bootstrap.css" rel="stylesheet" media="screen">--%>
-    <%--<link rel="stylesheet" href="${ctx}/resources/style/font-awesome.css">--%>
-    <%--<link rel="stylesheet" href="https://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">--%>
 </head>
 
 <body>
@@ -33,14 +29,14 @@
 
         <!-- Page heading -->
         <div class="page-head">
-            <h2 class="pull-left"><i class="icon-home"></i> 首页</h2>
+            <h2 class="pull-left"><i class="icon-home"></i> 学生信息管理</h2>
 
             <!-- Breadcrumb -->
             <div class="bread-crumb pull-right">
-                <a href="#"><i class="icon-home"></i> 首页</a>
+                <a href="#"><i class="icon-home"></i> 学生信息管理</a>
                 <!-- Divider -->
                 <span class="divider">/</span>
-                <a href="#" class="bread-current">控制台</a>
+                <a href="#" class="bread-current">首页</a>
             </div>
 
             <div class="clearfix"></div>
@@ -56,14 +52,7 @@
 
                 <!-- 搜索页 ================================================== -->
                 <div class="row small">
-
-
-
                     <form class="navbar-form center" role="search">
-
-
-
-
                         <div class="form-group">
                             <input type="text" class="form-control" placeholder="学号/姓名">
                         </div>
@@ -72,18 +61,6 @@
                         </div>
                         <div class="form-group">
                             <input type="text" class="form-control" placeholder="学号/姓名">
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group date form_datetime" onclick="aaa()">
-                                <input class="form-control"type="text" placeholder="起始时间" value="" readonly style="width: 140px">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-remove icon-remove"></i></span>
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-th icon-calendar"></i></span>
-                            </div>
-                            <div class="input-group date form_datetime" onclick="aaa()">
-                                <input class="form-control"type="text" placeholder="结束时间" value="" readonly style="width: 140px">
-                                <span class="input-group-addon" ><i class="glyphicon glyphicon-remove icon-remove"></i></span>
-                                <span class="input-group-addon" ><i class="glyphicon glyphicon-th icon-calendar"></i></span>
-                            </div>
                         </div>
                         <button type="button" class="btn btn-default">搜索</button>
                         <button type="button" class="btn btn-info pull-left"><i class="icon-remove"></i>批量删除</button>
@@ -97,7 +74,7 @@
                         <div class="widget">
 
                             <div class="widget-head">
-                                <div class="pull-left">用户列表</div>
+                                <div class="pull-left">学生列表</div>
                                 <div class="widget-icons pull-right">
                                     <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                     <a href="#" class="wclose"><i class="icon-remove"></i></a>
@@ -113,9 +90,13 @@
                                         <th class=" text-center"><input type="checkbox" id="selectAll"></th>
                                         <th>序号</th>
                                         <th>姓名</th>
+                                        <th>性别</th>
                                         <th>邮箱</th>
                                         <th>电话</th>
                                         <th>qq</th>
+                                        <th>专业</th>
+                                        <th>班级</th>
+                                        <th>届别</th>
                                         <th>状态</th>
                                         <th>操作</th>
                                     </tr>
@@ -209,25 +190,7 @@
 
 
     <div class="clearfix"></div>
-
 <%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>
-<script type="text/javascript">
-    $('.form_datetime').datetimepicker({
-        language:  'zh-CN',
-        weekStart: 1,
-        format: 'yyyy-mm-dd hh:ii:ss', //日期的格式
-        todayBtn:  1,
-        autoclose: 1,
-        todayHighlight: 1,
-        startView: 2,
-        forceParse: 0,
-        showMeridian: 1,
-    });
-function aaa() {
-    $(".datetimepicker").height(280);
-}
-
-</script>
 
 
 

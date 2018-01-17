@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.slxy.www.model.SelectUserBase;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.slxy.www.model.SelectUserBaseVo;
+import com.slxy.www.model.dto.SelectUserBaseDto;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ import java.util.List;
  */
 public interface SelectUserBaseMapper extends BaseMapper<SelectUserBase> {
 
-    List<SelectUserBase> selectUserBaseList();
+    List<SelectUserBase> getUserByPage(Page<SelectUserBaseDto> page, SelectUserBaseVo vo);
 
-    List<SelectUserBase> getUserByPage(Page<SelectUserBase> page, SelectUserBaseVo vo);
+    List<SelectUserBase> selectStuYear();
 }

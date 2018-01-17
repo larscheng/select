@@ -109,9 +109,5 @@ public class SelectUserBaseVo extends PageVo {
      */
     private Date gmtModify;
 
-    /**
-     * 状态名
-     */
-    private String status;
 
 }

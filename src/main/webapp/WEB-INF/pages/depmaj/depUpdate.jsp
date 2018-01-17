@@ -92,6 +92,7 @@
                                         <div class="form-group">
                                             <div class="col-lg-offset-1 col-lg-9">
                                                 <button type="button" id="updateSubmit" class="btn btn-success">提交</button>
+                                                <button type="button" class="btn btn-success" onclick="window.history.go(-1);">返回</button>
                                             </div>
                                         </div>
                                     </form>
@@ -131,8 +132,11 @@
                 success:function(msg){
                     if("OK"!=msg){
                         alert(msg);
+                    }else {
+                        alert("编辑成功","",function () {
+                            location.href="/selectDepartment/depList";
+                        },{type:"success",confirmButtonText:"好的"});
                     }
-                    location.href="/selectDepartment/depList";
                 },
                 error: function(e) {
                     alert("后台异常");

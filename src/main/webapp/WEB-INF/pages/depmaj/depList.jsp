@@ -151,7 +151,7 @@
                                         <c:if test="${page.current+1 > page.pages}">
                                             <li><a class="btn  disabled" href="#">下一页</a></li>
                                         </c:if>
-
+                                        <li><label style="line-height: 35px">共 ${requestScope.page.total} 条记录</label></li>
                                     </ul>
 
 
@@ -188,79 +188,119 @@
                 event.preventDefault(); // 兼容标准浏览器
                 window.event.returnValue = false; // 兼容IE6~8
             }else{
-                console.log(arrayid);
-                $.ajax({
-                    type:"POST",
-                    url:"/selectDepartment/depDeleteAll",
-                    data: { "selectedIDs": arrayid },
-                    dataType:"json",
-                    traditional: true,
-                    success:function(msg){
-                        if("OK"!=msg){
-                            alert(msg);
-                        }
-                        location.href="/selectDepartment/depList";
-                    },
-                    error:function(e){
-                        alert("后台异常！");
+                confirm("确认删除?","", function (isConfirm) {
+                    if (isConfirm) {
+                        //after click the confirm
+
+                        $.ajax({
+                            type:"POST",
+                            url:"/selectDepartment/depDeleteAll",
+                            data: { "selectedIDs": arrayid },
+                            dataType:"json",
+                            traditional: true,
+                            success:function(msg){
+                                if("OK"!=msg){
+                                    alert(msg);
+                                }else{
+                                    alert("删除成功","", function () {
+                                        location.href="/selectDepartment/depList";
+                                    }, {type: 'success', confirmButtonText: '好的'});
+                                }
+                            },
+                            error:function(e){
+                                alert("后台异常！");
+                            }
+                        });
                     }
-                });
+                }, {confirmButtonText: '删除', cancelButtonText: '取消', width: 400});
             }
+
+
 
         }
 
         function depDisable(id){
-            $.ajax({
-                type:"POST",
-                url:"/selectDepartment/depDisable",
-                data:{"id":id,"depStatus":0},
-                dataType:"json",
-                success:function(msg){
-                    if("OK"!=msg){
-                        alert(msg);
-                    }
-                    location.href="/selectDepartment/depList";
-                },
-                error:function(e){
-                    alert("后台异常！");
+            confirm("确认禁用?","", function (isConfirm) {
+                if (isConfirm) {
+                    //after click the confirm
+
+                    $.ajax({
+                        type:"POST",
+                        url:"/selectDepartment/depDisable",
+                        data:{"id":id,"depStatus":0},
+                        dataType:"json",
+                        success:function(msg){
+                            if ("OK"!=msg){
+                                alert(msg);
+                            }else {
+                                alert("禁用成功", "", function () {
+                                    location.href="/selectDepartment/depList";
+                                }, {type: 'success', confirmButtonText: '好的'});
+                            }
+                        },
+                        error:function(e){
+                            alert("系统异常！");
+                        }
+                    });
                 }
-            });
+            }, {confirmButtonText: '禁用', cancelButtonText: '取消', width: 400});
         }
 
         function depAble(id){
-            $.ajax({
-                type:"POST",
-                url:"/selectDepartment/depDisable",
-                data:{"id":id,"depStatus":1},
-                dataType:"json",
-                success:function(msg){
-                    if("OK"!=msg){
-                        alert(msg);
-                    }
-                    location.href="/selectDepartment/depList";
-                },
-                error:function(e){
-                    alert("启用失败2！");
+
+            confirm("确认启用?","", function (isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        type:"POST",
+                        url:"/selectDepartment/depDisable",
+                        data:{"id":id,"depStatus":1},
+                        dataType:"json",
+                        success:function(msg){
+                            if ("OK"!=msg){
+                                alert(msg);
+                            }else {
+                                alert("启用成功", "", function () {
+                                    location.href="/selectDepartment/depList";
+                                }, {type: 'success', confirmButtonText: '好的'});
+                            }
+                        },
+                        error:function(e){
+                            alert("系统异常");
+                        }
+                    });
                 }
-            });
+            }, {confirmButtonText: '启用', cancelButtonText: '取消', width: 400});
         }
 
+
         function depDelete(id){
-            $.ajax({
-                type:"POST",
-                url:"/selectDepartment/depDelete",
-                data:{"id":id},
-                dataType:"json",
-                success:function(msg){
-                    if("OK"!=msg){
-                        alert(msg);
-                    }
-                    location.href="/selectDepartment/depList";
-                },
-                error:function(e){
-                    alert("删除失败2！");
+            confirm("确认删除?","", function (isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        type:"POST",
+                        url:"/selectDepartment/depDelete",
+                        data:{"id":id},
+                        dataType:"json",
+                        success:function(msg){
+                            if("OK"!=msg){
+                                alert(msg);
+                            }else{
+                                alert("删除成功","", function () {
+                                    location.href="/selectDepartment/depList";
+                                }, {type: 'success', confirmButtonText: '好的'});
+                            }
+                        },
+                        error:function(e){
+                            alert("系统异常！");
+                        }
+                    })
                 }
-            });
+            }, {confirmButtonText: '删除', cancelButtonText: '取消', width: 400});
+
+
+
+
+
         }
     </script>
 <%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>

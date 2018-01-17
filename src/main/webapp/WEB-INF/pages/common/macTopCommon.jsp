@@ -4,7 +4,7 @@
 
 <!-- HTML5 Support for IE -->
 <!--[if lt IE 9]>
-<script src="/resources/js/html5shim.js"></script>
+<!--<script src="/resources/js/html5shim.js"></script>-->
 <![endif]-->
 
 <!-- Stylesheets -->
@@ -12,15 +12,18 @@
 <!-- Font awesome icon -->
 <link rel="stylesheet" href="${ctx}/resources/style/font-awesome.css">
 <!-- jQuery UI -->
-<link rel="stylesheet" href="${ctx}/resources/style/jquery-ui.css">
+<%--<link rel="stylesheet" href="${ctx}/resources/style/jquery-ui.css">--%>
 <!-- Calendar -->
 <link rel="stylesheet" href="${ctx}/resources/style/fullcalendar.css">
 <!-- prettyPhoto -->
 <link rel="stylesheet" href="${ctx}/resources/style/prettyPhoto.css">
 <!-- Star rating -->
-<link rel="stylesheet" href="${ctx}/resources/style/rateit.css">
+<%--<link rel="stylesheet" href="${ctx}/resources/style/rateit.css">--%>
 <!-- Date picker -->
-<link rel="stylesheet" href="${ctx}/resources/style/bootstrap-datetimepicker.min.css">
+<%--<link rel="stylesheet" href="${ctx}/resources/style/bootstrap-datetimepicker.min.css">--%>
+
+<link href="${ctx}/resources/jquery/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+<link rel="stylesheet" href="https://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
 <!-- CLEditor -->
 <link rel="stylesheet" href="${ctx}/resources/style/jquery.cleditor.css">
 
@@ -30,11 +33,12 @@
 
 
 <!-- Bootstrap toggle -->
-<link rel="stylesheet" href="${ctx}/resources/style/bootstrap-switch.css">
+<%--<link rel="stylesheet" href="${ctx}/resources/style/bootstrap-switch.css">--%>
 <!-- Main stylesheet -->
 <link href="${ctx}/resources/style/style.css" rel="stylesheet">
+<link href="${ctx}/resources/beAlert/BeAlert.css" rel="stylesheet">
 <!-- Widgets stylesheet -->
-<link href="${ctx}/resources/style/widgets.css" rel="stylesheet">
+<%--<link href="${ctx}/resources/style/widgets.css" rel="stylesheet">--%>
 
 
 

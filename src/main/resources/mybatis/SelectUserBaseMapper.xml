@@ -50,10 +50,51 @@
     </sql>
 
 
-    <select id="selectUserBaseList" resultMap="BaseResultMap">
-        SELECT <include refid="Base_Column_List1"/> FROM select_user_base
-    </select>
+
     <select id="getUserByPage" resultMap="BaseResultMap">
-        SELECT <include refid="Base_Column_List1"/> FROM select_user_base  ORDER BY user_status DESC, gmt_create DESC
+        SELECT <include refid="Base_Column_List1"/> FROM select_user_base a
+        WHERE 1=1
+        <if test="@Ognl@isNotEmpty(search)">
+            and (
+            a.user_code like '%${search}%' or
+            a.user_name like '%${search}%' or
+            a.user_phone like '%${search}%' or
+            a.user_qq like '%${search}%' or
+            a.user_mail like '%${search}%'
+            )
+        </if>
+        <if test="@Ognl@isNotEmpty(stuMajorName)">
+            and a.stu_major_name = #{stuMajorName}
+        </if>
+        <if test="@Ognl@isNotEmpty(stuClass)">
+            and a.stu_class = #{stuClass}
+        </if>
+        <if test="@Ognl@isNotEmpty(stuYear)">
+            and a.stu_year = #{stuYear}
+        </if>
+        <if test="@Ognl@isNotEmpty(userSex)">
+            and a.user_sex = #{userSex}
+        </if>
+        <if test="@Ognl@isNotEmpty(userStatus)">
+            and a.user_status = #{userStatus}
+        </if>
+        <if test="@Ognl@isNotEmpty(userType)">
+            and a.user_type = #{userType}
+        </if>
+        <if test="@Ognl@isNotEmpty(searchBgnTime)">
+            and DATE_FORMAT(a.gmt_create,'%Y-%m-%d')  <![CDATA[>=]]> #{searchBgnTime}
+        </if>
+        <if test="@Ognl@isNotEmpty(searchEndTime)">
+            and DATE_FORMAT(a.gmt_create,'%Y-%m-%d')  <![CDATA[<=]]> #{searchEndTime}
+        </if>
+
+
+
+        ORDER BY a.user_status DESC, a.gmt_create DESC
+    </select>
+
+
+    <select id="selectStuYear" resultMap="BaseResultMap">
+        SELECT  * FROM select_user_base WHERE user_type=3 GROUP BY stu_year ORDER BY stu_year DESC
     </select>
 </mapper>
