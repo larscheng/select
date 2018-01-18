@@ -97,4 +97,7 @@
     <select id="selectStuYear" resultMap="BaseResultMap">
         SELECT  * FROM select_user_base WHERE user_type=3 GROUP BY stu_year ORDER BY stu_year DESC
     </select>
+    <select id="selectStuMajor" resultMap="BaseResultMap">
+        SELECT  * FROM select_user_base WHERE user_type=3 GROUP BY stu_major_name
+    </select>
 </mapper>

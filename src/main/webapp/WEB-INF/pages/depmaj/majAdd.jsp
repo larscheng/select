@@ -110,6 +110,7 @@
                                         <div class="col-lg-offset-1 col-lg-9">
                                             <button type="button" id="addSubmit" class="btn btn-success">提交</button>
                                             <button type="reset" class="btn btn-info">重填</button>
+                                            <button type="button" class="btn btn-info" onclick="window.history.go(-1);">返回</button>
                                         </div>
                                     </div>
                                 </form>
@@ -150,8 +151,11 @@
                 success:function(msg){
                     if("OK"!=msg){
                         alert(msg);
+                    }else{
+                        alert("添加成功！","",function () {
+                            location.href="/selectMajor/majList";
+                        },{type:"success",confirmButtonText:"好的"});
                     }
-                    location.href="/selectMajor/majList";
                 },
                 error: function(e) {
                     alert("后台异常");

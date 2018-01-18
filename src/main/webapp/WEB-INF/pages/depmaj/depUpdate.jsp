@@ -75,7 +75,7 @@
                                             <label class="col-lg-4 control-label">系别名称</label>
                                             <div class="col-lg-8">
                                                 <input type="hidden" class="form-control" name="id" value="${dep.id}">
-                                                <input type="text" class="form-control" name="depName" value="${dep.depName}" placeholder="系别名称">
+                                                <input type="text" class="form-control" name="depName" value="${dep.depName}" disabled placeholder="系别名称">
                                             </div>
                                         </div>
 

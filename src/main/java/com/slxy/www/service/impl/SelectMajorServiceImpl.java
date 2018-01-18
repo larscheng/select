@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.slxy.www.common.Constant;
 import com.slxy.www.mapper.SelectDepartmentMapper;
 import com.slxy.www.mapper.SelectMajorMapper;
+import com.slxy.www.mapper.SelectUserBaseMapper;
 import com.slxy.www.model.SelectDepartment;
 import com.slxy.www.model.SelectMajor;
+import com.slxy.www.model.SelectUserBase;
 import com.slxy.www.model.dto.SelectMajorDTO;
 import com.slxy.www.model.enums.EnumEnOrDis;
 import com.slxy.www.model.enums.EnumYesOrNo;
@@ -38,7 +40,8 @@ public class SelectMajorServiceImpl extends ServiceImpl<SelectMajorMapper, Selec
     private SelectMajorMapper selectMajorMapper;
     @Autowired
     private SelectDepartmentMapper selectDepartmentMapper;
-
+    @Autowired
+    private SelectUserBaseMapper selectUserBaseMapper;
 
     /**
      *  @Description    : 专业列表
@@ -80,6 +83,16 @@ public class SelectMajorServiceImpl extends ServiceImpl<SelectMajorMapper, Selec
             SelectDepartment selectDepartment = selectDepartmentMapper.selectById(major.getDepId());
             if(selectDepartment.getDepStatus().equals(EnumEnOrDis.DISABLED.getValue())){
                 return Constant.MAJ_ABLE_ERROR;
+            }
+        }
+        if (selectMajor.getMajStatus()!=null&&selectMajor.getMajStatus().equals(EnumEnOrDis.DISABLED.getValue())){
+            //当为禁用操作，判断是否有学生
+            SelectMajor major = selectMajorMapper.selectById(selectMajor.getId());
+            List<SelectUserBase> userBaseList = selectUserBaseMapper.selectList(new EntityWrapper<>(
+                    new SelectUserBase().setStuMajorName(major.getMajName())
+            ));
+            if(!CollectionUtils.isEmpty(userBaseList)){
+                return Constant.MAJ_DISABLE_ERROR;
             }
         }
         selectMajorMapper.updateById(selectMajor);
@@ -156,6 +169,13 @@ public class SelectMajorServiceImpl extends ServiceImpl<SelectMajorMapper, Selec
      */
     @Override
     public String majDel(SelectMajor selectMajor) {
+        SelectMajor major = selectMajorMapper.selectById(selectMajor.getId());
+        List<SelectUserBase> userBaseList = selectUserBaseMapper.selectList(new EntityWrapper<>(
+                new SelectUserBase().setStuMajorName(major.getMajName())
+        ));
+        if(!CollectionUtils.isEmpty(userBaseList)){
+            return Constant.MAJ_DELETE_ERROR;
+        }
         if (this.deleteById(selectMajor)){
             return Constant.SUCCESS;
         }
@@ -170,6 +190,17 @@ public class SelectMajorServiceImpl extends ServiceImpl<SelectMajorMapper, Selec
      */
     @Override
     public String majDelAll(Integer[] selectedIDs) {
+        for (Integer id : selectedIDs){
+            SelectMajor major = selectMajorMapper.selectById(id);
+            List<SelectUserBase> userBaseList = selectUserBaseMapper.selectList(new EntityWrapper<>(
+                    new SelectUserBase().setStuMajorName(major.getMajName())
+            ));
+            if(!CollectionUtils.isEmpty(userBaseList)){
+                return Constant.MAJ_DELETE_ERROR_NAME+major.getMajName();
+            }
+        }
+
+
         if(this.deleteBatchIds(Arrays.asList(selectedIDs))){
             return Constant.SUCCESS;
         }

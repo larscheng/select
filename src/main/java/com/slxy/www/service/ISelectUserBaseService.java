@@ -18,4 +18,16 @@ public interface ISelectUserBaseService extends IService<SelectUserBase> {
     ModelAndView userList(ModelAndView modelAndView, SelectUserBaseVo userBaseVo);
 
     String stuListAjax(SelectUserBaseVo userBaseVo);
+
+    String stuAble(SelectUserBaseVo userBaseVo);
+
+    String stuDelete(SelectUserBaseVo userBaseVo);
+
+    ModelAndView stuInitUpdate(ModelAndView modelAndView, SelectUserBaseVo userBaseVo);
+
+    String stuUpdate(SelectUserBaseVo userBaseVo);
+
+    ModelAndView stuInitAdd(ModelAndView modelAndView, SelectUserBaseVo userBaseVo);
+
+    String stuAdd(SelectUserBaseVo userBaseVo);
 }

@@ -92,7 +92,7 @@
                                         <div class="col-lg-offset-1 col-lg-9">
                                             <button type="button" id="addSubmit" class="btn btn-success">提交</button>
                                             <button type="reset" class="btn btn-info">重填</button>
-                                            <button type="reset" class="btn btn-info" onclick="window.history.go(-1);">返回</button>
+                                            <button type="button" class="btn btn-info" onclick="window.history.go(-1);">返回</button>
                                         </div>
                                     </div>
                                 </form>

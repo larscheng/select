@@ -44,17 +44,7 @@
             <div class="container">
 
                 <!-- 搜索页 ================================================== -->
-                <div class="row center">
-                    <form class="navbar-form" role="add">
-                        <button type="button"  class="btn btn-info pull-left" onclick="depDeleteAll()"><i class="icon-remove"> </i>批量删除</button>
-                        <button type="button" onclick="window.location.href='/selectDepartment/depInitAdd';" class="btn btn-success pull-left"><i class="icon-edit"> </i>添加系别</button>
-                    </form>
-                    <%--<script text="javascript">--%>
-                        <%--function turn(){--%>
-                            <%--window.location.href="/selectDepartment/depInitAdd";--%>
-                        <%--}--%>
-                    <%--</script>--%>
-                </div>
+
                 <!-- Table -->
                 <div class="row">
 
@@ -62,11 +52,15 @@
 
                         <div class="widget">
 
-                            <div class="widget-head">
+                            <div class="widget-head" style="position: relative">
                                 <div class="pull-left">系别列表</div>
                                 <div class="widget-icons pull-right">
-                                    <a href="" class="wminimize"><i class="icon-chevron-up"></i></a>
+                                    <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                     <a href="#" class="wclose"><i class="icon-remove"></i></a>
+                                </div>
+                                <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
+                                        <button type="button" style="margin-right: 10px"  class="btn btn-info pull-left" onclick="depDeleteAll()"><i class="icon-remove"> </i>批量删除</button>
+                                        <button type="button" style="margin-right: 10px" onclick="window.location.href='/selectDepartment/depInitAdd';" class="btn btn-success pull-left"><i class="icon-edit"> </i>添加系别</button>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>

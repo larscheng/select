@@ -54,6 +54,13 @@ public class SelectUserBaseController {
         return selectUserBaseService.userList(modelAndView,userBaseVo);
     }
 
+    /******************************************    学生   *****************************************************/
+    /**
+     * 学生列表初始化
+     * @param modelAndView
+     * @param userBaseVo
+     * @return
+     */
     @RequestMapping("/stuList")
     public ModelAndView stuList(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
         userBaseVo.setUserType(EnumUserType.STUDENT.getValue());
@@ -61,13 +68,160 @@ public class SelectUserBaseController {
         return selectUserBaseService.userList(modelAndView,userBaseVo);
     }
 
-
+    /**
+     * 学生参数查询列表
+     * @param userBaseVo
+     * @return
+     */
     @RequestMapping("/stuListAjax")
     @ResponseBody
     public String stuListAjax(SelectUserBaseVo userBaseVo) {
         userBaseVo.setUserType(EnumUserType.STUDENT.getValue());
         return selectUserBaseService.stuListAjax(userBaseVo);
     }
+
+    /**
+     * 学生启用禁用
+     * @param userBaseVo
+     * @return
+     */
+    @RequestMapping("/stuAble")
+    @ResponseBody
+    public String stuAble(SelectUserBaseVo userBaseVo) {
+        return selectUserBaseService.stuAble(userBaseVo);
+    }
+
+    @RequestMapping("/stuDelete")
+    @ResponseBody
+    public String stuDelete(SelectUserBaseVo userBaseVo) {
+        return selectUserBaseService.stuDelete(userBaseVo);
+    }
+
+    @RequestMapping("/stuInitUpdate")
+    public ModelAndView stuInitUpdate(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
+        modelAndView.setViewName("test");
+        return selectUserBaseService.stuInitUpdate(modelAndView,userBaseVo);
+    }
+
+    @RequestMapping("/stuUpdate")
+    @ResponseBody
+    public String stuUpdate(SelectUserBaseVo userBaseVo) {
+        return selectUserBaseService.stuUpdate(userBaseVo);
+    }
+
+    @RequestMapping("/stuInitAdd")
+    public ModelAndView stuInitAdd(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
+        modelAndView.setViewName("test");
+        return selectUserBaseService.stuInitAdd(modelAndView,userBaseVo);
+    }
+
+
+    @RequestMapping("/stuAdd")
+    @ResponseBody
+    public String stuAdd(SelectUserBaseVo userBaseVo) {
+        return selectUserBaseService.stuAdd(userBaseVo);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /******************************************    学生   *****************************************************/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @RequestMapping("/teaList")
     public ModelAndView teaList(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {

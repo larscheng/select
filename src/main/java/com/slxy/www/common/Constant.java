@@ -23,8 +23,14 @@ public class Constant {
 
     //专业
     public static final String MAJ_ABLE_ERROR = "启用失败！原因：该专业所属系别已被禁用";
+    public static final String MAJ_DISABLE_ERROR = "禁用失败！原因：该专业已有启用中的学生！";
+    public static final String MAJ_DELETE_ERROR = "删除失败！原因：该专业已有启用中的学生！";
+    public static final String MAJ_DELETE_ERROR_NAME = "删除失败！原因：该专业已有启用中的学生！专业名：";
     public static final String MAJ_NAME_EXIST = "该专业已存在！";
 
+
+    //学生
+    public static final String STU_ABLE_ERROR_MAJ_DISABLE = "启用失败！原因：该生所在专业已被禁用";
 
 }
 

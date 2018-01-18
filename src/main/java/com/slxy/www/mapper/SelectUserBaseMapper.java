@@ -21,4 +21,6 @@ public interface SelectUserBaseMapper extends BaseMapper<SelectUserBase> {
     List<SelectUserBase> getUserByPage(Page<SelectUserBaseDto> page, SelectUserBaseVo vo);
 
     List<SelectUserBase> selectStuYear();
+
+    List<SelectUserBase> selectStuMajor();
 }

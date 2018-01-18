@@ -44,12 +44,7 @@
             <div class="container">
 
                 <!-- 搜索页 ================================================== -->
-                <div class="row center">
-                    <form class="navbar-form" role="add">
-                        <button type="button" onclick="majDeleteAll()" class="btn btn-info pull-left"><i class="icon-remove"> </i>批量删除</button>
-                        <button type="button" onclick="window.location.href='/selectMajor/majInitAdd';"  class="btn btn-success pull-left"><i class="icon-edit"> </i>添加专业</button>
-                    </form>
-                </div>
+
                 <!-- Table -->
                 <div class="row">
 
@@ -57,11 +52,16 @@
 
                         <div class="widget">
 
-                            <div class="widget-head">
+                            <div class="widget-head" style="position: relative">
                                 <div class="pull-left">专业列表</div>
                                 <div class="widget-icons pull-right">
                                     <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                     <a href="#" class="wclose"><i class="icon-remove"></i></a>
+                                </div>
+                                <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
+                                        <button type="button" onclick="majDeleteAll()" class="btn btn-info pull-left" style="margin-right: 10px"><i class="icon-remove"> </i>批量删除</button>
+                                        <button type="button" style="margin-right: 10px" onclick="window.location.href='/selectMajor/majInitAdd';"  class="btn btn-success pull-left"><i class="icon-edit"> </i>添加专业</button>
+
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -179,58 +179,81 @@
     <script type="text/javascript">
 
         function majAble(id){
-            $.ajax({
-                type:"POST",
-                url:"/selectMajor/majDisable",
-                data:{"id":id,"majStatus":1},
-                dataType:"json",
-                success:function(msg){
-                    if("OK"!=msg){
-                        alert(msg);
-                    }
-                    location.href="/selectMajor/majList";
-                },
-                error:function(e){
-                    alert("启用失败2！");
+            confirm("确认启用？","",function (isConfirm) {
+                if (isConfirm){
+                    $.ajax({
+                        type:"POST",
+                        url:"/selectMajor/majDisable",
+                        data:{"id":id,"majStatus":1},
+                        dataType:"json",
+                        success:function(msg){
+                            if("OK"!=msg){
+                                alert(msg);
+                            }else {
+                                alert("启用成功","",function () {
+                                    location.href="/selectMajor/majList";
+                                },{type:"success",confirmButtonText:"好的"});
+                            }
+                        },
+                        error:function(e){
+                            alert("系统异常！");
+                        }
+                    });
                 }
             });
+
         }
 
         function majDisAble(id){
-            $.ajax({
-                type:"POST",
-                url:"/selectMajor/majDisable",
-                data:{"id":id,"majStatus":0},
-                dataType:"json",
-                success:function(msg){
-                    if("OK"!=msg){
-                        alert(msg);
-                    }
-                    location.href="/selectMajor/majList";
-                },
-                error:function(e){
-                    alert("启用失败2！");
+            confirm("确认禁用？","",function (isConfirm) {
+                if (isConfirm){
+                    $.ajax({
+                        type:"POST",
+                        url:"/selectMajor/majDisable",
+                        data:{"id":id,"majStatus":0},
+                        dataType:"json",
+                        success:function(msg){
+                            if("OK"!=msg){
+                                alert(msg);
+                            }else{
+                                alert("禁用成功！","",function () {
+                                    location.href="/selectMajor/majList";
+                                },{type:"success",confirmButtonText:"好的"});
+                            }
+                        },
+                        error:function(e){
+                            alert("系统异常！");
+                        }
+                    });
                 }
             });
+
         }
 
         function majDelete(id){
-            $.ajax({
-                type:"POST",
-                url:"/selectMajor/majDelete",
-                data:{"id":id},
-                dataType:"json",
-                success:function(msg){
-                    if("OK"!=msg){
-                        alert(msg);
-                    }else{
-                        location.href="/selectMajor/majList";
-                    }
-                },
-                error:function(e){
-                    alert("删除失败！");
+            confirm("确认删除吗？","",function (isconfirm) {
+                if (isconfirm){
+                    $.ajax({
+                        type:"POST",
+                        url:"/selectMajor/majDelete",
+                        data:{"id":id},
+                        dataType:"json",
+                        success:function(msg){
+                            if("OK"!=msg){
+                                alert(msg);
+                            }else{
+                                alert("删除成功！","",function () {
+                                    location.href="/selectMajor/majList";
+                                },{type:"success",confirmButtonText:"好的"});
+                            }
+                        },
+                        error:function(e){
+                            alert("系统异常！");
+                        }
+                    });
                 }
-            });
+            })
+
         }
 
         function majDeleteAll(){
@@ -241,24 +264,31 @@
                 event.preventDefault(); // 兼容标准浏览器
                 window.event.returnValue = false; // 兼容IE6~8
             }else{
-                $.ajax({
-                    type:"POST",
-                    url:"/selectMajor/majDeleteAll",
-                    data: { "selectedIDs": arrayId },
-                    dataType:"json",
-                    traditional: true,
-                    success:function(msg){
-                        if("OK"!=msg){
-                            alert(msg);
-                        }else{
-                            location.href="/selectMajor/majList";
-                        }
+                confirm("确认删除吗？","",function (is) {
+                    if (is){
+                        $.ajax({
+                            type:"POST",
+                            url:"/selectMajor/majDeleteAll",
+                            data: { "selectedIDs": arrayId },
+                            dataType:"json",
+                            traditional: true,
+                            success:function(msg){
+                                if("OK"!=msg){
+                                    alert(msg);
+                                }else{
+                                    alert("删除成功！","",function () {
+                                        location.href="/selectMajor/majList";
+                                    },{type:"success",confirmButtonText:"好的"});
+                                }
 
-                    },
-                    error:function(e){
-                        alert("后台异常！");
+                            },
+                            error:function(e){
+                                alert("后台异常！");
+                            }
+                        });
                     }
-                });
+                })
+
             }
 
         }
