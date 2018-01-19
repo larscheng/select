@@ -100,4 +100,7 @@
     <select id="selectStuMajor" resultMap="BaseResultMap">
         SELECT  * FROM select_user_base WHERE user_type=3 GROUP BY stu_major_name
     </select>
+    <select id="selectStuClass" resultMap="BaseResultMap">
+        SELECT * FROM select_user_base WHERE user_type=3 GROUP BY stu_class
+    </select>
 </mapper>

@@ -17,7 +17,7 @@
         <div class="row">
             <div class="col-md-12">
                 <!-- Copyright info -->
-                <p class="copy">Copyright &copy; 2012 | <a href="#">Your Site</a></p>
+                <p class="copy">Copyright &copy; 2018 | <a href="#">商洛学院</a></p>
             </div>
         </div>
     </div>

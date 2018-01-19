@@ -25,7 +25,7 @@
         <!-- Page heading -->
         <h2 class="pull-left">
             <!-- page meta -->
-            <span class="page-meta">系别添加</span>
+            <span class="page-meta">专业查看</span>
         </h2>
 
 
@@ -57,7 +57,7 @@
                     <div class="widget wgreen">
 
                         <div class="widget-head">
-                            <div class="pull-left">系别</div>
+                            <div class="pull-left">专业</div>
                             <div class="widget-icons pull-right">
                                 <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                 <a href="#" class="wclose"><i class="icon-remove"></i></a>
@@ -69,32 +69,47 @@
                             <div class="padd">
                                 <hr />
                                 <!-- Form starts.  -->
-                                <form class="form-horizontal" role="form" id="addForm">
+                                <form class="form-horizontal" role="form" id="updateForm">
 
                                     <div class="form-group">
-                                        <label class="col-lg-4 control-label">系别名称</label>
-                                        <div class="col-lg-8">
-                                            <input type="text" class="form-control" name="depName" placeholder="系别名称">
+                                        <label class="col-lg-4 control-label">专业名称</label>
+                                        <div class="col-lg-4 panel panel-default" >
+                                                    ${requestScope.major.majName}
                                         </div>
                                     </div>
 
+                                    <div class="form-group">
+                                        <label class="col-lg-4 control-label">专业班级数</label>
+                                        <div class="col-lg-4 panel panel-default">
+                                            <span>${requestScope.major.majClassNum}</span>
+                                        </div>
+                                    </div>
 
                                     <div class="form-group">
-                                        <label class="col-lg-4 control-label">系别介绍</label>
-                                        <div class="col-lg-8">
-                                            <textarea class="form-control" rows="4" name="depInfo" placeholder="系别介绍"></textarea>
+                                        <label class="col-lg-4 control-label">所属系别</label>
+                                        <div class="col-lg-4 panel panel-default">
+                                                <c:set var="depId" value="${requestScope.major.depId}"/>
+                                                <c:forEach  var="dep" items="${requestScope.depNameList}">
+
+                                                        <c:if test="${dep.id eq depId}">
+                                                            ${dep.depName}
+                                                        </c:if>
+                                                </c:forEach>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-lg-4 control-label">专业介绍</label>
+                                        <div class="col-lg-4 panel panel-default">
+                                                <div class="panel-body">
+                                                    ${requestScope.major.majInfo}
+                                                </div>
                                         </div>
                                     </div>
 
 
                                     <hr />
-                                    <div class="form-group">
-                                        <div class="col-lg-offset-1 col-lg-9">
-                                            <button type="button" id="addSubmit" class="btn btn-success">提交</button>
-                                            <button type="reset" class="btn btn-info">重填</button>
-                                            <button type="button" class="btn btn-info" onclick="window.history.go(-1);">返回</button>
-                                        </div>
-                                    </div>
+
                                 </form>
                             </div>
                         </div>
@@ -124,25 +139,20 @@
 
     $(function(){
 
-        $("#addSubmit").click(function(){
-
+        $("#updateSubmit").click(function(){
             $.ajax({
                 type: "post",
-                url: "/selectDepartment/depAdd",
-                data: $("#addForm").serialize(),
+                url: "/selectMajor/majUpdate",
+                data: $("#updateForm").serialize(),
                 dataType:"json",
                 success:function(msg){
                     if("OK"!=msg){
                         alert(msg);
-                    }else {
-                        alert(" 👏 添加成功","",function () {
-                            location.href="/selectDepartment/depList";
-                        },{type:"success",confirmButtonText:"好的"});
                     }
-
+                    location.href="/selectMajor/majList";
                 },
                 error: function(e) {
-                    alert(" 😰 系统异常，请与我们程序员哥哥联系！");
+                    alert("后台异常");
                 }
             });
         });

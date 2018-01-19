@@ -52,18 +52,72 @@
 
                 <!-- 搜索页 ================================================== -->
                 <div class="row small">
-                    <form class="navbar-form center" role="search">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="学号/姓名">
+
+                    <form class="navbar-form center" role="search" id="searchForm">
+
+                        <div class="form-group " style="position: relative;margin-right: 10px">
+                            <input type="text" class="form-control" id="search" name="search" placeholder="账号/姓名/邮箱/电话/qq">
+                            <span onclick="search()" style="position: absolute;left: 155px;top: 6px;cursor: pointer"><i class="icon-search" ></i></span>
                         </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="学号/姓名">
+
+                        <div class="form-group " style="margin-right: 10px">
+                            <select  class="form-control" name="userSex">
+                                <option value="" selected>性别</option>
+                                <option value="1">男</option>
+                                <option value="2">女</option>
+                            </select>
                         </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="学号/姓名">
+                        <div class="form-group " style="margin-right: 10px">
+                            <select  class="form-control" name="userStatus">
+                                <option value="" selected>状态</option>
+                                <option value="1">启用</option>
+                                <option value="0">禁用</option>
+                            </select>
                         </div>
-                        <button type="button" class="btn btn-default">搜索</button>
-                        <button type="button" class="btn btn-info pull-left"><i class="icon-remove"></i>批量删除</button>
+                        <div class="form-group " style="margin-right: 10px">
+                            <select  class="form-control" name="stuClass">
+                                <option value="" selected>班级</option>
+                                <c:forEach var="cla" items="${requestScope.classList}">
+                                    <option value="${cla.stuClass}">${cla.stuClass}班</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-right: 10px">
+                            <select  class="form-control" name="stuYear">
+                                <option value="" selected>届别</option>
+                                <c:forEach var="year" items="${requestScope.yearList}">
+                                    <option value="${year.stuYear}">${year.stuYear}级</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="form-group " style="margin-right: 10px">
+                            <select  class="form-control" name="stuMajorName">
+                                <option value="" selected>专业</option>
+                                <c:forEach var="major" items="${requestScope.majorList}">
+                                    <option value="${major.stuMajorName}">${major.stuMajorName}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+
+                        <div class="form-group" style="margin-right: 10px">
+                            <div class="input-group date form_datetime" onclick="aaa()">
+                                <input name="searchBgnTime" class="form-control"type="text" placeholder="起始时间" value="" readonly style="width: 140px">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-remove icon-remove"></i></span>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-th icon-calendar"></i></span>
+                            </div> --
+                            <div class="input-group date form_datetime" onclick="aaa()">
+                                <input name="searchEndTime" class="form-control"type="text" placeholder="结束时间" value="" readonly style="width: 140px">
+                                <span class="input-group-addon" onclick="aaa()"><i class="glyphicon glyphicon-remove icon-remove"></i></span>
+                                <span class="input-group-addon" onclick="aaa()"><i class="glyphicon glyphicon-th icon-calendar"></i></span>
+                            </div>
+
+                        </div>
+                        <button type="button" id="searchSubmit" class="btn btn-default">搜索</button>
+
+
+
+
+
                     </form>
                 </div>
                 <!-- Table -->
@@ -95,18 +149,16 @@
                                         <th>邮箱</th>
                                         <th>电话</th>
                                         <th>qq</th>
-                                        <th>专业</th>
-                                        <th>研究方向</th>
-                                        <th>系别</th>
-                                        <th>创建时间</th>
+                                        <th>所属系别</th>
                                         <th>职称</th>
-                                        <th>学历</th>
+                                        <th>最高学历</th>
                                         <th>状态</th>
+                                        <th>创建时间</th>
                                         <th>操作</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach var="user" items="${userList}" varStatus="index">
+                                    <c:forEach var="user" items="${requestScope.userList}" varStatus="index">
                                         <tr>
                                             <td  class=" text-center"><input type="checkbox" name="ids" value="${user.id}" /></td>
                                             <td>${index.count}</td>
@@ -116,10 +168,7 @@
                                             <td>${user.userMail}</td>
                                             <td>${user.userPhone}</td>
                                             <td>${user.userQq}</td>
-                                            <td>${user.teaMajorName}</td>
-                                            <td>${user.teaDirection}</td>
                                             <td>${user.teaDepName}</td>
-                                            <td><fmt:formatDate value="${user.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                             <td><span class="label label-success">${user.teaPositionZ}</span></td>
                                             <td><span class="label label-success">${user.teaEducationZ}</span></td>
                                             <td>
@@ -133,6 +182,7 @@
                                                     </c:otherwise>
                                                 </c:choose>
                                             </td>
+                                            <td><fmt:formatDate value="${user.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                             <td>
                                                 <c:set var="status" value="${user.userStatus}"/>
                                                 <c:choose>
@@ -144,6 +194,7 @@
                                                     </c:otherwise>
                                                 </c:choose>
                                                 <button class="btn btn-xs btn-warning"><i class="icon-pencil"></i>编辑</button>
+                                                <button class="btn btn-xs btn-info"><i class="icon-pencil"></i>详情</button>
                                                 <button class="btn btn-xs btn-danger"><i class="icon-remove">删除</i>
                                                 </button>
 

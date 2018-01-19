@@ -23,11 +23,11 @@ public interface ISelectUserBaseService extends IService<SelectUserBase> {
 
     String stuDelete(SelectUserBaseVo userBaseVo);
 
-    ModelAndView stuInitUpdate(ModelAndView modelAndView, SelectUserBaseVo userBaseVo);
+    ModelAndView stuInitAddAndUpdate(ModelAndView modelAndView, SelectUserBaseVo userBaseVo);
 
-    String stuUpdate(SelectUserBaseVo userBaseVo);
+    String stuUpdate(SelectUserBase userBase);
 
-    ModelAndView stuInitAdd(ModelAndView modelAndView, SelectUserBaseVo userBaseVo);
+    String stuAdd(SelectUserBase userBase);
 
-    String stuAdd(SelectUserBaseVo userBaseVo);
+    String stuDeleteAll(Integer[] selectedIDs);
 }

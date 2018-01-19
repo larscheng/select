@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <!-- Title and other stuffs -->
-    <title>Mac风格响应式后台管理模版演示 - 源码之家</title>
+    <title>Select System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="">
     <%@include file="/WEB-INF/pages/common/macTopCommon.jsp" %>
@@ -110,6 +110,8 @@
                                                 </c:choose>
                                                 <button class="btn btn-xs btn-warning" onclick="window.location.href='/selectDepartment/depInitUpdate?id=${dep.id}';"><i class="icon-pencil">编辑</i>
                                                 </button>
+                                                <button class="btn btn-xs btn-info" onclick="window.location.href='/selectDepartment/depFind?id=${dep.id}';"><i class="icon-pencil">查看</i>
+                                                </button>
                                                 <button class="btn btn-xs btn-danger" onclick="depDelete('${dep.id}')"><i class="icon-remove">删除</i>
                                                 </button>
 
@@ -178,11 +180,11 @@
             var arrayid = new Array();
             $('input[name="ids"]:checked').each(function(){arrayid.push($(this).val());});
             if(arrayid.length==0){
-                alert("无实例选中");
+                alert(" 🙋 无实例选中");
                 event.preventDefault(); // 兼容标准浏览器
                 window.event.returnValue = false; // 兼容IE6~8
             }else{
-                confirm("确认删除?","", function (isConfirm) {
+                confirm(" 🙋 确认删除?","", function (isConfirm) {
                     if (isConfirm) {
                         //after click the confirm
 
@@ -194,19 +196,19 @@
                             traditional: true,
                             success:function(msg){
                                 if("OK"!=msg){
-                                    alert(msg);
+                                    alert(" 🔞 "+msg);
                                 }else{
-                                    alert("删除成功","", function () {
+                                    alert(" 👌 删除成功","", function () {
                                         location.href="/selectDepartment/depList";
                                     }, {type: 'success', confirmButtonText: '好的'});
                                 }
                             },
                             error:function(e){
-                                alert("后台异常！");
+                                alert(" 🔞 系统异常，请与我们程序员小哥哥联系！");
                             }
                         });
                     }
-                }, {confirmButtonText: '删除', cancelButtonText: '取消', width: 400});
+                }, {confirmButtonText: '❌ 删除', cancelButtonText: '🚫 取消', width: 400});
             }
 
 
@@ -214,7 +216,7 @@
         }
 
         function depDisable(id){
-            confirm("确认禁用?","", function (isConfirm) {
+            confirm(" ❓ 确认禁用?","", function (isConfirm) {
                 if (isConfirm) {
                     //after click the confirm
 
@@ -225,15 +227,15 @@
                         dataType:"json",
                         success:function(msg){
                             if ("OK"!=msg){
-                                alert(msg);
+                                alert(" 😝 "+msg);
                             }else {
-                                alert("禁用成功", "", function () {
+                                alert(" 👍 禁用成功", "", function () {
                                     location.href="/selectDepartment/depList";
                                 }, {type: 'success', confirmButtonText: '好的'});
                             }
                         },
                         error:function(e){
-                            alert("系统异常！");
+                            alert(" 🔞 系统异常，请与我们程序员小哥哥联系！");
                         }
                     });
                 }
@@ -242,7 +244,7 @@
 
         function depAble(id){
 
-            confirm("确认启用?","", function (isConfirm) {
+            confirm(" ❓ 确认启用?","", function (isConfirm) {
                 if (isConfirm) {
                     $.ajax({
                         type:"POST",
@@ -251,15 +253,15 @@
                         dataType:"json",
                         success:function(msg){
                             if ("OK"!=msg){
-                                alert(msg);
+                                alert(" 😝 "+msg);
                             }else {
-                                alert("启用成功", "", function () {
+                                alert(" 👍 启用成功", "", function () {
                                     location.href="/selectDepartment/depList";
                                 }, {type: 'success', confirmButtonText: '好的'});
                             }
                         },
                         error:function(e){
-                            alert("系统异常");
+                            alert(" 🔞 系统异常，请与我们程序员小哥哥联系！");
                         }
                     });
                 }
@@ -268,7 +270,7 @@
 
 
         function depDelete(id){
-            confirm("确认删除?","", function (isConfirm) {
+            confirm(" ❓ 确认删除?","", function (isConfirm) {
                 if (isConfirm) {
                     $.ajax({
                         type:"POST",
@@ -277,15 +279,15 @@
                         dataType:"json",
                         success:function(msg){
                             if("OK"!=msg){
-                                alert(msg);
+                                alert(" 😝 "+msg);
                             }else{
-                                alert("删除成功","", function () {
+                                alert(" 👍 删除成功","", function () {
                                     location.href="/selectDepartment/depList";
                                 }, {type: 'success', confirmButtonText: '好的'});
                             }
                         },
                         error:function(e){
-                            alert("系统异常！");
+                            alert(" 🔞 系统异常，请与我们程序员小哥哥联系！");
                         }
                     })
                 }

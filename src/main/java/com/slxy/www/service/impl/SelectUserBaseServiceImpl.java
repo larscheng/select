@@ -11,21 +11,17 @@ import com.slxy.www.model.SelectUserBase;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.slxy.www.model.SelectUserBaseVo;
 import com.slxy.www.model.dto.SelectUserBaseDto;
-import com.slxy.www.model.enums.EnumEnOrDis;
-import com.slxy.www.model.enums.EnumTeaEducation;
-import com.slxy.www.model.enums.EnumTeaPosition;
-import com.slxy.www.model.enums.EnumUserSex;
+import com.slxy.www.model.enums.*;
 import com.slxy.www.service.ISelectUserBaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -53,10 +49,12 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
         page.setRecords(userBaseDto);
         List<SelectUserBase> yearList = selectUserBaseMapper.selectStuYear();
         List<SelectUserBase> majorList = selectUserBaseMapper.selectStuMajor();
+        List<SelectUserBase> classList = selectUserBaseMapper.selectStuClass();
         modelAndView.addObject("userList", userBaseDto);
         modelAndView.addObject("page",page);
         modelAndView.addObject("yearList",yearList);
         modelAndView.addObject("majorList",majorList);
+        modelAndView.addObject("classList",classList);
         return modelAndView;
     }
 
@@ -76,6 +74,11 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
         }
     }
 
+    /***
+     * 异步生成学生列表
+     * @param userBaseVo
+     * @return
+     */
     @Override
     public String stuListAjax(SelectUserBaseVo userBaseVo) {
         Page<SelectUserBaseDto> page = new Page<>(userBaseVo.getPage(),userBaseVo.getPageSize());
@@ -105,7 +108,7 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
             logger.info(Constant.STU_ABLE_ERROR_MAJ_DISABLE);
             return Constant.STU_ABLE_ERROR_MAJ_DISABLE;
         }
-        //todo 判断选题记录
+        //todo 判断选题记录是否完成
 
         SelectUserBase selectUserBase = new SelectUserBase()
                 .setId(userBaseVo.getId())
@@ -121,13 +124,27 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
      */
     @Override
     public String stuDelete(SelectUserBaseVo userBaseVo) {
-        //todo 存在选题记录不可删除
+        //todo 存在未完成选题记录不可删除
         SelectUserBase selectUserBase = new SelectUserBase()
                 .setId(userBaseVo.getId())
                 .setUserStatus(userBaseVo.getUserStatus());
         return this.deleteById(selectUserBase) ? Constant.SUCCESS : Constant.ERROR;
     }
 
+    /***
+     * 批量删除学生
+     * @param selectedIDs
+     * @return
+     */
+    @Override
+    public String stuDeleteAll(Integer[] selectedIDs) {
+        //todo 存在未完成的选题记录不可删除
+        for (Integer id: selectedIDs){
+            SelectUserBase selectUserBase = new SelectUserBase().setId(id);
+
+        }
+        return this.deleteBatchIds(Arrays.asList(selectedIDs))?Constant.SUCCESS:Constant.ERROR;
+    }
 
     /**
      * 初始化编辑页面
@@ -137,32 +154,74 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
      * @return
      */
     @Override
-    public ModelAndView stuInitUpdate(ModelAndView modelAndView, SelectUserBaseVo userBaseVo) {
-
-
-
-        return null;
+    public ModelAndView stuInitAddAndUpdate(ModelAndView modelAndView, SelectUserBaseVo userBaseVo) {
+        SelectUserBase userBase = this.selectById(userBaseVo.getId());
+        if (!ObjectUtils.isEmpty(userBase)){
+            modelAndView.addObject("user",userBase);
+        }
+        List<SelectUserBase> yearList = selectUserBaseMapper.selectStuYear();
+        List<SelectUserBase> majorList = selectUserBaseMapper.selectStuMajor();
+        List<SelectUserBase> classList = selectUserBaseMapper.selectStuClass();
+        modelAndView.addObject("yearList",yearList);
+        modelAndView.addObject("majorList",majorList);
+        modelAndView.addObject("classList",classList);
+        return modelAndView;
     }
 
-    @Override
-    public String stuUpdate(SelectUserBaseVo userBaseVo) {
-        return null;
-    }
-
-
-    /***
-     * 初始化添加页面
-     * @param modelAndView
-     * @param userBaseVo
+    /**
+     * 学生修改
+     * @param userBase
      * @return
      */
     @Override
-    public ModelAndView stuInitAdd(ModelAndView modelAndView, SelectUserBaseVo userBaseVo) {
-        return null;
+    public String stuUpdate(SelectUserBase userBase) {
+        //校验重复
+        String msg = checkCodeAndName(userBase);
+        if (StringUtils.isEmpty(msg)) return msg;
+        return this.updateById(userBase)?Constant.SUCCESS:Constant.ERROR;
     }
 
+
+    /**
+     * 学生添加
+     * @param user
+     * @return
+     */
     @Override
-    public String stuAdd(SelectUserBaseVo userBaseVo) {
+    public String stuAdd(SelectUserBase user) {
+        if (ObjectUtils.isEmpty(user)){
+            return  Constant.ERROR;
+        }
+        String msg = checkCodeAndName(user);
+        if (StringUtils.isEmpty(msg)) return msg;
+        user.setGmtCreate(new Date())
+                .setUserType(EnumUserType.STUDENT.getValue())
+                .setUserPassword(Constant.USER_PASSWORD);
+        return this.insert(user)?Constant.SUCCESS:Constant.ERROR;
+    }
+
+
+
+    /**
+     * 校验账号 用户名是否重复
+     * @param user
+     * @return
+     */
+    private String checkCodeAndName(SelectUserBase user) {
+        //校验重复性 code 和 name
+        SelectUserBase userBase = new SelectUserBase().setUserCode(user.getUserCode());
+        userBase = selectUserBaseMapper.selectOne(userBase);
+        if (!ObjectUtils.isEmpty(userBase)){
+            //账号重复
+            logger.info("用户账号重复");
+            return Constant.STU_ADD_ERROR_CODE_EXIST;
+        }
+        userBase = new SelectUserBase().setUserName(user.getUserName());
+        userBase = selectUserBaseMapper.selectOne(userBase);
+        if (!ObjectUtils.isEmpty(userBase)){
+            logger.info("姓名重复");
+            return  Constant.STU_ADD_ERROR_NAME_EXIST;
+        }
         return null;
     }
 }

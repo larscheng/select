@@ -68,6 +68,18 @@ public class SelectMajorController {
         return selectMajorService.majInitUpdate(modelAndView,selectMajor);
     }
 
+
+    /**
+     * 专业查看
+     * @param modelAndView
+     * @return
+     */
+    @RequestMapping("/majFind")
+    public ModelAndView majFind(ModelAndView modelAndView,SelectMajor selectMajor) {
+        modelAndView = selectMajorService.majInitUpdate(modelAndView,selectMajor);
+        modelAndView.setViewName("/depmaj/majFind");
+        return modelAndView;
+    }
     @RequestMapping("/majAdd")
     @ResponseBody
     public String majAdd(SelectMajor selectMajor) {

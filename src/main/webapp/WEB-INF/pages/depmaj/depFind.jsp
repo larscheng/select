@@ -16,7 +16,6 @@
 <body>
 
 
-
 <!-- Main bar -->
 <div class="mainbar">
 
@@ -25,13 +24,13 @@
         <!-- Page heading -->
         <h2 class="pull-left">
             <!-- page meta -->
-            <span class="page-meta">系别添加</span>
+            <span class="page-meta">系别查看</span>
         </h2>
 
 
         <!-- Breadcrumb -->
         <div class="bread-crumb pull-right">
-            <a href="index.html"><i class="icon-home"></i> 系别管理</a>
+            <a href="index.html"><i class="icon-home"></i>系别查看</a>
             <!-- Divider -->
             <span class="divider">/</span>
             <a href="#" class="bread-current">首页</a>
@@ -53,11 +52,9 @@
 
                 <div class="col-md-12">
 
-
-                    <div class="widget wgreen">
-
+                    <div class="widget wred">
                         <div class="widget-head">
-                            <div class="pull-left">系别</div>
+                            <div class="pull-left">查看</div>
                             <div class="widget-icons pull-right">
                                 <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                 <a href="#" class="wclose"><i class="icon-remove"></i></a>
@@ -67,39 +64,43 @@
 
                         <div class="widget-content">
                             <div class="padd">
-                                <hr />
-                                <!-- Form starts.  -->
-                                <form class="form-horizontal" role="form" id="addForm">
 
-                                    <div class="form-group">
-                                        <label class="col-lg-4 control-label">系别名称</label>
-                                        <div class="col-lg-8">
-                                            <input type="text" class="form-control" name="depName" placeholder="系别名称">
+                                <!-- Profile form -->
+
+                                <div class="form profile">
+                                    <!-- Edit profile form (not working)-->
+                                    <form class="form-horizontal" role="form" id="updateForm">
+
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">系别名称</label>
+                                            <div class="col-lg-8" style="line-height: 30px">
+                                                <input type="hidden" class="form-control" name="id" value="${dep.id}">
+                                                <span class="col-lg-8">${dep.depName}</span>
+                                            </div>
                                         </div>
-                                    </div>
 
 
-                                    <div class="form-group">
-                                        <label class="col-lg-4 control-label">系别介绍</label>
-                                        <div class="col-lg-8">
-                                            <textarea class="form-control" rows="4" name="depInfo" placeholder="系别介绍"></textarea>
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">系别介绍</label>
+                                            <div class="col-lg-8">
+
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        ${dep.depInfo}
+                                                    </div>
+                                                </div>
+
+                                            <%--<textarea class="form-control" rows="4" name="depInfo" disabled placeholder="系别介绍">${dep.depInfo}</textarea>--%>
+                                            </div>
                                         </div>
-                                    </div>
 
 
-                                    <hr />
-                                    <div class="form-group">
-                                        <div class="col-lg-offset-1 col-lg-9">
-                                            <button type="button" id="addSubmit" class="btn btn-success">提交</button>
-                                            <button type="reset" class="btn btn-info">重填</button>
-                                            <button type="button" class="btn btn-info" onclick="window.history.go(-1);">返回</button>
-                                        </div>
-                                    </div>
-                                </form>
+                                        <hr />
+
+                                    </form>
+                                </div>
+
                             </div>
-                        </div>
-                        <div class="widget-foot">
-                            <!-- Footer goes here -->
                         </div>
                     </div>
 
@@ -124,25 +125,23 @@
 
     $(function(){
 
-        $("#addSubmit").click(function(){
-
+        $("#updateSubmit").click(function(){
             $.ajax({
                 type: "post",
-                url: "/selectDepartment/depAdd",
-                data: $("#addForm").serialize(),
+                url: "/selectDepartment/depUpdate",
+                data: $("#updateForm").serialize(),
                 dataType:"json",
                 success:function(msg){
                     if("OK"!=msg){
                         alert(msg);
                     }else {
-                        alert(" 👏 添加成功","",function () {
+                        alert("编辑成功","",function () {
                             location.href="/selectDepartment/depList";
                         },{type:"success",confirmButtonText:"好的"});
                     }
-
                 },
                 error: function(e) {
-                    alert(" 😰 系统异常，请与我们程序员哥哥联系！");
+                    alert("后台异常");
                 }
             });
         });

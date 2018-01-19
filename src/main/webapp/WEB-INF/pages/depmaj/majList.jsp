@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <!-- Title and other stuffs -->
-    <title>Mac风格响应式后台管理模版演示 - 源码之家</title>
+    <title>Select System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="">
     <%@include file="/WEB-INF/pages/common/macTopCommon.jsp" %>
@@ -114,6 +114,8 @@
                                                     </c:otherwise>
                                                 </c:choose>
                                                 <button class="btn btn-xs btn-warning" onclick="window.location.href='/selectMajor/majInitUpdate?Id=${maj.id}';"><i class="icon-pencil">编辑</i>
+                                                </button>
+                                                <button class="btn btn-xs btn-info" onclick="window.location.href='/selectMajor/majFind?Id=${maj.id}';"><i class="icon-pencil">查看</i>
                                                 </button>
                                                 <button class="btn btn-xs btn-danger" onclick="majDelete('${maj.id}')"><i class="icon-remove">删除</i>
                                                 </button>

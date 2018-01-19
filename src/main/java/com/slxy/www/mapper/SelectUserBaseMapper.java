@@ -23,4 +23,6 @@ public interface SelectUserBaseMapper extends BaseMapper<SelectUserBase> {
     List<SelectUserBase> selectStuYear();
 
     List<SelectUserBase> selectStuMajor();
+
+    List<SelectUserBase> selectStuClass();
 }

@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <!-- Title and other stuffs -->
-    <title>Mac风格响应式后台管理模版演示 - 源码之家</title>
+    <title>Select System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="">
     <%@include file="/WEB-INF/pages/common/macTopCommon.jsp" %>
@@ -158,8 +158,12 @@
                 success:function(msg){
                     if("OK"!=msg){
                         alert(msg);
+                    }else{
+                        alert("编辑成功！","",function () {
+                            location.href="/selectMajor/majList";
+                        },{type:"success",confirmButtonText:"好的"});
                     }
-                    location.href="/selectMajor/majList";
+
                 },
                 error: function(e) {
                     alert("后台异常");

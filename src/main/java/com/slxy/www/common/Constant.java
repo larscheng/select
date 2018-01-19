@@ -7,6 +7,9 @@ package com.slxy.www.common;
  * @create 2018年01月13日  19:28
  */
 public class Constant {
+    public static final String USER_PASSWORD = "123456";
+
+
     /**
      * 消息格式： 模块_操作_结果
      */
@@ -31,6 +34,8 @@ public class Constant {
 
     //学生
     public static final String STU_ABLE_ERROR_MAJ_DISABLE = "启用失败！原因：该生所在专业已被禁用";
+    public static final String STU_ADD_ERROR_CODE_EXIST = "账号重复！！！";
+    public static final String STU_ADD_ERROR_NAME_EXIST = "姓名重复！！！";
 
 }
 

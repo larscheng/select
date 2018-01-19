@@ -97,6 +97,21 @@ public class SelectDepartmentController {
     }
 
 
+    /**
+     * 系别查看
+     * @param id
+     * @param modelAndView
+     * @return
+     */
+    @RequestMapping("/depFind")
+    public ModelAndView depFind(Integer id, ModelAndView modelAndView) {
+        SelectDepartment selectDepartment = selectDepartmentService.selectById(id);
+        modelAndView.setViewName("depmaj/depFind");
+        modelAndView.addObject("dep", selectDepartment);
+        return modelAndView;
+    }
+
+
     /***
      * 系别删除
      * @param selectDepartment

@@ -69,7 +69,7 @@ public class SelectUserBaseController {
     }
 
     /**
-     * 学生参数查询列表
+     * 学生参数查询列表 异步生成列表
      * @param userBaseVo
      * @return
      */
@@ -91,35 +91,66 @@ public class SelectUserBaseController {
         return selectUserBaseService.stuAble(userBaseVo);
     }
 
+    /***
+     * 学生删除
+     * @param userBaseVo
+     * @return
+     */
     @RequestMapping("/stuDelete")
     @ResponseBody
     public String stuDelete(SelectUserBaseVo userBaseVo) {
         return selectUserBaseService.stuDelete(userBaseVo);
     }
 
+
+    @RequestMapping("/stuDeleteAll")
+    @ResponseBody
+    public String stuDeleteAll(Integer[] selectedIDs) {
+        return selectUserBaseService.stuDeleteAll(selectedIDs);
+    }
+
+
+    /***
+     * 学生修改初始化
+     * @param modelAndView
+     * @param userBaseVo
+     * @return
+     */
     @RequestMapping("/stuInitUpdate")
     public ModelAndView stuInitUpdate(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
-        modelAndView.setViewName("test");
-        return selectUserBaseService.stuInitUpdate(modelAndView,userBaseVo);
+        modelAndView.setViewName("/stuModule/stuUpdate");
+        return selectUserBaseService.stuInitAddAndUpdate(modelAndView,userBaseVo);
     }
 
+    /**
+     * 学生修改
+     * @param userBase
+     * @return
+     */
     @RequestMapping("/stuUpdate")
     @ResponseBody
-    public String stuUpdate(SelectUserBaseVo userBaseVo) {
-        return selectUserBaseService.stuUpdate(userBaseVo);
+    public String stuUpdate(SelectUserBase userBase) {
+        return selectUserBaseService.stuUpdate(userBase);
     }
 
+    /**
+     * 学生添加初始化
+     * @param modelAndView
+     * @param userBaseVo
+     * @return
+     */
     @RequestMapping("/stuInitAdd")
     public ModelAndView stuInitAdd(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
-        modelAndView.setViewName("test");
-        return selectUserBaseService.stuInitAdd(modelAndView,userBaseVo);
+
+        modelAndView.setViewName("/stuModule/stuAdd");
+        return selectUserBaseService.stuInitAddAndUpdate(modelAndView,userBaseVo);
     }
 
 
     @RequestMapping("/stuAdd")
     @ResponseBody
-    public String stuAdd(SelectUserBaseVo userBaseVo) {
-        return selectUserBaseService.stuAdd(userBaseVo);
+    public String stuAdd(SelectUserBase userBase) {
+        return selectUserBaseService.stuAdd(userBase);
     }
 
 
