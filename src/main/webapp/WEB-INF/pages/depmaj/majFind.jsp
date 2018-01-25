@@ -73,21 +73,21 @@
 
                                     <div class="form-group">
                                         <label class="col-lg-4 control-label">专业名称</label>
-                                        <div class="col-lg-4 panel panel-default" >
+                                        <div class="col-lg-4 panel panel-default pdl" >
                                                     ${requestScope.major.majName}
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="col-lg-4 control-label">专业班级数</label>
-                                        <div class="col-lg-4 panel panel-default">
+                                        <div class="col-lg-4 panel panel-default pdl">
                                             <span>${requestScope.major.majClassNum}</span>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="col-lg-4 control-label">所属系别</label>
-                                        <div class="col-lg-4 panel panel-default">
+                                        <div class="col-lg-4 panel panel-default pdl">
                                                 <c:set var="depId" value="${requestScope.major.depId}"/>
                                                 <c:forEach  var="dep" items="${requestScope.depNameList}">
 
@@ -100,16 +100,20 @@
 
                                     <div class="form-group">
                                         <label class="col-lg-4 control-label">专业介绍</label>
-                                        <div class="col-lg-4 panel panel-default">
-                                                <div class="panel-body">
-                                                    ${requestScope.major.majInfo}
-                                                </div>
+                                        <div class="col-lg-4 panel panel-default pdl">
+
+                                                        ${requestScope.major.majInfo}
+
                                         </div>
                                     </div>
 
 
                                     <hr />
-
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-1 col-lg-9">
+                                            <button type="button" class="btn btn-info" onclick="window.history.go(-1);">返回</button>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>

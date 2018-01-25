@@ -73,30 +73,31 @@
 
                                         <div class="form-group">
                                             <label class="col-lg-4 control-label">系别名称</label>
-                                            <div class="col-lg-8" style="line-height: 30px">
-                                                <input type="hidden" class="form-control" name="id" value="${dep.id}">
-                                                <span class="col-lg-8">${dep.depName}</span>
+
+                                            <div class="col-lg-5 panel panel-default pdl">
+
+                                                ${dep.depName}
+
                                             </div>
                                         </div>
 
 
                                         <div class="form-group">
                                             <label class="col-lg-4 control-label">系别介绍</label>
-                                            <div class="col-lg-8">
+                                            <div class="col-lg-5 panel panel-default pdl">
 
-                                                <div class="panel panel-default">
-                                                    <div class="panel-body">
                                                         ${dep.depInfo}
-                                                    </div>
-                                                </div>
 
-                                            <%--<textarea class="form-control" rows="4" name="depInfo" disabled placeholder="系别介绍">${dep.depInfo}</textarea>--%>
                                             </div>
+
                                         </div>
 
-
                                         <hr />
-
+                                        <div class="form-group">
+                                            <div class="col-lg-offset-1 col-lg-9">
+                                                <button type="button" class="btn btn-info" onclick="window.history.go(-1);">返回</button>
+                                            </div>
+                                        </div>
                                     </form>
                                 </div>
 

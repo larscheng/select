@@ -57,16 +57,16 @@
 
                                 <div class="gallery">
                                     <!-- Full size image link in anchor tag. Thumbnail link in image tag. -->
-                                    <a href="/resources/img/photos/s1.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/t1.jpg" alt=""></a>
-                                    <a href="/resources/img/photos/s2.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/t2.jpg" alt=""></a>
-                                    <a href="/resources/img/photos/s3.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/t3.jpg" alt=""></a>
-                                    <a href="/resources/img/photos/s4.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/t4.jpg" alt=""></a>
-                                    <a href="/resources/img/photos/s5.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/t5.jpg" alt=""></a>
-                                    <a href="/resources/img/photos/s6.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/t6.jpg" alt=""></a>
-                                    <a href="/resources/img/photos/s7.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/t7.jpg" alt=""></a>
-                                    <a href="/resources/img/photos/s8.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/t8.jpg" alt=""></a>
-                                    <a href="/resources/img/photos/s9.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/t9.jpg" alt=""></a>
-                                    <a href="/resources/img/photos/s10.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/t10.jpg" alt=""></a>
+                                    <a href="/resources/img/photos/小柴.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/小柴.jpg" alt=""></a>
+                                    <a href="/resources/img/photos/上铺.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/上铺.jpg" alt=""></a>
+                                    <a href="/resources/img/photos/笑柴.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/笑柴.jpg" alt=""></a>
+                                    <a href="/resources/img/photos/129.gif" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/129.gif" alt=""></a>
+                                    <a href="/resources/img/photos/30.gif" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/30.gif" alt=""></a>
+                                    <a href="/resources/img/photos/128.gif" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/128.gif" alt=""></a>
+                                    <a href="/resources/img/photos/02.gif" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/02.gif" alt=""></a>
+                                    <a href="/resources/img/photos/78.gif" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/78.gif" alt=""></a>
+                                    <a href="/resources/img/photos/184.gif" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/184.gif" alt=""></a>
+                                    <a href="/resources/img/photos/244.gif" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/244.gif" alt=""></a>
                                 </div>
                             </div>
                             <div class="widget-foot">

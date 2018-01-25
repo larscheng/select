@@ -21,4 +21,9 @@
     <select id="getDepByPage" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List"/> FROM select_department ORDER BY dep_status DESC, gmt_create DESC
     </select>
+
+
+    <select id="selectTeaDep" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM select_department WHERE dep_status=1
+    </select>
 </mapper>

@@ -2,7 +2,7 @@ package com.slxy.www.service;
 
 import com.slxy.www.model.SelectUserBase;
 import com.baomidou.mybatisplus.service.IService;
-import com.slxy.www.model.SelectUserBaseVo;
+import com.slxy.www.model.vo.SelectUserBaseVo;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -30,4 +30,18 @@ public interface ISelectUserBaseService extends IService<SelectUserBase> {
     String stuAdd(SelectUserBase userBase);
 
     String stuDeleteAll(Integer[] selectedIDs);
+
+    String teaListAjax(SelectUserBaseVo userBaseVo);
+
+    String teaAble(SelectUserBase userBase);
+
+    ModelAndView teaInitAddAndUpdate(ModelAndView modelAndView, SelectUserBaseVo userBaseVo);
+
+    String teaAdd(SelectUserBase userBase);
+
+    String teaUpdate(SelectUserBase userBase);
+
+    String teaDelete(SelectUserBase userBase);
+
+    String teaDeleteAll(Integer[] selectedIDs);
 }

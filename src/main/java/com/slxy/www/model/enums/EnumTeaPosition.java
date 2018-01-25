@@ -15,7 +15,7 @@ public enum EnumTeaPosition {
     professor(1, "教授"),
     professors(2, "副教授"),
     lecturers(3, "讲师"),
-    assistants(3, "助教"),
+    assistants(4, "助教"),
     ;
 
     private Integer      value;

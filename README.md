@@ -6,10 +6,6 @@
 2. 引入本Maven项目，修改数据库配置文件。
 3. 添加Web服务器，运行。
 
-![Mybatis-Plus-Logo](http://git.oschina.net/uploads/images/2016/0824/211639_4d931e7f_12260.png "logo")
-
-[![license](https://img.shields.io/github/license/baomidou/mybatis-plus.svg?maxAge=2592000)](http://www.apache.org/licenses/LICENSE-2.0)
-[![GitHub release](https://img.shields.io/github/release/baomidou/mybatis-plus.svg?maxAge=2592000)](https://github.com/baomidou/mybatis-plus)
 
 > 为简化开发工作、提高生产率而生
 

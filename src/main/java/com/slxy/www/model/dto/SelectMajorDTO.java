@@ -1,6 +1,5 @@
 package com.slxy.www.model.dto;
 
-import com.slxy.www.model.vo.PageVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;

@@ -81,6 +81,16 @@
         <if test="@Ognl@isNotEmpty(userType)">
             and a.user_type = #{userType}
         </if>
+
+        <if test="@Ognl@isNotEmpty(teaPosition)">
+            and a.tea_position = #{teaPosition}
+        </if>
+        <if test="@Ognl@isNotEmpty(teaEducation)">
+            and a.tea_education = #{teaEducation}
+        </if>
+        <if test="@Ognl@isNotEmpty(teaDepName)">
+            and a.tea_dep_name = #{teaDepName}
+        </if>
         <if test="@Ognl@isNotEmpty(searchBgnTime)">
             and DATE_FORMAT(a.gmt_create,'%Y-%m-%d')  <![CDATA[>=]]> #{searchBgnTime}
         </if>
@@ -102,5 +112,8 @@
     </select>
     <select id="selectStuClass" resultMap="BaseResultMap">
         SELECT * FROM select_user_base WHERE user_type=3 GROUP BY stu_class
+    </select>
+    <select id="selectTeaDep" resultMap="BaseResultMap">
+        SELECT * FROM select_user_base WHERE user_type=2 GROUP BY tea_dep_name
     </select>
 </mapper>

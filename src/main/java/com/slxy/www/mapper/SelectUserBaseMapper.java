@@ -3,7 +3,7 @@ package com.slxy.www.mapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.slxy.www.model.SelectUserBase;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.slxy.www.model.SelectUserBaseVo;
+import com.slxy.www.model.vo.SelectUserBaseVo;
 import com.slxy.www.model.dto.SelectUserBaseDto;
 
 import java.util.List;
@@ -25,4 +25,6 @@ public interface SelectUserBaseMapper extends BaseMapper<SelectUserBase> {
     List<SelectUserBase> selectStuMajor();
 
     List<SelectUserBase> selectStuClass();
+
+    List<SelectUserBase> selectTeaDep();
 }

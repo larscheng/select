@@ -16,14 +16,6 @@
 <body>
 
 
-<!-- Header starts -->
-<%--<header>--%>
-    <%--<%@include file="/WEB-INF/pages/top.jsp" %>--%>
-<%--</header>--%>
-<!-- Header ends -->
-
-<!-- Main content starts -->
-
 
     <div class="mainbar">
 
@@ -75,38 +67,38 @@
                             </select>
                         </div>
                         <div class="form-group " style="margin-right: 10px">
-                            <select  class="form-control" name="stuClass">
-                                <option value="" selected>班级</option>
-                                <c:forEach var="cla" items="${requestScope.classList}">
-                                    <option value="${cla.stuClass}">${cla.stuClass}班</option>
-                                </c:forEach>
+                            <select  class="form-control" name="teaPosition">
+                                <option value="" selected>职称</option>
+                                    <c:forEach var="teaPosition" items="${requestScope.teaPosition}">
+                                        <option value="${teaPosition.key}">${teaPosition.value}</option>
+                                    </c:forEach>
                             </select>
                         </div>
                         <div class="form-group" style="margin-right: 10px">
-                            <select  class="form-control" name="stuYear">
-                                <option value="" selected>届别</option>
-                                <c:forEach var="year" items="${requestScope.yearList}">
-                                    <option value="${year.stuYear}">${year.stuYear}级</option>
+                            <select  class="form-control" name="teaEducation">
+                                <option value="" selected>学历</option>
+                                <c:forEach var="teaEducation" items="${requestScope.teaEducation}">
+                                    <option value="${teaEducation.key}">${teaEducation.value}</option>
                                 </c:forEach>
                             </select>
                         </div>
                         <div class="form-group " style="margin-right: 10px">
-                            <select  class="form-control" name="stuMajorName">
-                                <option value="" selected>专业</option>
-                                <c:forEach var="major" items="${requestScope.majorList}">
-                                    <option value="${major.stuMajorName}">${major.stuMajorName}</option>
+                            <select  class="form-control" name="teaDepName">
+                                <option value="" selected>所属系别</option>
+                                <c:forEach var="dep" items="${requestScope.teaDepList}">
+                                    <option value="${dep.depName}">${dep.depName}</option>
                                 </c:forEach>
                             </select>
                         </div>
 
                         <div class="form-group" style="margin-right: 10px">
-                            <div class="input-group date form_datetime" onclick="aaa()">
-                                <input name="searchBgnTime" class="form-control"type="text" placeholder="起始时间" value="" readonly style="width: 140px">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-remove icon-remove"></i></span>
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-th icon-calendar"></i></span>
+                            <div class="input-group date form_datetime">
+                                <input name="searchBgnTime" onclick="aaa()" class="form-control"type="text" placeholder="起始时间" value="" readonly style="width: 140px">
+                                <span class="input-group-addon" onclick="aaa()"><i class="glyphicon glyphicon-remove icon-remove"></i></span>
+                                <span class="input-group-addon" onclick="aaa()"><i class="glyphicon glyphicon-th icon-calendar"></i></span>
                             </div> --
-                            <div class="input-group date form_datetime" onclick="aaa()">
-                                <input name="searchEndTime" class="form-control"type="text" placeholder="结束时间" value="" readonly style="width: 140px">
+                            <div class="input-group date form_datetime">
+                                <input name="searchEndTime" onclick="aaa()" class="form-control"type="text" placeholder="结束时间" value="" readonly style="width: 140px">
                                 <span class="input-group-addon" onclick="aaa()"><i class="glyphicon glyphicon-remove icon-remove"></i></span>
                                 <span class="input-group-addon" onclick="aaa()"><i class="glyphicon glyphicon-th icon-calendar"></i></span>
                             </div>
@@ -127,11 +119,17 @@
 
                         <div class="widget">
 
-                            <div class="widget-head">
+                            <div class="widget-head"  style="position: relative">
                                 <div class="pull-left">教师列表</div>
                                 <div class="widget-icons pull-right">
                                     <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                     <a href="#" class="wclose"><i class="icon-remove"></i></a>
+                                </div>
+
+                                <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
+                                    <button type="button" onclick="teaDeleteAll()" class="btn btn-info pull-left " style="margin-right: 10px"><i class="icon-remove"></i>批量删除</button>
+                                    <button type="button" class="btn btn-info pull-left "  style="margin-right: 10px"><i class="icon-upload"></i>批量导入</button>
+                                    <button type="button"  onclick="window.location.href='/selectUserBase/teaInitAdd';" class="btn btn-info pull-left "><i class="icon-upload"></i>教师添加</button>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -157,7 +155,7 @@
                                         <th>操作</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="items">
                                     <c:forEach var="user" items="${requestScope.userList}" varStatus="index">
                                         <tr>
                                             <td  class=" text-center"><input type="checkbox" name="ids" value="${user.id}" /></td>
@@ -187,15 +185,15 @@
                                                 <c:set var="status" value="${user.userStatus}"/>
                                                 <c:choose>
                                                     <c:when test="${status eq 0}">
-                                                        <button class="btn btn-xs btn-success"><i class="icon-ok"></i>启用</button>
+                                                        <button class="btn btn-xs btn-success" onclick="teaAble(${user.id})"><i class="icon-ok"></i>启用</button>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <button class="btn btn-xs btn-danger"><i class="icon-remove"></i>禁用</button>
+                                                        <button class="btn btn-xs btn-danger" onclick="teaDisAble(${user.id})"><i class="icon-remove"></i>禁用</button>
                                                     </c:otherwise>
                                                 </c:choose>
-                                                <button class="btn btn-xs btn-warning"><i class="icon-pencil"></i>编辑</button>
-                                                <button class="btn btn-xs btn-info"><i class="icon-pencil"></i>详情</button>
-                                                <button class="btn btn-xs btn-danger"><i class="icon-remove">删除</i>
+                                                <button class="btn btn-xs btn-warning" onclick="window.location.href='/selectUserBase/teaInitUpdate?id=${user.id}';"><i class="icon-pencil"></i>编辑</button>
+                                                <button class="btn btn-xs btn-info" onclick="teaDetails(${user.id})"><i class="icon-pencil"></i>详情</button>
+                                                <button class="btn btn-xs btn-danger" onclick="teaDelete('${user.id}')"><i class="icon-remove">删除</i>
                                                 </button>
 
                                             </td>
@@ -211,21 +209,21 @@
                                             <li><a href="#" class="btn  disabled">上一页</a></li>
                                         </c:if>
                                         <c:if test="${page.current-1 > 0}">
-                                            <li><a class="disabled" href="/selectUserBase/userList?page=${page.current-1}">上一页</a></li>
-                                            <li><a href="/selectUserBase/userList?page=${page.current-1}">${page.current-1}</a></li>
+                                            <li><a class="disabled" href="/selectUserBase/teaList?page=${page.current-1}">上一页</a></li>
+                                            <li><a href="/selectUserBase/teaList?page=${page.current-1}">${page.current-1}</a></li>
                                         </c:if>
 
 
-                                        <li><a href="/selectUserBase/userList?page=${page.current}">${page.current}</a></li>
+                                        <li><a href="/selectUserBase/teaList?page=${page.current}">${page.current}</a></li>
 
                                         <c:if test="${page.current+1 <= page.pages}">
-                                            <li><a href="/selectUserBase/userList?page=${page.current+1}">${page.current+1}</a></li>
+                                            <li><a href="/selectUserBase/teaList?page=${page.current+1}">${page.current+1}</a></li>
                                         </c:if>
                                         <c:if test="${page.current+2 <= page.pages}">
-                                            <li><a href="/selectUserBase/userList?page=${page.current+2}">${page.current+2}</a></li>
+                                            <li><a href="/selectUserBase/teaList?page=${page.current+2}">${page.current+2}</a></li>
                                         </c:if>
                                         <c:if test="${page.current+1 <= page.pages}">
-                                            <li><a href="/selectUserBase/userList?page=${page.current+1}">下一页</a></li>
+                                            <li><a href="/selectUserBase/teaList?page=${page.current+1}">下一页</a></li>
                                         </c:if>
                                         <c:if test="${page.current+1 > page.pages}">
                                             <li><a class="btn  disabled" href="#">下一页</a></li>
@@ -254,7 +252,278 @@
 
     <div class="clearfix"></div>
 <%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>
+<script type="text/javascript">
 
+    $("#search").keydown(function (e) {
+        if(event.keyCode == "13") {//判断如果按下的是回车键则执行下面的代码
+            search()
+        }
+
+    });
+    function search() {
+        $.ajax({
+            type: "post",
+            url: "/selectUserBase/teaListAjax",
+            data:{"search":$(" input[ name='search' ] ").val()},
+            dataType:"json",
+            success:function(objects){
+                initTeaPage(objects);
+            },//end success
+            error: function(e) {
+                alert(" 😥 系统异常，请与我们的工程师联系！");
+            }
+        });
+    }
+
+    function pageSearch(page) {
+        $.ajax({
+            type: "post",
+            url: "/selectUserBase/teaListAjax",
+            data:{"page":page,
+                "search":$(" input[ name='search' ] ").val(),
+                "userSex":$(" select[ name='userSex' ] ").val(),
+                "userStatus":$(" select[ name='userStatus' ] ").val(),
+                "teaPosition":$(" select[ name='teaPosition' ] ").val(),
+                "teaEducation":$(" select[ name='teaEducation' ] ").val(),
+                "teaDepName":$(" select[ name='teaDepName' ] ").val()
+            },
+            dataType:"json",
+            success:function(objects){
+                initTeaPage(objects);
+            },//end success
+            error: function(e) {
+                alert(" 😥 系统异常，请与我们的工程师联系！");
+            }
+        });
+    }
+
+    $("#searchSubmit").click(function(){
+        $.ajax({
+            type: "post",
+            url: "/selectUserBase/teaListAjax",
+            data: $("#searchForm").serialize(),
+            dataType:"json",
+            success:function(objects){
+                initTeaPage(objects);
+            },
+            error: function(e) {
+                alert(" 😥 系统异常，请与我们的工程师联系！");
+            }
+        });
+    });
+
+
+
+    function teaAble(id){
+        confirm(" 😲 确认启用？","",function (isConfirm) {
+            if (isConfirm){
+                $.ajax({
+                    type:"POST",
+                    url:"/selectUserBase/teaAble",
+                    data:{"id":id,"userStatus":1},
+                    dataType:"json",
+                    success:function(msg){
+                        if("OK"!=msg){
+                            alert(" 😅 "+msg);
+                        }else {
+                            alert(" 😋 启用成功","",function () {
+                                location.href="/selectUserBase/teaList";
+                            },{type:"success",confirmButtonText:"好的"});
+                        }
+                    },
+                    error:function(e){
+                        alert("😥 系统异常，请与我们的工程师联系！");
+                    }
+                });
+            }
+        });
+    }
+
+
+    function teaDisAble(id){
+        confirm(" 😲 确认禁用？","",function (isConfirm) {
+            if (isConfirm){
+                $.ajax({
+                    type:"POST",
+                    url:"/selectUserBase/teaAble",
+                    data:{"id":id,"userStatus":0},
+                    dataType:"json",
+                    success:function(msg){
+                        if("OK"!=msg){
+                            alert(" 😅 "+msg);
+                        }else{
+                            alert(" 😋 禁用成功！","",function () {
+                                location.href="/selectUserBase/teaList";
+                            },{type:"success",confirmButtonText:"好的"});
+                        }
+                    },
+                    error:function(e){
+                        alert("😥 系统异常，请与我们的工程师联系！");
+                    }
+                });
+            }
+        });
+
+    }
+
+
+
+    function teaDelete(id){
+        confirm(" 😲 确认删除吗？","",function (isconfirm) {
+            if (isconfirm){
+                $.ajax({
+                    type:"POST",
+                    url:"/selectUserBase/teaDelete",
+                    data:{"id":id},
+                    dataType:"json",
+                    success:function(msg){
+                        if("OK"!=msg){
+                            alert(" 😅 "+msg);
+                        }else{
+                            alert(" 😋 删除成功！","",function () {
+                                location.href="/selectUserBase/teaList";
+                            },{type:"success",confirmButtonText:"好的"});
+                        }
+                    },
+                    error:function(e){
+                        alert("😥 系统异常，请与我们的工程师联系！");
+                    }
+                });
+            }
+        })
+
+    }
+
+    function teaDeleteAll(){
+        var arrayId = new Array();
+        $('input[name="ids"]:checked').each(function(){arrayId.push($(this).val());});
+        if(arrayId.length==0){
+            alert(" 😨 无实例选中");
+            event.preventDefault(); // 兼容标准浏览器
+            window.event.returnValue = false; // 兼容IE6~8
+        }else{
+            confirm(" 😲 确认删除吗？","",function (is) {
+                if (is){
+                    $.ajax({
+                        type:"POST",
+                        url:"/selectUserBase/teaDeleteAll",
+                        data: { "selectedIDs": arrayId },
+                        dataType:"json",
+                        traditional: true,
+                        success:function(msg){
+                            if("OK"!=msg){
+                                alert(" 😅 "+msg);
+                            }else{
+                                alert(" 😋 删除成功！","",function () {
+                                    location.href="/selectUserBase/teaList";
+                                },{type:"success",confirmButtonText:"好的"});
+                            }
+
+                        },
+                        error:function(e){
+                            alert("😥 系统异常，请与我们的工程师联系！");
+                        }
+                    });
+                }
+            })
+
+        }
+
+    }
+
+    function teaDetails(id) {
+        window.location.href="/selectUserBase/teaDetails?id="+id;
+    }
+
+    function teaUpdate(id) {
+        window.location.href='/selectUserBase/teaInitUpdate?id='+id;
+    }
+
+
+
+
+
+
+    function initTeaPage(objects) {
+        var obj =JSON.parse(objects);
+        var teaList = obj.teaList;
+        $("#items").html(null);
+        if (jQuery.isEmptyObject(teaList)){
+            $("#items").append("<tr><td colspan='14' class='text-center'> 😑 暂无数据！</td></tr>");
+        }else{
+            $(teaList).each(function (index) {
+                var val = teaList[index];
+                var time = getLocalTime(val.gmtCreate);
+                var item =
+                    "<tr>"
+                    +"<td class='text-center'>"+"<input type='checkbox' name='ids' value='"+val.id+"'/>"+"</td>"
+                    +"<td>"+(parseInt(index)+1)+"</td>"
+                    +"<td>"+val.userName+"</td>"
+                    +"<td>"+val.userCode+"</td>"
+                    +"<td>"+val.sex+"</td>"
+                    +"<td>"+val.userMail+"</td>"
+                    +"<td>"+val.userPhone+"</td>"
+                    +"<td>"+val.userQq+"</td>"
+                    +"<td>"+val.teaDepName+"</td>"
+                    +"<td><span class='label label-success'>"+val.teaPositionZ+"</span></td>"
+                    +"<td><span class='label label-success'>"+val.teaEducationZ+"</span></td>"
+
+                ;
+//                    console.log(item);
+                if (parseInt(val.userStatus) == 1){
+                    item +=
+                        "<td><span class='label label-success'>启用</span></td>"
+                        +"<td>"+time+"</td>"
+                        +"<td>" +
+                        "<button onclick='teaDisAble("+val.id+")' class='btn btn-xs btn-danger' style='margin-right: 5px'><i class='icon-remove'></i>禁用</button>" +
+                        "<button onclick='teaUpdate("+val.id+")' class='btn btn-xs btn-warning' style='margin-right: 5px'><i class='icon-pencil'></i>编辑</button>" +
+                        "<button onclick='teaDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
+                        "<button onclick='teaDelete("+val.id+")' class='btn btn-xs btn-danger' style='margin-right: 5px'><i class='icon-remove'>删除</i></button>" +
+                        "</td>"
+                        +"</tr>"
+                    ;
+                }else{
+                    item+=
+                        "<td><span class='label label-danger'>禁用</span></td>"
+                        +"<td>"+time+"</td>"
+                        +"<td>" +
+                        "<button onclick='teaAble("+val.id+")' class='btn btn-xs btn-success' style='margin-right: 5px'><i class='icon-ok'></i>启用</button>" +
+                        "<button onclick='teaUpdate("+val.id+")' class='btn btn-xs btn-warning' style='margin-right: 5px'><i class='icon-pencil'></i>编辑</button>" +
+                        "<button onclick='teaDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
+                        "<button onclick='teaDelete("+val.id+")' class='btn btn-xs btn-danger' style='margin-right: 5px'><i class='icon-remove'>删除</i></button>" +
+                        "</td>"
+                        +"</tr>"
+                    ;
+                }
+                $("#items").append(item);
+            });
+        }
+        $(".pagination").html(null);
+        var page = obj.page;
+        var pageItem="";
+        if ((parseInt(page.current)-1) == 0){
+            pageItem+= "<li><a href='#' class='btn btn-default' disabled='disabled'>上一页</a></li>";
+
+        }else {
+            pageItem+="<li><a class='disabled' onclick='pageSearch("+(parseInt(page.current)-1)+")'>上一页</a></li>" +
+                "<li><a onclick='pageSearch("+(parseInt(page.current)-1)+")'>"+(parseInt(page.current)-1)+"</a></li>";
+
+        }
+        pageItem+="<li><a onclick='pageSearch("+(parseInt(page.current))+")'>"+page.current+"</a></li>";
+        if((parseInt(page.current)+1) <= parseInt(page.pages)){
+            pageItem += "<li><a onclick='pageSearch("+(parseInt(page.current)+1)+")'>"+(parseInt(page.current)+1)+"</a></li>" +
+                "<li><a onclick='pageSearch("+(parseInt(page.current)+1)+")'>下一页</a></li>";
+
+        }else {
+            pageItem += "<li><a class='btn  disabled' href='#'>下一页</a></li>";
+        }
+        if((parseInt(page.current)+2) <= parseInt(page.pages)){
+            pageItem += "<li><a onclick='pageSearch("+(parseInt(page.current)+2)+")'>"+(parseInt(page.current)+2)+"</a></li>";
+        }
+        pageItem+="<li><label style='line-height: 35px'>共 "+page.total+" 条记录</label></li>";
+        $(".pagination").append(pageItem);
+    }
+</script>
 
 
 </body>

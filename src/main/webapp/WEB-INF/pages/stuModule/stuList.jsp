@@ -102,13 +102,13 @@
                         </div>
 
                         <div class="form-group" style="margin-right: 10px">
-                                <div class="input-group date form_datetime" onclick="aaa()">
-                                    <input name="searchBgnTime" class="form-control"type="text" placeholder="起始时间" value="" readonly style="width: 140px">
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-remove icon-remove"></i></span>
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-th icon-calendar"></i></span>
+                                <div class="input-group date form_datetime">
+                                    <input name="searchBgnTime" onclick="aaa()" class="form-control"type="text" placeholder="起始时间" value="" readonly style="width: 140px">
+                                    <span class="input-group-addon" onclick="aaa()"><i class="glyphicon glyphicon-remove icon-remove"></i></span>
+                                    <span class="input-group-addon" onclick="aaa()"><i class="glyphicon glyphicon-th icon-calendar"></i></span>
                                 </div> --
                                 <div class="input-group date form_datetime" onclick="aaa()">
-                                    <input name="searchEndTime" class="form-control"type="text" placeholder="结束时间" value="" readonly style="width: 140px">
+                                    <input name="searchEndTime" onclick="aaa()" class="form-control"type="text" placeholder="结束时间" value="" readonly style="width: 140px">
                                     <span class="input-group-addon" onclick="aaa()"><i class="glyphicon glyphicon-remove icon-remove"></i></span>
                                     <span class="input-group-addon" onclick="aaa()"><i class="glyphicon glyphicon-th icon-calendar"></i></span>
                                 </div>
@@ -273,13 +273,36 @@
             data:{"search":$(" input[ name='search' ] ").val()},
             dataType:"json",
             success:function(objects){
-                initPage(objects);
+                initStuPage(objects);
             },//end success
             error: function(e) {
                 alert(" 😥 系统异常，请与我们的工程师联系！");
             }
         });
     }
+
+    function pageSearch(page) {
+        $.ajax({
+            type: "post",
+            url: "/selectUserBase/stuListAjax",
+            data:{"page":page,
+                "search":$(" input[ name='search' ] ").val(),
+                "userSex":$(" select[ name='userSex' ] ").val(),
+                "userStatus":$(" select[ name='userStatus' ] ").val(),
+                "stuClass":$(" select[ name='stuClass' ] ").val(),
+                "stuYear":$(" select[ name='stuYear' ] ").val(),
+                "stuMajorName":$(" select[ name='stuMajorName' ] ").val()
+            },
+            dataType:"json",
+            success:function(objects){
+                initStuPage(objects);
+            },//end success
+            error: function(e) {
+                alert(" 😥 系统异常，请与我们的工程师联系！");
+            }
+        });
+    }
+
     $("#searchSubmit").click(function(){
         $.ajax({
             type: "post",
@@ -287,7 +310,7 @@
             data: $("#searchForm").serialize(),
             dataType:"json",
             success:function(objects){
-                initPage(objects);
+                initStuPage(objects);
             },
             error: function(e) {
                 alert(" 😥 系统异常，请与我们的工程师联系！");
@@ -419,7 +442,7 @@
 
 
 
-    function initPage(objects) {
+    function initStuPage(objects) {
         var obj =JSON.parse(objects);
         var stuList = obj.stuList;
         $("#items").html(null);
@@ -478,20 +501,20 @@
             pageItem+= "<li><a href='#' class='btn btn-default' disabled='disabled'>上一页</a></li>";
 
         }else {
-            pageItem+="<li><a class='disabled' href='/selectUserBase/userList?page="+(parseInt(page.current)-1)+"'>上一页</a></li>" +
-                "<li><a href='/selectUserBase/userList?page="+(parseInt(page.current)-1)+"'>(parseInt(page.current)-1)</a></li>";
+            pageItem+="<li><a class='disabled' onclick='pageSearch("+(parseInt(page.current)-1)+")'>上一页</a></li>" +
+                "<li><a onclick='pageSearch("+(parseInt(page.current)-1)+")'>"+(parseInt(page.current)-1)+"</a></li>";
 
         }
-        pageItem+="<li><a href='/selectUserBase/userList?page="+(parseInt(page.current))+"'>"+page.current+"</a></li>";
+        pageItem+="<li><a onclick='pageSearch("+(parseInt(page.current))+")'>"+page.current+"</a></li>";
         if((parseInt(page.current)+1) <= parseInt(page.pages)){
-            pageItem += "<li><a href='/selectUserBase/userList?page="+(parseInt(page.current)+1)+"'>"+(parseInt(page.current)+1)+"</a></li>" +
-                "<li><a href='/selectUserBase/userList?page="+(parseInt(page.current)+1)+"'>下一页</a></li>";
+            pageItem += "<li><a onclick='pageSearch("+(parseInt(page.current)+1)+")'>"+(parseInt(page.current)+1)+"</a></li>" +
+                "<li><a onclick='pageSearch("+(parseInt(page.current)+1)+")'>下一页</a></li>";
 
         }else {
             pageItem += "<li><a class='btn  disabled' href='#'>下一页</a></li>";
         }
         if((parseInt(page.current)+2) <= parseInt(page.pages)){
-            pageItem += "<li><a href='/selectUserBase/userList?page="+(parseInt(page.current)+2)+"'>"+(parseInt(page.current)+2)+"</a></li>";
+            pageItem += "<li><a onclick='pageSearch("+(parseInt(page.current)+2)+")'>"+(parseInt(page.current)+2)+"</a></li>";
         }
         pageItem+="<li><label style='line-height: 35px'>共 "+page.total+" 条记录</label></li>";
         $(".pagination").append(pageItem);

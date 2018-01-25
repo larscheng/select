@@ -1,4 +1,4 @@
-package com.slxy.www.model;
+package com.slxy.www.model.vo;
 
 import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.Data;
