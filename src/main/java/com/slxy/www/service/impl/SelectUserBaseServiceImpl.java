@@ -3,6 +3,7 @@ package com.slxy.www.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.slxy.www.common.Constant;
+import com.slxy.www.common.ExcelUtil;
 import com.slxy.www.common.utils.SelectMapStructMapper;
 import com.slxy.www.mapper.SelectDepartmentMapper;
 import com.slxy.www.mapper.SelectMajorMapper;
@@ -11,6 +12,8 @@ import com.slxy.www.model.SelectDepartment;
 import com.slxy.www.model.SelectMajor;
 import com.slxy.www.model.SelectUserBase;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.slxy.www.model.vo.ImportStuVo;
+import com.slxy.www.model.vo.ImportTeaVo;
 import com.slxy.www.model.vo.SelectUserBaseVo;
 import com.slxy.www.model.dto.SelectUserBaseDto;
 import com.slxy.www.model.enums.*;
@@ -18,11 +21,18 @@ import com.slxy.www.service.ISelectUserBaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
@@ -43,6 +53,12 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
     private SelectMajorMapper selectMajorMapper;
     @Autowired
     private SelectDepartmentMapper selectDepartmentMapper;
+
+    @Autowired
+    private DataSourceTransactionManager dsTransactionManager;
+
+
+
 
     @Override
     public ModelAndView userList(ModelAndView  modelAndView ,SelectUserBaseVo userBaseVo) {
@@ -248,13 +264,123 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
             logger.info("用户账号重复");
             return Constant.STU_ADD_ERROR_CODE_EXIST;
         }
-        userBase = new SelectUserBase().setUserName(user.getUserName());
-        userBase = selectUserBaseMapper.selectOne(userBase);
-        if (!ObjectUtils.isEmpty(userBase)){
-            logger.info("姓名重复");
-            return  Constant.STU_ADD_ERROR_NAME_EXIST;
-        }
+//        userBase = new SelectUserBase().setUserName(user.getUserName());
+//        userBase = selectUserBaseMapper.selectOne(userBase);
+//        if (!ObjectUtils.isEmpty(userBase)){
+//            logger.info("姓名重复");
+//            return  Constant.STU_ADD_ERROR_NAME_EXIST;
+//        }
         return null;
+    }
+
+
+    /***
+     * 学生导入
+     * @param request
+     * @return
+     */
+    @Override
+    public String stuUpload(HttpServletRequest request) {
+
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        MultipartFile importFile = multipartRequest.getFile("fileField");
+        if (importFile == null || !"select_students.xls".equals(importFile.getOriginalFilename())) {
+            return Constant.STU_IMPORT_ERROR_FILE_ERROR;
+        }
+        // Excel的表头与文字对应，获取Excel表头
+        LinkedHashMap<String, String> map = new LinkedHashMap<>(9);
+        map.put("账号", "userCode");
+        map.put("姓名", "userName");
+        map.put("性别", "userSex");
+        map.put("邮箱", "userMail");
+        map.put("电话", "userPhone");
+        map.put("qq", "userQq");
+        map.put("专业", "stuMajorName");
+        map.put("班级", "stuClass");
+        map.put("届别", "stuYear");
+
+        // 调用Excel共用类，转化成List
+        List<ImportStuVo> importVOS;
+        try {
+            importVOS = ExcelUtil.excelToList(importFile.getInputStream(), "import", ImportStuVo.class, map, new String[]{});
+        } catch (Exception e) {
+            logger.info("ERROR -> 车型导入 : " + e.getMessage());
+            return Constant.STU_IMPORT_ERROR_FILE_ERROR;
+        }
+
+        //导入失败记录
+        List<String> importErrorList = new ArrayList<>();
+        int importSuccessCount = 0;
+
+        for (ImportStuVo importStuVo : importVOS) {
+            //检查专业是否存在，不存在则不可导入
+            SelectMajor selectMajor = new SelectMajor()
+                    .setMajName(importStuVo.getStuMajorName());
+            selectMajor = selectMajorMapper.selectOne(selectMajor);
+            if (selectMajor == null) {
+                importErrorList.add(importStuVo.getUserName());
+                logger.info("添加失败 : " + importStuVo.toString());
+                continue;
+            }
+            //车辆初始化
+            try {
+                if (!this.initStu(importStuVo)) {
+                    logger.info("学生导入失败 : " + importStuVo.getUserName());
+                    importErrorList.add(importStuVo.getUserName());
+                    continue;
+                }
+
+            } catch (Exception e) {
+                logger.info("学生导入失败 : " + importStuVo.getUserName() + " Cause :" + e.getMessage());
+                importErrorList.add(importStuVo.getUserName());
+                continue;
+
+            }
+            //记录成功导入车辆数
+            importSuccessCount++;
+            logger.info("学生导入成功 : " + importStuVo.getUserName() + " , 本次导入学生数 : " + importVOS.size() + " , 已导入学生数 : " + importSuccessCount);
+        }
+        logger.info("本次导入学生数 : " + importVOS.size() + " , 导入成功 : " + importSuccessCount + " , 导入失败 : " + importErrorList.size());
+
+        return "导入成功 : " + importSuccessCount + " , 导入失败 : " + importErrorList.size() + (importErrorList.size() <= 0 ? "" : " , 失败学生姓名 : " + importErrorList.toString());
+    }
+
+
+    /**
+     * 学生导入初始化
+     * @param importStuVo
+     * @return
+     */
+    private boolean initStu(ImportStuVo importStuVo) {
+        //TODO 账号格式验证
+
+        //查看是否重复
+        SelectUserBase selectUserBase = new SelectUserBase()
+                .setUserCode(importStuVo.getUserCode());
+        selectUserBase = selectUserBaseMapper.selectOne(selectUserBase);
+        if (!ObjectUtils.isEmpty(selectUserBase)){
+            logger.info("------------》学生重复！");
+            return false;
+        }
+        SelectUserBase userBase = new SelectUserBase()
+                .setUserName(importStuVo.getUserName())
+                .setUserCode(importStuVo.getUserCode())
+                .setUserSex(importStuVo.getUserSex())
+                .setUserMail(importStuVo.getUserMail())
+                .setUserPhone(importStuVo.getUserPhone())
+                .setUserQq(importStuVo.getUserQq())
+                .setStuMajorName(importStuVo.getStuMajorName())
+                .setStuClass(importStuVo.getStuClass())
+                .setStuYear(importStuVo.getStuYear())
+                .setUserPassword(Constant.USER_PASSWORD)
+                .setUserType(EnumUserType.STUDENT.getValue())
+                .setUserStatus(EnumEnOrDis.ENABLED.getValue())
+                .setGmtCreate(new Date());
+        if (!this.insert(userBase)){
+            logger.info("添加失败 : " + importStuVo.getUserName());
+            return false;
+        }
+        return true;
     }
 
 
@@ -373,8 +499,113 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
     @Override
     public String teaDeleteAll(Integer[] selectedIDs) {
         //TODO 删除所有相关的题目记录
-
-
         return this.deleteBatchIds(Arrays.asList(selectedIDs))?Constant.SUCCESS:Constant.ERROR;
     }
+
+
+    /**
+     * 教师导入
+     * @param request
+     * @return
+     */
+    @Override
+    public String teaUpload(HttpServletRequest request) {
+
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        MultipartFile importFile = multipartRequest.getFile("fileField");
+        if (importFile == null || !"select_teachers.xls".equals(importFile.getOriginalFilename())) {
+            return Constant.STU_IMPORT_ERROR_FILE_ERROR;
+        }
+        // Excel的表头与文字对应，获取Excel表头
+        LinkedHashMap<String, String> map = new LinkedHashMap<>(10);
+        map.put("账号", "userCode");
+        map.put("姓名", "userName");
+        map.put("性别", "userSex");
+        map.put("邮箱", "userMail");
+        map.put("电话", "userPhone");
+        map.put("qq", "userQq");
+        map.put("职称", "teaPosition");
+        map.put("专业", "teaMajorName");
+        map.put("学历", "teaEducation");
+        map.put("系别", "teaDepName");
+
+        // 调用Excel共用类，转化成List
+        List<ImportTeaVo> importVOS;
+        try {
+            importVOS = ExcelUtil.excelToList(importFile.getInputStream(), "import", ImportTeaVo.class, map, new String[]{});
+        } catch (Exception e) {
+            logger.info("ERROR -> 教师导入 : " + e.getMessage());
+            return Constant.STU_IMPORT_ERROR_FILE_ERROR;
+        }
+
+        //导入失败记录
+        List<String> importErrorList = new ArrayList<>();
+        int importSuccessCount = 0;
+
+        for (ImportTeaVo importTeaVo : importVOS) {
+            //检查系别是否存在，不存在则不可导入
+            SelectDepartment selectDepartment = new SelectDepartment()
+                    .setDepName(importTeaVo.getTeaDepName());
+            selectDepartment = selectDepartmentMapper.selectOne(selectDepartment);
+            if (selectDepartment == null) {
+                importErrorList.add(importTeaVo.getUserName());
+                logger.info("添加失败 : " + importTeaVo.toString());
+                continue;
+            }
+            //车辆初始化
+            try {
+                if (!this.initTea(importTeaVo)) {
+                    logger.info("教师导入失败 : " + importTeaVo.getUserName());
+                    importErrorList.add(importTeaVo.getUserName());
+                    continue;
+                }
+
+            } catch (Exception e) {
+                logger.info("教师导入失败 : " + importTeaVo.getUserName() + " Cause :" + e.getMessage());
+                importErrorList.add(importTeaVo.getUserName());
+                continue;
+
+            }
+            //记录成功导入车辆数
+            importSuccessCount++;
+            logger.info("教师导入成功 : " + importTeaVo.getUserName() + " , 本次导入教师数 : " + importVOS.size() + " , 已导入教师数 : " + importSuccessCount);
+        }
+        logger.info("本次导入教师数 : " + importVOS.size() + " , 导入成功 : " + importSuccessCount + " , 导入失败 : " + importErrorList.size());
+
+        return "导入成功 : " + importSuccessCount + " , 导入失败 : " + importErrorList.size() + (importErrorList.size() <= 0 ? "" : " , 失败教师姓名 : " + importErrorList.toString());
+    }
+
+    private boolean initTea(ImportTeaVo importTeaVo) {
+        //TODO 格式校验
+
+        //重复性校验
+        SelectUserBase selectUserBase = new SelectUserBase()
+                .setUserCode(importTeaVo.getUserCode());
+        selectUserBase = selectUserBaseMapper.selectOne(selectUserBase);
+        if (!ObjectUtils.isEmpty(selectUserBase)){
+            logger.info("------------》教师重复！");
+            return false;
+        }
+        SelectUserBase userBase = new SelectUserBase()
+                .setUserName(importTeaVo.getUserName())
+                .setUserCode(importTeaVo.getUserCode())
+                .setUserSex(importTeaVo.getUserSex())
+                .setUserMail(importTeaVo.getUserMail())
+                .setUserPhone(importTeaVo.getUserPhone())
+                .setUserQq(importTeaVo.getUserQq())
+                .setTeaPosition(importTeaVo.getTeaPosition())
+                .setTeaMajorName(importTeaVo.getTeaMajorName())
+                .setTeaEducation(importTeaVo.getTeaEducation())
+                .setTeaDepName(importTeaVo.getTeaDepName())
+                .setUserPassword(Constant.USER_PASSWORD)
+                .setUserType(EnumUserType.TEACHER.getValue())
+                .setUserStatus(EnumEnOrDis.ENABLED.getValue())
+                .setGmtCreate(new Date());
+        if (!this.insert(userBase)){
+            logger.info("添加失败 : " + importTeaVo.getUserName());
+            return false;
+        }
+        return true;
+    }
+
 }

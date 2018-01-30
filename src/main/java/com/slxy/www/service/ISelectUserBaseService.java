@@ -3,7 +3,10 @@ package com.slxy.www.service;
 import com.slxy.www.model.SelectUserBase;
 import com.baomidou.mybatisplus.service.IService;
 import com.slxy.www.model.vo.SelectUserBaseVo;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -44,4 +47,8 @@ public interface ISelectUserBaseService extends IService<SelectUserBase> {
     String teaDelete(SelectUserBase userBase);
 
     String teaDeleteAll(Integer[] selectedIDs);
+
+    String stuUpload(HttpServletRequest request);
+
+    String teaUpload(HttpServletRequest request);
 }

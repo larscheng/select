@@ -59,15 +59,15 @@
         </li>
         <li class="has_sub"><a href="#"><i class="icon-file-alt"></i> 论文题目审核  <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
             <ul>
-                <li><a href="#">待审核列表</a></li>
-                <li><a href="#">已审核列表</a></li>
+                <li><a href="${ctx}/selectSubject/unSubList" target="mainFrame">待审核列表</a></li>
+                <li><a href="${ctx}/selectSubject/subList"  target="mainFrame">已审核列表</a></li>
             </ul>
         </li>
-        <li><a href="charts.html"><i class="icon-bar-chart"></i>流程控制</a></li>
-        <li><a href="tables.html"><i class="icon-table"></i>表格</a></li>
-        <li><a href="forms.html"><i class="icon-tasks"></i>表单</a></li>
-        <li><a href="ui.html"><i class="icon-magic"></i>UI图标</a></li>
-        <li><a href="calendar.html"><i class="icon-calendar"></i>日历</a></li>
+        <li><a href="charts.html"><i class="icon-bar-chart"></i>未作</a></li>
+        <li><a href="tables.html"><i class="icon-table"></i>未作</a></li>
+        <li><a href="forms.html"><i class="icon-tasks"></i>未作</a></li>
+        <li><a href="ui.html"><i class="icon-magic"></i>未作</a></li>
+        <li><a href="calendar.html"><i class="icon-calendar"></i>未作</a></li>
     </ul>
 </div>
 

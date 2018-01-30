@@ -36,6 +36,16 @@ public class Constant {
     public static final String STU_ABLE_ERROR_MAJ_DISABLE = "启用失败！原因：该生所在专业已被禁用";
     public static final String STU_ADD_ERROR_CODE_EXIST = "账号重复！！！";
     public static final String STU_ADD_ERROR_NAME_EXIST = "姓名重复！！！";
+    public static final String STU_IMPORT_ERROR_FILE_ERROR = "导入失败，请检查导入模板";
+
+
+
+    //论文
+
+    public static final String AUDIT_FAIL_REASON = "审核失败请您检查后重试！！！";
+    public static final String AUDIT_SUCCESS_REASON = "恭喜您，论文审核通过！！！";
+
+
 
 }
 

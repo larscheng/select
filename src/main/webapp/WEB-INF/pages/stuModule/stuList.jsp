@@ -137,7 +137,12 @@
                                 </div>
                                 <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
                                     <button type="button" onclick="stuDeleteAll()" class="btn btn-info pull-left " style="margin-right: 10px"><i class="icon-remove"></i>批量删除</button>
-                                    <button type="button" class="btn btn-info pull-left "  style="margin-right: 10px"><i class="icon-upload"></i>批量导入</button>
+                                    <button type="button" class="btn btn-info pull-left " onclick="upload()" style="margin-right: 10px"><i class="icon-upload"></i>批量导入</button>
+                                    <div style="display: none">
+                                        <form id="uploadForm"  >
+                                            <input type="file" id="fileField" name="fileField" style="display: none" onchange="ajaxUpload()"/>
+                                        </form>
+                                    </div>
                                     <button type="button"  onclick="window.location.href='/selectUserBase/stuInitAdd';" class="btn btn-info pull-left "><i class="icon-upload"></i>学生添加</button>
                                 </div>
                                 <div class="clearfix"></div>
@@ -260,6 +265,41 @@
 <%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>
 <script type="text/javascript">
 
+    function upload() {
+        confirm("导入前请下载好导入模板！","",function (isConfirm) {
+            if (isConfirm) {
+                //after click the confirm
+                $("#fileField").click();
+            } else {
+                //after click the cancel
+                //TODO 跳转到下载页
+            }
+        }, {confirmButtonText: '已有模板', cancelButtonText: '去下载', width: 400});
+    }
+
+    function ajaxUpload() {
+//        alert("nininini");
+        $.ajax({
+            type:'POST',
+            url:'/selectUserBase/stuUpload', //你处理上传文件的服务端
+            data: new FormData($('#uploadForm')[0]),
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType:"json",
+            success: function (msg) {//调用成功时怎么处理
+                    alert(" 😋 "+msg,"",function () {
+                        location.href="/selectUserBase/stuList";
+                    },{type:"success",confirmButtonText:"好的"});
+
+            },//end success
+            error: function(e) {
+            alert(" 😥 系统异常，请与我们的工程师联系！");
+        }
+        });
+    }
+    
     $("#search").keydown(function (e) {
         if(event.keyCode == "13") {//判断如果按下的是回车键则执行下面的代码
             search()

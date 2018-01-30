@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @ClassName           : EnumYesOrNo
- * @Description         : 公用是否枚举
+ * @ClassName           : EnumUserType
+ * @Description         : 用户类型枚举类
  * @Author              : zhengql@senthink.com
  * @CreationDate        : 2018年1月7日 下午2:24:25
  * @Version             : v0.0.1

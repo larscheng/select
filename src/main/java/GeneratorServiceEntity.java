@@ -24,7 +24,7 @@ public class GeneratorServiceEntity {
 
     public static void main(String[] args) {
         String packageName = "com.slxy.www";
-        generateByTables(packageName, "select_department","select_major");
+        generateByTables(packageName, "select_subject");
     }
 
     private static void generateByTables(String packageName, String... tableNames){

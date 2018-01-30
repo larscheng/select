@@ -5,7 +5,8 @@
 
 
 
-<script type="text/javascript" src="${ctx}/resources/js/jquery.js" charset="UTF-8"></script>
+<%--<script type="text/javascript" src="${ctx}/resources/js/jquery.js" charset="UTF-8"></script>--%>
+<script type="text/javascript" src="${ctx}/resources/jquery/jquery.js" charset="UTF-8"></script>
 <script type="text/javascript" src="${ctx}/resources/js/bootstrap.js"></script>
 <script type="text/javascript" src="${ctx}/resources/jquery/bootstrap-datetimepicker.js" charset="UTF-8"></script>
 <script type="text/javascript" src="${ctx}/resources/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>

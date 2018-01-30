@@ -9,10 +9,15 @@ import com.slxy.www.service.ISelectUserBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 /**
  * <p>
@@ -144,7 +149,11 @@ public class SelectUserBaseController {
         return selectUserBaseService.stuInitAddAndUpdate(modelAndView,userBaseVo);
     }
 
-
+    /**
+     * 学生添加
+     * @param userBase
+     * @return
+     */
     @RequestMapping("/stuAdd")
     @ResponseBody
     public String stuAdd(SelectUserBase userBase) {
@@ -152,7 +161,17 @@ public class SelectUserBaseController {
     }
 
 
-
+    /***
+     * 学生导入
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/stuUpload", method = RequestMethod.POST)
+    @ResponseBody
+    public String stuUpload(HttpServletRequest request) throws IOException {
+        return selectUserBaseService.stuUpload(request);
+    }
 
 
 
@@ -175,7 +194,11 @@ public class SelectUserBaseController {
         return selectUserBaseService.userList(modelAndView,userBaseVo);
     }
 
-
+    /**
+     * 异步生成教师列表
+     * @param userBaseVo
+     * @return
+     */
     @RequestMapping("/teaListAjax")
     @ResponseBody
     public String teaListAjax(SelectUserBaseVo userBaseVo) {
@@ -183,51 +206,91 @@ public class SelectUserBaseController {
         return selectUserBaseService.teaListAjax(userBaseVo);
     }
 
+    /**
+     * 教师启用禁用
+     * @param userBase
+     * @return
+     */
     @RequestMapping("/teaAble")
     @ResponseBody
     public String teaAble(SelectUserBase userBase) {
         return selectUserBaseService.teaAble(userBase);
     }
 
-
+    /**
+     * 教师添加初始化
+     * @param modelAndView
+     * @param userBaseVo
+     * @return
+     */
     @RequestMapping("/teaInitAdd")
     public ModelAndView teaInitAdd(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
         modelAndView.setViewName("/teaModule/teaAdd");
         return selectUserBaseService.teaInitAddAndUpdate(modelAndView,userBaseVo);
     }
 
-
+    /**
+     * 教师添加
+     * @param userBase
+     * @return
+     */
     @RequestMapping("/teaAdd")
     @ResponseBody
     public String teaAdd(SelectUserBase userBase) {
         return selectUserBaseService.teaAdd(userBase);
     }
 
+    /***
+     * 教师编辑初始化
+     * @param modelAndView
+     * @param userBaseVo
+     * @return
+     */
     @RequestMapping("/teaInitUpdate")
     public ModelAndView teaInitUpdate(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
         modelAndView.setViewName("/teaModule/teaUpdate");
         return selectUserBaseService.teaInitAddAndUpdate(modelAndView,userBaseVo);
     }
 
+    /***
+     * 教师编辑
+     * @param userBase
+     * @return
+     */
     @RequestMapping("/teaUpdate")
     @ResponseBody
     public String teaUpdate(SelectUserBase userBase) {
         return selectUserBaseService.teaUpdate(userBase);
     }
 
+    /***
+     * 教师删除
+     * @param userBase
+     * @return
+     */
     @RequestMapping("/teaDelete")
     @ResponseBody
     public String teaDelete(SelectUserBase userBase) {
         return selectUserBaseService.teaDelete(userBase);
     }
 
-
+    /**
+     * 教师批量删除
+     * @param selectedIDs
+     * @return
+     */
     @RequestMapping("/teaDeleteAll")
     @ResponseBody
     public String teaDeleteAll(Integer[] selectedIDs) {
         return selectUserBaseService.teaDeleteAll(selectedIDs);
     }
 
+    /**
+     * 教师详情
+     * @param modelAndView
+     * @param userBaseVo
+     * @return
+     */
     @RequestMapping("/teaDetails")
     public ModelAndView teaDetails(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
         modelAndView.setViewName("teaModule/teaDetails");
@@ -235,6 +298,17 @@ public class SelectUserBaseController {
     }
 
 
+    /***
+     * 教师导入
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/teaUpload", method = RequestMethod.POST)
+    @ResponseBody
+    public String teaUpload(HttpServletRequest request) throws IOException {
+        return selectUserBaseService.teaUpload(request);
+    }
 
 
 

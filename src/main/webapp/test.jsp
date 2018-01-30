@@ -61,7 +61,7 @@
                                     <a href="/resources/img/photos/上铺.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/上铺.jpg" alt=""></a>
                                     <a href="/resources/img/photos/笑柴.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/笑柴.jpg" alt=""></a>
                                     <a href="/resources/img/photos/129.gif" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/129.gif" alt=""></a>
-                                    <a href="/resources/img/photos/30.gif" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/30.gif" alt=""></a>
+                                    <a href="/resources/img/photos/haotian.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/haotian.jpg" alt=""></a>
                                     <a href="/resources/img/photos/128.gif" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/128.gif" alt=""></a>
                                     <a href="/resources/img/photos/02.gif" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/02.gif" alt=""></a>
                                     <a href="/resources/img/photos/78.gif" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/78.gif" alt=""></a>

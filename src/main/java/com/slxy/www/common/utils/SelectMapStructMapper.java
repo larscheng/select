@@ -3,7 +3,9 @@
 package com.slxy.www.common.utils;
 
 
+import com.slxy.www.model.SelectSubject;
 import com.slxy.www.model.SelectUserBase;
+import com.slxy.www.model.dto.SelectSubjectDto;
 import com.slxy.www.model.dto.SelectUserBaseDto;
 import org.mapstruct.MapMapping;
 import org.mapstruct.Mapper;
@@ -22,6 +24,10 @@ public interface SelectMapStructMapper {
     SelectUserBaseDto SelectUserBasePo2Dto(SelectUserBase user);
 
     List<SelectUserBaseDto> SelectUserBasesPo2Dto(List<SelectUserBase> userList);
+
+    SelectSubjectDto SelectSubjectPoToDto(SelectSubject subject);
+
+    List<SelectSubjectDto> SelectSubjectsPoToDto(List<SelectSubject> subjectList);
 }
 
 
