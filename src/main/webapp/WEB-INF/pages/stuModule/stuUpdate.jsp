@@ -75,14 +75,14 @@
 
                                         <label class="col-lg-1 control-label">专业</label>
                                         <div class="col-lg-2">
-                                            <select name="stuMajorName"  class="form-control">
+                                            <select name="stuMajorId"  class="form-control" id="stuMajorId" onchange="initClass()">
                                                 <c:forEach var="major" items="${requestScope.majorList}">
                                                     <c:choose>
-                                                        <c:when test="${major.stuMajorName eq requestScope.user.stuMajorName}">
-                                                            <option value="${major.stuMajorName}" selected="selected">${major.stuMajorName}</option>
+                                                        <c:when test="${major.id eq requestScope.user.stuMajorId}">
+                                                            <option value="${major.id}" selected="selected">${major.majName}</option>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <option value="${major.stuMajorName}">${major.stuMajorName}</option>
+                                                            <option value="${major.id}">${major.majName}</option>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </c:forEach>
@@ -95,7 +95,7 @@
                                         <label class="col-lg-1 control-label">班级</label>
                                         <div class="col-lg-2">
                                             <%--${requestScope.classList}--%>
-                                            <select name="stuClass" class="form-control">
+                                            <select name="stuClass" class="form-control" id="stuClass">
                                                 <c:forEach var="cla" items="${requestScope.classList}">
                                                     <c:choose>
                                                         <c:when test="${cla.stuClass eq requestScope.user.stuClass}">
@@ -226,6 +226,38 @@
 <%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>
 
 <script type="text/javascript">
+
+
+    /***
+     * 根据专业查询并生成班级下拉
+     */
+    function initClass() {
+        $.ajax({
+            type: "post",
+            url: "/selectUserBase/initClass",
+            data:{"stuMajorId":$("#stuMajorId").val()},
+            dataType:"json",
+            success:function(msg){
+                if (parseInt(msg)>0){
+                    $("#stuClass").html(null);
+                    $("#stuClass").append( "<option value='' selected>--请选择--</option>" );
+                    for (var i =1 ; i<=msg ; i++){
+                        $("#stuClass").append( "<option value="+i+">"+i+"班</option>" );
+                    }
+                }else {
+//                    alert(" 😥 "+msg);
+                    $("#stuClass").html(null);
+                    $("#stuClass").append( "<option value='' selected>--请选择--</option>" );
+                }
+            },//end success
+            error: function(e) {
+                alert(" 😥 系统异常，请与我们的工程师联系！");
+            }
+        });
+    }
+
+
+
 
 
     $(function(){

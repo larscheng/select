@@ -17,7 +17,7 @@
 
 <!-- Sidebar -->
 
-<c:set var="usertype" value="${sessionScope.get('user').userType}"/>
+<c:set var="usertype" value="${sessionScope.get('sessionUser').userType}"/>
 <c:choose>
     <c:when test="${usertype eq 1}">
         <%@include file="/WEB-INF/pages/common/adminSider.jsp" %>

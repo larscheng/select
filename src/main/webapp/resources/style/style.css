@@ -212,7 +212,7 @@ font-size:12px;
 }
 
 .form-horizontal .control-label {
-width: 90px;
+width: 105px;
 }
 
 .form-horizontal .controls {
@@ -1759,3 +1759,7 @@ footer .copy{
 	margin-left: 15px;
 	margin-bottom: 0px;
  }
+
+.label-width{
+	width: 105px;
+}

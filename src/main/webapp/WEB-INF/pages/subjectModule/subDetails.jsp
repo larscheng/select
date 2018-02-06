@@ -140,9 +140,9 @@
 
                                     <div class="form-group">
 
-                                        <label class="col-lg-4 control-label">题目年份</label>
+                                        <label class="col-lg-4 control-label">题目届别</label>
                                         <div class="col-lg-4 panel panel-default pdl" >
-                                            ${requestScope.sub.subYear}
+                                            ${requestScope.sub.subYear}级
                                         </div>
                                     </div>
 
@@ -232,7 +232,7 @@
                 $.ajax({
                     type:"POST",
                     url:"/selectSubject/subAudited",
-                    data:{"id":id,"admAuditState":2,"admAuditId":${sessionScope.user.id}},
+                    data:{"id":id,"admAuditState":2,"admAuditId":${sessionScope.sessionUser.id}},
                     dataType:"json",
                     success:function(msg){
                         if("OK"!=msg){
@@ -259,7 +259,7 @@
                 $.ajax({
                     type:"POST",
                     url:"/selectSubject/subAudited",
-                    data:{"id":id,"admAuditState":1,"admAuditId":${sessionScope.user.id},"admAuditContent":$("#reason").val()},
+                    data:{"id":id,"admAuditState":1,"admAuditId":${sessionScope.sessionUser.id},"admAuditContent":$("#reason").val()},
                     dataType:"json",
                     success:function(msg){
                         if("OK"!=msg){

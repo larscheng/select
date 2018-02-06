@@ -31,14 +31,20 @@
               <li><a href="#">Submenu #3</a></li>
             </ul>-->
         </li>
-
-        <li class="has_sub"><a href="#"><i class="icon-list-alt"></i> 院系专业  <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
-            <ul>
-                <li><a href="/selectDepartment/depList" target="mainFrame" >系别</a></li>
-                <li><a href="/selectMarjor/majList" target="mainFrame" >专业</a></li>
-            </ul>
+        <li><a href="${ctx}/selectSubject/stuSubList?selectId=${sessionScope.sessionUser.id}" target="mainFrame" ><i class="icon-file-alt"></i> 论文题目列表 </a>
+            <%--<ul>--%>
+            <%--<li><a href="post.html">表单Post</a></li>--%>
+            <%--<li><a href="login.html">登录页</a></li>--%>
+            <%--<li><a href="register.html">注册页面</a></li>--%>
+            <%--<li><a href="support.html">帮助页</a></li>--%>
+            <%--<li><a href="invoice.html">购物清单</a></li>--%>
+            <%--<li><a href="profile.html">个人资料</a></li>--%>
+            <%--<li><a href="gallery.html">相册页面</a></li>--%>
+            <%--</ul>--%>
         </li>
+        <li><a href="${ctx}/selectTopic/stuTopicList?stuId=${sessionScope.sessionUser.id}" target="mainFrame" ><i class="icon-file-alt"></i> 选题信息管理 </a>
 
+        </li>
         <li class="has_sub"><a href="#" ><i class="icon-list-alt"></i> 插件页面  <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
             <ul>
                 <li><a href="/selectUserBase/test"  >插件页面 #1</a></li>
@@ -77,5 +83,12 @@
 
 <!-- Sidebar ends -->
 <%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>
+<script>
+
+    function stuSubList() {
+        window.location.href='${ctx}/selectSubject/stuSubList?stuMajorId=${sessionScope.sessionUser.stuMajorId}&stuYear=${sessionScope.sessionUser.stuYear}';
+    }
+
+</script>
 </body>
 </html>

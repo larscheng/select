@@ -68,6 +68,18 @@ public class SelectSubjectDto extends  PageVo {
      */
     private Double finalTotalScore;
     /**
+     * 题目面向系别id
+     */
+    private String forDepId;
+    /**
+     * 题目选题状态 0未选 1审核中 2已选
+     */
+    private Integer subSelectStatus;
+    /**
+     * 题目选题状态 0未选 1审核中 2已选
+     */
+    private String subSelectStatusName;
+    /**
      * 题目年份
      */
     private String subYear;
@@ -91,7 +103,10 @@ public class SelectSubjectDto extends  PageVo {
 
     /*审核人*/
     private String admAuditName;
-
+    /**
+     * 题目面向系别名
+     */
+    private String forDepName;
     /**/
 
     public SelectSubjectDto() {
@@ -268,7 +283,39 @@ public class SelectSubjectDto extends  PageVo {
         return this;
     }
 
-    public String toString() {
-        return "SelectSubjectDto(id=" + this.getId() + ", subName=" + this.getSubName() + ", teaId=" + this.getTeaId() + ", subType=" + this.getSubType() + ", subContent=" + this.getSubContent() + ", admAuditState=" + this.getAdmAuditState() + ", admAuditContent=" + this.getAdmAuditContent() + ", admAuditId=" + this.getAdmAuditId() + ", tutorScore=" + this.getTutorScore() + ", judgeScore=" + this.getJudgeScore() + ", defenceScore=" + this.getDefenceScore() + ", finalTotalScore=" + this.getFinalTotalScore() + ", subYear=" + this.getSubYear() + ", gmtCreate=" + this.getGmtCreate() + ", gmtModify=" + this.getGmtModify() + ", subTeaName=" + this.getSubTeaName() + ", typeName=" + this.getTypeName() + ", subState=" + this.getSubState() + ", admAuditName=" + this.getAdmAuditName() + ")";
+    public String getForDepId() {
+        return forDepId;
+    }
+
+    public SelectSubjectDto setForDepId(String forDepId) {
+        this.forDepId = forDepId;
+        return this;
+    }
+
+    public String getForDepName() {
+        return forDepName;
+    }
+
+    public SelectSubjectDto setForDepName(String forDepName) {
+        this.forDepName = forDepName;
+        return this;
+    }
+
+    public Integer getSubSelectStatus() {
+        return subSelectStatus;
+    }
+
+    public SelectSubjectDto setSubSelectStatus(Integer subSelectStatus) {
+        this.subSelectStatus = subSelectStatus;
+        return this;
+    }
+
+    public String getSubSelectStatusName() {
+        return subSelectStatusName;
+    }
+
+    public SelectSubjectDto setSubSelectStatusName(String subSelectStatusName) {
+        this.subSelectStatusName = subSelectStatusName;
+        return this;
     }
 }

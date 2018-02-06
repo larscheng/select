@@ -1,21 +1,31 @@
 package com.slxy.www.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.slxy.www.common.Constant;
 import com.slxy.www.common.utils.SelectMapStructMapper;
+import com.slxy.www.mapper.SelectDepartmentMapper;
+import com.slxy.www.mapper.SelectMajorMapper;
 import com.slxy.www.mapper.SelectUserBaseMapper;
-import com.slxy.www.model.SelectSubject;
+import com.slxy.www.model.*;
 import com.slxy.www.mapper.SelectSubjectMapper;
-import com.slxy.www.model.SelectUserBase;
 import com.slxy.www.model.dto.SelectSubjectDto;
+import com.slxy.www.model.enums.EnumEnOrDis;
+import com.slxy.www.model.enums.EnumSubSelectStatus;
 import com.slxy.www.model.enums.EnumSubState;
 import com.slxy.www.model.enums.EnumSubType;
 import com.slxy.www.model.vo.SelectSubjectVo;
 import com.slxy.www.service.ISelectSubjectService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.slxy.www.service.ISelectTopicService;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,10 +42,22 @@ import java.util.*;
 @Service
 public class SelectSubjectServiceImpl extends ServiceImpl<SelectSubjectMapper, SelectSubject> implements ISelectSubjectService {
 
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
+
     @Autowired
     private SelectSubjectMapper selectSubjectMapper;
     @Autowired
     private SelectUserBaseMapper selectUserBaseMapper;
+    @Autowired
+    private SelectDepartmentMapper selectDepartmentMapper;
+    @Autowired
+    private SelectMajorMapper selectMajorMapper;
+    @Autowired
+    private ISelectTopicService selectTopicService;
+
+
+
     /**
      * 论文列表
      * @param modelAndView
@@ -48,14 +70,10 @@ public class SelectSubjectServiceImpl extends ServiceImpl<SelectSubjectMapper, S
         List<SelectSubject> subjectList = selectSubjectMapper.getSubByPage(vo,page);
         List<SelectSubjectDto> subjectDtos = SelectMapStructMapper.INSTANCE.SelectSubjectsPoToDto(subjectList);
         Set<SelectUserBase> teaSet = new HashSet<>();
-        for (SelectSubjectDto dto:subjectDtos){
-            dto.setTypeName(EnumSubType.toMap().get(dto.getSubType()));
-            SelectUserBase userBase = selectUserBaseMapper.selectById(dto.getTeaId());
-            dto.setSubTeaName(userBase.getUserName());
-            SelectUserBase tea = selectUserBaseMapper.selectById(dto.getTeaId());
-            teaSet.add(tea);
-        }
+        this.setSubDto(subjectDtos, teaSet);
+        List<SelectDepartment> depList = selectDepartmentMapper.selectList(new EntityWrapper<SelectDepartment>().and("dep_status = {0}", EnumEnOrDis.ENABLED.getValue()));
         modelAndView.addObject("subjectList",subjectDtos);
+        modelAndView.addObject("depList",depList);
         modelAndView.addObject("page",page);
         modelAndView.addObject("subType",EnumSubType.toMap());
         modelAndView.addObject("teaSet",teaSet);
@@ -77,6 +95,9 @@ public class SelectSubjectServiceImpl extends ServiceImpl<SelectSubjectMapper, S
             dto.setTypeName(EnumSubType.toMap().get(dto.getSubType()));
             SelectUserBase userBase = selectUserBaseMapper.selectById(dto.getTeaId());
             dto.setSubTeaName(userBase.getUserName());
+            //面向系别
+            SelectDepartment selectDepartment = selectDepartmentMapper.selectById(dto.getForDepId());
+            dto.setForDepName(selectDepartment.getDepName());
         }
         Map<String,Object> map = new HashMap<>();
         map.put("subjectList",subjectDtos);
@@ -84,6 +105,7 @@ public class SelectSubjectServiceImpl extends ServiceImpl<SelectSubjectMapper, S
         String object = JSONObject.toJSONString(map);
         return object;
     }
+
 
     /**
      * 论文审核
@@ -139,11 +161,18 @@ public class SelectSubjectServiceImpl extends ServiceImpl<SelectSubjectMapper, S
                 userBase = selectUserBaseMapper.selectById(selectSubjectDto.getAdmAuditId());
                 selectSubjectDto.setAdmAuditName(userBase.getUserName());
             }
+            //选题状态
+            selectSubjectDto.setSubSelectStatusName(EnumSubSelectStatus.toMap().get(selectSubjectDto.getSubSelectStatus()));
             modelAndView.addObject("sub",selectSubjectDto);
         }
         return modelAndView;
     }
 
+    /**
+     * 批量通过
+     * @param selectedIDs
+     * @return
+     */
     @Override
     public String subSuccessAll(Integer[] selectedIDs) {
         for (Integer id:selectedIDs){
@@ -156,5 +185,203 @@ public class SelectSubjectServiceImpl extends ServiceImpl<SelectSubjectMapper, S
         }
         return Constant.SUCCESS;
     }
+
+
+    /**
+     * 教师：我的题目
+     * @param modelAndView
+     * @param vo
+     * @return
+     */
+    @Override
+    public ModelAndView mySubList(ModelAndView modelAndView, SelectSubjectVo vo) {
+        Page<SelectSubject> page = new Page<>(vo.getPage(),vo.getPageSize());
+        List<SelectSubject> subjectList = selectSubjectMapper.getMySubByPage(vo,page);
+        List<SelectSubjectDto> subjectDtos = SelectMapStructMapper.INSTANCE.SelectSubjectsPoToDto(subjectList);
+        Set<SelectUserBase> teaSet = new HashSet<>();
+        setSubDto(subjectDtos, teaSet);
+        List<SelectDepartment> depList = selectDepartmentMapper.selectList(new EntityWrapper<SelectDepartment>().and("dep_status = {0}", EnumEnOrDis.ENABLED.getValue()));
+        modelAndView.addObject("subjectList",subjectDtos);
+        modelAndView.addObject("depList",depList);
+        modelAndView.addObject("page",page);
+        modelAndView.addObject("subType",EnumSubType.toMap());
+        modelAndView.addObject("teaSet",teaSet);
+        return modelAndView;
+    }
+
+
+    /**
+     * 设置dto属性
+     * @param subjectDtos
+     * @param teaSet
+     */
+    private void setSubDto(List<SelectSubjectDto> subjectDtos, Set<SelectUserBase> teaSet) {
+        for (SelectSubjectDto dto:subjectDtos){
+            //类型名
+            dto.setTypeName(EnumSubType.toMap().get(dto.getSubType()));
+            //教师名
+            SelectUserBase userBase = selectUserBaseMapper.selectById(dto.getTeaId());
+            dto.setSubTeaName(userBase.getUserName());
+            SelectUserBase tea = selectUserBaseMapper.selectById(dto.getTeaId());
+            teaSet.add(tea);
+            //面向系别
+            SelectDepartment selectDepartment = selectDepartmentMapper.selectById(dto.getForDepId());
+            dto.setForDepName(selectDepartment.getDepName());
+            //选题状态
+            dto.setSubSelectStatusName(EnumSubSelectStatus.toMap().get(dto.getSubSelectStatus()));
+        }
+    }
+
+    @Override
+    public String mySubListAjax(SelectSubjectVo vo) {
+        Page<SelectSubject> page = new Page<>(vo.getPage(),vo.getPageSize());
+        List<SelectSubject> subjectList = selectSubjectMapper.getMySubByPage(vo,page);
+        List<SelectSubjectDto> subjectDtos = SelectMapStructMapper.INSTANCE.SelectSubjectsPoToDto(subjectList);
+        Set<SelectUserBase> teaSet = new HashSet<>();
+        setSubDto(subjectDtos, teaSet);
+        Map<String,Object> map = new HashMap<>();
+        map.put("subjectList",subjectDtos);
+        map.put("page",page);
+        String object = JSONObject.toJSONString(map);
+        return object;
+    }
+
+    /***
+     * 论文添加初始化
+     * @param modelAndView
+     * @return
+     */
+    @Override
+    public ModelAndView initSubAdd(ModelAndView modelAndView) {
+        List<SelectDepartment> depList = selectDepartmentMapper.selectList(new EntityWrapper<SelectDepartment>().and("dep_status = {0}", EnumEnOrDis.ENABLED.getValue()));
+        if (!CollectionUtils.isEmpty(depList)){
+            modelAndView.addObject("depList",depList);
+        }
+        modelAndView.addObject("subType",EnumSubType.toMap());
+        List<SelectUserBase> yearList = selectUserBaseMapper.selectStuYear();
+        modelAndView.addObject("yearList",yearList);
+        return modelAndView;
+    }
+
+    /***
+     * 添加题目
+     * @param vo
+     * @return
+     */
+    @Override
+    public String subAdd(SelectSubjectVo vo) {
+
+        if (StringUtils.isEmpty(vo.getSubName())){
+            return Constant.PARAM_ERROR;
+        }
+        //校验重复性
+        SelectSubject selectSubject = this.selectOne(new EntityWrapper<SelectSubject>().and("sub_name={0}",vo.getSubName()));
+        if (!ObjectUtils.isEmpty(selectSubject)){
+            return Constant.SUB_ADD_NAME_EXIST;
+        }
+        SelectSubject subject = SelectMapStructMapper.INSTANCE.SelectSubjectVoToPo(vo);
+        subject.setGmtCreate(new Date());
+
+        return this.insert(subject)?Constant.SUCCESS:Constant.ERROR;
+    }
+
+
+    /***
+     * 学生可见题目列表
+     * @param modelAndView
+     * @param vo
+     * @return
+     */
+    @Override
+    public ModelAndView stuSubList(ModelAndView modelAndView, SelectSubjectVo vo) {
+        SelectUserBase userBase = selectUserBaseMapper.selectById(vo.getSelectId());
+        if (ObjectUtils.isEmpty(userBase)){
+            logger.info(Constant.PARAM_ERROR);
+            return modelAndView;
+        }
+        //系别
+        SelectMajor major = selectMajorMapper.selectById(userBase.getStuMajorId());
+        if (ObjectUtils.isEmpty(major)){
+            logger.info(Constant.PARAM_ERROR);
+            return modelAndView;
+        }
+        vo.setForDepId(major.getDepId());
+        //届别
+        vo.setSubYear(userBase.getStuYear());
+        vo.setAdmAuditState(EnumSubState.SUCCESS.getValue());
+        vo.setSubSelectStatus(EnumSubSelectStatus.Untreated.getValue());
+       return this.mySubList(modelAndView,vo);
+
+    }
+
+    @Override
+    public String stuSubListAjax(SelectSubjectVo vo) {
+        SelectUserBase userBase = selectUserBaseMapper.selectById(vo.getSelectId());
+        if (ObjectUtils.isEmpty(userBase)){
+            logger.info(Constant.PARAM_ERROR);
+            return Constant.PARAM_ERROR;
+        }
+        //系别
+        SelectMajor major = selectMajorMapper.selectById(userBase.getStuMajorId());
+        if (ObjectUtils.isEmpty(major)){
+            logger.info(Constant.PARAM_ERROR);
+            return Constant.PARAM_ERROR;
+        }
+        vo.setForDepId(major.getDepId());
+        //届别
+        vo.setSubYear(userBase.getStuYear());
+        vo.setAdmAuditState(EnumSubState.SUCCESS.getValue());
+        vo.setSubSelectStatus(EnumSubSelectStatus.Untreated.getValue());
+        return this.mySubListAjax(vo);
+    }
+
+    /**
+     * 选题
+     * @param vo
+     * @return
+     */
+    @Override
+    @Transactional
+    public String stuSelect(SelectSubjectVo vo) {
+
+        //1、添加选题记录
+        if (ObjectUtils.isEmpty(vo)||StringUtils.isEmpty(vo.getSelectReason())){
+            return Constant.PARAM_ERROR;
+        }
+        SelectSubject selectSubject = selectSubjectMapper.selectById(vo.getId());
+        if (ObjectUtils.isEmpty(selectSubject)){
+            return Constant.NULL_ERROR;
+        }
+        if (!selectSubject.getSubSelectStatus().equals(EnumSubSelectStatus.Untreated)){
+            logger.info("该题目已经被选，请重新选择");
+            return Constant.SELECT_ERROR_SELECTED;
+        }
+
+        //先判断是否已经选过题目
+        SelectTopic selectTopic = new SelectTopic()
+                .setStuId(vo.getSelectId());
+        selectTopic = selectTopicService.selectOne(new EntityWrapper<SelectTopic>(selectTopic));
+        if (!ObjectUtils.isEmpty(selectTopic)){
+            logger.info("您已选过题目，请勿重复选择！");
+            return Constant.SELECT_ERROR_REPEAT;
+        }
+        SelectTopic topic = new SelectTopic()
+                .setSubId(selectSubject.getId())
+                .setTeaId(selectSubject.getTeaId())
+                .setStuId(vo.getSelectId())
+                .setTopicYear(selectSubject.getSubYear())
+                .setStuSelectReason(vo.getSelectReason())
+                .setGmtCreate(new Date());
+        selectTopicService.insert(topic);
+
+        //2、修改选题状态
+        SelectSubject subject = new SelectSubject()
+                .setId(selectSubject.getId())
+                .setSubSelectStatus(EnumSubSelectStatus.FAIL.getValue());
+        this.updateById(subject);
+
+        return Constant.SUCCESS;
+    }
+
 
 }

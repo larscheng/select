@@ -71,40 +71,46 @@
                                 <hr />
                                 <!-- Form starts.  -->
                                 <form class="form-horizontal" role="form" id="updateForm">
+                                    <c:if test="${requestScope.sub.admAuditState eq 2}">
+                                        <div class="form-group ">
 
-                                    <%--<div class="form-group ">--%>
+                                            <label class="col-lg-1 control-label">总分</label>
 
-                                        <%--<label class="col-lg-1 control-label">总分</label>--%>
+                                            <div class="col-lg-1 panel panel-default pdl" >
+                                                <c:out value="${requestScope.sub.finalTotalScore}" default="0"/>
+                                            </div>
+                                        </div>
 
-                                        <%--<div class="col-lg-1 panel panel-default pdl" >--%>
-                                            <%--${requestScope.sub.finalTotalScore}--%>
-                                        <%--</div>--%>
-
-
-
-                                        <%--<label class="col-lg-1 control-label">指导老师打分</label>--%>
-
-                                        <%--<div class="col-lg-1 panel panel-default pdl" >--%>
-                                            <%--${requestScope.sub.tutorScore}--%>
-                                        <%--</div>--%>
+                                        <div class="form-group ">
 
 
+                                            <label class="col-lg-1 control-label">指导老师打分</label>
 
-                                        <%--<label class="col-lg-1 control-label">评阅老师打分</label>--%>
+                                            <div class="col-lg-1 panel panel-default pdl" >
 
-                                        <%--<div class="col-lg-2 panel panel-default pdl" >--%>
-                                            <%--${requestScope.sub.judgeScore}--%>
-                                        <%--</div>--%>
-
-                                        <%--<label class="col-lg-1 control-label">答辩得分</label>--%>
-
-                                        <%--<div class="col-lg-2 panel panel-default pdl" >--%>
-                                            <%--${requestScope.sub.defenceScore}--%>
-                                        <%--</div>--%>
+                                                <c:out value="${requestScope.sub.tutorScore}" default="0"/>
+                                            </div>
 
 
-                                    <%--</div>--%>
 
+                                            <label class="col-lg-4 control-label">评阅老师打分</label>
+
+                                            <div class="col-lg-1 panel panel-default pdl" >
+
+                                                <c:out value="${requestScope.sub.judgeScore}" default="0"/>
+                                            </div>
+
+                                            <label class="col-lg-2 control-label">答辩得分</label>
+
+                                            <div class="col-lg-1 panel panel-default pdl" >
+
+                                                <c:out value="${requestScope.sub.defenceScore}" default="0"/>
+                                            </div>
+
+
+                                        </div>
+
+                                    </c:if>
 
                                     <div class="form-group">
 
@@ -132,18 +138,12 @@
 
                                         </div>
 
-                                        <div class="form-group">
-                                            <label class="col-lg-4 control-label">审核状态</label>
-                                            <div class="col-lg-4 panel panel-default pdl" >
-                                                ${requestScope.sub.subState}
-                                            </div>
-                                        </div>
 
                                     <div class="form-group">
 
-                                        <label class="col-lg-4 control-label">题目年份</label>
+                                        <label class="col-lg-4 control-label">题目届别</label>
                                         <div class="col-lg-4 panel panel-default pdl" >
-                                            ${requestScope.sub.subYear}
+                                            ${requestScope.sub.subYear}级
                                         </div>
                                     </div>
 
@@ -156,11 +156,18 @@
                                         </div>
                                     </div>
 
+                                    <div class="form-group">
+                                        <label class="col-lg-4 control-label">审核状态</label>
+                                        <div class="col-lg-4 panel panel-default pdl" >
+                                            ${requestScope.sub.subState}
+                                        </div>
+                                    </div>
+
                                         <div class="form-group">
                                             <label class="col-lg-4 control-label">审核意见</label>
 
                                             <div class="col-lg-4 panel panel-default pdl" >
-                                                ${requestScope.sub.admAuditContent}
+                                                <c:out value="${requestScope.sub.admAuditContent}" default="无" escapeXml="false"/>
                                             </div>
                                         </div>
 
@@ -168,12 +175,27 @@
                                             <label class="col-lg-4 control-label">审核人</label>
 
                                             <div class="col-lg-4 panel panel-default pdl" >
-                                                ${requestScope.sub.admAuditName}
+                                                <c:out value="${requestScope.sub.admAuditName}" default="无"/>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="col-lg-4 control-label">审核时间</label>
+                                            <label class="col-lg-4 control-label">选题状态</label>
+                                            <div class="col-lg-4 panel panel-default pdl" >
+                                                ${requestScope.sub.subSelectStatusName}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <c:choose>
+                                                <c:when test="${requestScope.sub.subSelectStatus eq 0}">
+                                                    <label class="col-lg-4 control-label">审核时间</label>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <label class="col-lg-4 control-label">选题时间</label>
+                                                </c:otherwise>
+                                            </c:choose>
+
 
                                             <div class="col-lg-4 panel panel-default pdl" >
                                                 <fmt:formatDate value="${requestScope.sub.gmtModify}" pattern="yyyy-MM-dd HH:mm:ss"/>
@@ -183,9 +205,12 @@
                                     <div class="form-group">
                                         <div class="col-lg-offset-1 col-lg-9">
                                             <button type="button" class="btn btn-info" onclick="window.history.go(-1);">返回</button>
-                                            <c:if test="${requestScope.sub.admAuditState eq 1}">
-                                                <button  type="button" class="btn  btn-success" onclick="subSuccess(${requestScope.sub.id})">通过</button>
+                                            <c:if test="${sessionScope.userType eq 1}">
+                                                <c:if test="${requestScope.sub.admAuditState eq 1}">
+                                                    <button  type="button" class="btn  btn-success" onclick="subSuccess(${requestScope.sub.id})">通过</button>
+                                                </c:if>
                                             </c:if>
+
                                         </div>
                                     </div>
                                 </form>
@@ -225,7 +250,7 @@
                 $.ajax({
                     type:"POST",
                     url:"/selectSubject/subAudited",
-                    data:{"id":id,"admAuditState":2,"admAuditId":${sessionScope.user.id}},
+                    data:{"id":id,"admAuditState":2,"admAuditId":${sessionScope.sessionUser.id}},
                     dataType:"json",
                     success:function(msg){
                         if("OK"!=msg){
@@ -252,7 +277,7 @@
                 $.ajax({
                     type:"POST",
                     url:"/selectSubject/subAudited",
-                    data:{"id":id,"admAuditState":1,"admAuditId":${sessionScope.user.id},"admAuditContent":$("#reason").val()},
+                    data:{"id":id,"admAuditState":1,"admAuditId":${sessionScope.sessionUser.id},"admAuditContent":$("#reason").val()},
                     dataType:"json",
                     success:function(msg){
                         if("OK"!=msg){

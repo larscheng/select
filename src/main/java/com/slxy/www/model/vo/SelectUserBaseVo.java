@@ -55,7 +55,7 @@ public class SelectUserBaseVo extends PageVo {
     /**
      * 学生专业名称
      */
-    private String stuMajorName;
+    private Integer stuMajorId;
     /**
      * 学生班级
      */
@@ -80,10 +80,11 @@ public class SelectUserBaseVo extends PageVo {
      * 教师研究方向
      */
     private String teaDirection;
+
     /**
      * 教师所属系别
      */
-    private String teaDepName;
+    private Integer teaDepId;
     /**
      * 教师个人简介
      */

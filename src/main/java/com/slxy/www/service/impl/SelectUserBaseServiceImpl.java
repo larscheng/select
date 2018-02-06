@@ -1,10 +1,12 @@
 package com.slxy.www.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.slxy.www.common.Constant;
 import com.slxy.www.common.ExcelUtil;
 import com.slxy.www.common.utils.SelectMapStructMapper;
+import com.slxy.www.common.utils.StringUtil;
 import com.slxy.www.mapper.SelectDepartmentMapper;
 import com.slxy.www.mapper.SelectMajorMapper;
 import com.slxy.www.mapper.SelectUserBaseMapper;
@@ -54,9 +56,6 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
     @Autowired
     private SelectDepartmentMapper selectDepartmentMapper;
 
-    @Autowired
-    private DataSourceTransactionManager dsTransactionManager;
-
 
 
 
@@ -68,7 +67,8 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
         setUserDto(userBaseDto);
         page.setRecords(userBaseDto);
         List<SelectUserBase> yearList = selectUserBaseMapper.selectStuYear();
-        List<SelectUserBase> majorList = selectUserBaseMapper.selectStuMajor();
+        List<SelectMajor> majorList = selectMajorMapper.selectList(new EntityWrapper<SelectMajor>()
+                .and("maj_status={0}",EnumEnOrDis.ENABLED.getValue()));
         List<SelectUserBase> classList = selectUserBaseMapper.selectStuClass();
         List<SelectUserBase> depList = selectUserBaseMapper.selectTeaDep();
         List<SelectDepartment> teaDepList = selectDepartmentMapper.selectTeaDep();
@@ -92,6 +92,20 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
         for (SelectUserBaseDto dto:userBaseDto){
             //性别
             dto.setSex(EnumUserSex.toMap().get(dto.getUserSex()));
+            if (!ObjectUtils.isEmpty(dto.getStuMajorId())){
+                //学生专业
+                SelectMajor major = selectMajorMapper.selectById(dto.getStuMajorId());
+                if (!ObjectUtils.isEmpty(major)){
+                    dto.setStuMajorName(major.getMajName());
+                }
+            }
+            if (!ObjectUtils.isEmpty(dto.getTeaDepId())){
+                //教师专业
+                SelectDepartment department = selectDepartmentMapper.selectById(dto.getTeaDepId());
+                if (!ObjectUtils.isEmpty(department)){
+                    dto.setTeaDepName(department.getDepName());
+                }
+            }
             if (!ObjectUtils.isEmpty(dto.getTeaPosition())){
                 //职称
                 dto.setTeaPositionZ(EnumTeaPosition.toMap().get(dto.getTeaPosition()));
@@ -118,6 +132,20 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
                 //学历
                 dto.setTeaEducationZ(EnumTeaEducation.toMap().get(dto.getTeaEducation()));
             }
+        if (!ObjectUtils.isEmpty(dto.getStuMajorId())){
+            //学生专业
+            SelectMajor major = selectMajorMapper.selectById(dto.getStuMajorId());
+            if (!ObjectUtils.isEmpty(major)){
+                dto.setStuMajorName(major.getMajName());
+            }
+        }
+        if (!ObjectUtils.isEmpty(dto.getTeaDepId())){
+            //教师专业
+            SelectDepartment department = selectDepartmentMapper.selectById(dto.getTeaDepId());
+            if (!ObjectUtils.isEmpty(department)){
+                dto.setTeaDepName(department.getDepName());
+            }
+        }
     }
 
     /***
@@ -148,7 +176,7 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
     @Override
     public String stuAble(SelectUserBaseVo userBaseVo) {
         SelectUserBase userBase = this.selectById(userBaseVo.getId());
-        SelectMajor selectMajor = selectMajorMapper.selectOne(new SelectMajor().setMajName(userBase.getStuMajorName()));
+        SelectMajor selectMajor = selectMajorMapper.selectById(userBase.getStuMajorId());
         //判断所属专业
         if (ObjectUtils.isEmpty(selectMajor)||selectMajor.getMajStatus().equals(EnumEnOrDis.DISABLED.getValue())){
             logger.info(Constant.STU_ABLE_ERROR_MAJ_DISABLE);
@@ -208,7 +236,7 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
             modelAndView.addObject("user",userBase);
         }
         List<SelectUserBase> yearList = selectUserBaseMapper.selectStuYear();
-        List<SelectUserBase> majorList = selectUserBaseMapper.selectStuMajor();
+        List<SelectMajor> majorList = selectMajorMapper.selectList(new EntityWrapper<SelectMajor>(new SelectMajor().setMajStatus(EnumEnOrDis.ENABLED.getValue())));
         List<SelectUserBase> classList = selectUserBaseMapper.selectStuClass();
         modelAndView.addObject("yearList",yearList);
         modelAndView.addObject("majorList",majorList);
@@ -362,6 +390,12 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
             logger.info("------------》学生重复！");
             return false;
         }
+        //获取学生专业
+        SelectMajor major = selectMajorMapper.selectOne(new SelectMajor().setMajName(importStuVo.getStuMajorName()));
+        if (ObjectUtils.isEmpty(major)){
+            logger.info("专业不存在");
+            return false;
+        }
         SelectUserBase userBase = new SelectUserBase()
                 .setUserName(importStuVo.getUserName())
                 .setUserCode(importStuVo.getUserCode())
@@ -369,7 +403,7 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
                 .setUserMail(importStuVo.getUserMail())
                 .setUserPhone(importStuVo.getUserPhone())
                 .setUserQq(importStuVo.getUserQq())
-                .setStuMajorName(importStuVo.getStuMajorName())
+                .setStuMajorId(major.getId())
                 .setStuClass(importStuVo.getStuClass())
                 .setStuYear(importStuVo.getStuYear())
                 .setUserPassword(Constant.USER_PASSWORD)
@@ -384,7 +418,23 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
     }
 
 
-
+    /**
+     *
+     * 根据专业查询班级数
+     * @param userBase
+     * @return
+     */
+    @Override
+    public String initClass(SelectUserBase userBase) {
+        if (ObjectUtils.isEmpty(userBase.getStuMajorId())){
+            return Constant.PARAM_ERROR;
+        }
+        SelectMajor selectMajor = selectMajorMapper.selectById(userBase.getStuMajorId());
+        if (ObjectUtils.isEmpty(selectMajor)){
+            return Constant.NULL_ERROR;
+        }
+        return selectMajor.getMajClassNum().toString();
+    }
 
 
 
@@ -575,6 +625,7 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
         return "导入成功 : " + importSuccessCount + " , 导入失败 : " + importErrorList.size() + (importErrorList.size() <= 0 ? "" : " , 失败教师姓名 : " + importErrorList.toString());
     }
 
+
     private boolean initTea(ImportTeaVo importTeaVo) {
         //TODO 格式校验
 
@@ -586,6 +637,11 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
             logger.info("------------》教师重复！");
             return false;
         }
+        SelectDepartment department = selectDepartmentMapper.selectOne(new SelectDepartment().setDepName(importTeaVo.getTeaDepName()));
+        if (ObjectUtils.isEmpty(department)){
+            logger.info("系别不存在");
+            return  false;
+        }
         SelectUserBase userBase = new SelectUserBase()
                 .setUserName(importTeaVo.getUserName())
                 .setUserCode(importTeaVo.getUserCode())
@@ -596,7 +652,7 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
                 .setTeaPosition(importTeaVo.getTeaPosition())
                 .setTeaMajorName(importTeaVo.getTeaMajorName())
                 .setTeaEducation(importTeaVo.getTeaEducation())
-                .setTeaDepName(importTeaVo.getTeaDepName())
+                .setTeaDepId(department.getId())
                 .setUserPassword(Constant.USER_PASSWORD)
                 .setUserType(EnumUserType.TEACHER.getValue())
                 .setUserStatus(EnumEnOrDis.ENABLED.getValue())

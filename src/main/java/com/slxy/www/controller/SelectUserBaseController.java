@@ -29,7 +29,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/selectUserBase")
-@SessionAttributes(value = {"user"})
+@SessionAttributes(value = {"sessionUser","userType"})
 public class SelectUserBaseController {
 
     @Autowired
@@ -46,7 +46,8 @@ public class SelectUserBaseController {
             return modelAndView;
         }
         modelAndView.setViewName("main");
-        modelAndView.addObject("user",selectUserBase);
+        modelAndView.addObject("sessionUser",selectUserBase);
+        modelAndView.addObject("userType",selectUserBase.getUserType());
         return modelAndView;
     }
 
@@ -173,7 +174,11 @@ public class SelectUserBaseController {
         return selectUserBaseService.stuUpload(request);
     }
 
-
+    @RequestMapping(value = "/initClass", method = RequestMethod.POST)
+    @ResponseBody
+    public String initClass(SelectUserBase userBase) {
+        return selectUserBaseService.initClass(userBase);
+    }
 
 
     /*********************************************************************************************************/

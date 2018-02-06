@@ -18,4 +18,6 @@ import java.util.List;
 public interface SelectSubjectMapper extends BaseMapper<SelectSubject> {
 
     List<SelectSubject> getSubByPage(SelectSubjectVo vo, Page<SelectSubject> page);
+
+    List<SelectSubject> getMySubByPage(SelectSubjectVo vo, Page<SelectSubject> page);
 }

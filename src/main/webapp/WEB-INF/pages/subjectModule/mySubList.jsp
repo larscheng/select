@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,11 +22,11 @@
 
         <!-- Page heading -->
         <div class="page-head">
-            <h2 class="pull-left"><i class="icon-home"></i> 已审核论文</h2>
+            <h2 class="pull-left"><i class="icon-home"></i> 我的论文题目</h2>
 
             <!-- Breadcrumb -->
             <div class="bread-crumb pull-right">
-                <a href="#"><i class="icon-home"></i> 教师信息管理</a>
+                <a href="#"><i class="icon-home"></i> 论文信息管理</a>
                 <!-- Divider -->
                 <span class="divider">/</span>
                 <a href="#" class="bread-current">首页</a>
@@ -54,6 +55,7 @@
 
 
                         <div class="form-group " style="margin-right: 10px">
+                            <input type="hidden" name="teaId" id="teaId"/>
                             <select  class="form-control" name="subType">
                                 <option value="" selected>题目类型</option>
                                 <c:forEach var="type" items="${requestScope.subType}">
@@ -74,17 +76,9 @@
                         <div class="form-group " style="margin-right: 10px">
                             <select  class="form-control" name="admAuditState">
                                 <option value="" selected>审核状态</option>
-                                <option value="1">审核失败</option>
-                                <option value="2">审核成功</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group " style="margin-right: 10px">
-                            <select  class="form-control" name="teaId">
-                                <option value="" selected>教师名</option>
-                                <c:forEach var="tea" items="${requestScope.teaSet}">
-                                    <option value="${tea.id}">${tea.userName}</option>
-                                </c:forEach>
+                                <option value="0">未处理</option>
+                                <option value="1">审核未通过</option>
+                                <option value="2">审核通过</option>
                             </select>
                         </div>
 
@@ -116,13 +110,15 @@
 
                         <div class="widget">
 
-                            <div class="widget-head">
-                                <div class="pull-left">已审核列表</div>
+                            <div class="widget-head" style="position: relative">
+                                <div class="pull-left">题目列表</div>
                                 <div class="widget-icons pull-right">
                                     <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                     <a href="#" class="wclose"><i class="icon-remove"></i></a>
                                 </div>
-
+                                <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
+                                    <button type="button"  onclick="window.location.href='/selectSubject/initSubAdd';" class="btn btn-info pull-left "><i class="icon-upload"></i>题目添加</button>
+                                </div>
                                 <div class="clearfix"></div>
                             </div>
 
@@ -144,35 +140,42 @@
                                     </tr>
                                     </thead>
                                     <tbody id="items">
-                                    <c:forEach var="subject" items="${requestScope.subjectList}" varStatus="index">
-                                        <tr>
-                                            <td  class=" text-center"><input type="checkbox" name="ids" value="${subject.id}" /></td>
-                                            <td>${index.count}</td>
-                                            <td>${subject.subName}</td>
-                                            <td>${subject.subTeaName}</td>
-                                            <td><span class="label label-primary">${subject.typeName}</span></td>
-                                            <td>${subject.subYear}级</td>
-                                            <td>
-                                                <c:choose>
-                                                    <c:when test="${subject.admAuditState eq 1}">
-                                                        <span class="label label-danger">审核不通过</span>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <span class="label label-success">审核通过</span>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </td>
-                                            <td>${subject.forDepName}</td>
-                                            <td> <span class="label label-primary">${subject.subSelectStatusName}</span></td>
-                                            <td><fmt:formatDate value="${subject.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                            <td>
-                                                <button class="btn btn-xs btn-info" onclick="subjectDetails(${subject.id})"><i class="icon-pencil"></i>详情</button>
-                                                <c:if test="${subject.admAuditState eq 1}">
-                                                    <button class="btn btn-xs btn-success" onclick="subSuccess(${subject.id})"><i class="icon-ok-circle"></i>通过</button>
-                                                </c:if>
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
+                                    <c:choose>
+                                        <c:when test="${fn:length(requestScope.subjectList) < 0}">
+                                            <tr><td colspan='5' class='text-center'> 😑 暂无数据！</td></tr>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:forEach var="subject" items="${requestScope.subjectList}" varStatus="index">
+                                                <tr>
+                                                    <td  class=" text-center"><input type="checkbox" name="ids" value="${subject.id}" /></td>
+                                                    <td>${index.count}</td>
+                                                    <td>${subject.subName}</td>
+                                                    <td>${subject.subTeaName}</td>
+                                                    <td><span class="label label-primary">${subject.typeName}</span></td>
+                                                    <td>${subject.subYear}级</td>
+                                                    <td>
+                                                        <c:choose>
+                                                            <c:when test="${subject.admAuditState eq 0}">
+                                                                <span class="label label-warning">未处理</span>
+                                                            </c:when>
+                                                            <c:when test="${subject.admAuditState eq 1}">
+                                                                <span class="label label-danger">审核未通过</span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="label label-success">审核通过</span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+                                                    <td>${subject.forDepName}</td>
+                                                    <td> <span class="label label-primary">${subject.subSelectStatusName}</span></td>
+                                                    <td><fmt:formatDate value="${subject.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td>
+                                                        <button class="btn btn-xs btn-info" onclick="subjectDetails(${subject.id})"><i class="icon-pencil"></i>详情</button>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:otherwise>
+                                    </c:choose>
 
                                     </tbody>
                                 </table>
@@ -183,20 +186,20 @@
                                             <li><a href="#" class="btn  disabled">上一页</a></li>
                                         </c:if>
                                         <c:if test="${page.current-1 > 0}">
-                                            <li><a class="disabled" href="${ctx}/selectSubject/subList?page=${page.current-1}">上一页</a></li>
-                                            <li><a href="${ctx}/selectSubject/subList?page=${page.current-1}">${page.current-1}</a></li>
+                                            <li><a class="disabled" href="${ctx}/selectSubject/mySubList?page=${page.current-1}&teaId=${sessionScope.sessionUser.id}">上一页</a></li>
+                                            <li><a href="${ctx}/selectSubject/mySubList?page=${page.current-1}&teaId=${sessionScope.sessionUser.id}">${page.current-1}</a></li>
                                         </c:if>
 
-                                        <li><a href="${ctx}/selectSubject/subList?page=${page.current}">${page.current}</a></li>
+                                        <li><a href="${ctx}/selectSubject/mySubList?page=${page.current}&teaId=${sessionScope.sessionUser.id}">${page.current}</a></li>
 
                                         <c:if test="${page.current+1 <= page.pages}">
-                                            <li><a href="${ctx}/selectSubject/subList?page=${page.current+1}">${page.current+1}</a></li>
+                                            <li><a href="${ctx}/selectSubject/mySubList?page=${page.current+1}&teaId=${sessionScope.sessionUser.id}">${page.current+1}</a></li>
                                         </c:if>
                                         <c:if test="${page.current+2 <= page.pages}">
-                                            <li><a href="${ctx}/selectSubject/subList?page=${page.current+2}">${page.current+2}</a></li>
+                                            <li><a href="${ctx}/selectSubject/mySubList?page=${page.current+2}&teaId=${sessionScope.sessionUser.id}">${page.current+2}</a></li>
                                         </c:if>
                                         <c:if test="${page.current+1 <= page.pages}">
-                                            <li><a href="${ctx}/selectSubject/subList?page=${page.current+1}">下一页</a></li>
+                                            <li><a href="${ctx}/selectSubject/mySubList?page=${page.current+1}&teaId=${sessionScope.sessionUser.id}">下一页</a></li>
                                         </c:if>
                                         <c:if test="${page.current+1 > page.pages}">
                                             <li><a class="btn  disabled" href="#">下一页</a></li>
@@ -236,11 +239,13 @@
     function search() {
         $.ajax({
             type: "post",
-            url: "/selectSubject/subListAjax",
-            data:{"search":$(" input[ name='search' ] ").val()},
+            url: "/selectSubject/mySubListAjax",
+            data:{"search":$(" input[ name='search' ] ").val(),
+                "teaId":${sessionScope.sessionUser.id}
+            },
             dataType:"json",
             success:function(objects){
-                initTeaPage(objects);
+                initsubPage(objects);
             },//end success
             error: function(e) {
                 alert(" 😥 系统异常，请与我们的工程师联系！");
@@ -251,17 +256,17 @@
     function pageSearch(page) {
         $.ajax({
             type: "post",
-            url: "/selectSubject/subListAjax",
+            url: "/selectSubject/mySubListAjax",
             data:{"page":page,
+                "teaId":${sessionScope.sessionUser.id},
                 "search":$(" input[ name='search' ] ").val(),
                 "admAuditState":$(" select[ name='admAuditState' ] ").val(),
                 "subType":$(" select[ name='subType' ] ").val(),
-                "forDepId":$(" select[ name='forDepId' ] ").val(),
-                "teaId":$(" select[ name='teaId' ] ").val()
+                "forDepId":$(" select[ name='forDepId' ] ").val()
             },
             dataType:"json",
             success:function(objects){
-                initTeaPage(objects);
+                initsubPage(objects);
             },//end success
             error: function(e) {
                 alert(" 😥 系统异常，请与我们的工程师联系！");
@@ -270,13 +275,14 @@
     }
 
     $("#searchSubmit").click(function(){
+        $("#teaId").val(${sessionScope.sessionUser.id});
         $.ajax({
             type: "post",
-            url: "/selectSubject/subListAjax",
+            url: "/selectSubject/mySubListAjax",
             data: $("#searchForm").serialize(),
             dataType:"json",
             success:function(objects){
-                initTeaPage(objects);
+                initsubPage(objects);
             },
             error: function(e) {
                 alert(" 😥 系统异常，请与我们的工程师联系！");
@@ -285,39 +291,12 @@
     });
 
 
-    function subSuccess(id){
-        confirm(" 😲 确认审核通过？","",function (isConfirm) {
-            if (isConfirm){
-                $.ajax({
-                    type:"POST",
-                    url:"/selectSubject/subAudited",
-                    data:{"id":id,"admAuditState":2,"admAuditId":${sessionScope.sessionUser.id}},
-                    dataType:"json",
-                    success:function(msg){
-                        if("OK"!=msg){
-                            alert(" 😅 "+msg);
-                        }else {
-                            alert(" 😋 审核通过","",function () {
-                                location.href="/selectSubject/subList";
-                            },{type:"success",confirmButtonText:"好的"});
-                        }
-                    },
-                    error:function(e){
-                        alert("😥 系统异常，请与我们的程序员小哥哥联系！");
-                    }
-                });
-            }
-        });
-    }
-
-
-
     function subjectDetails(id) {
         window.location.href="/selectSubject/subjectDetail?id="+id;
     }
 
 
-    function initTeaPage(objects) {
+    function initsubPage(objects) {
         var obj =JSON.parse(objects);
         var subjectList = obj.subjectList;
         $("#items").html(null);
@@ -341,23 +320,35 @@
                     item +=
                         "<td><span class='label label-success'>审核通过</span></td>"
                         +"<td>"+val.forDepName+"</td>"
+                        +"<td><span class='label label-primary'>"+val.subSelectStatusName+"</span></td>"
                         +"<td>"+time+"</td>"
                         +"<td>" +
                         "<button onclick='subjectDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
                         "</td>"
                         +"</tr>"
                     ;
-                }else{
+                }else if (parseInt(val.admAuditState) == 1){
                     item+=
-                        "<td><span class='label label-danger'>审核不通过</span></td>"
+                        "<td><span class='label label-danger'>审核未通过</span></td>"
                         +"<td>"+val.forDepName+"</td>"
+                        +"<td><span class='label label-primary'>"+val.subSelectStatusName+"</span></td>"
                         +"<td>"+time+"</td>"
                         +"<td>" +
-                        "<button onclick='subjectDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
-                        "<button onclick='subSuccess("+val.id+")' class='btn btn-xs btn-success' style='margin-right: 5px'><i class='icon-ok-circle'>通过</i></button>" +
+                        "<button onclick='subjectDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>"
+                        +"</tr>"
+                    ;
+                }else if (parseInt(val.admAuditState) == 0){
+                    item+=
+                        "<td><span class='label label-warning'>未处理</span></td>"
+                        +"<td>"+val.forDepName+"</td>"
+                        +"<td><span class='label label-primary'>"+val.subSelectStatusName+"</span></td>"
+                        +"<td>"+time+"</td>"
+                        +"<td>" +
+                        "<button onclick='subjectDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>"
                         +"</tr>"
                     ;
                 }
+                console.log(item);
                 $("#items").append(item);
             });
         }
@@ -376,7 +367,6 @@
         if((parseInt(page.current)+1) <= parseInt(page.pages)){
             pageItem += "<li><a onclick='pageSearch("+(parseInt(page.current)+1)+")'>"+(parseInt(page.current)+1)+"</a></li>" +
                 "<li><a onclick='pageSearch("+(parseInt(page.current)+1)+")'>下一页</a></li>";
-
         }else {
             pageItem += "<li><a class='btn  disabled' href='#'>下一页</a></li>";
         }

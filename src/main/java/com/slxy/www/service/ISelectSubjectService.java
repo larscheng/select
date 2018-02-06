@@ -2,6 +2,7 @@ package com.slxy.www.service;
 
 import com.slxy.www.model.SelectSubject;
 import com.baomidou.mybatisplus.service.IService;
+import com.slxy.www.model.SelectUserBase;
 import com.slxy.www.model.vo.SelectSubjectVo;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,4 +25,18 @@ public interface ISelectSubjectService extends IService<SelectSubject> {
     String subSuccessAll(Integer[] selectedIDs);
 
     String subListAjax(SelectSubjectVo vo);
+
+    ModelAndView mySubList(ModelAndView modelAndView, SelectSubjectVo vo);
+
+    String mySubListAjax(SelectSubjectVo vo);
+
+    ModelAndView initSubAdd(ModelAndView modelAndView);
+
+    String subAdd(SelectSubjectVo vo);
+
+    ModelAndView stuSubList(ModelAndView modelAndView, SelectSubjectVo vo);
+
+    String stuSubListAjax(SelectSubjectVo vo);
+
+    String stuSelect(SelectSubjectVo vo);
 }

@@ -86,6 +86,17 @@ public class SelectSubject implements Serializable {
     @TableField("final_total_score")
     private Double finalTotalScore;
     /**
+     * 题目面向系别id
+     */
+    @TableField("for_dep_id")
+    private String forDepId;
+
+    /**
+     * 题目选题状态 0未选 1审核中 2已选
+     */
+    @TableField("sub_select_status")
+    private Integer subSelectStatus;
+    /**
      * 题目年份
      */
     @TableField("sub_year")
@@ -238,8 +249,21 @@ public class SelectSubject implements Serializable {
         return this;
     }
 
-    public String toString() {
-        return "SelectSubject(id=" + this.getId() + ", subName=" + this.getSubName() + ", teaId=" + this.getTeaId() + ", subType=" + this.getSubType() + ", subContent=" + this.getSubContent() + ", admAuditState=" + this.getAdmAuditState() + ", admAuditContent=" + this.getAdmAuditContent() + ", admAuditId=" + this.getAdmAuditId() + ", tutorScore=" + this.getTutorScore() + ", judgeScore=" + this.getJudgeScore() + ", defenceScore=" + this.getDefenceScore() + ", finalTotalScore=" + this.getFinalTotalScore() + ", subYear=" + this.getSubYear() + ", gmtCreate=" + this.getGmtCreate() + ", gmtModify=" + this.getGmtModify() + ")";
+    public String getForDepId() {
+        return forDepId;
     }
 
+    public SelectSubject setForDepId(String forDepId) {
+        this.forDepId = forDepId;
+        return this;
+    }
+
+    public Integer getSubSelectStatus() {
+        return subSelectStatus;
+    }
+
+    public SelectSubject setSubSelectStatus(Integer subSelectStatus) {
+        this.subSelectStatus = subSelectStatus;
+        return this;
+    }
 }

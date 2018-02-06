@@ -115,10 +115,10 @@
                                                 <c:forEach var="teaDepName" items="${requestScope.teaDepList}">
                                                     <c:choose>
                                                         <c:when test="${teaDepName.depName eq requestScope.user.teaDepName}">
-                                                            <option value="${teaDepName.depName}" selected>${teaDepName.depName}级</option>
+                                                            <option value="${teaDepName.depName}" selected>${teaDepName.depName}</option>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <option value="${teaDepName.depName}">${teaDepName.depName}级</option>
+                                                            <option value="${teaDepName.depName}">${teaDepName.depName}</option>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </c:forEach>

@@ -1,3 +1,4 @@
+<%@ page import="org.springframework.web.context.request.SessionScope" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -22,7 +23,6 @@
         <!-- Page heading -->
         <div class="page-head">
             <h2 class="pull-left"><i class="icon-home"></i> 教师信息管理</h2>
-
             <!-- Breadcrumb -->
             <div class="bread-crumb pull-right">
                 <a href="#"><i class="icon-home"></i> 教师信息管理</a>
@@ -83,10 +83,10 @@
                             </select>
                         </div>
                         <div class="form-group " style="margin-right: 10px">
-                            <select  class="form-control" name="teaDepName">
+                            <select  class="form-control" name="teaDepId">
                                 <option value="" selected>所属系别</option>
                                 <c:forEach var="dep" items="${requestScope.teaDepList}">
-                                    <option value="${dep.depName}">${dep.depName}</option>
+                                    <option value="${dep.id}">${dep.depName}</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -125,17 +125,19 @@
                                     <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                     <a href="#" class="wclose"><i class="icon-remove"></i></a>
                                 </div>
-
-                                <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
-                                    <button type="button" onclick="teaDeleteAll()" class="btn btn-info pull-left " style="margin-right: 10px"><i class="icon-remove"></i>批量删除</button>
-                                    <button type="button" class="btn btn-info pull-left " onclick="upload()"  style="margin-right: 10px"><i class="icon-upload"></i>批量导入</button>
-                                    <div style="display: none">
-                                        <form id="uploadForm"  >
-                                            <input type="file" id="fileField" name="fileField" style="display: none" onchange="teaUpload()"/>
-                                        </form>
+                                <c:if test="${sessionScope.sessionUser.userType eq 1}">
+                                    <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
+                                        <button type="button" onclick="teaDeleteAll()" class="btn btn-info pull-left " style="margin-right: 10px"><i class="icon-remove"></i>批量删除</button>
+                                        <button type="button" class="btn btn-info pull-left " onclick="upload()"  style="margin-right: 10px"><i class="icon-upload"></i>批量导入</button>
+                                        <div style="display: none">
+                                            <form id="uploadForm"  >
+                                                <input type="file" id="fileField" name="fileField" style="display: none" onchange="teaUpload()"/>
+                                            </form>
+                                        </div>
+                                        <button type="button"  onclick="window.location.href='/selectUserBase/teaInitAdd';" class="btn btn-info pull-left "><i class="icon-upload"></i>教师添加</button>
                                     </div>
-                                    <button type="button"  onclick="window.location.href='/selectUserBase/teaInitAdd';" class="btn btn-info pull-left "><i class="icon-upload"></i>教师添加</button>
-                                </div>
+                                </c:if>
+
                                 <div class="clearfix"></div>
                             </div>
 
@@ -187,20 +189,23 @@
                                             </td>
                                             <td><fmt:formatDate value="${user.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                             <td>
-                                                <c:set var="status" value="${user.userStatus}"/>
-                                                <c:choose>
-                                                    <c:when test="${status eq 0}">
-                                                        <button class="btn btn-xs btn-success" onclick="teaAble(${user.id})"><i class="icon-ok"></i>启用</button>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <button class="btn btn-xs btn-danger" onclick="teaDisAble(${user.id})"><i class="icon-remove"></i>禁用</button>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                                <button class="btn btn-xs btn-warning" onclick="window.location.href='/selectUserBase/teaInitUpdate?id=${user.id}';"><i class="icon-pencil"></i>编辑</button>
-                                                <button class="btn btn-xs btn-info" onclick="teaDetails(${user.id})"><i class="icon-pencil"></i>详情</button>
-                                                <button class="btn btn-xs btn-danger" onclick="teaDelete('${user.id}')"><i class="icon-remove">删除</i>
-                                                </button>
+                                                <c:if test="${sessionScope.sessionUser.userType eq 1}">
+                                                    <c:set var="status" value="${user.userStatus}"/>
+                                                    <c:choose>
+                                                        <c:when test="${status eq 0}">
+                                                            <button class="btn btn-xs btn-success" onclick="teaAble(${user.id})"><i class="icon-ok"></i>启用</button>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <button class="btn btn-xs btn-danger" onclick="teaDisAble(${user.id})"><i class="icon-remove"></i>禁用</button>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </c:if>
 
+                                                <button class="btn btn-xs btn-info" onclick="teaDetails(${user.id})"><i class="icon-pencil"></i>详情</button>
+                                                <c:if test="${sessionScope.sessionUser.userType eq 1}">
+                                                    <button class="btn btn-xs btn-warning" onclick="window.location.href='/selectUserBase/teaInitUpdate?id=${user.id}';"><i class="icon-pencil"></i>编辑</button>
+                                                    <button class="btn btn-xs btn-danger" onclick="teaDelete('${user.id}')"><i class="icon-remove">删除</i></button>
+                                                </c:if>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -258,8 +263,7 @@
     <div class="clearfix"></div>
 <%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>
 <script type="text/javascript">
-
-
+    sessionStorage.setItem("userType",${sessionScope.userType});
     function upload() {
         confirm("导入前请下载好导入模板！","",function (isConfirm) {
             if (isConfirm) {
@@ -327,7 +331,7 @@
                 "userStatus":$(" select[ name='userStatus' ] ").val(),
                 "teaPosition":$(" select[ name='teaPosition' ] ").val(),
                 "teaEducation":$(" select[ name='teaEducation' ] ").val(),
-                "teaDepName":$(" select[ name='teaDepName' ] ").val()
+                "teaDepId":$(" select[ name='teaDepId' ] ").val()
             },
             dataType:"json",
             success:function(objects){
@@ -507,36 +511,60 @@
                     +"<td>"+val.userPhone+"</td>"
                     +"<td>"+val.userQq+"</td>"
                     +"<td>"+val.teaDepName+"</td>"
-                    +"<td><span class='label label-success'>"+val.teaPositionZ+"</span></td>"
-                    +"<td><span class='label label-success'>"+val.teaEducationZ+"</span></td>"
+                    +"<td><span class='label label-primary'>"+val.teaPositionZ+"</span></td>"
+                    +"<td><span class='label label-warning'>"+val.teaEducationZ+"</span></td>"
 
                 ;
-//                    console.log(item);
-                if (parseInt(val.userStatus) == 1){
-                    item +=
-                        "<td><span class='label label-success'>启用</span></td>"
-                        +"<td>"+time+"</td>"
-                        +"<td>" +
-                        "<button onclick='teaDisAble("+val.id+")' class='btn btn-xs btn-danger' style='margin-right: 5px'><i class='icon-remove'></i>禁用</button>" +
-                        "<button onclick='teaUpdate("+val.id+")' class='btn btn-xs btn-warning' style='margin-right: 5px'><i class='icon-pencil'></i>编辑</button>" +
-                        "<button onclick='teaDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
-                        "<button onclick='teaDelete("+val.id+")' class='btn btn-xs btn-danger' style='margin-right: 5px'><i class='icon-remove'>删除</i></button>" +
-                        "</td>"
-                        +"</tr>"
-                    ;
-                }else{
-                    item+=
-                        "<td><span class='label label-danger'>禁用</span></td>"
-                        +"<td>"+time+"</td>"
-                        +"<td>" +
-                        "<button onclick='teaAble("+val.id+")' class='btn btn-xs btn-success' style='margin-right: 5px'><i class='icon-ok'></i>启用</button>" +
-                        "<button onclick='teaUpdate("+val.id+")' class='btn btn-xs btn-warning' style='margin-right: 5px'><i class='icon-pencil'></i>编辑</button>" +
-                        "<button onclick='teaDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
-                        "<button onclick='teaDelete("+val.id+")' class='btn btn-xs btn-danger' style='margin-right: 5px'><i class='icon-remove'>删除</i></button>" +
-                        "</td>"
-                        +"</tr>"
-                    ;
+                var manType = sessionStorage.getItem("userType");
+                if (manType == 1){
+                    if (parseInt(val.userStatus) == 1){
+                        item +=
+                            "<td><span class='label label-success'>启用</span></td>"
+                            +"<td>"+time+"</td>"
+                            +"<td>" +
+                            "<button onclick='teaDisAble("+val.id+")' class='btn btn-xs btn-danger' style='margin-right: 5px'><i class='icon-remove'></i>禁用</button>" +
+                            "<button onclick='teaDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
+                            "<button onclick='teaUpdate("+val.id+")' class='btn btn-xs btn-warning' style='margin-right: 5px'><i class='icon-pencil'></i>编辑</button>" +
+                            "<button onclick='teaDelete("+val.id+")' class='btn btn-xs btn-danger' style='margin-right: 5px'><i class='icon-remove'>删除</i></button>" +
+                            "</td>"
+                            +"</tr>"
+                        ;
+                    }else{
+                        item+=
+                            "<td><span class='label label-danger'>禁用</span></td>"
+                            +"<td>"+time+"</td>"
+                            +"<td>" +
+                            "<button onclick='teaAble("+val.id+")' class='btn btn-xs btn-success' style='margin-right: 5px'><i class='icon-ok'></i>启用</button>" +
+                            "<button onclick='teaDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
+                            "<button onclick='teaUpdate("+val.id+")' class='btn btn-xs btn-warning' style='margin-right: 5px'><i class='icon-pencil'></i>编辑</button>" +
+                            "<button onclick='teaDelete("+val.id+")' class='btn btn-xs btn-danger' style='margin-right: 5px'><i class='icon-remove'>删除</i></button>" +
+                            "</td>"
+                            +"</tr>"
+                        ;
+                    }
+                }else {
+                    if (parseInt(val.userStatus) == 1){
+                        item +=
+                            "<td><span class='label label-success'>启用</span></td>"
+                            +"<td>"+time+"</td>"
+                            +"<td>" +
+                            "<button onclick='teaDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
+                            "</td>"
+                            +"</tr>"
+                        ;
+                    }else{
+                        item+=
+                            "<td><span class='label label-danger'>禁用</span></td>"
+                            +"<td>"+time+"</td>"
+                            +"<td>" +
+                            "<button onclick='teaDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
+                            "</td>"
+                            +"</tr>"
+                        ;
+                    }
                 }
+
+
                 $("#items").append(item);
             });
         }

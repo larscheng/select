@@ -12,14 +12,14 @@
         <result column="user_mail" property="userMail" />
         <result column="user_phone" property="userPhone" />
         <result column="user_qq" property="userQq" />
-        <result column="stu_major_name" property="stuMajorName" />
+        <result column="stu_major_id" property="stuMajorId" />
         <result column="stu_class" property="stuClass" />
         <result column="stu_year" property="stuYear" />
         <result column="tea_position" property="teaPosition" />
         <result column="tea_major_name" property="teaMajorName" />
         <result column="tea_education" property="teaEducation" />
         <result column="tea_direction" property="teaDirection" />
-        <result column="tea_dep_name" property="teaDepName" />
+        <result column="tea_dep_id" property="teaDepId" />
         <result column="tea_info" property="teaInfo" />
         <result column="user_status" property="userStatus" />
         <result column="user_type" property="userType" />
@@ -31,9 +31,9 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, user_code AS userCode, user_password AS userPassword, user_name AS userName, user_sex AS userSex,
-         user_mail AS userMail, user_phone AS userPhone, user_qq AS userQq, stu_major_name AS stuMajorName,
+         user_mail AS userMail, user_phone AS userPhone, user_qq AS userQq, stu_major_id AS stuMajorId,
          stu_class AS stuClass, stu_year AS stuYear, tea_position AS teaPosition, tea_major_name AS teaMajorName,
-         tea_education AS teaEducation, tea_direction AS teaDirection, tea_dep_name AS teaDepName, tea_info AS teaInfo,
+         tea_education AS teaEducation, tea_direction AS teaDirection, tea_dep_id AS teaDepId, tea_info AS teaInfo,
          user_status AS userStatus, user_type AS userType, operator_id AS operatorId,
          DATE_FORMAT(gmt_create, '%Y-%m-%d %H:%i:%s') AS gmtCreate,
          DATE_FORMAT(gmt_modify, '%Y-%m-%d %H:%i:%s') AS gmtModify
@@ -41,9 +41,9 @@
 
     <sql id="Base_Column_List1">
         id, user_code, user_password, user_name, user_sex,
-        user_mail, user_phone, user_qq, stu_major_name,
+        user_mail, user_phone, user_qq, stu_major_id,
         stu_class, stu_year, tea_position, tea_major_name,
-        tea_education, tea_direction, tea_dep_name, tea_info,
+        tea_education, tea_direction, tea_dep_id, tea_info,
         user_status, user_type, operator_id,
         DATE_FORMAT(gmt_create, '%Y-%m-%d %H:%i:%s') AS gmt_create,
         DATE_FORMAT(gmt_modify, '%Y-%m-%d %H:%i:%s') AS gmt_modify
@@ -63,8 +63,8 @@
             a.user_mail like '%${search}%'
             )
         </if>
-        <if test="@Ognl@isNotEmpty(stuMajorName)">
-            and a.stu_major_name = #{stuMajorName}
+        <if test="@Ognl@isNotEmpty(stuMajorId)">
+            and a.stu_major_id = #{stuMajorId}
         </if>
         <if test="@Ognl@isNotEmpty(stuClass)">
             and a.stu_class = #{stuClass}
@@ -88,8 +88,8 @@
         <if test="@Ognl@isNotEmpty(teaEducation)">
             and a.tea_education = #{teaEducation}
         </if>
-        <if test="@Ognl@isNotEmpty(teaDepName)">
-            and a.tea_dep_name = #{teaDepName}
+        <if test="@Ognl@isNotEmpty(teaDepId)">
+            and a.tea_dep_id = #{teaDepId}
         </if>
         <if test="@Ognl@isNotEmpty(searchBgnTime)">
             and DATE_FORMAT(a.gmt_create,'%Y-%m-%d')  <![CDATA[>=]]> #{searchBgnTime}
@@ -108,12 +108,12 @@
         SELECT  * FROM select_user_base WHERE user_type=3 GROUP BY stu_year ORDER BY stu_year DESC
     </select>
     <select id="selectStuMajor" resultMap="BaseResultMap">
-        SELECT  * FROM select_user_base WHERE user_type=3 GROUP BY stu_major_name
+        SELECT  * FROM select_user_base WHERE user_type=3 GROUP BY stu_major_id
     </select>
     <select id="selectStuClass" resultMap="BaseResultMap">
         SELECT * FROM select_user_base WHERE user_type=3 GROUP BY stu_class
     </select>
     <select id="selectTeaDep" resultMap="BaseResultMap">
-        SELECT * FROM select_user_base WHERE user_type=2 GROUP BY tea_dep_name
+        SELECT * FROM select_user_base WHERE user_type=2 GROUP BY tea_dep_id
     </select>
 </mapper>

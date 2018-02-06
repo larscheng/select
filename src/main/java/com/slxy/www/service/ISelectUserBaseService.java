@@ -51,4 +51,6 @@ public interface ISelectUserBaseService extends IService<SelectUserBase> {
     String stuUpload(HttpServletRequest request);
 
     String teaUpload(HttpServletRequest request);
+
+    String initClass(SelectUserBase userBase);
 }

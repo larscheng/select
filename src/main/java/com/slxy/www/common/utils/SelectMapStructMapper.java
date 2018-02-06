@@ -7,6 +7,7 @@ import com.slxy.www.model.SelectSubject;
 import com.slxy.www.model.SelectUserBase;
 import com.slxy.www.model.dto.SelectSubjectDto;
 import com.slxy.www.model.dto.SelectUserBaseDto;
+import com.slxy.www.model.vo.SelectSubjectVo;
 import org.mapstruct.MapMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mappings;
@@ -28,6 +29,8 @@ public interface SelectMapStructMapper {
     SelectSubjectDto SelectSubjectPoToDto(SelectSubject subject);
 
     List<SelectSubjectDto> SelectSubjectsPoToDto(List<SelectSubject> subjectList);
+
+    SelectSubject SelectSubjectVoToPo(SelectSubjectVo vo);
 }
 
 

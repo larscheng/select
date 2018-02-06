@@ -23,7 +23,7 @@
     <!-- If the main navigation has sub navigation, then add the class "has_sub" to "li" of main navigation. -->
     <ul id="nav" style="display: block;">
         <!-- Main menu with font awesome icon -->
-        <li><a href="/selectUserBase/userList"  target="mainFrame" class=""><i class="icon-home"></i> tea</a>
+        <li><a href="${ctx}/selectUserBase/userList"  target="mainFrame" class=""><i class="icon-home"></i> tea</a>
             <!-- Sub menu markup
             <ul>
               <li><a href="#">Submenu #1</a></li>
@@ -34,37 +34,33 @@
 
         <li class="has_sub"><a href="#"><i class="icon-list-alt"></i> 院系专业  <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
             <ul>
-                <li><a href="/selectDepartment/depList" target="mainFrame" >系别</a></li>
-                <li><a href="/selectMajor/majList" target="mainFrame" >专业</a></li>
+                <li><a href="${ctx}/selectDepartment/depList" target="mainFrame" >系别</a></li>
+                <li><a href="${ctx}/selectMajor/majList" target="mainFrame" >专业</a></li>
             </ul>
         </li>
 
-        <li class="has_sub"><a href="#" ><i class="icon-list-alt"></i> 插件页面  <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
-            <ul>
-                <li><a href="/selectUserBase/test"  >插件页面 #1</a></li>
-                <li><a href="widgets2.html">插件页面 #2</a></li>
-                <li><a href="widgets3.html">插件页面 #3</a></li>
-            </ul>
+        <li><a href="${ctx}/selectUserBase/stuList" target="mainFrame" ><i class="icon-list-alt"></i> 学生信息管理  </a>
+            <%--<ul>--%>
+            <%--<li><a href="/selectUserBase/test"  >插件页面 #1</a></li>--%>
+            <%--<li><a href="widgets2.html">插件页面 #2</a></li>--%>
+            <%--<li><a href="widgets3.html">插件页面 #3</a></li>--%>
+            <%--</ul>--%>
         </li>
-        <li class="has_sub"><a href="#"><i class="icon-file-alt"></i> 页面模块1 <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
-            <ul>
-                <li><a href="post.html">表单Post</a></li>
-                <li><a href="login.html">登录页</a></li>
-                <li><a href="register.html">注册页面</a></li>
-                <li><a href="support.html">帮助页</a></li>
-                <li><a href="invoice.html">购物清单</a></li>
-                <li><a href="profile.html">个人资料</a></li>
-                <li><a href="gallery.html">相册页面</a></li>
-            </ul>
+        <li><a href="${ctx}/selectUserBase/teaList" target="mainFrame" ><i class="icon-file-alt"></i> 教师信息管理 </a>
+            <%--<ul>--%>
+            <%--<li><a href="post.html">表单Post</a></li>--%>
+            <%--<li><a href="login.html">登录页</a></li>--%>
+            <%--<li><a href="register.html">注册页面</a></li>--%>
+            <%--<li><a href="support.html">帮助页</a></li>--%>
+            <%--<li><a href="invoice.html">购物清单</a></li>--%>
+            <%--<li><a href="profile.html">个人资料</a></li>--%>
+            <%--<li><a href="gallery.html">相册页面</a></li>--%>
+            <%--</ul>--%>
         </li>
-        <li class="has_sub"><a href="#"><i class="icon-file-alt"></i> 页面模块2  <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
+        <li class="has_sub"><a href="#"><i class="icon-file-alt"></i> 论文题目审核  <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
             <ul>
-                <li><a href="media.html">媒体</a></li>
-                <li><a href="statement.html">描述</a></li>
-                <li><a href="error.html">错误</a></li>
-                <li><a href="error-log.html">错误日志</a></li>
-                <li><a href="calendar.html">日历</a></li>
-                <li><a href="grid.html">网格</a></li>
+                <li><a href="${ctx}/selectSubject/mySubList?teaId=${sessionScope.sessionUser.id}" target="mainFrame">我的题目</a></li>
+                <li><a href="${ctx}/selectSubject/optionalList"  target="mainFrame">已通过列表</a></li>
             </ul>
         </li>
         <li><a href="charts.html"><i class="icon-bar-chart"></i>图表</a></li>

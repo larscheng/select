@@ -149,13 +149,13 @@
             <ul class="pull-right" style="list-style: none; padding-top: 10px">
                 <li class="dropdown pull-right">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#" style="color: black;padding-right: 50px;text-decoration: none;">
-                        <i class="icon-user"></i> 管理员 : ${sessionScope.get("user").userName}<b class="caret"></b>
+                        <i class="icon-user"></i> 管理员 : ${sessionScope.get("sessionUser").userName}<b class="caret"></b>
                     </a>
 
                     <!-- Dropdown menu -->
                     <ul class="dropdown-menu">
 
-                        <li><a href="login.html"><i class="icon-off"></i> 退出</a></li>
+                        <li><a href="login.jsp"><i class="icon-off"></i> 退出</a></li>
                     </ul>
                 </li>
 

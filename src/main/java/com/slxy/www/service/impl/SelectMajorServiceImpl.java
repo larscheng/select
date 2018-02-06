@@ -87,9 +87,8 @@ public class SelectMajorServiceImpl extends ServiceImpl<SelectMajorMapper, Selec
         }
         if (selectMajor.getMajStatus()!=null&&selectMajor.getMajStatus().equals(EnumEnOrDis.DISABLED.getValue())){
             //当为禁用操作，判断是否有学生
-            SelectMajor major = selectMajorMapper.selectById(selectMajor.getId());
             List<SelectUserBase> userBaseList = selectUserBaseMapper.selectList(new EntityWrapper<>(
-                    new SelectUserBase().setStuMajorName(major.getMajName())
+                    new SelectUserBase().setStuMajorId(selectMajor.getId())
             ));
             if(!CollectionUtils.isEmpty(userBaseList)){
                 return Constant.MAJ_DISABLE_ERROR;
@@ -169,9 +168,8 @@ public class SelectMajorServiceImpl extends ServiceImpl<SelectMajorMapper, Selec
      */
     @Override
     public String majDel(SelectMajor selectMajor) {
-        SelectMajor major = selectMajorMapper.selectById(selectMajor.getId());
         List<SelectUserBase> userBaseList = selectUserBaseMapper.selectList(new EntityWrapper<>(
-                new SelectUserBase().setStuMajorName(major.getMajName())
+                new SelectUserBase().setStuMajorId(selectMajor.getId())
         ));
         if(!CollectionUtils.isEmpty(userBaseList)){
             return Constant.MAJ_DELETE_ERROR;
@@ -193,7 +191,7 @@ public class SelectMajorServiceImpl extends ServiceImpl<SelectMajorMapper, Selec
         for (Integer id : selectedIDs){
             SelectMajor major = selectMajorMapper.selectById(id);
             List<SelectUserBase> userBaseList = selectUserBaseMapper.selectList(new EntityWrapper<>(
-                    new SelectUserBase().setStuMajorName(major.getMajName())
+                    new SelectUserBase().setStuMajorId(id)
             ));
             if(!CollectionUtils.isEmpty(userBaseList)){
                 return Constant.MAJ_DELETE_ERROR_NAME+major.getMajName();

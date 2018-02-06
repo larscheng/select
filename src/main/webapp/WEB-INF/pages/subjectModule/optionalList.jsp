@@ -21,11 +21,11 @@
 
         <!-- Page heading -->
         <div class="page-head">
-            <h2 class="pull-left"><i class="icon-home"></i> 已审核论文</h2>
+            <h2 class="pull-left"><i class="icon-home"></i> 待选论文</h2>
 
             <!-- Breadcrumb -->
             <div class="bread-crumb pull-right">
-                <a href="#"><i class="icon-home"></i> 教师信息管理</a>
+                <a href="#"><i class="icon-home"></i> 论文信息管理</a>
                 <!-- Divider -->
                 <span class="divider">/</span>
                 <a href="#" class="bread-current">首页</a>
@@ -117,7 +117,7 @@
                         <div class="widget">
 
                             <div class="widget-head">
-                                <div class="pull-left">已审核列表</div>
+                                <div class="pull-left">待选列表</div>
                                 <div class="widget-icons pull-right">
                                     <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                     <a href="#" class="wclose"><i class="icon-remove"></i></a>
@@ -136,7 +136,6 @@
                                         <th>发布教师</th>
                                         <th>题目类型</th>
                                         <th>题目届别</th>
-                                        <th>审核状态</th>
                                         <th>面向系别</th>
                                         <th>选题状态</th>
                                         <th>创建时间</th>
@@ -152,23 +151,16 @@
                                             <td>${subject.subTeaName}</td>
                                             <td><span class="label label-primary">${subject.typeName}</span></td>
                                             <td>${subject.subYear}级</td>
-                                            <td>
-                                                <c:choose>
-                                                    <c:when test="${subject.admAuditState eq 1}">
-                                                        <span class="label label-danger">审核不通过</span>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <span class="label label-success">审核通过</span>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </td>
                                             <td>${subject.forDepName}</td>
                                             <td> <span class="label label-primary">${subject.subSelectStatusName}</span></td>
                                             <td><fmt:formatDate value="${subject.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                             <td>
                                                 <button class="btn btn-xs btn-info" onclick="subjectDetails(${subject.id})"><i class="icon-pencil"></i>详情</button>
-                                                <c:if test="${subject.admAuditState eq 1}">
-                                                    <button class="btn btn-xs btn-success" onclick="subSuccess(${subject.id})"><i class="icon-ok-circle"></i>通过</button>
+                                                <c:if test="${subject.subSelectStatus eq 0}">
+                                                    <c:if test="${sessionScope.userType eq 3}">
+                                                        <button class="btn btn-xs btn-success " onclick="subSuccess(${subject.id})"><i class="icon-ok-circle"></i>选择</button>
+                                                    </c:if>
+
                                                 </c:if>
                                             </td>
                                         </tr>
@@ -183,20 +175,20 @@
                                             <li><a href="#" class="btn  disabled">上一页</a></li>
                                         </c:if>
                                         <c:if test="${page.current-1 > 0}">
-                                            <li><a class="disabled" href="${ctx}/selectSubject/subList?page=${page.current-1}">上一页</a></li>
-                                            <li><a href="${ctx}/selectSubject/subList?page=${page.current-1}">${page.current-1}</a></li>
+                                            <li><a class="disabled" href="${ctx}/selectSubject/optionalList?page=${page.current-1}">上一页</a></li>
+                                            <li><a href="${ctx}/selectSubject/optionalList?page=${page.current-1}">${page.current-1}</a></li>
                                         </c:if>
 
-                                        <li><a href="${ctx}/selectSubject/subList?page=${page.current}">${page.current}</a></li>
+                                        <li><a href="${ctx}/selectSubject/optionalList?page=${page.current}">${page.current}</a></li>
 
                                         <c:if test="${page.current+1 <= page.pages}">
-                                            <li><a href="${ctx}/selectSubject/subList?page=${page.current+1}">${page.current+1}</a></li>
+                                            <li><a href="${ctx}/selectSubject/optionalList?page=${page.current+1}">${page.current+1}</a></li>
                                         </c:if>
                                         <c:if test="${page.current+2 <= page.pages}">
-                                            <li><a href="${ctx}/selectSubject/subList?page=${page.current+2}">${page.current+2}</a></li>
+                                            <li><a href="${ctx}/selectSubject/optionalList?page=${page.current+2}">${page.current+2}</a></li>
                                         </c:if>
                                         <c:if test="${page.current+1 <= page.pages}">
-                                            <li><a href="${ctx}/selectSubject/subList?page=${page.current+1}">下一页</a></li>
+                                            <li><a href="${ctx}/selectSubject/optionalList?page=${page.current+1}">下一页</a></li>
                                         </c:if>
                                         <c:if test="${page.current+1 > page.pages}">
                                             <li><a class="btn  disabled" href="#">下一页</a></li>
@@ -236,7 +228,7 @@
     function search() {
         $.ajax({
             type: "post",
-            url: "/selectSubject/subListAjax",
+            url: "/selectSubject/optionalListAjax",
             data:{"search":$(" input[ name='search' ] ").val()},
             dataType:"json",
             success:function(objects){
@@ -251,7 +243,7 @@
     function pageSearch(page) {
         $.ajax({
             type: "post",
-            url: "/selectSubject/subListAjax",
+            url: "/selectSubject/optionalListAjax",
             data:{"page":page,
                 "search":$(" input[ name='search' ] ").val(),
                 "admAuditState":$(" select[ name='admAuditState' ] ").val(),
@@ -272,7 +264,7 @@
     $("#searchSubmit").click(function(){
         $.ajax({
             type: "post",
-            url: "/selectSubject/subListAjax",
+            url: "/selectSubject/optionalListAjax",
             data: $("#searchForm").serialize(),
             dataType:"json",
             success:function(objects){
@@ -320,7 +312,9 @@
     function initTeaPage(objects) {
         var obj =JSON.parse(objects);
         var subjectList = obj.subjectList;
-        $("#items").html(null);
+//        console.log(subjectList);
+        var Item = $("#items");
+        Item.html(null);
         if (jQuery.isEmptyObject(subjectList)){
             $("#items").append("<tr><td colspan='14' class='text-center'> 😑 暂无数据！</td></tr>");
         }else{
@@ -337,10 +331,10 @@
                     +"<td>"+val.subYear+"级</td>"
                 ;
 //                    console.log(item);
-                if (parseInt(val.admAuditState) == 2){
+                if (parseInt(val.subSelectStatus) == 0){
                     item +=
-                        "<td><span class='label label-success'>审核通过</span></td>"
-                        +"<td>"+val.forDepName+"</td>"
+                        "<td>"+val.forDepName+"</td>"
+                        +"<td><span class='label label-primary'>"+val.subSelectStatusName+"</span></td>"
                         +"<td>"+time+"</td>"
                         +"<td>" +
                         "<button onclick='subjectDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
@@ -349,18 +343,18 @@
                     ;
                 }else{
                     item+=
-                        "<td><span class='label label-danger'>审核不通过</span></td>"
-                        +"<td>"+val.forDepName+"</td>"
+                        "<td>"+val.forDepName+"</td>"
+                        +"<td><span class='label label-primary'>"+val.subSelectStatusName+"</span></td>"
                         +"<td>"+time+"</td>"
                         +"<td>" +
-                        "<button onclick='subjectDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
-                        "<button onclick='subSuccess("+val.id+")' class='btn btn-xs btn-success' style='margin-right: 5px'><i class='icon-ok-circle'>通过</i></button>" +
+                        "<button onclick='subjectDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>"
                         +"</tr>"
                     ;
                 }
-                $("#items").append(item);
+                Item.append(item);
             });
         }
+
         $(".pagination").html(null);
         var page = obj.page;
         var pageItem="";

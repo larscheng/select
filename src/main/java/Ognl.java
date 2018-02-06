@@ -1,5 +1,6 @@
 
 
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.lang.reflect.Array;
@@ -146,6 +147,10 @@ public class Ognl {
      */
     public static boolean equalsStr(String str, String targetStr) {
         return StringUtils.equalsIgnoreCase(str,targetStr);
+    }
+
+    public static boolean equalsNumber(Integer n1, Integer n2) {
+        return ObjectUtils.equals(n1,n2);
     }
 
 }

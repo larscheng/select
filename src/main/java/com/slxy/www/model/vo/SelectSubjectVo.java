@@ -76,6 +76,14 @@ public class SelectSubjectVo extends  PageVo {
      */
     private String subYear;
     /**
+     * 题目面向系别id
+     */
+    private Integer forDepId;
+    /**
+     * 题目选题状态 0未选 1审核中 2已选
+     */
+    private Integer subSelectStatus;
+    /**
      * 创建时间
      */
     private Date gmtCreate;
@@ -91,7 +99,14 @@ public class SelectSubjectVo extends  PageVo {
     /*论文类型名*/
     private String typeName;
 
-
+    /***
+     * 选题人id
+     */
+    private Integer selectId;
+    /***
+     * 选择原因
+     */
+    private  String selectReason;
 
     public SelectSubjectVo() {
     }
@@ -249,8 +264,39 @@ public class SelectSubjectVo extends  PageVo {
         return this;
     }
 
-    public String toString() {
-        return "SelectSubjectVo(id=" + this.getId() + ", subName=" + this.getSubName() + ", teaId=" + this.getTeaId() + ", subType=" + this.getSubType() + ", subContent=" + this.getSubContent() + ", admAuditState=" + this.getAdmAuditState() + ", admAuditContent=" + this.getAdmAuditContent() + ", admAuditId=" + this.getAdmAuditId() + ", tutorScore=" + this.getTutorScore() + ", judgeScore=" + this.getJudgeScore() + ", defenceScore=" + this.getDefenceScore() + ", finalTotalScore=" + this.getFinalTotalScore() + ", subYear=" + this.getSubYear() + ", gmtCreate=" + this.getGmtCreate() + ", gmtModify=" + this.getGmtModify() + ", subTeaName=" + this.getSubTeaName() + ", typeName=" + this.getTypeName() + ")";
+    public Integer getForDepId() {
+        return forDepId;
     }
 
+    public SelectSubjectVo setForDepId(Integer forDepId) {
+        this.forDepId = forDepId;
+        return this;
+    }
+
+    public Integer getSubSelectStatus() {
+        return subSelectStatus;
+    }
+
+    public SelectSubjectVo setSubSelectStatus(Integer subSelectStatus) {
+        this.subSelectStatus = subSelectStatus;
+        return this;
+    }
+
+    public Integer getSelectId() {
+        return selectId;
+    }
+
+    public SelectSubjectVo setSelectId(Integer selectId) {
+        this.selectId = selectId;
+        return this;
+    }
+
+    public String getSelectReason() {
+        return selectReason;
+    }
+
+    public SelectSubjectVo setSelectReason(String selectReason) {
+        this.selectReason = selectReason;
+        return this;
+    }
 }

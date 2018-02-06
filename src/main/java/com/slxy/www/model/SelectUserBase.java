@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.sun.jdi.IntegerType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -70,8 +71,8 @@ public class SelectUserBase implements Serializable {
     /**
      * 学生专业名称
      */
-    @TableField("stu_major_name")
-    private String stuMajorName;
+    @TableField("stu_major_id")
+    private Integer stuMajorId;
     /**
      * 学生班级
      */
@@ -105,8 +106,8 @@ public class SelectUserBase implements Serializable {
     /**
      * 教师所属系别
      */
-    @TableField("tea_dep_name")
-    private String teaDepName;
+    @TableField("tea_dep_id")
+    private Integer teaDepId;
     /**
      * 教师个人简介
      */
@@ -170,8 +171,8 @@ public class SelectUserBase implements Serializable {
         return this.userQq;
     }
 
-    public String getStuMajorName() {
-        return this.stuMajorName;
+    public Integer getStuMajorId() {
+        return this.stuMajorId;
     }
 
     public Integer getStuClass() {
@@ -198,8 +199,8 @@ public class SelectUserBase implements Serializable {
         return this.teaDirection;
     }
 
-    public String getTeaDepName() {
-        return this.teaDepName;
+    public Integer getTeaDepId() {
+        return this.teaDepId;
     }
 
     public String getTeaInfo() {
@@ -266,8 +267,8 @@ public class SelectUserBase implements Serializable {
         return this;
     }
 
-    public SelectUserBase setStuMajorName(String stuMajorName) {
-        this.stuMajorName = stuMajorName;
+    public SelectUserBase setStuMajorId(Integer stuMajorId) {
+        this.stuMajorId = stuMajorId;
         return this;
     }
 
@@ -301,8 +302,8 @@ public class SelectUserBase implements Serializable {
         return this;
     }
 
-    public SelectUserBase setTeaDepName(String teaDepName) {
-        this.teaDepName = teaDepName;
+    public SelectUserBase setTeaDepId(Integer teaDepId) {
+        this.teaDepId = teaDepId;
         return this;
     }
 
@@ -334,10 +335,6 @@ public class SelectUserBase implements Serializable {
     public SelectUserBase setGmtModify(Date gmtModify) {
         this.gmtModify = gmtModify;
         return this;
-    }
-
-    public String toString() {
-        return "SelectUserBase(id=" + this.getId() + ", userCode=" + this.getUserCode() + ", userPassword=" + this.getUserPassword() + ", userName=" + this.getUserName() + ", userSex=" + this.getUserSex() + ", userMail=" + this.getUserMail() + ", userPhone=" + this.getUserPhone() + ", userQq=" + this.getUserQq() + ", stuMajorName=" + this.getStuMajorName() + ", stuClass=" + this.getStuClass() + ", stuYear=" + this.getStuYear() + ", teaPosition=" + this.getTeaPosition() + ", teaMajorName=" + this.getTeaMajorName() + ", teaEducation=" + this.getTeaEducation() + ", teaDirection=" + this.getTeaDirection() + ", teaDepName=" + this.getTeaDepName() + ", teaInfo=" + this.getTeaInfo() + ", userStatus=" + this.getUserStatus() + ", userType=" + this.getUserType() + ", operatorId=" + this.getOperatorId() + ", gmtCreate=" + this.getGmtCreate() + ", gmtModify=" + this.getGmtModify() + ")";
     }
 
 

@@ -54,6 +54,10 @@ public class SelectUserBaseDto {
      */
     private String stuMajorName;
     /**
+     * 学生专业id
+     */
+    private Integer stuMajorId;
+    /**
      * 学生班级
      */
     private Integer stuClass;
@@ -65,6 +69,7 @@ public class SelectUserBaseDto {
      * 教师职称 1教授，2副教授，3讲师，4助教
      */
     private Integer teaPosition;
+
     private String teaPositionZ;
     /**
      * 教师专业名称
@@ -74,6 +79,7 @@ public class SelectUserBaseDto {
      * 教师学历 1博士，2硕士，3本科
      */
     private Integer teaEducation;
+
     private String teaEducationZ;
 
     /**
@@ -84,6 +90,10 @@ public class SelectUserBaseDto {
      * 教师所属系别
      */
     private String teaDepName;
+    /**
+     * 教师所属id
+     */
+    private Integer teaDepId;
     /**
      * 教师个人简介
      */
@@ -342,34 +352,19 @@ public class SelectUserBaseDto {
         return this;
     }
 
-    @Override
-    public String toString() {
-        return "SelectUserBaseDto{" +
-                "id=" + id +
-                ", userCode='" + userCode + '\'' +
-                ", userPassword='" + userPassword + '\'' +
-                ", userName='" + userName + '\'' +
-                ", userSex=" + userSex +
-                ", userMail='" + userMail + '\'' +
-                ", userPhone='" + userPhone + '\'' +
-                ", userQq='" + userQq + '\'' +
-                ", stuMajorName='" + stuMajorName + '\'' +
-                ", stuClass=" + stuClass +
-                ", stuYear='" + stuYear + '\'' +
-                ", teaPosition=" + teaPosition +
-                ", teaPositionZ='" + teaPositionZ + '\'' +
-                ", teaMajorName='" + teaMajorName + '\'' +
-                ", teaEducation=" + teaEducation +
-                ", teaEducationZ='" + teaEducationZ + '\'' +
-                ", teaDirection='" + teaDirection + '\'' +
-                ", teaDepName='" + teaDepName + '\'' +
-                ", teaInfo='" + teaInfo + '\'' +
-                ", userStatus=" + userStatus +
-                ", userType=" + userType +
-                ", operatorId=" + operatorId +
-                ", gmtCreate=" + gmtCreate +
-                ", gmtModify=" + gmtModify +
-                ", sex='" + sex + '\'' +
-                '}';
+    public Integer getStuMajorId() {
+        return stuMajorId;
+    }
+
+    public void setStuMajorId(Integer stuMajorId) {
+        this.stuMajorId = stuMajorId;
+    }
+
+    public Integer getTeaDepId() {
+        return teaDepId;
+    }
+
+    public void setTeaDepId(Integer teaDepId) {
+        this.teaDepId = teaDepId;
     }
 }

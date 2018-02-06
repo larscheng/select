@@ -16,6 +16,8 @@ public class Constant {
     //ajax 消息返回
     public static final String SUCCESS = "OK";
     public static final String ERROR = "操作失败！";
+    public static final String PARAM_ERROR = "请求参数异常！";
+    public static final String NULL_ERROR = "数据不存在！";
 
 
     //系别
@@ -44,7 +46,11 @@ public class Constant {
 
     public static final String AUDIT_FAIL_REASON = "审核失败请您检查后重试！！！";
     public static final String AUDIT_SUCCESS_REASON = "恭喜您，论文审核通过！！！";
+    public static final String SUB_ADD_NAME_EXIST = "该题目名称已存在，添加失败！";
 
+    //选题
+    public static final String SELECT_ERROR_REPEAT = "您已选过题目，请勿重复选择！";
+    public static final String SELECT_ERROR_SELECTED = "该题目已经被选，请重新选择！";
 
 
 }

@@ -48,7 +48,7 @@
                     <form class="navbar-form center" role="search" id="searchForm">
 
                         <div class="form-group " style="position: relative;margin-right: 10px">
-                            <input type="text" class="form-control" id="search" name="search" placeholder="题目名/年份">
+                            <input type="text" class="form-control" id="search" name="search" placeholder="题目名称/题目届别">
                             <span onclick="search()" style="position: absolute;left: 155px;top: 6px;cursor: pointer"><i class="icon-search" ></i></span>
                         </div>
 
@@ -57,6 +57,15 @@
                                 <option value="" selected>题目类型</option>
                                 <c:forEach var="type" items="${requestScope.subType}">
                                     <option value="${type.key}">${type.value}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+
+                        <div class="form-group " style="margin-right: 10px">
+                            <select  class="form-control" name="forDepId">
+                                <option value="" selected>面向系别</option>
+                                <c:forEach var="dep" items="${requestScope.depList}">
+                                    <option value="${dep.id}">${dep.depName}</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -120,7 +129,8 @@
                                         <th>题目名称</th>
                                         <th>发布教师</th>
                                         <th>题目类型</th>
-                                        <th>题目年份</th>
+                                        <th>题目届别</th>
+                                        <th>面向系别</th>
                                         <th>创建时间</th>
                                         <th>操作</th>
                                     </tr>
@@ -133,7 +143,8 @@
                                             <td>${subject.subName}</td>
                                             <td>${subject.subTeaName}</td>
                                             <td><span class="label label-primary">${subject.typeName}</span></td>
-                                            <td>${subject.subYear}</td>
+                                            <td>${subject.subYear}级</td>
+                                            <td>${subject.forDepName}</td>
                                             <td><fmt:formatDate value="${subject.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                             <td>
                                                 <button class="btn btn-xs btn-info" onclick="subDetails(${subject.id})"><i class="icon-pencil"></i>详情</button>
@@ -208,7 +219,7 @@
                                         <c:if test="${page.current+1 > page.pages}">
                                             <li><a class="btn  disabled" href="#">下一页</a></li>
                                         </c:if>
-
+                                        <li><label style="line-height: 35px">共${page.total}条记录</label></li>
                                     </ul>
 
                                     <div class="clearfix"></div>
@@ -268,6 +279,7 @@
             data:{"page":page,
                 "search":$(" input[ name='search' ] ").val(),
                 "subType":$(" select[ name='subType' ] ").val(),
+                "forDepId":$(" select[ name='forDepId' ] ").val(),
                 "teaId":$(" select[ name='teaId' ] ").val()
             },
             dataType:"json",
@@ -303,7 +315,7 @@
                 $.ajax({
                     type:"POST",
                     url:"/selectSubject/subAudited",
-                    data:{"id":id,"admAuditState":2,"admAuditId":${sessionScope.user.id}},
+                    data:{"id":id,"admAuditState":2,"admAuditId":${sessionScope.sessionUser.id}},
                     dataType:"json",
                     success:function(msg){
                         if("OK"!=msg){
@@ -330,7 +342,7 @@
                 $.ajax({
                     type:"POST",
                     url:"/selectSubject/subAudited",
-                    data:{"id":$("#hid").val(),"admAuditState":1,"admAuditId":${sessionScope.user.id},"admAuditContent":$("#reason").val()},
+                    data:{"id":$("#hid").val(),"admAuditState":1,"admAuditId":${sessionScope.sessionUser.id},"admAuditContent":$("#reason").val()},
                     dataType:"json",
                     success:function(msg){
                         if("OK"!=msg){
@@ -409,7 +421,8 @@
                     +"<td>"+val.subName+"</td>"
                     +"<td>"+val.subTeaName+"</td>"
                     +"<td><span class='label label-primary'>"+val.typeName+"</span></td>"
-                    +"<td>"+val.subYear+"</td>"
+                    +"<td>"+val.subYear+"级</td>"
+                    +"<td>"+val.forDepName+"</td>"
                     +"<td>"+time+"</td>"
                     +"<td>" +
                         "<button onclick='subjectDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
