@@ -352,7 +352,7 @@ public class SelectSubjectServiceImpl extends ServiceImpl<SelectSubjectMapper, S
         if (ObjectUtils.isEmpty(selectSubject)){
             return Constant.NULL_ERROR;
         }
-        if (!selectSubject.getSubSelectStatus().equals(EnumSubSelectStatus.Untreated)){
+        if (!selectSubject.getSubSelectStatus().equals(EnumSubSelectStatus.Untreated.getValue())){
             logger.info("该题目已经被选，请重新选择");
             return Constant.SELECT_ERROR_SELECTED;
         }
