@@ -42,7 +42,7 @@
             <%--<li><a href="gallery.html">相册页面</a></li>--%>
             <%--</ul>--%>
         </li>
-        <li><a href="${ctx}/selectTopic/stuTopicList?stuId=${sessionScope.sessionUser.id}" target="mainFrame" ><i class="icon-file-alt"></i> 选题信息管理 </a>
+        <li><a href="${ctx}/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}" target="mainFrame" ><i class="icon-file-alt"></i> 选题信息管理 </a>
 
         </li>
         <li class="has_sub"><a href="#" ><i class="icon-list-alt"></i> 插件页面  <span class="pull-right"><i class="icon-chevron-right"></i></span></a>

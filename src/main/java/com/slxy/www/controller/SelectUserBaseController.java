@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -51,7 +52,12 @@ public class SelectUserBaseController {
         return modelAndView;
     }
 
-
+    /**
+     * 用户列表
+     * @param modelAndView
+     * @param userBaseVo
+     * @return
+     */
     @RequestMapping("/userList")
     public ModelAndView userList(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
         modelAndView.setViewName("test");
@@ -174,6 +180,11 @@ public class SelectUserBaseController {
         return selectUserBaseService.stuUpload(request);
     }
 
+    /**
+     * 根据专业查询班级数
+     * @param userBase
+     * @return
+     */
     @RequestMapping(value = "/initClass", method = RequestMethod.POST)
     @ResponseBody
     public String initClass(SelectUserBase userBase) {
@@ -181,11 +192,33 @@ public class SelectUserBaseController {
     }
 
 
+    /**
+     * 学生模板下载
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    @RequestMapping("/stuFileDown")
+    public void stuFileDown(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        String fileName= "select_students.xls";
+        selectUserBaseService.down(request,response,fileName);
+    }
+
     /*********************************************************************************************************/
     /******************************************   教师   *****************************************************/
     /*********************************************************************************************************/
 
-
+    /**
+     * 教师模板下载
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    @RequestMapping("/teaFileDown")
+    public void teaFileDown(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        String fileName= "select_teachers.xls";
+        selectUserBaseService.down(request,response,fileName);
+    }
     /**
      * 教师列表初始化
      * @param modelAndView

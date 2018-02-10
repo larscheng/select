@@ -63,6 +63,14 @@
                 <li><a href="${ctx}/selectSubject/optionalList"  target="mainFrame">已通过列表</a></li>
             </ul>
         </li>
+
+        <li class="has_sub"><a href="#"><i class="icon-file-alt"></i> 选题信息管理  <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
+            <ul>
+                <li><a href="${ctx}/selectTopic/topicList" target="mainFrame" > 选题信息列表 </a></li>
+                <li><a href="${ctx}/selectTopic/noTopicList?teaId=${sessionScope.sessionUser.id}"  target="mainFrame">待审核记录</a></li>
+            </ul>
+        </li>
+        <li><a href="${ctx}/selectTopic/topicList" target="mainFrame" ><i class="icon-file-alt"></i> 选题信息管理 </a></li>
         <li><a href="charts.html"><i class="icon-bar-chart"></i>图表</a></li>
         <li><a href="tables.html"><i class="icon-table"></i>表格</a></li>
         <li><a href="forms.html"><i class="icon-tasks"></i>表单</a></li>

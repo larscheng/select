@@ -48,37 +48,33 @@
                     <form class="navbar-form center" role="search" id="searchForm">
 
                         <div class="form-group " style="position: relative;margin-right: 10px">
-                            <input type="text" class="form-control" id="search" name="search" placeholder="账号/姓名/邮箱/电话/qq">
+                            <input type="text" class="form-control" id="search" name="search" placeholder="题目名称/题目届别">
                             <span onclick="search()" style="position: absolute;left: 155px;top: 6px;cursor: pointer"><i class="icon-search" ></i></span>
                         </div>
 
                         <div class="form-group " style="margin-right: 10px">
-                            <select  class="form-control" name="userSex">
-                                <option value="" selected>性别</option>
-                                <option value="1">男</option>
-                                <option value="2">女</option>
+                            <select  class="form-control" name="teaId">
+                                <option value="" selected>教师名</option>
+                                <c:forEach var="tea" items="${requestScope.teaList}">
+                                    <option value="${tea.id}">${tea.userName}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+
+                        <div class="form-group " style="margin-right: 10px">
+                            <select  class="form-control" name="stuId">
+                                <option value="" selected>学生名</option>
+                                <c:forEach var="stu" items="${requestScope.stuList}">
+                                    <option value="${stu.id}">${stu.userName}</option>
+                                </c:forEach>
                             </select>
                         </div>
                         <div class="form-group " style="margin-right: 10px">
-                            <select  class="form-control" name="userStatus">
-                                <option value="" selected>状态</option>
-                                <option value="1">启用</option>
-                                <option value="0">禁用</option>
-                            </select>
-                        </div>
-                        <div class="form-group " style="margin-right: 10px">
-                            <select  class="form-control" name="teaPosition">
-                                <option value="" selected>职称</option>
-                            </select>
-                        </div>
-                        <div class="form-group" style="margin-right: 10px">
-                            <select  class="form-control" name="teaEducation">
-                                <option value="" selected>学历</option>
-                            </select>
-                        </div>
-                        <div class="form-group " style="margin-right: 10px">
-                            <select  class="form-control" name="teaDepId">
-                                <option value="" selected>所属系别</option>
+                            <select  class="form-control" name="teaAuditState">
+                                <option value="" selected>审核状态</option>
+                                <option value="0">未处理</option>
+                                <option value="1">审核不通过</option>
+                                <option value="2">审核通过</option>
                             </select>
                         </div>
 
@@ -182,32 +178,65 @@
                                 </table>
 
                                 <div class="widget-foot center">
-                                    <ul class="pagination ">
-                                        <c:if test="${page.current-1 eq 0}">
-                                            <li><a href="#" class="btn  disabled">上一页</a></li>
-                                        </c:if>
-                                        <c:if test="${page.current-1 > 0}">
-                                            <li><a class="disabled" href="/selectUserBase/teaList?page=${page.current-1}">上一页</a></li>
-                                            <li><a href="/selectUserBase/teaList?page=${page.current-1}">${page.current-1}</a></li>
-                                        </c:if>
+                                    <c:choose>
+                                        <c:when test="${sessionScope.userType eq 3}">
+                                            <ul class="pagination ">
+                                                <c:if test="${page.current-1 eq 0}">
+                                                    <li><a href="#" class="btn  disabled">上一页</a></li>
+                                                </c:if>
+                                                <c:if test="${page.current-1 > 0}">
+                                                    <li><a class="disabled" href="${ctx}/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}&page=${page.current-1}">上一页</a></li>
+                                                    <li><a href="${ctx}/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}&page=${page.current-1}">${page.current-1}</a></li>
+                                                </c:if>
 
 
-                                        <li><a href="/selectUserBase/teaList?page=${page.current}">${page.current}</a></li>
+                                                <li><a href="${ctx}/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}&page=${page.current}">${page.current}</a></li>
 
-                                        <c:if test="${page.current+1 <= page.pages}">
-                                            <li><a href="/selectUserBase/teaList?page=${page.current+1}">${page.current+1}</a></li>
-                                        </c:if>
-                                        <c:if test="${page.current+2 <= page.pages}">
-                                            <li><a href="/selectUserBase/teaList?page=${page.current+2}">${page.current+2}</a></li>
-                                        </c:if>
-                                        <c:if test="${page.current+1 <= page.pages}">
-                                            <li><a href="/selectUserBase/teaList?page=${page.current+1}">下一页</a></li>
-                                        </c:if>
-                                        <c:if test="${page.current+1 > page.pages}">
-                                            <li><a class="btn  disabled" href="#">下一页</a></li>
-                                        </c:if>
+                                                <c:if test="${page.current+1 <= page.pages}">
+                                                    <li><a href="${ctx}/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}&page=${page.current+1}">${page.current+1}</a></li>
+                                                </c:if>
+                                                <c:if test="${page.current+2 <= page.pages}">
+                                                    <li><a href="${ctx}/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}&page=${page.current+2}">${page.current+2}</a></li>
+                                                </c:if>
+                                                <c:if test="${page.current+1 <= page.pages}">
+                                                    <li><a href="${ctx}/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}&page=${page.current+1}">下一页</a></li>
+                                                </c:if>
+                                                <c:if test="${page.current+1 > page.pages}">
+                                                    <li><a class="btn  disabled" href="#">下一页</a></li>
+                                                </c:if>
 
-                                    </ul>
+                                            </ul>
+
+                                        </c:when>
+                                        <c:otherwise>
+                                            <ul class="pagination ">
+                                                <c:if test="${page.current-1 eq 0}">
+                                                    <li><a href="#" class="btn  disabled">上一页</a></li>
+                                                </c:if>
+                                                <c:if test="${page.current-1 > 0}">
+                                                    <li><a class="disabled" href="${ctx}/selectTopic/topicList?page=${page.current-1}">上一页</a></li>
+                                                    <li><a href="${ctx}/selectTopic/topicList?page=${page.current-1}">${page.current-1}</a></li>
+                                                </c:if>
+
+
+                                                <li><a href="${ctx}/selectTopic/topicList?page=${page.current}">${page.current}</a></li>
+
+                                                <c:if test="${page.current+1 <= page.pages}">
+                                                    <li><a href="${ctx}/selectTopic/topicList?page=${page.current+1}">${page.current+1}</a></li>
+                                                </c:if>
+                                                <c:if test="${page.current+2 <= page.pages}">
+                                                    <li><a href="${ctx}/selectTopic/topicList?page=${page.current+2}">${page.current+2}</a></li>
+                                                </c:if>
+                                                <c:if test="${page.current+1 <= page.pages}">
+                                                    <li><a href="${ctx}/selectTopic/topicList?page=${page.current+1}">下一页</a></li>
+                                                </c:if>
+                                                <c:if test="${page.current+1 > page.pages}">
+                                                    <li><a class="btn  disabled" href="#">下一页</a></li>
+                                                </c:if>
+
+                                            </ul>
+                                        </c:otherwise>
+                                    </c:choose>
 
                                     <div class="clearfix"></div>
 
@@ -232,41 +261,8 @@
 <%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>
 <script type="text/javascript">
     sessionStorage.setItem("userType",${sessionScope.userType});
-    function upload() {
-        confirm("导入前请下载好导入模板！","",function (isConfirm) {
-            if (isConfirm) {
-                //after click the confirm
-                $("#fileField").click();
-            } else {
-                //after click the cancel
-                //TODO 跳转到下载页
-            }
-        }, {confirmButtonText: '已有模板', cancelButtonText: '去下载', width: 400});
-    }
 
-    function teaUpload() {
-        $.ajax({
-            type:'POST',
-            url:'/selectUserBase/teaUpload', //你处理上传文件的服务端
-            data: new FormData($('#uploadForm')[0]),
-            async: false,
-            cache: false,
-            contentType: false,
-            processData: false,
-            dataType:"json",
-            success: function (msg) {//调用成功时怎么处理
-                    alert("😋"+msg,"",function () {
-                        location.href="/selectUserBase/teaList";
-                    },{type:"success",confirmButtonText:"好的"});
-            },//end success
-            error: function(e) {
-                alert(" 😥 系统异常，请与我们的工程师联系！");
-            }
-        });
-    }
-
-
-
+    var manType = sessionStorage.getItem("userType");
 
     $("#search").keydown(function (e) {
         if(event.keyCode == "13") {//判断如果按下的是回车键则执行下面的代码
@@ -274,10 +270,15 @@
         }
 
     });
+
     function search() {
+        var url = "/selectTopic/stuTopicAjaxList";
+        if (manType == 3){
+            url="/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
+        }
         $.ajax({
             type: "post",
-            url: "/selectUserBase/teaListAjax",
+            url: url,
             data:{"search":$(" input[ name='search' ] ").val()},
             dataType:"json",
             success:function(objects){
@@ -290,16 +291,18 @@
     }
 
     function pageSearch(page) {
+        var url = "/selectTopic/stuTopicAjaxList";
+        if (manType == 3){
+            url="/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
+        }
         $.ajax({
             type: "post",
-            url: "/selectUserBase/teaListAjax",
+            url: url,
             data:{"page":page,
                 "search":$(" input[ name='search' ] ").val(),
-                "userSex":$(" select[ name='userSex' ] ").val(),
-                "userStatus":$(" select[ name='userStatus' ] ").val(),
-                "teaPosition":$(" select[ name='teaPosition' ] ").val(),
-                "teaEducation":$(" select[ name='teaEducation' ] ").val(),
-                "teaDepId":$(" select[ name='teaDepId' ] ").val()
+                "teaId":$(" select[ name='teaId' ] ").val(),
+                "stuId":$(" select[ name='stuId' ] ").val(),
+                "teaAuditState":$(" select[ name='teaAuditState' ] ").val()
             },
             dataType:"json",
             success:function(objects){
@@ -312,9 +315,13 @@
     }
 
     $("#searchSubmit").click(function(){
+        var url = "/selectTopic/stuTopicAjaxList";
+        if (manType == 3){
+            url="/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
+        }
         $.ajax({
             type: "post",
-            url: "/selectUserBase/teaListAjax",
+            url: url,
             data: $("#searchForm").serialize(),
             dataType:"json",
             success:function(objects){
@@ -460,69 +467,46 @@
 
     function initTeaPage(objects) {
         var obj =JSON.parse(objects);
-        var teaList = obj.teaList;
+        var topicList = obj.topicList;
         $("#items").html(null);
-        if (jQuery.isEmptyObject(teaList)){
+        if (jQuery.isEmptyObject(topicList)){
             $("#items").append("<tr><td colspan='14' class='text-center'> 😑 暂无数据！</td></tr>");
         }else{
-            $(teaList).each(function (index) {
-                var val = teaList[index];
+            $(topicList).each(function (index) {
+                var val = topicList[index];
                 var time = getLocalTime(val.gmtCreate);
                 var item =
                     "<tr>"
                     +"<td class='text-center'>"+"<input type='checkbox' name='ids' value='"+val.id+"'/>"+"</td>"
                     +"<td>"+(parseInt(index)+1)+"</td>"
-                    +"<td>"+val.userName+"</td>"
-                    +"<td>"+val.userCode+"</td>"
-                    +"<td>"+val.sex+"</td>"
-                    +"<td>"+val.userMail+"</td>"
-                    +"<td>"+val.userPhone+"</td>"
-                    +"<td>"+val.userQq+"</td>"
-                    +"<td>"+val.teaDepName+"</td>"
-                    +"<td><span class='label label-primary'>"+val.teaPositionZ+"</span></td>"
-                    +"<td><span class='label label-warning'>"+val.teaEducationZ+"</span></td>"
-
+                    +"<td>"+val.subName+"</td>"
+                    +"<td>"+val.teaName+"</td>"
+                    +"<td>"+val.stuName+"</td>"
                 ;
-                var manType = sessionStorage.getItem("userType");
-                if (manType == 1){
-                    if (parseInt(val.userStatus) == 1){
+                    if (parseInt(val.teaAuditState) == 0){
                         item +=
-                            "<td><span class='label label-success'>启用</span></td>"
+                            "<td><span class='label label-warning'>未处理</span></td>"
+                            +"<td>"+val.topicYear+"级</td>"
                             +"<td>"+time+"</td>"
                             +"<td>" +
-                            "<button onclick='teaDisAble("+val.id+")' class='btn btn-xs btn-danger' style='margin-right: 5px'><i class='icon-remove'></i>禁用</button>" +
-                            "<button onclick='teaDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
-                            "<button onclick='teaUpdate("+val.id+")' class='btn btn-xs btn-warning' style='margin-right: 5px'><i class='icon-pencil'></i>编辑</button>" +
-                            "<button onclick='teaDelete("+val.id+")' class='btn btn-xs btn-danger' style='margin-right: 5px'><i class='icon-remove'>删除</i></button>" +
+                                "<button onclick='teaDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
                             "</td>"
                             +"</tr>"
                         ;
-                    }else{
+                    }else if (parseInt(val.teaAuditState) == 1){
                         item+=
-                            "<td><span class='label label-danger'>禁用</span></td>"
-                            +"<td>"+time+"</td>"
-                            +"<td>" +
-                            "<button onclick='teaAble("+val.id+")' class='btn btn-xs btn-success' style='margin-right: 5px'><i class='icon-ok'></i>启用</button>" +
-                            "<button onclick='teaDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
-                            "<button onclick='teaUpdate("+val.id+")' class='btn btn-xs btn-warning' style='margin-right: 5px'><i class='icon-pencil'></i>编辑</button>" +
-                            "<button onclick='teaDelete("+val.id+")' class='btn btn-xs btn-danger' style='margin-right: 5px'><i class='icon-remove'>删除</i></button>" +
-                            "</td>"
-                            +"</tr>"
-                        ;
-                    }
-                }else {
-                    if (parseInt(val.userStatus) == 1){
-                        item +=
-                            "<td><span class='label label-success'>启用</span></td>"
+                            "<td><span class='label label-danger'>审核不通过</span></td>"
+                            +"<td>"+val.topicYear+"级</td>"
                             +"<td>"+time+"</td>"
                             +"<td>" +
                             "<button onclick='teaDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
                             "</td>"
                             +"</tr>"
                         ;
-                    }else{
+                    }else {
                         item+=
-                            "<td><span class='label label-danger'>禁用</span></td>"
+                            "<td><span class='label label-success'>审核通过</span></td>"
+                            +"<td>"+val.topicYear+"级</td>"
                             +"<td>"+time+"</td>"
                             +"<td>" +
                             "<button onclick='teaDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
@@ -530,9 +514,6 @@
                             +"</tr>"
                         ;
                     }
-                }
-
-
                 $("#items").append(item);
             });
         }

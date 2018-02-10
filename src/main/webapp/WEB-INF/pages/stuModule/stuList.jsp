@@ -140,7 +140,8 @@
                                             <input type="file" id="fileField" name="fileField" style="display: none" onchange="ajaxUpload()"/>
                                         </form>
                                     </div>
-                                    <button type="button"  onclick="window.location.href='/selectUserBase/stuInitAdd';" class="btn btn-info pull-left "><i class="icon-upload"></i>学生添加</button>
+                                    <button type="button"  onclick="window.location.href='/selectUserBase/stuInitAdd';" style="margin-right: 10px" class="btn btn-info pull-left "><i class="icon-upload"></i>学生添加</button>
+                                    <button type="button"  onclick="window.location.href='/selectUserBase/stuFileDown';" class="btn btn-default pull-left "><i class="icon-upload"></i>模板下载</button>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -299,8 +300,9 @@
             } else {
                 //after click the cancel
                 //TODO 跳转到下载页
+                window.location.href='/selectUserBase/stuFileDown';
             }
-        }, {confirmButtonText: '已有模板', cancelButtonText: '去下载', width: 400});
+        }, {confirmButtonText: '已有模板', cancelButtonText: '下载模板', width: 400});
     }
 
     function ajaxUpload() {

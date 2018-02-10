@@ -61,6 +61,9 @@
         <if test="@Ognl@isNotEmpty(teaId)">
             and a.tea_id = #{teaId}
         </if>
+        <if test="@Ognl@isNotEmpty(teaAuditState)">
+            and a.tea_audit_state = #{teaAuditState}
+        </if>
         ORDER BY a.tea_audit_state DESC ,a.gmt_create DESC
     </select>
 </mapper>

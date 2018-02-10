@@ -30,11 +30,15 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
 import java.util.*;
 
 /**
@@ -253,7 +257,7 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
     public String stuUpdate(SelectUserBase userBase) {
         //校验重复
         String msg = checkCodeAndName(userBase);
-        if (StringUtils.isEmpty(msg)) return msg;
+        if (!StringUtils.isEmpty(msg)) return msg;
         return this.updateById(userBase)?Constant.SUCCESS:Constant.ERROR;
     }
 
@@ -276,7 +280,37 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
         return this.insert(user)?Constant.SUCCESS:Constant.ERROR;
     }
 
+    /**
+     * 文件下载功能
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    public void down(HttpServletRequest request,HttpServletResponse response,String fileName) throws Exception{
+        OutputStream outputStream = null;
+        InputStream inputStream=null;
+        try {
+            outputStream = response.getOutputStream();
+            response.setContentType("application/octet-stream;charset=UTF-8");// 设置文件输出类型
+            response.setHeader("Content-disposition", "attachment; filename="
+                    + new String(fileName.getBytes("utf-8"), "ISO8859-1"));//设置下载的文件名
+            String baseAbsoluteFilePath=request.getServletContext().getRealPath("");//获取的是项目在磁盘中的绝对路径，最后包括"\"
 
+            String fileRelativePath="WEB-INF/file/"+fileName;//文件相对于webRoot的路径
+
+            inputStream=new FileInputStream(baseAbsoluteFilePath+fileRelativePath);
+            byte[] buff=new byte[1024];
+            Integer readLength=0;
+            while((readLength=inputStream.read(buff,0,buff.length))>0){
+                outputStream.write(buff, 0, readLength);
+            }
+            outputStream.close();
+            inputStream.close();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
     /**
      * 校验账号 用户名是否重复

@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * <p>
@@ -53,4 +54,6 @@ public interface ISelectUserBaseService extends IService<SelectUserBase> {
     String teaUpload(HttpServletRequest request);
 
     String initClass(SelectUserBase userBase);
+
+    void down(HttpServletRequest request, HttpServletResponse response,String fileName) throws Exception;
 }
