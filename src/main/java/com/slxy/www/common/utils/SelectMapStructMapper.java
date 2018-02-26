@@ -4,8 +4,10 @@ package com.slxy.www.common.utils;
 
 
 import com.slxy.www.model.SelectSubject;
+import com.slxy.www.model.SelectTopic;
 import com.slxy.www.model.SelectUserBase;
 import com.slxy.www.model.dto.SelectSubjectDto;
+import com.slxy.www.model.dto.SelectTopicDto;
 import com.slxy.www.model.dto.SelectUserBaseDto;
 import com.slxy.www.model.vo.SelectSubjectVo;
 import org.mapstruct.MapMapping;
@@ -31,6 +33,8 @@ public interface SelectMapStructMapper {
     List<SelectSubjectDto> SelectSubjectsPoToDto(List<SelectSubject> subjectList);
 
     SelectSubject SelectSubjectVoToPo(SelectSubjectVo vo);
+
+    SelectTopicDto SelectTopicPoToDto(SelectTopic topic);
 }
 
 

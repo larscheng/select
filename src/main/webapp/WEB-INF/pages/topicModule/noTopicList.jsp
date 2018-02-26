@@ -157,7 +157,7 @@
                                             <td>${topic.topicYear}级</td>
                                             <td><fmt:formatDate value="${topic.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                             <td>
-                                                <button class="btn btn-xs btn-info" onclick="teaDetails(${topic.id})"><i class="icon-pencil"></i>详情</button>
+                                                <button class="btn btn-xs btn-info" onclick="topicDetails(${topic.id})"><i class="icon-pencil"></i>详情</button>
                                                 <button class="btn btn-xs btn-success" onclick="subSuccess(${topic.id})"><i class="icon-ok-circle"></i>通过</button>
                                                 <button class="btn btn-xs btn-danger" onclick="cleanAll(${topic.id})"
                                                         id="modal-317062" href="#modal-container-317062" role="button"  data-toggle="modal"><i class="icon-remove-sign"></i>不通过</button>
@@ -416,80 +416,9 @@
 
     }
 
-    function teaDelete(id){
-        confirm(" 😲 确认删除吗？","",function (isconfirm) {
-            if (isconfirm){
-                $.ajax({
-                    type:"POST",
-                    url:"/selectUserBase/teaDelete",
-                    data:{"id":id},
-                    dataType:"json",
-                    success:function(msg){
-                        if("OK"!=msg){
-                            alert(" 😅 "+msg);
-                        }else{
-                            alert(" 😋 删除成功！","",function () {
-                                location.href="/selectUserBase/teaList";
-                            },{type:"success",confirmButtonText:"好的"});
-                        }
-                    },
-                    error:function(e){
-                        alert("😥 系统异常，请与我们的工程师联系！");
-                    }
-                });
-            }
-        })
-
+    function topicDetails(id) {
+        window.location.href="/selectTopic/topicDetails?id="+id;
     }
-
-    function teaDeleteAll(){
-        var arrayId = new Array();
-        $('input[name="ids"]:checked').each(function(){arrayId.push($(this).val());});
-        if(arrayId.length==0){
-            alert(" 😨 无实例选中");
-            event.preventDefault(); // 兼容标准浏览器
-            window.event.returnValue = false; // 兼容IE6~8
-        }else{
-            confirm(" 😲 确认删除吗？","",function (is) {
-                if (is){
-                    $.ajax({
-                        type:"POST",
-                        url:"/selectUserBase/teaDeleteAll",
-                        data: { "selectedIDs": arrayId },
-                        dataType:"json",
-                        traditional: true,
-                        success:function(msg){
-                            if("OK"!=msg){
-                                alert(" 😅 "+msg);
-                            }else{
-                                alert(" 😋 删除成功！","",function () {
-                                    location.href="/selectUserBase/teaList";
-                                },{type:"success",confirmButtonText:"好的"});
-                            }
-
-                        },
-                        error:function(e){
-                            alert("😥 系统异常，请与我们的工程师联系！");
-                        }
-                    });
-                }
-            })
-
-        }
-
-    }
-
-    function teaDetails(id) {
-        window.location.href="/selectUserBase/teaDetails?id="+id;
-    }
-
-    function teaUpdate(id) {
-        window.location.href='/selectUserBase/teaInitUpdate?id='+id;
-    }
-
-
-
-
 
 
     function initTeaPage(objects) {

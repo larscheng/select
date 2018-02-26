@@ -169,7 +169,7 @@
                                             <td>${topic.topicYear}级</td>
                                             <td><fmt:formatDate value="${topic.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                             <td>
-                                                <button class="btn btn-xs btn-info" onclick="teaDetails(${topic.id})"><i class="icon-pencil"></i>详情</button>
+                                                <button class="btn btn-xs btn-info" onclick="topicDetails(${topic.id})"><i class="icon-pencil"></i>详情</button>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -452,8 +452,8 @@
 
     }
 
-    function teaDetails(id) {
-        window.location.href="/selectUserBase/teaDetails?id="+id;
+    function topicDetails(id) {
+        window.location.href="/selectTopic/topicDetails?id="+id;
     }
 
     function teaUpdate(id) {

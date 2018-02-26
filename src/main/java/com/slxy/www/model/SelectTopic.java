@@ -19,9 +19,7 @@ import java.io.Serializable;
  * @author zhengql123
  * @since 2018-02-04
  */
-@Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
+
 @TableName("select_topic")
 public class SelectTopic implements Serializable {
 
@@ -77,5 +75,102 @@ public class SelectTopic implements Serializable {
      */
     @TableField("gmt_modify")
     private Date gmtModify;
+
+    public SelectTopic() {
+    }
+
+    public Integer getId() {
+        return this.id;
+    }
+
+    public Integer getSubId() {
+        return this.subId;
+    }
+
+    public Integer getTeaId() {
+        return this.teaId;
+    }
+
+    public Integer getStuId() {
+        return this.stuId;
+    }
+
+    public String getStuSelectReason() {
+        return this.stuSelectReason;
+    }
+
+    public Integer getTeaAuditState() {
+        return this.teaAuditState;
+    }
+
+    public String getTeaAuditContent() {
+        return this.teaAuditContent;
+    }
+
+    public String getTopicYear() {
+        return this.topicYear;
+    }
+
+    public Date getGmtCreate() {
+        return this.gmtCreate;
+    }
+
+    public Date getGmtModify() {
+        return this.gmtModify;
+    }
+
+    public SelectTopic setId(Integer id) {
+        this.id = id;
+        return this;
+    }
+
+    public SelectTopic setSubId(Integer subId) {
+        this.subId = subId;
+        return this;
+    }
+
+    public SelectTopic setTeaId(Integer teaId) {
+        this.teaId = teaId;
+        return this;
+    }
+
+    public SelectTopic setStuId(Integer stuId) {
+        this.stuId = stuId;
+        return this;
+    }
+
+    public SelectTopic setStuSelectReason(String stuSelectReason) {
+        this.stuSelectReason = stuSelectReason;
+        return this;
+    }
+
+    public SelectTopic setTeaAuditState(Integer teaAuditState) {
+        this.teaAuditState = teaAuditState;
+        return this;
+    }
+
+    public SelectTopic setTeaAuditContent(String teaAuditContent) {
+        this.teaAuditContent = teaAuditContent;
+        return this;
+    }
+
+    public SelectTopic setTopicYear(String topicYear) {
+        this.topicYear = topicYear;
+        return this;
+    }
+
+    public SelectTopic setGmtCreate(Date gmtCreate) {
+        this.gmtCreate = gmtCreate;
+        return this;
+    }
+
+    public SelectTopic setGmtModify(Date gmtModify) {
+        this.gmtModify = gmtModify;
+        return this;
+    }
+
+    public String toString() {
+        return "SelectTopic(id=" + this.getId() + ", subId=" + this.getSubId() + ", teaId=" + this.getTeaId() + ", stuId=" + this.getStuId() + ", stuSelectReason=" + this.getStuSelectReason() + ", teaAuditState=" + this.getTeaAuditState() + ", teaAuditContent=" + this.getTeaAuditContent() + ", topicYear=" + this.getTopicYear() + ", gmtCreate=" + this.getGmtCreate() + ", gmtModify=" + this.getGmtModify() + ")";
+    }
 
 }

@@ -3,8 +3,12 @@ package com.slxy.www.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.slxy.www.common.utils.SelectMapStructMapper;
+import com.slxy.www.mapper.SelectMajorMapper;
+import com.slxy.www.mapper.SelectSubjectMapper;
 import com.slxy.www.mapper.SelectUserBaseMapper;
 import com.slxy.www.model.SelectMajor;
+import com.slxy.www.model.SelectSubject;
 import com.slxy.www.model.SelectTopic;
 import com.slxy.www.mapper.SelectTopicMapper;
 import com.slxy.www.model.SelectUserBase;
@@ -43,6 +47,8 @@ public class SelectTopicServiceImpl extends ServiceImpl<SelectTopicMapper, Selec
     private SelectTopicMapper selectTopicMapper;
     @Autowired
     private SelectUserBaseMapper selectUserBaseMapper;
+    @Autowired
+    private SelectSubjectMapper selectSubjectMapper;
 
 
     @Override
@@ -89,7 +95,29 @@ public class SelectTopicServiceImpl extends ServiceImpl<SelectTopicMapper, Selec
         return object;
     }
 
+    @Override
+    public ModelAndView topicDetails(ModelAndView modelAndView, SelectTopicVo vo) {
+        SelectTopic topic = this.selectById(vo.getId());
+        if (!ObjectUtils.isEmpty(topic)){
+            SelectTopicDto dto = SelectMapStructMapper.INSTANCE.SelectTopicPoToDto(topic);
+            //题目名
+            SelectSubject selectSubject = selectSubjectMapper.selectById(topic.getStuId());
+            if (!ObjectUtils.isEmpty(selectSubject)){
+                dto.setSubName(selectSubject.getSubName());
+                SelectUserBase teacher = selectUserBaseMapper.selectById(selectSubject.getTeaId());
+                //教师名
+                dto.setTeaName(teacher.getUserName());
+            }
+            //学生名
+            SelectUserBase selectUserBase = selectUserBaseMapper.selectById(topic.getStuId());
+            if (!ObjectUtils.isEmpty(selectUserBase)){
+                dto.setStuName(selectUserBase.getUserName());
+            }
+            modelAndView.addObject("topicDetails",dto);
+        }
 
+        return modelAndView;
+    }
 
 
 }

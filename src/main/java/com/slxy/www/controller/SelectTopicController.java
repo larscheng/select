@@ -26,7 +26,7 @@ public class SelectTopicController {
     private ISelectTopicService selectTopicService;
 
     /**
-     * 选题信息列表
+     * 选题信息列表 ，根据vo不同权限不同
      * @param modelAndView
      * @param vo
      * @return
@@ -60,7 +60,7 @@ public class SelectTopicController {
 //        return selectTopicService.topicList(modelAndView,vo);
 //    }
     /**
-     * 待审核列表
+     * 待审核选题列表
      * @param modelAndView
      * @param vo
      * @return
@@ -70,5 +70,18 @@ public class SelectTopicController {
         modelAndView.setViewName("topicModule/noTopicList");
         return selectTopicService.topicList(modelAndView,vo);
     }
+
+    /**
+     * 选题详情
+     * @param modelAndView
+     * @param vo
+     * @return
+     */
+    @RequestMapping("/topicDetails")
+    public ModelAndView topicDetails(ModelAndView  modelAndView, SelectTopicVo vo) {
+        modelAndView.setViewName("topicModule/topicDetails");
+        return selectTopicService.topicDetails(modelAndView,vo);
+    }
+
 }
 
