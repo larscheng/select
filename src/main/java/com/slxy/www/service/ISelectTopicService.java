@@ -21,4 +21,6 @@ public interface ISelectTopicService extends IService<SelectTopic> {
     String stuTopicAjaxList(SelectTopicVo vo);
 
     ModelAndView topicDetails(ModelAndView modelAndView, SelectTopicVo vo);
+
+    String topicAudited(SelectTopicVo vo);
 }

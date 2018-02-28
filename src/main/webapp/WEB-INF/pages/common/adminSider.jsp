@@ -23,14 +23,7 @@
     <!-- If the main navigation has sub navigation, then add the class "has_sub" to "li" of main navigation. -->
     <ul id="nav" style="display: block;">
         <!-- Main menu with font awesome icon -->
-        <li><a href="${ctx}/selectUserBase/userList"  target="mainFrame" class=""><i class="icon-home"></i> 首页</a>
-            <!-- Sub menu markup
-            <ul>
-              <li><a href="#">Submenu #1</a></li>
-              <li><a href="#">Submenu #2</a></li>
-              <li><a href="#">Submenu #3</a></li>
-            </ul>-->
-        </li>
+        <li><a href="${ctx}/selectUserBase/userList"  target="mainFrame" class=""><i class="icon-home"></i> 首页</a></li>
 
         <li class="has_sub"><a href="#"><i class="icon-list-alt"></i> 院系专业  <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
             <ul>
@@ -39,30 +32,15 @@
             </ul>
         </li>
 
-        <li><a href="${ctx}/selectUserBase/stuList" target="mainFrame" ><i class="icon-list-alt"></i> 学生信息管理  </a>
-            <%--<ul>--%>
-                <%--<li><a href="/selectUserBase/test"  >插件页面 #1</a></li>--%>
-                <%--<li><a href="widgets2.html">插件页面 #2</a></li>--%>
-                <%--<li><a href="widgets3.html">插件页面 #3</a></li>--%>
-            <%--</ul>--%>
-        </li>
-        <li><a href="${ctx}/selectUserBase/teaList" target="mainFrame" ><i class="icon-file-alt"></i> 教师信息管理 </a>
-            <%--<ul>--%>
-                <%--<li><a href="post.html">表单Post</a></li>--%>
-                <%--<li><a href="login.html">登录页</a></li>--%>
-                <%--<li><a href="register.html">注册页面</a></li>--%>
-                <%--<li><a href="support.html">帮助页</a></li>--%>
-                <%--<li><a href="invoice.html">购物清单</a></li>--%>
-                <%--<li><a href="profile.html">个人资料</a></li>--%>
-                <%--<li><a href="gallery.html">相册页面</a></li>--%>
-            <%--</ul>--%>
-        </li>
+        <li><a href="${ctx}/selectUserBase/stuList" target="mainFrame" ><i class="icon-list-alt"></i> 学生信息管理  </a></li>
+        <li><a href="${ctx}/selectUserBase/teaList" target="mainFrame" ><i class="icon-file-alt"></i> 教师信息管理 </a></li>
         <li class="has_sub"><a href="#"><i class="icon-file-alt"></i> 论文题目审核  <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
             <ul>
                 <li><a href="${ctx}/selectSubject/unSubList" target="mainFrame">待审核列表</a></li>
                 <li><a href="${ctx}/selectSubject/subList"  target="mainFrame">已审核列表</a></li>
             </ul>
         </li>
+        <li><a href="${ctx}/selectTopic/topicList" target="mainFrame" ><i class="icon-file-alt"></i> 选题信息列表 </a></li>
         <li><a href="charts.html"><i class="icon-bar-chart"></i>未作</a></li>
         <li><a href="tables.html"><i class="icon-table"></i>未作</a></li>
         <li><a href="forms.html"><i class="icon-tasks"></i>未作</a></li>

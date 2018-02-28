@@ -83,5 +83,12 @@ public class SelectTopicController {
         return selectTopicService.topicDetails(modelAndView,vo);
     }
 
+
+    @RequestMapping("/topicAudited")
+    @ResponseBody
+    public String topicAudited(SelectTopicVo vo) {
+        return selectTopicService.topicAudited(vo);
+    }
+
 }
 

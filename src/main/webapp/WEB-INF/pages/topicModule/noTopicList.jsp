@@ -158,9 +158,12 @@
                                             <td><fmt:formatDate value="${topic.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                             <td>
                                                 <button class="btn btn-xs btn-info" onclick="topicDetails(${topic.id})"><i class="icon-pencil"></i>详情</button>
-                                                <button class="btn btn-xs btn-success" onclick="subSuccess(${topic.id})"><i class="icon-ok-circle"></i>通过</button>
-                                                <button class="btn btn-xs btn-danger" onclick="cleanAll(${topic.id})"
-                                                        id="modal-317062" href="#modal-container-317062" role="button"  data-toggle="modal"><i class="icon-remove-sign"></i>不通过</button>
+                                                <c:if test="${status eq 0}">
+                                                    <button class="btn btn-xs btn-success" onclick="subSuccess(${topic.id})"><i class="icon-ok-circle"></i>通过</button>
+                                                    <button class="btn btn-xs btn-danger" onclick="cleanAll(${topic.id})"
+                                                            id="modal-317062" href="#modal-container-317062" role="button"  data-toggle="modal"><i class="icon-remove-sign"></i>不通过</button>
+                                                </c:if>
+
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -376,7 +379,7 @@
                             alert(" 😅 "+msg);
                         }else {
                             alert(" 😋 审核通过","",function () {
-                                location.href= url;
+                                window.location.href= "/selectTopic/noTopicList?teaId=${sessionScope.sessionUser.id}";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -403,7 +406,7 @@
                             alert(" 😅 "+msg);
                         }else{
                             alert(" 😋 审核完成！","",function () {
-                                location.href= url;
+                                window.location.href= "/selectTopic/noTopicList?teaId=${sessionScope.sessionUser.id}";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },

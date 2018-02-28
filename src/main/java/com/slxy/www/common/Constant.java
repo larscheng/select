@@ -51,6 +51,7 @@ public class Constant {
     //选题
     public static final String SELECT_ERROR_REPEAT = "您已选过题目，请勿重复选择！";
     public static final String SELECT_ERROR_SELECTED = "该题目已经被选，请重新选择！";
+    public static final String SELECT_SUCCESS_REASON = "恭喜你选题成功！";
 
 
 }

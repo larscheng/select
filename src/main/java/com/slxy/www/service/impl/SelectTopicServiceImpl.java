@@ -3,6 +3,7 @@ package com.slxy.www.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.slxy.www.common.Constant;
 import com.slxy.www.common.utils.SelectMapStructMapper;
 import com.slxy.www.mapper.SelectMajorMapper;
 import com.slxy.www.mapper.SelectSubjectMapper;
@@ -24,6 +25,7 @@ import com.slxy.www.service.ISelectTopicService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.servlet.ModelAndView;
@@ -117,6 +119,41 @@ public class SelectTopicServiceImpl extends ServiceImpl<SelectTopicMapper, Selec
         }
 
         return modelAndView;
+    }
+
+
+    /***
+     * 教师审核选题
+     * @param vo
+     * @return
+     */
+    @Override
+    @Transactional
+    public String topicAudited(SelectTopicVo vo) {
+        SelectTopic topic = this.selectById(vo.getId());
+        if (ObjectUtils.isEmpty(topic)){
+            return Constant.PARAM_ERROR;
+        }
+        SelectTopic selectTopic = new SelectTopic()
+                .setId(vo.getId());
+        SelectSubject selectSubject = new SelectSubject()
+                .setId(topic.getSubId());
+        //判断操作，通过or不通过
+        if (EnumSubState.SUCCESS.getValue().equals(vo.getTeaAuditState())){
+            //通过
+            selectTopic.setTeaAuditState(EnumSubState.SUCCESS.getValue())
+                    .setTeaAuditContent(Constant.SELECT_SUCCESS_REASON);
+            //更新论文状态---》已被选
+            selectSubject.setSubSelectStatus(EnumSubSelectStatus.SUCCESS.getValue());
+        }else{
+            //不通过
+            selectTopic.setTeaAuditState(EnumSubState.FAIL.getValue())
+                    .setTeaAuditContent(vo.getTeaAuditContent());
+            //更新论文状态---》未选
+            selectSubject.setSubSelectStatus(EnumSubSelectStatus.Untreated.getValue());
+        }
+        selectSubjectMapper.updateById(selectSubject);
+        return this.updateById(selectTopic)?Constant.SUCCESS:Constant.ERROR;
     }
 
 

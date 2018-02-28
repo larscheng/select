@@ -106,24 +106,12 @@
 
                         <div class="widget">
 
-                            <div class="widget-head"  style="position: relative">
+                            <div class="widget-head">
                                 <div class="pull-left">教师列表</div>
                                 <div class="widget-icons pull-right">
                                     <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                     <a href="#" class="wclose"><i class="icon-remove"></i></a>
                                 </div>
-                                <c:if test="${sessionScope.sessionUser.userType eq 1}">
-                                    <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
-                                        <button type="button" onclick="teaDeleteAll()" class="btn btn-info pull-left " style="margin-right: 10px"><i class="icon-remove"></i>批量删除</button>
-                                        <button type="button" class="btn btn-info pull-left " onclick="upload()"  style="margin-right: 10px"><i class="icon-upload"></i>批量导入</button>
-                                        <div style="display: none">
-                                            <form id="uploadForm"  >
-                                                <input type="file" id="fileField" name="fileField" style="display: none" onchange="teaUpload()"/>
-                                            </form>
-                                        </div>
-                                        <button type="button"  onclick="window.location.href='/selectUserBase/teaInitAdd';" class="btn btn-info pull-left "><i class="icon-upload"></i>教师添加</button>
-                                    </div>
-                                </c:if>
 
                                 <div class="clearfix"></div>
                             </div>
