@@ -35,7 +35,6 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-
         id, sub_id AS subId, tea_id AS teaId, stu_id AS stuId, stu_select_reason AS stuSelectReason, tea_audit_state AS teaAuditState, tea_audit_content AS teaAuditContent, topic_year AS topicYear, gmt_create AS gmtCreate, gmt_modify AS gmtModify
     </sql>
 
