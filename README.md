@@ -1,129 +1,70 @@
-# 选题系统：slxy-select
-
-运行方法：
-
-1. 建立数据库，导入SQL（在resources的doc中）。
-2. 引入本Maven项目，修改数据库配置文件。
-3. 添加Web服务器，运行。
+# 商洛学院毕业论文选题系统进度说明
 
 
-> 为简化开发工作、提高生产率而生
 
-# 简介 | Intro
 
-简介
+<span id = "0000"></span> 
+##  **目录**  
+- [全局说明](#1001)
+- [论文介绍](#2001)
+- [项目技术](#3001)
+- [项目模块](#4001)
+     1. [首页](#4002)  
+- [全局说明](#1001)
+  
+***
+<br/><br/>
 
-# 模块功能点 | Module And Function
-- **系别**  
-    * 列表初始化  
-    * 启用禁用  
-    * 添加初始化  
-    * 添加  
-    * 编辑初始化
-    * 编辑
-    * 删除  
-    * 批量删除
-    * 详情
-- **专业** 
-    * 列表初始化  
-    * 启用禁用  
-    * 添加初始化  
-    * 添加  
-    * 编辑初始化
-    * 编辑
-    * 删除  
-    * 批量删除
-    * 详情
-- **学生**  
-    * 列表初始化
-    * 参数查询  
-    * 启用禁用  
-    * 添加初始化  
-    * 添加  
-    * 编辑初始化
-    * 编辑
-    * 删除  
-    * 批量删除
-    * 批量导入
-- **教师**
-    * 列表初始化
-    * 参数查询  
-    * 启用禁用  
-    * 添加初始化  
-    * 添加  
-    * 编辑初始化
-    * 编辑
-    * 删除  
-    * 批量删除
-    * 批量导入
-    * 详情
 
-# 优点 | Advantages
 
-- **纯正血统**：完全继承原生 `Mybatis` 的所有特性
-- **最少依赖**：仅仅依赖`Mybatis`以及`Mybatis-Spring`
-- **性能损耗小**：启动即会自动注入基本CURD ，性能无损耗，直接面向对象操作
-- **自动热加载**：Mapper对应的xml可以热加载，大大减少重启Web服务器时间，提升开发效率
-- **自动生成代码**：包含自动生成代码类以及Maven插件，通过少量配置，即可快速生成Mybatis对应的xml、mapper、entity、service、serviceimpl层代码，减少开发时间
-- **自定义操作**：支持自定义Sql注入，实现个性化操作
-- **自定义转义规则**：支持数据库关键词（例如：`order`、`key`等）自动转义，支持自定义关键词
-- **多种主键策略**：支持多达4种主键策略，可自由配置，若无将会自动填充，更有充满黑科技的`分布式全局唯一ID生成器`
-- **无缝分页插件**：基于Mybatis物理分页，无需关心具体操作，等同于编写基本`selectList`查询
-- **性能分析**：自带Sql性能分析插件，开发测试时，能有效解决慢查询
-- **全局拦截**：提供全表`delete`、`update`操作智能分析阻断
-- **避免Sql注入**：内置Sql注入内容剥离器，预防Sql注入攻击
+<span id = "1001"></span> 
+###  全局说明
+1. 说明一下 
+***
+<br/><br/>  
 
-# 文档 | Documentation
-
-[中文](http://mp.baomidou.com/) | [English](http://mp.baomidou.com/en/)
-
-# 原理 | Principle
-
-[Mybatis-Plus 实践及架构原理](http://git.oschina.net/baomidou/mybatis-plus/attach_files)
-
-# 应用实例 | Demo
-
-[Spring-MVC](https://git.oschina.net/baomidou/mybatisplus-spring-mvc)
-
-[Spring-Boot](https://git.oschina.net/baomidou/mybatisplus-spring-boot)
-
-[SSM-实战 Demo](http://git.oschina.net/juapk/SpringWind)
-
-# 下载地址 | Download
-
-[点此去下载](http://maven.aliyun.com/nexus/#nexus-search;quick~mybatis-plus)
-
-```xml
-<dependency>
-    <groupId>com.baomidou</groupId>
-    <artifactId>mybatis-plus</artifactId>
-    <version>maven 官方最新版本为准</version>
-</dependency>
+<span id = "2001"></span> 
+### 论文介绍
 ```
+结合毕业班毕业论文选题流程，设计并实现收集教师选题、管理员审核题目、学生选题、教师审核选题、管理中间文档，提交毕业论文等功能，力求投入校园使用。
+```
+<br/><br/>
 
-# 结构目录 | Architecture
+<span id = "3001"></span> 
+### 项目技术
+```
+Java语言、Mysql数据库、Tomcat服务器、Jsp语言、框架：MybatisPlus+Spring+SpringMvc
+```
+<br/><br/>
 
-![项目结构说明](http://git.oschina.net/uploads/images/2016/0821/161516_58956b85_12260.png "项目结构说明")
 
-# 其他开源项目 | Other Project
+<span id = "4001"></span> 
+### 项目模块
+模块名 | 具体业务 | 所属角色 | 完成情况
+---|---|---|---
+首页 | 首页信息展示 | 管理员、教师、学生 | 完成
+专业系别 | 专业系别管理 | 管理员、教师 | 完成
+学生 | 学生信息管理 | 管理员、教师、学生 | 完成
+教师 | 教师信息管理 | 管理员、教师、学生 | 完成
+论文 | 论文信息管理 | 管理员、教师、学生 | 完成
+选题 | 选题信息管理 | 管理员、教师、学生 | 完成
+公告模块 | 专业系别录入 | 管理员、教师、学生 | ==未完成==
+聊天模块 | 选题、论文审核留言 | 管理员、教师、学生 | ==未完成==
+在线预览 | 题目相关文档在线预览 | 管理员、教师、学生 | ==未完成==
+其他模块 |  |  | ==待定==
 
-- [基于Cookie的SSO中间件 Kisso](http://git.oschina.net/baomidou/kisso)
-- [Java快速开发框架 SpringWind](http://git.oschina.net/juapk/SpringWind)
 
-# 期望 | Futures
 
-> 欢迎提出更好的意见，帮助完善 Mybatis-Plus
+<span id = "4002"></span> 
+### 首页
+```
+展示公共信息页面
+```
+<br/>
 
-# 版权 | License
 
-[Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0)
-
-# 捐赠 | Donate
-
-> [捐赠记录,感谢你们的支持！](http://git.oschina.net/baomidou/kisso/wikis/%E6%8D%90%E8%B5%A0%E8%AE%B0%E5%BD%95)
-
-![捐赠 mybatis-plus](http://git.oschina.net/uploads/images/2015/1222/211207_0acab44e_12260.png "支持一下mybatis-plus")
-
-# 关注我 | About Me
-
-![程序员日记](http://git.oschina.net/uploads/images/2016/0121/093728_1bc1658f_12260.png "程序员日记")
+<span id = "4003"></span> 
+### 专业系别
+- 专业  
+  ![image](/infoPic/专业.png)
+  - 专业列表

@@ -60,13 +60,13 @@
                                     <a href="/resources/img/photos/小柴.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/小柴.jpg" alt=""></a>
                                     <a href="/resources/img/photos/上铺.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/上铺.jpg" alt=""></a>
                                     <a href="/resources/img/photos/笑柴.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/笑柴.jpg" alt=""></a>
-                                    <a href="/resources/img/photos/129.gif" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/129.gif" alt=""></a>
+                                    <a href="/resources/img/photos/cht.png" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/cht.png" alt=""></a>
                                     <a href="/resources/img/photos/haotian.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/haotian.jpg" alt=""></a>
-                                    <a href="/resources/img/photos/128.gif" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/128.gif" alt=""></a>
+                                    <a href="/resources/img/photos/hcm.png" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/hcm.png" alt=""></a>
                                     <a href="/resources/img/photos/02.gif" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/02.gif" alt=""></a>
                                     <a href="/resources/img/photos/78.gif" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/78.gif" alt=""></a>
-                                    <a href="/resources/img/photos/184.gif" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/184.gif" alt=""></a>
-                                    <a href="/resources/img/photos/244.gif" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/244.gif" alt=""></a>
+                                    <a href="/resources/img/photos/frg.png" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/frg.png" alt=""></a>
+                                    <a href="/resources/img/photos/xkl.png" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/xkl.png" alt=""></a>
                                 </div>
                             </div>
                             <div class="widget-foot">
