@@ -70,17 +70,13 @@ Java语言、Mysql数据库、Tomcat服务器、Jsp语言、框架：MybatisPlus
   ![image](https://github.com/zhengqilong/select/raw/master/infoPic/%E4%B8%93%E4%B8%9A.png)   
 - 系别  
   - 系别列表:    
-  <br/>
-  ![image](infoPic/系别列表.png)  
+  ![image](/infoPic/系别列表.png)    
   - 系别启用禁用:  
-  <br/>
-  ![image](infoPic/启用禁用.png)    
-  - 系别添加、删除、批量删除：  
-  <br/>
-  ![image](infoPic/系别添加.png)   
+  ![image](/infoPic/启用禁用.png)      
+  - 系别添加、删除、批量删除：
+  ![image](/infoPic/系别添加.png)     
   - 系别查看、编辑：  
-  <br/>
-  ![image](infoPic/系别编辑.png) 
+  ![image](/infoPic/系别编辑.png)   
 - 专业
   - 专业列表
   - 专业启用禁用
@@ -93,21 +89,16 @@ Java语言、Mysql数据库、Tomcat服务器、Jsp语言、框架：MybatisPlus
 <span id = "4004"></span> 
 ### 学生:
   - 学生列表：
-    - 参数查询学生列表：     
-    <br/>
-    ![image](infoPic/参数查询学生列表.png)   
-    - 学生启用禁用：     
-    <br/>
-    ![image](infoPic/学生启用禁用.png) 
-    - 添加学生：     
-    <br/>
-    ![image](infoPic/学生添加.png) 
-    - 编辑学生：      
-    <br/>
-    ![image](infoPic/学生编辑.png) 
-    - 学生批量删除、批量添加、模板下载：      
-    <br/>
-    ![image](infoPic/模板下载.png) 
+    - 参数查询学生列表：  
+    ![image](/infoPic/参数查询学生列表.png)     
+    - 学生启用禁用：   
+    ![image](/infoPic/学生启用禁用.png)   
+    - 添加学生：  
+    ![image](/infoPic/学生添加.png)   
+    - 编辑学生： 
+    ![image](/infoPic/学生编辑.png)   
+    - 学生批量删除、批量添加、模板下载： 
+    ![image](/infoPic/模板下载.png)   
 
 
 
