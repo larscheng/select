@@ -342,7 +342,7 @@
                 if("OK"!=msg){
                     alert(" 😅 "+msg);
                 }else{
-                    alert(" 😋 选题成功！","",function () {
+                    alert(" 😋 选题成功！请等待教师审核","",function () {
                         location.href="/selectSubject/stuSubList?selectId=${sessionScope.sessionUser.id}";
                     },{type:"success",confirmButtonText:"好的"});
                 }

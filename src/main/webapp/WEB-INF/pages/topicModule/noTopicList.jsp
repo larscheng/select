@@ -22,7 +22,7 @@
 
         <!-- Page heading -->
         <div class="page-head">
-            <h2 class="pull-left"><i class="icon-home"></i> 我的选题列表</h2>
+            <h2 class="pull-left"><i class="icon-home"></i> 待审核记录列表</h2>
             <!-- Breadcrumb -->
             <div class="bread-crumb pull-right">
                 <a href="#"><i class="icon-home"></i> 选题信息管理</a>
