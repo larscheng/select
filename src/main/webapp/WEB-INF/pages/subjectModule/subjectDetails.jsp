@@ -147,6 +147,19 @@
                                         </div>
                                     </div>
 
+                                    <div class="form-group">
+
+                                        <label class="col-lg-4 control-label">题目文件</label>
+                                        <div class="col-lg-2 panel panel-default pdl" >
+                                            ${requestScope.sub.subFile}
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <a class="btn btn-info"
+                                               href="http://10.200.0.64:8012/onlinePreview?url=http://10.200.0.64:8012/${requestScope.sub.subFile}" target="_blank">预览</a>
+                                            <a class="btn btn-info"
+                                               href="${ctx}/selectSubject/subFileDown?fileName=${requestScope.sub.subFile}" target="_blank">下载</a>
+                                        </div>
+                                    </div>
 
                                     <div class="form-group">
                                         <label class="col-lg-4 control-label">题目内容</label>
@@ -186,6 +199,8 @@
                                             </div>
                                         </div>
 
+                                        <c:if test="${requestScope.sub.admAuditState != 0}">
+
                                         <div class="form-group">
                                             <c:choose>
                                                 <c:when test="${requestScope.sub.subSelectStatus eq 0}">
@@ -198,9 +213,10 @@
 
 
                                             <div class="col-lg-4 panel panel-default pdl" >
-                                                <fmt:formatDate value="${requestScope.sub.gmtModify}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                                <fmt:formatDate value="${requestScope.sub.gmtModify}"   pattern="yyyy-MM-dd HH:mm:ss"/>
                                             </div>
                                         </div>
+                                        </c:if>
                                     <hr />
                                     <div class="form-group">
                                         <div class="col-lg-offset-1 col-lg-9">

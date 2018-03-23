@@ -117,6 +117,15 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <label class="col-lg-4 control-label">题目附件</label>
+                                        <div class="col-lg-6">
+                                            <input type="file" class="form-control" name="subFile">
+
+                                        </div>
+                                        <div class="col-lg-2 ">支持pdf、office文件、压缩包</div>
+                                    </div>
+
+                                    <div class="form-group">
                                         <label class="col-lg-4 control-label">题目内容</label>
                                         <div class="col-lg-8">
                                             <textarea class="form-control" rows="4" name="subContent" placeholder="题目内容"></textarea>
@@ -188,12 +197,20 @@
     $(function(){
 
         $("#addSubmit").click(function(){
+
             var teaId = ${sessionScope.sessionUser.id}
             $("#teaId").val(teaId);
+            var formData = new FormData($( "#addForm" )[0]);  // 要求使用的html对象
             $.ajax({
                 type: "post",
                 url: "/selectSubject/subAdd",
-                data: $("#addForm").serialize(),
+//                data: $("#addForm").serialize(),
+                data: formData,
+                async: true,
+                // 下面三个参数要指定，如果不指定，会报一个JQuery的错误
+                cache: false,
+                contentType: false,
+                processData: false,
                 dataType:"json",
                 success:function(msg){
                     if("OK"!=msg){

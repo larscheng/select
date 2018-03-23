@@ -77,6 +77,16 @@
         <if test="@Ognl@isNotEmpty(subYear)">
             and a.sub_year = #{subYear}
         </if>
+        <if test="@Ognl@isNotEmpty(searchBgnTime)">
+            and (
+            DATE_FORMAT(a.gmt_create,'%Y-%m-%d')  &gt;= '${searchBgnTime}'
+            )
+        </if>
+        <if test="@Ognl@isNotEmpty(searchEndTime)">
+            and (
+            DATE_FORMAT(a.gmt_create,'%Y-%m-%d')  &lt;= '${searchEndTime}'
+            )
+        </if>
         ORDER BY a.adm_audit_state DESC ,a.gmt_create DESC
     </select>
 </mapper>

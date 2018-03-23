@@ -51,6 +51,11 @@ public class SelectSubject implements Serializable {
     @TableField("sub_content")
     private String subContent;
     /**
+     * 题目附件
+     */
+    @TableField("sub_file")
+    private String subFile;
+    /**
      * 审核状态 0未处理，1审核不通过，2审核通过
      */
     @TableField("adm_audit_state")
@@ -172,6 +177,15 @@ public class SelectSubject implements Serializable {
 
     public Date getGmtModify() {
         return this.gmtModify;
+    }
+
+    public String getSubFile() {
+        return subFile;
+    }
+
+    public SelectSubject setSubFile(String subFile) {
+        this.subFile = subFile;
+        return this;
     }
 
     public SelectSubject setId(Integer id) {

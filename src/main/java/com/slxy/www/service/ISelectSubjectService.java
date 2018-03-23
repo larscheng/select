@@ -4,7 +4,11 @@ import com.slxy.www.model.SelectSubject;
 import com.baomidou.mybatisplus.service.IService;
 import com.slxy.www.model.SelectUserBase;
 import com.slxy.www.model.vo.SelectSubjectVo;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * <p>
@@ -32,11 +36,13 @@ public interface ISelectSubjectService extends IService<SelectSubject> {
 
     ModelAndView initSubAdd(ModelAndView modelAndView);
 
-    String subAdd(SelectSubjectVo vo);
+    String subAdd(MultipartFile file,SelectSubjectVo vo, HttpServletRequest request);
 
     ModelAndView stuSubList(ModelAndView modelAndView, SelectSubjectVo vo);
 
     String stuSubListAjax(SelectSubjectVo vo);
 
     String stuSelect(SelectSubjectVo vo);
+
+    void downSubFile(HttpServletRequest request, HttpServletResponse response, String fileName);
 }

@@ -25,7 +25,7 @@
         <!-- Page heading -->
         <h2 class="pull-left">
             <!-- page meta -->
-            <span class="page-meta">题目详情</span>
+            <span class="page-meta">待审核题目详情</span>
         </h2>
 
 
@@ -143,6 +143,20 @@
                                         <label class="col-lg-4 control-label">题目届别</label>
                                         <div class="col-lg-4 panel panel-default pdl" >
                                             ${requestScope.sub.subYear}级
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <label class="col-lg-4 control-label">题目文件</label>
+                                        <div class="col-lg-2 panel panel-default pdl" >
+                                            ${requestScope.sub.subFile}
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <a class="btn btn-info"
+                                               href="http://localhost:8012/onlinePreview?url=http://localhost:8012/${requestScope.sub.subFile}" target="_blank">预览</a>
+                                            <a class="btn btn-info"
+                                               href="${ctx}/selectSubject/subFileDown?fileName=${requestScope.sub.subFile}" target="_blank">下载</a>
                                         </div>
                                     </div>
 

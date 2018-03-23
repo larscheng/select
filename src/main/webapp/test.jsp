@@ -10,6 +10,27 @@
     <title>Select System</title>
     <meta name="author" content="">
     <%@include file="/WEB-INF/pages/common/macTopCommon.jsp" %>
+
+
+    <link rel="alternate icon" href="resources/assets/i/favicon.ico">
+    <link rel="stylesheet" href="resources/assets/css/amazeui.min.css">
+    <link rel="stylesheet" href="resources/assets/css/app.css">
+
+    <!-- umeditor css -->
+    <link href="resources/umeditor/themes/default/css/umeditor.css" rel="stylesheet">
+
+    <style>
+        .title {
+            text-align: center;
+        }
+
+        .chat-content-container {
+            height: 29rem;
+            overflow-y: scroll;
+            border: 1px solid silver;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -43,42 +64,56 @@
             <div class="row">
                 <div class="col-md-12">
 
-                    <div class="widget">
-                        <div class="widget-head">
-                            <div class="pull-left">Gallery</div>
-                            <div class="widget-icons pull-right">
-                                <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
-                                <a href="#" class="wclose"><i class="icon-remove"></i></a>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="widget-content">
-                            <div class="padd">
 
-                                <div class="gallery">
-                                    <!-- Full size image link in anchor tag. Thumbnail link in image tag. -->
-                                    <a href="/resources/img/photos/小柴.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/小柴.jpg" alt=""></a>
-                                    <a href="/resources/img/photos/上铺.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/上铺.jpg" alt=""></a>
-                                    <a href="/resources/img/photos/笑柴.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/笑柴.jpg" alt=""></a>
-                                    <a href="/resources/img/photos/cht.png" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/cht.png" alt=""></a>
-                                    <a href="/resources/img/photos/haotian.jpg" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/haotian.jpg" alt=""></a>
-                                    <a href="/resources/img/photos/hcm.png" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/hcm.png" alt=""></a>
-                                    <a href="/resources/img/photos/02.gif" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/02.gif" alt=""></a>
-                                    <a href="/resources/img/photos/78.gif" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/78.gif" alt=""></a>
-                                    <a href="/resources/img/photos/frg.png" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/frg.png" alt=""></a>
-                                    <a href="/resources/img/photos/xkl.png" class="prettyPhoto[pp_gal]"><img src="/resources/img/photos/xkl.png" alt=""></a>
+
+                        <!-- Chats widget -->
+                        <div class="col-md-10">
+                            <!-- Widget -->
+                            <div class="widget">
+                                <!-- Widget title -->
+                                <div class="widget-head">
+                                    <div style="border: 1px solid red">
+                                        <a class="btn btn-default" href="http://localhost:8012/onlinePreview?url=http://localhost:8012/demo/2018橙色起点选课.xlsx" target="_blank">预览</a>
+                                    </div>
+                                    <div class="pull-left">Chats</div>
+                                    <div class="widget-icons pull-right">
+                                        <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+                                        <a href="#" class="wclose"><i class="icon-remove"></i></a>
+                                    </div>
+                                    <div class="clearfix"></div>
                                 </div>
-                            </div>
-                            <div class="widget-foot">
-                                <!-- Footer goes here -->
+
+                                <div class="widget-content">
+                                    <!-- Widget content -->
+                                    <div class="padd chat-content-container" style="min-height: 400px;">
+
+                                        <ul class="chats" id="message-list">
+
+
+
+                                        </ul>
+
+                                    </div>
+                                    <!-- Widget footer -->
+                                    <div class="widget-foot">
+
+                                        <form class="form-inline">
+                                            <div class="form-group">
+                                                <input id="nickname" type="hidden" value="${sessionScope.get('sessionUser').userName}"/>
+                                                <input type="text" id="inputMsg" class="form-control" size="100" placeholder="Type your message here...">
+                                            </div>
+                                            <button type="submit" id="send" class="btn btn-default">Send</button>
+                                        </form>
+
+
+                                    </div>
+                                </div>
+
+
                             </div>
                         </div>
-                    </div>
 
-                </div>
-            </div>
-        </div>
-    </div>
+
 
     <!-- Matter ends -->
 
@@ -87,7 +122,92 @@
 <!-- Mainbar ends -->
 <div class="clearfix"></div>
 
-<%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>
+
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script src="resources/assets/js/jquery.min.js"></script>
+<!--<![endif]-->
+<!--[if lte IE 8 ]>
+<!--<script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>-->
+<![endif]-->
+
+<!-- umeditor js -->
+<%--<script charset="utf-8" src="resources/umeditor/umeditor.config.js"></script>--%>
+<%--<script charset="utf-8" src="resources/umeditor/umeditor.min.js"></script>--%>
+<%--<script src="resources/umeditor/lang/zh-cn/zh-cn.js"></script>--%>
+
+<script>
+    $(function() {
+        var from = ${sessionScope.get('sessionUser').id};
+        var to = 1;
+        // 初始化消息输入框
+        var um = $("#inputMsg");
+
+        // 新建WebSocket对象，最后的/websocket对应服务器端的@ServerEndpoint("/websocket")
+        var socket = new WebSocket('ws://${pageContext.request.getServerName()}:${pageContext.request.getServerPort()}${pageContext.request.contextPath}/webSocket/${sessionScope.get('sessionUser').id}');
+
+
+
+
+
+        // 处理服务器端发送的数据
+        socket.onmessage = function(event) {
+            addMessage(event.data);
+        };
+
+
+
+
+
+
+        // 点击Send按钮时的操作
+        $('#send').on('click', function() {
+            console.log("点击发送按钮");
+            var nickname = $("#nickname").val();
+            // 发送消息
+            socket.send(JSON.stringify({
+                content : um.val(),
+                from:from,
+                to:to,
+                nickname : nickname
+            }));
+            // 清空消息输入框
+            um.val('');
+            // 消息输入框获取焦点
+            um.focus();
+        });
+
+
+        // 把消息添加到聊天内容中
+        function addMessage(message) {
+            message = JSON.parse(message);
+            console.log(message);
+            if('系统消息' == message.nickname){
+                message.nickname = '<font color="RED">' + message.nickname + '</font>';
+            }
+
+            var messageItem = '<li class="'
+                + (message.isSelf ? 'by-other' : 'by-me')
+                + '"><div class="'
+                + (message.isSelf ? 'avatar pull-right' : 'avatar pull-left')
+                +'"><img src="resources/img/'
+                + (message.isSelf ? 'user.jpg' : 'user.jpg')
+                +'"/></div><div class="chat-content"><div class="chat-meta">'
+                + (message.isSelf ? message.date +'<span class="' : message.nickname +'<span class="')
+                + (message.isSelf ? 'pull-left' : 'pull-right')
+                + (message.isSelf ? '">'+message.nickname+'</span></div>' : '">'+message.date+'</span></div>')
+                + message.content
+                + '<div class="clearfix"></div></div></li> ';
+            console.log(messageItem)
+//            $(messageItem).appendTo('#message-list');
+            $("#message-list").append(messageItem);
+        }
+
+    });
+
+
+
+
+</script>
 
 
     <%--<div class="mainbar">--%>
@@ -235,6 +355,6 @@
     <%--<div class="clearfix"></div>--%>
 
     <%--<%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>--%>
-
+                <%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>
 </body>
 </html>

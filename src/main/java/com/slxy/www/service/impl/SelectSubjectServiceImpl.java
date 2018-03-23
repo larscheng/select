@@ -27,8 +27,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -269,8 +273,8 @@ public class SelectSubjectServiceImpl extends ServiceImpl<SelectSubjectMapper, S
      * @return
      */
     @Override
-    public String subAdd(SelectSubjectVo vo) {
-
+    public String subAdd(MultipartFile file,SelectSubjectVo vo, HttpServletRequest request) {
+        //没有文件也可以导入
         if (StringUtils.isEmpty(vo.getSubName())){
             return Constant.PARAM_ERROR;
         }
@@ -281,6 +285,32 @@ public class SelectSubjectServiceImpl extends ServiceImpl<SelectSubjectMapper, S
         }
         SelectSubject subject = SelectMapStructMapper.INSTANCE.SelectSubjectVoToPo(vo);
         subject.setGmtCreate(new Date());
+        //保存文件
+        if (!ObjectUtils.isEmpty(file)){
+//            String fileDir =request.getServletContext().getRealPath("");
+//            String demoDir = "downFile";
+            String fileDir = "C:/Users/Administrator/Desktop/online/";
+            String demoDir = "demo";
+            String demoPath = demoDir + File.separator;
+            String fileName = file.getOriginalFilename();
+            File outFile = new File(fileDir + demoPath);
+            System.out.println(outFile.getAbsolutePath());
+            if (!outFile.exists()) {
+                outFile.mkdirs();
+            }
+            try(InputStream in = file.getInputStream();
+                OutputStream ot = new FileOutputStream(fileDir + demoPath + fileName)){
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((-1 != (len = in.read(buffer)))) {
+                    ot.write(buffer, 0, len);
+                }
+                subject.setSubFile(demoDir+"/"+fileName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
 
         return this.insert(subject)?Constant.SUCCESS:Constant.ERROR;
     }
@@ -381,6 +411,37 @@ public class SelectSubjectServiceImpl extends ServiceImpl<SelectSubjectMapper, S
         this.updateById(subject);
 
         return Constant.SUCCESS;
+    }
+
+    @Override
+    public void downSubFile(HttpServletRequest request, HttpServletResponse response, String fileName) {
+        OutputStream outputStream = null;
+        InputStream inputStream=null;
+        try {
+            outputStream = response.getOutputStream();
+            response.setContentType("application/octet-stream;charset=UTF-8");// 设置文件输出类型
+            response.setHeader("Content-disposition", "attachment; filename="
+                    + new String(fileName.getBytes("utf-8"), "ISO8859-1"));//设置下载的文件名
+//            String baseAbsoluteFilePath=request.getServletContext().getRealPath("");//获取的是项目在磁盘中的绝对路径，最后包括"\"
+//
+//            String fileRelativePath="WEB-INF/file/"+fileName;//文件相对于webRoot的路径
+
+//            inputStream=new FileInputStream(baseAbsoluteFilePath+fileRelativePath);
+
+
+            String fileRelativePath="C:/Users/Administrator/Desktop/online/"+fileName;//文件相对于webRoot的路径
+            inputStream=new FileInputStream(fileRelativePath);
+            byte[] buff=new byte[1024];
+            Integer readLength=0;
+            while((readLength=inputStream.read(buff,0,buff.length))>0){
+                outputStream.write(buff, 0, readLength);
+            }
+            outputStream.close();
+            inputStream.close();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
 

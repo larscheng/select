@@ -390,6 +390,7 @@
                         +"<td>"+time+"</td>"
                         +"<td>" +
                         "<button onclick='subjectDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
+                        "<button onclick='selectSub()' class='btn btn-xs btn-success' style='margin-right: 5px'><i class='icon-pencil'></i>选择</button>" +
                         "</td>"
                         +"</tr>"
                     ;

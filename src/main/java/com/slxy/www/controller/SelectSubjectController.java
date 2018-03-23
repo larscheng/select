@@ -11,8 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * <p>
@@ -157,14 +162,14 @@ public class SelectSubjectController {
     }
 
     /**
-     * 异步生成我的题目列表
+     * 题目添加
      * @param vo
      * @return
      */
     @RequestMapping("/subAdd")
     @ResponseBody
-    public String subAdd(SelectSubjectVo vo) {
-        return selectSubjectService.subAdd(vo);
+    public String subAdd(@RequestParam("subFile") MultipartFile file, SelectSubjectVo vo, HttpServletRequest request) {
+        return selectSubjectService.subAdd(file,vo,request);
     }
 
 
@@ -191,6 +196,19 @@ public class SelectSubjectController {
     public String optionalListAjax(SelectSubjectVo vo) {
         vo.setAdmAuditState(EnumSubState.SUCCESS.getValue());
         return selectSubjectService.mySubListAjax(vo);
+    }
+
+
+    /**
+     * 学生模板下载
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    @RequestMapping("/subFileDown")
+    public void stuFileDown(HttpServletRequest request,HttpServletResponse response,String fileName) throws Exception {
+
+        selectSubjectService.downSubFile(request,response,fileName);
     }
 
 

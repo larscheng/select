@@ -107,7 +107,10 @@ public class SelectSubjectDto extends  PageVo {
      * 题目面向系别名
      */
     private String forDepName;
-    /**/
+    /**
+     * 题目文件
+     * */
+    private String subFile;
 
     public SelectSubjectDto() {
     }
@@ -186,6 +189,15 @@ public class SelectSubjectDto extends  PageVo {
 
     public String getAdmAuditName() {
         return this.admAuditName;
+    }
+
+    public String getSubFile() {
+        return subFile;
+    }
+
+    public SelectSubjectDto setSubFile(String subFile) {
+        this.subFile = subFile;
+        return this;
     }
 
     public SelectSubjectDto setId(Integer id) {
