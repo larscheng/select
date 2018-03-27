@@ -125,7 +125,7 @@
                                     <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                     <a href="#" class="wclose"><i class="icon-remove"></i></a>
                                 </div>
-                                <c:if test="${sessionScope.sessionUser.userType eq 1}">
+                                <c:if test="${sessionScope.sessionUser.userType eq 1|| sessionScope.sessionUser.userType eq 0 }">
                                     <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
                                         <button type="button" onclick="teaDeleteAll()" class="btn btn-info pull-left " style="margin-right: 10px"><i class="icon-remove"></i>批量删除</button>
                                         <button type="button" class="btn btn-info pull-left " onclick="upload()"  style="margin-right: 10px"><i class="icon-upload"></i>批量导入</button>
@@ -191,7 +191,7 @@
                                             </td>
                                             <td><fmt:formatDate value="${user.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                             <td>
-                                                <c:if test="${sessionScope.sessionUser.userType eq 1}">
+                                                <c:if test="${sessionScope.sessionUser.userType eq 1|| sessionScope.sessionUser.userType eq 0}">
                                                     <c:set var="status" value="${user.userStatus}"/>
                                                     <c:choose>
                                                         <c:when test="${status eq 0}">
@@ -204,7 +204,7 @@
                                                 </c:if>
 
                                                 <button class="btn btn-xs btn-info" onclick="teaDetails(${user.id})"><i class="icon-pencil"></i>详情</button>
-                                                <c:if test="${sessionScope.sessionUser.userType eq 1}">
+                                                <c:if test="${sessionScope.sessionUser.userType eq 1 || sessionScope.sessionUser.userType eq 0}">
                                                     <button class="btn btn-xs btn-warning" onclick="window.location.href='/selectUserBase/teaInitUpdate?id=${user.id}';"><i class="icon-pencil"></i>编辑</button>
                                                     <button class="btn btn-xs btn-danger" onclick="teaDelete('${user.id}')"><i class="icon-remove">删除</i></button>
                                                 </c:if>

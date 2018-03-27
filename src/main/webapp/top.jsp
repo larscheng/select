@@ -34,6 +34,9 @@
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#" style="color: black;padding-right: 50px;text-decoration: none;">
 
                         <c:choose>
+                            <c:when test="${sessionScope.get('sessionUser').userType eq 0}">
+                                <i class="icon-user"></i>超级管理员 :
+                            </c:when>
                             <c:when test="${sessionScope.get('sessionUser').userType eq 1}">
                                 <i class="icon-user"></i>管理员 :
                             </c:when>

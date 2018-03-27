@@ -8,8 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -83,12 +87,70 @@ public class SelectTopicController {
         return selectTopicService.topicDetails(modelAndView,vo);
     }
 
-
+    /****
+     * 教师审核选题
+     * @param vo
+     * @return
+     */
     @RequestMapping("/topicAudited")
     @ResponseBody
     public String topicAudited(SelectTopicVo vo) {
         return selectTopicService.topicAudited(vo);
     }
+
+    /***
+     * 学生上传题目任务书
+     * @param file
+     * @param id
+     * @param request
+     * @return
+     */
+    @RequestMapping("/uploadTaskBook")
+    @ResponseBody
+    public String uploadTaskBook(@RequestParam("taskFile") MultipartFile file, @RequestParam("id")String id, HttpServletRequest request) {
+        return selectTopicService.uploadTaskBook(file,Integer.parseInt(id),request,1);
+    }
+
+    /***
+     * 学生上传题目开题报告
+     * @param file
+     * @param id
+     * @param request
+     * @return
+     */
+    @RequestMapping("/uploadOpeningReport")
+    @ResponseBody
+    public String uploadOpeningReport(@RequestParam("openingReport") MultipartFile file, @RequestParam("id")String id, HttpServletRequest request) {
+        return selectTopicService.uploadTaskBook(file,Integer.parseInt(id),request,2);
+    }
+
+    /**
+     * 学生上传题目毕业论文
+     * @param file
+     * @param id
+     * @param request
+     * @return
+     */
+    @RequestMapping("/uploadDissertation")
+    @ResponseBody
+    public String uploadDissertation(@RequestParam("dissertation") MultipartFile file, @RequestParam("id")String id, HttpServletRequest request) {
+        return selectTopicService.uploadTaskBook(file,Integer.parseInt(id),request,3);
+    }
+
+
+    /***
+     * 删除选题记录
+     * @param id
+     * @return
+     */
+    @RequestMapping("/topicDel")
+    @ResponseBody
+    public String topicDel(@RequestParam("id")String id) {
+        return selectTopicService.topicDel(Integer.parseInt(id));
+    }
+
+
+
 
 }
 

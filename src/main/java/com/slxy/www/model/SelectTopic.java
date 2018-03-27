@@ -66,6 +66,21 @@ public class SelectTopic implements Serializable {
     @TableField("topic_year")
     private String topicYear;
     /**
+     * 任务书
+     */
+    @TableField("task_file")
+    private String taskFile;
+    /**
+     * 开题报告
+     */
+    @TableField("opening_report")
+    private String openingReport;
+    /**
+     * 论文
+     */
+    @TableField("dissertation")
+    private String dissertation;
+    /**
      * 创建时间
      */
     @TableField("gmt_create")
@@ -117,6 +132,33 @@ public class SelectTopic implements Serializable {
 
     public Date getGmtModify() {
         return this.gmtModify;
+    }
+
+    public String getTaskFile() {
+        return taskFile;
+    }
+
+    public SelectTopic setTaskFile(String taskFile) {
+        this.taskFile = taskFile;
+        return this;
+    }
+
+    public String getOpeningReport() {
+        return openingReport;
+    }
+
+    public SelectTopic setOpeningReport(String openingReport) {
+        this.openingReport = openingReport;
+        return this;
+    }
+
+    public String getDissertation() {
+        return dissertation;
+    }
+
+    public SelectTopic setDissertation(String dissertation) {
+        this.dissertation = dissertation;
+        return this;
     }
 
     public SelectTopic setId(Integer id) {

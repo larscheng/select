@@ -56,4 +56,6 @@ public interface ISelectUserBaseService extends IService<SelectUserBase> {
     String initClass(SelectUserBase userBase);
 
     void down(HttpServletRequest request, HttpServletResponse response,String fileName) throws Exception;
+
+    String admAdd(SelectUserBase userBase);
 }

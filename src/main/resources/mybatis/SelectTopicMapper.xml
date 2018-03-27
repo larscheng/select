@@ -12,6 +12,9 @@
         <result column="tea_audit_state" property="teaAuditState" />
         <result column="tea_audit_content" property="teaAuditContent" />
         <result column="topic_year" property="topicYear" />
+        <result column="task_book" property="taskBook" />
+        <result column="opening_report" property="openingReport" />
+        <result column="dissertation" property="dissertation" />
         <result column="gmt_create" property="gmtCreate" />
         <result column="gmt_modify" property="gmtModify" />
     </resultMap>
@@ -25,6 +28,9 @@
         <result column="stu_select_reason" property="stuSelectReason" />
         <result column="tea_audit_state" property="teaAuditState" />
         <result column="tea_audit_content" property="teaAuditContent" />
+        <result column="task_book" property="taskBook" />
+        <result column="opening_report" property="openingReport" />
+        <result column="dissertation" property="dissertation" />
         <result column="topic_year" property="topicYear" />
         <result column="gmt_create" property="gmtCreate" />
         <result column="gmt_modify" property="gmtModify" />
@@ -47,9 +53,9 @@
         d.user_name AS tea_name
         FROM
         select_topic a
-        INNER JOIN select_subject b ON a.sub_id = b.id
-        INNER JOIN select_user_base c ON a.stu_id = c.id
-        INNER JOIN select_user_base d ON a.tea_id = d.id
+        LEFT JOIN select_subject b ON a.sub_id = b.id
+        LEFT JOIN select_user_base c ON a.stu_id = c.id
+        LEFT JOIN select_user_base d ON a.tea_id = d.id
         WHERE 1=1
         <if test="@Ognl@isNotEmpty(search)">
             and (b.sub_name like '%${search}%' or

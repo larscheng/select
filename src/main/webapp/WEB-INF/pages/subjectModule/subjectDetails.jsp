@@ -222,7 +222,7 @@
                                         <div class="col-lg-offset-1 col-lg-9">
                                             <button type="button" class="btn btn-info" onclick="window.history.go(-1);">返回</button>
                                             <c:if test="${sessionScope.userType eq 1}">
-                                                <c:if test="${requestScope.sub.admAuditState eq 1}">
+                                                <c:if test="${requestScope.sub.admAuditState eq 1 || sessionScope.sessionUser.userType eq 0}">
                                                     <button  type="button" class="btn  btn-success" onclick="subSuccess(${requestScope.sub.id})">通过</button>
                                                 </c:if>
                                             </c:if>

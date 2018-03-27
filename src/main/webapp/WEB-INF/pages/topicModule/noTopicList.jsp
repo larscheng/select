@@ -133,40 +133,49 @@
                                     </tr>
                                     </thead>
                                     <tbody id="items">
-                                    <c:forEach var="topic" items="${requestScope.topicList}" varStatus="index">
-                                        <tr>
-                                            <td  class=" text-center"><input type="checkbox" name="ids" value="${topic.id}" /></td>
-                                            <td>${index.count}</td>
-                                            <td>${topic.subName}</td>
-                                            <td>${topic.teaName}</td>
-                                            <td>${topic.stuName}</td>
-                                            <td>
-                                                <c:set var="status" value="${topic.teaAuditState}"/>
-                                                <c:choose>
-                                                    <c:when test="${status eq 0}">
-                                                        <span class="label label-warning">未处理</span>
-                                                    </c:when>
-                                                    <c:when test="${status eq 1}">
-                                                        <span class="label label-danger">审核不通过</span>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <span class="label label-success">审核通过</span>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </td>
-                                            <td>${topic.topicYear}级</td>
-                                            <td><fmt:formatDate value="${topic.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                            <td>
-                                                <button class="btn btn-xs btn-info" onclick="topicDetails(${topic.id})"><i class="icon-pencil"></i>详情</button>
-                                                <c:if test="${status eq 0}">
-                                                    <button class="btn btn-xs btn-success" onclick="subSuccess(${topic.id})"><i class="icon-ok-circle"></i>通过</button>
-                                                    <button class="btn btn-xs btn-danger" onclick="cleanAll(${topic.id})"
-                                                            id="modal-317062" href="#modal-container-317062" role="button"  data-toggle="modal"><i class="icon-remove-sign"></i>不通过</button>
-                                                </c:if>
 
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
+                                    <c:choose>
+                                        <c:when test="${empty requestScope.topicList }">
+                                            <tr><td colspan='9' class='text-center'> 😑 暂无数据！</td></tr>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:forEach var="topic" items="${requestScope.topicList}" varStatus="index">
+                                                <tr>
+                                                    <td  class=" text-center"><input type="checkbox" name="ids" value="${topic.id}" /></td>
+                                                    <td>${index.count}</td>
+                                                    <td>${topic.subName}</td>
+                                                    <td>${topic.teaName}</td>
+                                                    <td>${topic.stuName}</td>
+                                                    <td>
+                                                        <c:set var="status" value="${topic.teaAuditState}"/>
+                                                        <c:choose>
+                                                            <c:when test="${status eq 0}">
+                                                                <span class="label label-warning">未处理</span>
+                                                            </c:when>
+                                                            <c:when test="${status eq 1}">
+                                                                <span class="label label-danger">审核不通过</span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="label label-success">审核通过</span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+                                                    <td>${topic.topicYear}级</td>
+                                                    <td><fmt:formatDate value="${topic.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td>
+                                                        <button class="btn btn-xs btn-info" onclick="topicDetails(${topic.id})"><i class="icon-pencil"></i>详情</button>
+                                                        <c:if test="${status eq 0}">
+                                                            <button class="btn btn-xs btn-success" onclick="subSuccess(${topic.id})"><i class="icon-ok-circle"></i>通过</button>
+                                                            <button class="btn btn-xs btn-danger" onclick="cleanAll(${topic.id})"
+                                                                    id="modal-317062" href="#modal-container-317062" role="button"  data-toggle="modal"><i class="icon-remove-sign"></i>不通过</button>
+                                                        </c:if>
+
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:otherwise>
+                                    </c:choose>
+
 
                                     </tbody>
                                 </table>

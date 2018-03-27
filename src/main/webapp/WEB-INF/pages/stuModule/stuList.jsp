@@ -16,12 +16,6 @@
 <body>
 
 
-<!-- Header starts -->
-<%--<header>--%>
-    <%--<%@include file="/WEB-INF/pages/top.jsp" %>--%>
-<%--</header>--%>
-<!-- Header ends -->
-
 <!-- Main content starts -->
 
 

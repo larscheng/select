@@ -10,15 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
 
 /**
  * <p>
@@ -53,15 +49,52 @@ public class SelectUserBaseController {
     }
 
     /**
-     * 用户列表
+     * 管理员列表
      * @param modelAndView
      * @param userBaseVo
      * @return
      */
-    @RequestMapping("/userList")
-    public ModelAndView userList(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
-        modelAndView.setViewName("test");
+    @RequestMapping("/admList")
+    public ModelAndView admList(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
+        modelAndView.setViewName("adminModule/admList");
+        userBaseVo.setUserType(EnumUserType.ADMIN.getValue());
         return selectUserBaseService.userList(modelAndView,userBaseVo);
+    }
+
+    /**
+     * 初始化添加
+     * @param modelAndView
+     * @return
+     */
+    @RequestMapping("/initAddAdmin")
+    public ModelAndView initAddAdmin(ModelAndView  modelAndView) {
+        modelAndView.setViewName("adminModule/admAdd");
+        return modelAndView;
+    }
+
+
+    /**
+     * 管理员添加
+     * @param userBase
+     * @return
+     */
+    @RequestMapping("/admAdd")
+    @ResponseBody
+    public String admAdd(SelectUserBase userBase) {
+        return selectUserBaseService.admAdd(userBase);
+    }
+
+
+    /***
+     * 管理员个人信息变更
+     * @param modelAndView
+     * @param userBaseVo
+     * @return
+     */
+    @RequestMapping("/admSelfInfo")
+    public ModelAndView admSelfInfo(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
+        modelAndView.setViewName("/adminModule/admSelfInfo");
+        return selectUserBaseService.stuInitAddAndUpdate(modelAndView,userBaseVo);
     }
 
     /******************************************    学生   *****************************************************/
@@ -118,6 +151,21 @@ public class SelectUserBaseController {
     public String stuDeleteAll(Integer[] selectedIDs) {
         return selectUserBaseService.stuDeleteAll(selectedIDs);
     }
+
+
+
+    /***
+     * 学生个人信息变更
+     * @param modelAndView
+     * @param userBaseVo
+     * @return
+     */
+    @RequestMapping("/stuSelfInfo")
+    public ModelAndView stuSelfInfo(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
+        modelAndView.setViewName("/stuModule/stuSelfInfo");
+        return selectUserBaseService.stuInitAddAndUpdate(modelAndView,userBaseVo);
+    }
+
 
 
     /***
@@ -277,6 +325,22 @@ public class SelectUserBaseController {
     public String teaAdd(SelectUserBase userBase) {
         return selectUserBaseService.teaAdd(userBase);
     }
+
+
+
+
+    /***
+     * 教师编辑初始化
+     * @param modelAndView
+     * @param userBaseVo
+     * @return
+     */
+    @RequestMapping("/teaSelfInfo")
+    public ModelAndView teaSelfInfo(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
+        modelAndView.setViewName("/teaModule/teaSelfInfo");
+        return selectUserBaseService.teaInitAddAndUpdate(modelAndView,userBaseVo);
+    }
+
 
     /***
      * 教师编辑初始化

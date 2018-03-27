@@ -256,8 +256,12 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
     @Override
     public String stuUpdate(SelectUserBase userBase) {
         //校验重复
-        String msg = checkCodeAndName(userBase);
-        if (!StringUtils.isEmpty(msg)) return msg;
+        SelectUserBase selectUserBase = this.selectById(userBase.getId());
+        if (!userBase.getUserCode().equals(selectUserBase.getUserCode())){
+            String msg = checkCodeAndName(userBase);
+            if (!StringUtils.isEmpty(msg)) return msg;
+        }
+
         return this.updateById(userBase)?Constant.SUCCESS:Constant.ERROR;
     }
 
@@ -311,6 +315,8 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
             e.printStackTrace();
         }
     }
+
+
 
     /**
      * 校验账号 用户名是否重复
@@ -698,4 +704,21 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
         return true;
     }
 
+    /***
+     * 管理员添加
+     * @param user
+     * @return
+     */
+    @Override
+    public String admAdd(SelectUserBase user) {
+        if (ObjectUtils.isEmpty(user)){
+            return  Constant.ERROR;
+        }
+        String msg = checkCodeAndName(user);
+        if (!StringUtils.isEmpty(msg)) return msg;
+        user.setGmtCreate(new Date())
+                .setUserType(EnumUserType.ADMIN0.getValue())
+                .setUserPassword(Constant.USER_PASSWORD);
+        return this.insert(user)?Constant.SUCCESS:Constant.ERROR;
+    }
 }

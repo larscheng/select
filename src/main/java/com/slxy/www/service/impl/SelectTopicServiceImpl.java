@@ -28,8 +28,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,17 +60,7 @@ public class SelectTopicServiceImpl extends ServiceImpl<SelectTopicMapper, Selec
     public ModelAndView topicList(ModelAndView modelAndView, SelectTopicVo vo) {
         Page<SelectTopicDto> page = new Page<>(vo.getPage(), vo.getPageSize());
         List<SelectTopicDto> list = selectTopicMapper.getTopicByPage(page, vo);
-//        if (!CollectionUtils.isEmpty(list)){
-//
-//            for (SelectTopicDto dto:list){
-//                if (!ObjectUtils.isEmpty(dto.getTeaAuditState())){
-//                    dto.setTeaAuditStatusName(EnumSubState.toMap().get(dto.getTeaAuditState()));
-//                }
-//                if (!ObjectUtils.isEmpty(dto.getSubSelectStatus())){
-//                    dto.setSubSelectStatusName(EnumSubSelectStatus.toMap().get(dto.getSubSelectStatus()));
-//                }
-//            }
-//        }
+
         page.setRecords(list);
         List<SelectUserBase> teaList = selectUserBaseMapper.selectList(new EntityWrapper<SelectUserBase>()
                 .and("user_type = {0}", EnumUserType.TEACHER.getValue()).and("user_status = {0}", EnumEnOrDis.ENABLED.getValue()));
@@ -102,10 +95,14 @@ public class SelectTopicServiceImpl extends ServiceImpl<SelectTopicMapper, Selec
         SelectTopic topic = this.selectById(vo.getId());
         if (!ObjectUtils.isEmpty(topic)){
             SelectTopicDto dto = SelectMapStructMapper.INSTANCE.SelectTopicPoToDto(topic);
-            //题目名
+            //题目名、各项得分
             SelectSubject selectSubject = selectSubjectMapper.selectById(topic.getStuId());
             if (!ObjectUtils.isEmpty(selectSubject)){
-                dto.setSubName(selectSubject.getSubName());
+                dto.setSubName(selectSubject.getSubName())
+                        .setTutorScore(selectSubject.getTutorScore())
+                        .setJudgeScore(selectSubject.getJudgeScore())
+                        .setDefenceScore(selectSubject.getDefenceScore())
+                        .setFinalTotalScore(selectSubject.getFinalTotalScore());
                 SelectUserBase teacher = selectUserBaseMapper.selectById(selectSubject.getTeaId());
                 //教师名
                 dto.setTeaName(teacher.getUserName());
@@ -115,6 +112,7 @@ public class SelectTopicServiceImpl extends ServiceImpl<SelectTopicMapper, Selec
             if (!ObjectUtils.isEmpty(selectUserBase)){
                 dto.setStuName(selectUserBase.getUserName());
             }
+
             modelAndView.addObject("topicDetails",dto);
         }
 
@@ -132,7 +130,7 @@ public class SelectTopicServiceImpl extends ServiceImpl<SelectTopicMapper, Selec
     public String topicAudited(SelectTopicVo vo) {
         SelectTopic topic = this.selectById(vo.getId());
         if (ObjectUtils.isEmpty(topic)){
-            return Constant.PARAM_ERROR;
+            return Constant.SELECT_ERROR_NOT_EXIST;
         }
         SelectTopic selectTopic = new SelectTopic()
                 .setId(vo.getId());
@@ -154,6 +152,74 @@ public class SelectTopicServiceImpl extends ServiceImpl<SelectTopicMapper, Selec
         }
         selectSubjectMapper.updateById(selectSubject);
         return this.updateById(selectTopic)?Constant.SUCCESS:Constant.ERROR;
+    }
+
+    /***
+     * 学生上传选题附件
+     * @param file
+     * @param id
+     * @param request
+     * @param type
+     * @return
+     */
+    @Override
+    public String uploadTaskBook(MultipartFile file, Integer id, HttpServletRequest request,Integer type) {
+        SelectTopic topic = this.selectById(id);
+        if (ObjectUtils.isEmpty(topic)){
+            return Constant.SELECT_ERROR_NOT_EXIST;
+        }
+        if (!EnumSubState.SUCCESS.getValue().equals(topic.getTeaAuditState())){
+            return Constant.SELECT_ERROR_NOT_AUDIT_SUCCESS;
+        }
+        SelectTopic selectTopic = new SelectTopic().setId(topic.getId());
+        if (!ObjectUtils.isEmpty(file)){
+//            String fileDir =request.getServletContext().getRealPath("");
+//            String demoDir = "downFile";
+            String fileDir = "C:/Users/Administrator/Desktop/online/";
+            String demoDir = "demo";
+            String demoPath = demoDir + File.separator;
+            String fileName = file.getOriginalFilename();
+            File outFile = new File(fileDir + demoPath);
+            //保存路径字段
+            if (type == 1){
+                selectTopic.setTaskFile(demoDir+"/"+fileName);
+            }else if (type == 2){
+                selectTopic.setOpeningReport(demoDir+"/"+fileName);
+            }else {
+                selectTopic.setDissertation(demoDir+"/"+fileName);
+            }
+
+
+            if (!outFile.exists()) {
+                outFile.mkdirs();
+            }
+            try{
+                InputStream in = file.getInputStream();
+                OutputStream ot = new FileOutputStream(fileDir + demoPath + fileName);
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((-1 != (len = in.read(buffer)))) {
+                    ot.write(buffer, 0, len);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return this.updateById(selectTopic)?Constant.SUCCESS:Constant.ERROR;
+    }
+
+    /***
+     * 删除选题记录
+     * @param id
+     * @return
+     */
+    @Override
+    public String topicDel(int id) {
+        SelectTopic topic = this.selectById(id);
+        if (ObjectUtils.isEmpty(topic)) {
+            return Constant.SELECT_ERROR_NOT_EXIST;
+        }
+        return this.deleteById(topic) ? Constant.SUCCESS : Constant.ERROR;
     }
 
 

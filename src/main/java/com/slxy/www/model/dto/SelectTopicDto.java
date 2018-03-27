@@ -1,5 +1,6 @@
 package com.slxy.www.model.dto;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.slxy.www.model.vo.PageVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -47,6 +48,19 @@ public class SelectTopicDto extends PageVo {
      * 选题年份
      */
     private String topicYear;
+    /***
+     * 任务书
+     */
+    private String taskFile;
+    /**
+     * 开题报告
+     */
+    private String openingReport;
+    /**
+     * 论文
+     */
+    private String dissertation;
+
     /**
      * 创建时间
      */
@@ -61,6 +75,23 @@ public class SelectTopicDto extends PageVo {
     private String stuName;
 
     private String teaName;
+
+    /**
+     * 指导老师评分
+     */
+    private Double tutorScore;
+    /**
+     * 评阅老师评分
+     */
+    private Double judgeScore;
+    /**
+     * 答辩得分
+     */
+    private Double defenceScore;
+    /**
+     * 最终总得分
+     */
+    private Double finalTotalScore;
 
     public SelectTopicDto() {
     }
@@ -115,6 +146,70 @@ public class SelectTopicDto extends PageVo {
 
     public String getTeaName() {
         return this.teaName;
+    }
+
+    public String getTaskFile() {
+        return taskFile;
+    }
+
+    public Double getTutorScore() {
+        return tutorScore;
+    }
+
+    public SelectTopicDto setTutorScore(Double tutorScore) {
+        this.tutorScore = tutorScore;
+        return this;
+    }
+
+    public Double getJudgeScore() {
+        return judgeScore;
+    }
+
+    public SelectTopicDto setJudgeScore(Double judgeScore) {
+        this.judgeScore = judgeScore;
+        return this;
+
+    }
+
+    public Double getDefenceScore() {
+        return defenceScore;
+    }
+
+    public SelectTopicDto setDefenceScore(Double defenceScore) {
+        this.defenceScore = defenceScore;
+        return this;
+    }
+
+    public Double getFinalTotalScore() {
+        return finalTotalScore;
+    }
+
+    public SelectTopicDto setFinalTotalScore(Double finalTotalScore) {
+        this.finalTotalScore = finalTotalScore;
+        return this;
+    }
+
+    public SelectTopicDto setTaskFile(String taskFile) {
+        this.taskFile = taskFile;
+        return this;
+    }
+
+    public String getOpeningReport() {
+        return openingReport;
+    }
+
+    public SelectTopicDto setOpeningReport(String openingReport) {
+        this.openingReport = openingReport;
+        return this;
+    }
+
+    public String getDissertation() {
+        return dissertation;
+    }
+
+    public SelectTopicDto setDissertation(String dissertation) {
+        this.dissertation = dissertation;
+        return this;
     }
 
     public SelectTopicDto setId(Integer id) {

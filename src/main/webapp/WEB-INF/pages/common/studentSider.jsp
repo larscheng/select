@@ -23,7 +23,7 @@
     <!-- If the main navigation has sub navigation, then add the class "has_sub" to "li" of main navigation. -->
     <ul id="nav" style="display: block;">
         <!-- Main menu with font awesome icon -->
-        <li><a href="/selectUserBase/userList"  target="mainFrame" class=""><i class="icon-home"></i> stu</a>
+        <li><a href="${ctx}/selectUserBase/stuSelfInfo?id=${sessionScope.sessionUser.id}"  target="mainFrame" class=""><i class="icon-home"></i>个人信息变更</a>
             <!-- Sub menu markup
             <ul>
               <li><a href="#">Submenu #1</a></li>

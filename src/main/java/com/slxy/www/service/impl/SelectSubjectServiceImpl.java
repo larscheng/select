@@ -274,7 +274,7 @@ public class SelectSubjectServiceImpl extends ServiceImpl<SelectSubjectMapper, S
      */
     @Override
     public String subAdd(MultipartFile file,SelectSubjectVo vo, HttpServletRequest request) {
-        //没有文件也可以导入
+        //没有文件也可以添加
         if (StringUtils.isEmpty(vo.getSubName())){
             return Constant.PARAM_ERROR;
         }
@@ -294,18 +294,20 @@ public class SelectSubjectServiceImpl extends ServiceImpl<SelectSubjectMapper, S
             String demoPath = demoDir + File.separator;
             String fileName = file.getOriginalFilename();
             File outFile = new File(fileDir + demoPath);
-            System.out.println(outFile.getAbsolutePath());
+            //保存路径字段
+            subject.setSubFile(demoDir+"/"+fileName);
+
             if (!outFile.exists()) {
                 outFile.mkdirs();
             }
-            try(InputStream in = file.getInputStream();
-                OutputStream ot = new FileOutputStream(fileDir + demoPath + fileName)){
+            try{
+                InputStream in = file.getInputStream();
+                OutputStream ot = new FileOutputStream(fileDir + demoPath + fileName);
                 byte[] buffer = new byte[1024];
                 int len;
                 while ((-1 != (len = in.read(buffer)))) {
                     ot.write(buffer, 0, len);
                 }
-                subject.setSubFile(demoDir+"/"+fileName);
             } catch (IOException e) {
                 e.printStackTrace();
             }

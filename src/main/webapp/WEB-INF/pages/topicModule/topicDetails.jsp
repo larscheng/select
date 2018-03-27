@@ -72,10 +72,213 @@
                                 <!-- Form starts.  -->
                                 <form class="form-horizontal" role="form" id="updateForm">
 
+                                    <c:if test="${requestScope.topicDetails.teaAuditState eq 2}">
+                                        <div class="form-group ">
+
+                                            <label class="col-lg-1 control-label">总分</label>
+
+                                            <div class="col-lg-1 panel panel-default pdl" >
+                                                <c:out value="${requestScope.topicDetails.finalTotalScore}" default="0"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group ">
+
+
+                                            <label class="col-lg-1 control-label">指导老师打分</label>
+
+                                            <div class="col-lg-1 panel panel-default pdl" >
+
+                                                <c:out value="${requestScope.topicDetails.tutorScore}" default="0"/>
+                                            </div>
+
+
+
+                                            <label class="col-lg-4 control-label">评阅老师打分</label>
+
+                                            <div class="col-lg-1 panel panel-default pdl" >
+
+                                                <c:out value="${requestScope.topicDetails.judgeScore}" default="0"/>
+                                            </div>
+
+                                            <label class="col-lg-2 control-label">答辩得分</label>
+
+                                            <div class="col-lg-1 panel panel-default pdl" >
+
+                                                <c:out value="${requestScope.topicDetails.defenceScore}" default="0"/>
+                                            </div>
+
+
+                                        </div>
+
+                                    </c:if>
+
+
+                                    <c:if test="${sessionScope.userType eq 3}">
+                                        <c:choose>
+                                            <c:when test="${requestScope.topicDetails.taskFile != null}">
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">任务书</label>
+                                                    <div class="col-lg-2 panel panel-default pdl" >
+                                                            ${requestScope.topicDetails.taskFile}
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <a class="btn btn-info"
+                                                           href="http://localhost:8012/onlinePreview?url=http://localhost:8012/${requestScope.topicDetails.taskFile}" target="_blank">预览</a>
+                                                        <a class="btn btn-info"
+                                                           href="${ctx}/selectSubject/subFileDown?fileName=${requestScope.topicDetails.taskFile}" target="_blank">下载</a>
+                                                    </div>
+                                                </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">任务书</label>
+                                                    <div class="col-lg-3">
+                                                        <input type="file" class="form-control" name="taskFile">
+                                                    </div>
+                                                    <button type="button" class="btn btn-success icon-upload" onclick="uploadTaskBook(1)">上传</button>
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
+
+                                        <c:choose>
+                                            <c:when test="${requestScope.topicDetails.openingReport != null}">
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">开题报告</label>
+                                                    <div class="col-lg-2 panel panel-default pdl" >
+                                                            ${requestScope.topicDetails.openingReport}
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <a class="btn btn-info"
+                                                           href="http://localhost:8012/onlinePreview?url=http://localhost:8012/${requestScope.topicDetails.openingReport}" target="_blank">预览</a>
+                                                        <a class="btn btn-info"
+                                                           href="${ctx}/selectSubject/subFileDown?fileName=${requestScope.topicDetails.openingReport}" target="_blank">下载</a>
+                                                    </div>
+                                                </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">开题报告</label>
+                                                    <div class="col-lg-3">
+                                                        <input type="file" class="form-control" name="openingReport">
+                                                    </div>
+                                                    <button type="button" class="btn btn-success icon-upload"  onclick="uploadTaskBook(2)">上传</button>
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
+
+                                        <c:choose>
+                                            <c:when test="${requestScope.topicDetails.dissertation != null}">
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">毕业论文</label>
+                                                    <div class="col-lg-2 panel panel-default pdl" >
+                                                            ${requestScope.topicDetails.dissertation}
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <a class="btn btn-info"
+                                                           href="http://localhost:8012/onlinePreview?url=http://localhost:8012/${requestScope.topicDetails.dissertation}" target="_blank">预览</a>
+                                                        <a class="btn btn-info"
+                                                           href="${ctx}/selectSubject/subFileDown?fileName=${requestScope.topicDetails.dissertation}" target="_blank">下载</a>
+                                                    </div>
+                                                </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">毕业论文</label>
+                                                    <div class="col-lg-3">
+                                                        <input type="file" class="form-control" name="dissertation">
+                                                    </div>
+                                                    <button type="button" class="btn btn-success icon-upload" onclick="uploadTaskBook(3)">上传</button>
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:if>
+                                    <c:if test="${sessionScope.userType != 3}">
+                                        <c:choose>
+                                            <c:when test="${requestScope.topicDetails.taskFile != null}">
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">任务书</label>
+                                                    <div class="col-lg-2 panel panel-default pdl" >
+                                                            ${requestScope.topicDetails.taskFile}
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <a class="btn btn-info"
+                                                           href="http://localhost:8012/onlinePreview?url=http://localhost:8012/${requestScope.topicDetails.taskFile}" target="_blank">预览</a>
+                                                        <a class="btn btn-info"
+                                                           href="${ctx}/selectSubject/subFileDown?fileName=${requestScope.topicDetails.taskFile}" target="_blank">下载</a>
+                                                    </div>
+                                                </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">任务书</label>
+                                                    <div class="col-lg-4 panel panel-default pdl" >
+                                                        <b style="color: red"> 暂未上传</b>
+                                                    </div>
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
+
+                                        <c:choose>
+                                            <c:when test="${requestScope.topicDetails.openingReport != null}">
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">开题报告</label>
+                                                    <div class="col-lg-2 panel panel-default pdl" >
+                                                            ${requestScope.topicDetails.openingReport}
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <a class="btn btn-info"
+                                                           href="http://localhost:8012/onlinePreview?url=http://localhost:8012/${requestScope.topicDetails.openingReport}" target="_blank">预览</a>
+                                                        <a class="btn btn-info"
+                                                           href="${ctx}/selectSubject/subFileDown?fileName=${requestScope.topicDetails.openingReport}" target="_blank">下载</a>
+                                                    </div>
+                                                </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">开题报告</label>
+                                                    <div class="col-lg-4 panel panel-default pdl" >
+                                                        <b style="color: red"> 暂未上传</b>
+                                                    </div>
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
+
+                                        <c:choose>
+                                            <c:when test="${requestScope.topicDetails.dissertation != null}">
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">毕业论文</label>
+                                                    <div class="col-lg-2 panel panel-default pdl" >
+                                                            ${requestScope.topicDetails.dissertation}
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <a class="btn btn-info"
+                                                           href="http://localhost:8012/onlinePreview?url=http://localhost:8012/${requestScope.topicDetails.dissertation}" target="_blank">预览</a>
+                                                        <a class="btn btn-info"
+                                                           href="${ctx}/selectSubject/subFileDown?fileName=${requestScope.topicDetails.dissertation}" target="_blank">下载</a>
+                                                    </div>
+                                                </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">毕业论文</label>
+                                                    <div class="col-lg-4 panel panel-default pdl" >
+                                                        <b style="color: red"> 暂未上传</b>
+                                                    </div>
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:if>
+
+
+
+
+
+
                                     <div class="form-group">
 
                                         <label class="col-lg-4 control-label">题目名称</label>
-
+                                        <input type="hidden" name="id" value="${requestScope.topicDetails.id}"/>
                                         <div class="col-lg-4 panel panel-default pdl" >
                                             ${requestScope.topicDetails.subName}
                                         </div>
@@ -123,10 +326,10 @@
                                                 未处理
                                             </c:if>
                                             <c:if test="${requestScope.topicDetails.teaAuditState eq 1}">
-                                                审核不通过
+                                                <b style="color: red">审核不通过 <c:if test="${sessionScope.userType eq 3}">（删除该记录可以重新选题）</c:if></b>
                                             </c:if>
                                             <c:if test="${requestScope.topicDetails.teaAuditState eq 2}">
-                                                审核通过
+                                               <b style="color: green">审核通过</b>
                                             </c:if>
                                         </div>
                                     </div>
@@ -166,9 +369,10 @@
                                     <div class="form-group">
                                         <div class="col-lg-offset-1 col-lg-9">
                                             <button type="button" class="btn btn-info" onclick="window.history.go(-1);">返回</button>
-                                            <c:if test="${sessionScope.userType eq 1}">
-                                                <c:if test="${requestScope.sub.admAuditState eq 1}">
-                                                    <button  type="button" class="btn  btn-success" onclick="subSuccess(${requestScope.sub.id})">通过</button>
+
+                                            <c:if test="${sessionScope.userType eq 3}">
+                                                <c:if test="${requestScope.topicDetails.teaAuditState eq 1}">
+                                                    <button  type="button" class="btn  btn-danger" onclick="topicDel(${requestScope.topicDetails.id})">删除</button>
                                                 </c:if>
                                             </c:if>
 
@@ -205,20 +409,36 @@
         $("#reason").val("");
     }
 
-    function subSuccess(id){
-        confirm(" 😲 确认审核通过？","",function (isConfirm) {
+    //上传题目文件
+    function uploadTaskBook(type) {
+        var uploadUrl;
+        if (type === 1){
+            uploadUrl = "/selectTopic/uploadTaskBook";
+        }else if (type === 2){
+            uploadUrl = "/selectTopic/uploadOpeningReport";
+        }else {
+            uploadUrl = "/selectTopic/uploadDissertation";
+        }
+        var formData = new FormData($( "#updateForm" )[0]);  // 要求使用的html对象
+        console.log(uploadUrl);
+        confirm(" 😲 确认上传吗？","",function (isConfirm) {
             if (isConfirm){
                 $.ajax({
                     type:"POST",
-                    url:"/selectSubject/subAudited",
-                    data:{"id":id,"admAuditState":2,"admAuditId":${sessionScope.sessionUser.id}},
+                    url:uploadUrl,
+                    data:formData,
+                    async: true,
+                    // 下面三个参数要指定，如果不指定，会报一个JQuery的错误
+                    cache: false,
+                    contentType: false,
+                    processData: false,
                     dataType:"json",
                     success:function(msg){
                         if("OK"!=msg){
                             alert(" 😅 "+msg);
                         }else {
-                            alert(" 😋 审核通过","",function () {
-                                location.href="/selectSubject/unSubList";
+                            alert(" 😋 上传成功","",function () {
+                                location.href="/selectTopic/topicDetails?id=${requestScope.topicDetails.id}";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -231,62 +451,38 @@
     }
 
 
-    function subFail(id){
 
-        confirm(" 😲 确认不通过？","",function (isConfirm) {
+
+
+    function topicDel(id){
+        confirm(" 😲 确认删除吗？","",function (isConfirm) {
             if (isConfirm){
                 $.ajax({
                     type:"POST",
-                    url:"/selectSubject/subAudited",
-                    data:{"id":id,"admAuditState":1,"admAuditId":${sessionScope.sessionUser.id},"admAuditContent":$("#reason").val()},
+                    url:"/selectTopic/topicDel",
+                    data:{"id":id},
                     dataType:"json",
                     success:function(msg){
                         if("OK"!=msg){
                             alert(" 😅 "+msg);
-                        }else{
-                            alert(" 😋 审核完成！","",function () {
-                                location.href="/selectSubject/unSubList";
+                        }else {
+                            alert(" 😋 删除成功","",function () {
+                                location.href="/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
                     error:function(e){
-                        alert("😥 系统异常，请与我们的工程师联系！");
+                        alert("😥 系统异常，请与我们的程序员小哥哥联系！");
                     }
                 });
             }
         });
-
     }
 
 
 
-    $(function(){
 
 
-
-        $("#updateSubmit").click(function(){
-
-            $.ajax({
-                type: "post",
-                url: "/selectUserBase/teaUpdate",
-                data: $("#updateForm").serialize(),
-                dataType:"json",
-                success:function(msg){
-                    if("OK"!=msg){
-                        alert(" 😅 "+msg);
-                    }else {
-                        alert(" 😎 修改成功","",function () {
-                            location.href="/selectUserBase/teaList";
-                        },{type:"success",confirmButtonText:"好的"});
-                    }
-
-                },
-                error: function(e) {
-                    alert(" 😥 系统异常，请与我们的工程师小哥哥联系！");
-                }
-            });
-        });
-    });
 
 
     /* Curve chart ends */

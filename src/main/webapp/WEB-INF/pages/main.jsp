@@ -6,6 +6,7 @@
 <html>
 <head>
     <title>后台管理</title>
+    <link rel="alternate icon" type="image/x-icon" href="/resources/favicon.ico">
 </head>
 <frameset rows="66,*,40" cols="*" frameborder="yes" border="0" framespacing="0" scrolling="yes" >
 

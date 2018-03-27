@@ -4,7 +4,10 @@ import com.slxy.www.model.SelectTopic;
 import com.baomidou.mybatisplus.service.IService;
 import com.slxy.www.model.vo.SelectSubjectVo;
 import com.slxy.www.model.vo.SelectTopicVo;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -23,4 +26,8 @@ public interface ISelectTopicService extends IService<SelectTopic> {
     ModelAndView topicDetails(ModelAndView modelAndView, SelectTopicVo vo);
 
     String topicAudited(SelectTopicVo vo);
+
+    String uploadTaskBook(MultipartFile file,Integer id, HttpServletRequest request,Integer type);
+
+    String topicDel(int i);
 }

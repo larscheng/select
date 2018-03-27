@@ -1,5 +1,6 @@
 package com.slxy.www.model.vo;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -49,6 +50,18 @@ public class SelectTopicVo extends PageVo {
      * 选题年份
      */
     private String topicYear;
+    /***
+     * 任务书
+     */
+    private String taskFile;
+    /**
+     * 开题报告
+     */
+    private String openingReport;
+    /**
+     * 论文
+     */
+    private String dissertation;
     /**
      * 创建时间
      */
@@ -57,5 +70,7 @@ public class SelectTopicVo extends PageVo {
      * 修改时间
      */
     private Date gmtModify;
+
+
 }
 

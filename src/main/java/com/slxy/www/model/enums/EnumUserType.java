@@ -12,6 +12,7 @@ import java.util.Map;
  *
  */
 public enum EnumUserType {
+    ADMIN0(0, "超级管理员"),
     ADMIN(1, "管理员"),
     TEACHER(2, "教师"),
     STUDENT(3, "学生"),

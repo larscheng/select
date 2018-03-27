@@ -23,7 +23,13 @@
     <!-- If the main navigation has sub navigation, then add the class "has_sub" to "li" of main navigation. -->
     <ul id="nav" style="display: block;">
         <!-- Main menu with font awesome icon -->
-        <li><a href="${ctx}/selectUserBase/userList"  target="mainFrame" class=""><i class="icon-home"></i> 首页</a></li>
+
+        <li class="has_sub"><a href="#"><i class="icon-list-alt"></i> 管理员信息  <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
+            <ul>
+                <li><a href="${ctx}/selectUserBase/admList" target="mainFrame" >管理员列表</a></li>
+                <li><a href="${ctx}/selectUserBase/admSelfInfo?id=${sessionScope.sessionUser.id}" target="mainFrame" >我的信息</a></li>
+            </ul>
+        </li>
 
         <li class="has_sub"><a href="#"><i class="icon-list-alt"></i> 院系专业  <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
             <ul>
@@ -41,7 +47,7 @@
             </ul>
         </li>
         <li><a href="${ctx}/selectTopic/topicList" target="mainFrame" ><i class="icon-file-alt"></i> 选题信息列表 </a></li>
-        <li><a href="charts.html"><i class="icon-bar-chart"></i>未作</a></li>
+        <li><a href="${ctx}/selectProcessControl/pcList"  target="mainFrame"><i class="icon-bar-chart"></i>流程控制管理</a></li>
         <li><a href="tables.html"><i class="icon-table"></i>未作</a></li>
         <li><a href="forms.html"><i class="icon-tasks"></i>未作</a></li>
         <li><a href="ui.html"><i class="icon-magic"></i>未作</a></li>
