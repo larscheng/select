@@ -23,6 +23,29 @@
         <result column="gmt_modify" property="gmtModify" />
     </resultMap>
 
+    <resultMap id="BaseResultDtoMap" type="com.slxy.www.model.dto.SelectSubjectDto">
+        <id column="id" property="id" />
+        <result column="sub_name" property="subName" />
+        <result column="tea_id" property="teaId" />
+        <result column="sub_type" property="subType" />
+        <result column="sub_content" property="subContent" />
+        <result column="adm_audit_state" property="admAuditState" />
+        <result column="adm_audit_content" property="admAuditContent" />
+        <result column="adm_audit_id" property="admAuditId" />
+        <result column="sub_select_status" property="subSelectStatus" />
+        <result column="tutor_score" property="tutorScore" />
+        <result column="judge_score" property="judgeScore" />
+        <result column="defence_score" property="defenceScore" />
+        <result column="final_total_score" property="finalTotalScore" />
+        <result column="sub_year" property="subYear" />
+        <result column="for_dep_id" property="forDepId" />
+        <result column="gmt_create" property="gmtCreate" />
+        <result column="gmt_modify" property="gmtModify" />
+        <result column="dep_name" property="forDepName" />
+        <result column="user_name" property="subTeaName" />
+        <result column="user_phone" property="teaPhone" />
+    </resultMap>
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, sub_name, tea_id, sub_type, sub_content, adm_audit_state, adm_audit_content, adm_audit_id, sub_select_status,
@@ -89,4 +112,19 @@
         </if>
         ORDER BY a.adm_audit_state DESC ,a.gmt_create DESC
     </select>
+
+    <select id="selectAllSubject" resultMap="BaseResultDtoMap">
+        SELECT
+        a.*,
+        b.dep_name,
+        c.user_name,
+        c.user_phone
+        FROM select_subject a
+        LEFT JOIN select_department b ON a.for_dep_id = b.id
+        LEFT JOIN select_user_base c ON  a.tea_id = c.id
+        WHERE 1=1
+        ORDER BY a.adm_audit_state DESC ,a.gmt_create DESC
+    </select>
+
+
 </mapper>

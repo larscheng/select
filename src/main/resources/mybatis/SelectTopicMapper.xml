@@ -85,4 +85,21 @@
         </if>
         ORDER BY a.tea_audit_state DESC ,a.gmt_create DESC
     </select>
+
+    <select id="selectAllTopic" resultMap="BaseResultDtoMap">
+        SELECT
+        a.*, b.sub_name, b.tutor_score, b.judge_score, b.defence_score, b.final_total_score,
+        c.user_name AS stu_name,
+        c.user_phone AS stu_phone,
+        d.user_name AS tea_name,
+        d.user_phone AS tea_phone
+        FROM
+        select_topic a
+        LEFT JOIN select_subject b ON a.sub_id = b.id
+        LEFT JOIN select_user_base c ON a.stu_id = c.id
+        LEFT JOIN select_user_base d ON a.tea_id = d.id
+        WHERE 1=1
+
+        ORDER BY a.tea_audit_state DESC ,a.gmt_create DESC
+    </select>
 </mapper>

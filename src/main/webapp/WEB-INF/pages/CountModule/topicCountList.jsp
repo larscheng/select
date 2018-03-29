@@ -106,13 +106,15 @@
 
                         <div class="widget">
 
-                            <div class="widget-head">
+                            <div class="widget-head" style="position: relative">
                                 <div class="pull-left">选题列表</div>
                                 <div class="widget-icons pull-right">
                                     <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                     <a href="#" class="wclose"><i class="icon-remove"></i></a>
                                 </div>
-
+                                <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
+                                    <button type="button" onclick="exportTopicInfo()" class="btn btn-info pull-left " style="margin-right: 10px"><i class="icon-remove"></i>导出报表</button>
+                                </div>
                                 <div class="clearfix"></div>
                             </div>
 
@@ -340,59 +342,6 @@
 
 
 
-    function teaAble(id){
-        confirm(" 😲 确认启用？","",function (isConfirm) {
-            if (isConfirm){
-                $.ajax({
-                    type:"POST",
-                    url:"/selectUserBase/teaAble",
-                    data:{"id":id,"userStatus":1},
-                    dataType:"json",
-                    success:function(msg){
-                        if("OK"!=msg){
-                            alert(" 😅 "+msg);
-                        }else {
-                            alert(" 😋 启用成功","",function () {
-                                location.href="/selectUserBase/teaList";
-                            },{type:"success",confirmButtonText:"好的"});
-                        }
-                    },
-                    error:function(e){
-                        alert("😥 系统异常，请与我们的工程师联系！");
-                    }
-                });
-            }
-        });
-    }
-
-
-    function teaDisAble(id){
-        confirm(" 😲 确认禁用？","",function (isConfirm) {
-            if (isConfirm){
-                $.ajax({
-                    type:"POST",
-                    url:"/selectUserBase/teaAble",
-                    data:{"id":id,"userStatus":0},
-                    dataType:"json",
-                    success:function(msg){
-                        if("OK"!=msg){
-                            alert(" 😅 "+msg);
-                        }else{
-                            alert(" 😋 禁用成功！","",function () {
-                                location.href="/selectUserBase/teaList";
-                            },{type:"success",confirmButtonText:"好的"});
-                        }
-                    },
-                    error:function(e){
-                        alert("😥 系统异常，请与我们的工程师联系！");
-                    }
-                });
-            }
-        });
-
-    }
-
-
 
     function topicDel(id){
         confirm(" 😲 确认删除吗？","",function (isConfirm) {
@@ -420,52 +369,17 @@
     }
 
 
-    function teaDeleteAll(){
-        var arrayId = new Array();
-        $('input[name="ids"]:checked').each(function(){arrayId.push($(this).val());});
-        if(arrayId.length==0){
-            alert(" 😨 无实例选中");
-            event.preventDefault(); // 兼容标准浏览器
-            window.event.returnValue = false; // 兼容IE6~8
-        }else{
-            confirm(" 😲 确认删除吗？","",function (is) {
-                if (is){
-                    $.ajax({
-                        type:"POST",
-                        url:"/selectUserBase/teaDeleteAll",
-                        data: { "selectedIDs": arrayId },
-                        dataType:"json",
-                        traditional: true,
-                        success:function(msg){
-                            if("OK"!=msg){
-                                alert(" 😅 "+msg);
-                            }else{
-                                alert(" 😋 删除成功！","",function () {
-                                    location.href="/selectUserBase/teaList";
-                                },{type:"success",confirmButtonText:"好的"});
-                            }
-
-                        },
-                        error:function(e){
-                            alert("😥 系统异常，请与我们的工程师联系！");
-                        }
-                    });
-                }
-            })
-
-        }
-
-    }
 
     function topicDetails(id) {
         window.location.href="/selectTopic/topicDetails?id="+id;
     }
 
-    function teaUpdate(id) {
-        window.location.href='/selectUserBase/teaInitUpdate?id='+id;
+
+
+
+    function exportTopicInfo() {
+        window.location.href="/selectTopic/export";
     }
-
-
 
 
 

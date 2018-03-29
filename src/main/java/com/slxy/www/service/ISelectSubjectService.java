@@ -4,11 +4,15 @@ import com.slxy.www.model.SelectSubject;
 import com.baomidou.mybatisplus.service.IService;
 import com.slxy.www.model.SelectUserBase;
 import com.slxy.www.model.vo.SelectSubjectVo;
+import com.slxy.www.model.vo.SelectTopicVo;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * <p>
@@ -45,4 +49,7 @@ public interface ISelectSubjectService extends IService<SelectSubject> {
     String stuSelect(SelectSubjectVo vo);
 
     void downSubFile(HttpServletRequest request, HttpServletResponse response, String fileName);
+
+    XSSFWorkbook exportExcelInfo() throws InvocationTargetException, ClassNotFoundException, IntrospectionException, java.text.ParseException, IllegalAccessException;
+
 }

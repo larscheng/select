@@ -1,20 +1,44 @@
 package com.slxy.www.controller;
 
 
+import com.baomidou.mybatisplus.plugins.Page;
+import com.slxy.www.common.Constant;
+import com.slxy.www.common.ExcelUtil;
+import com.slxy.www.model.SelectTopic;
+import com.slxy.www.model.dto.SelectTopicDto;
 import com.slxy.www.model.enums.EnumSubSelectStatus;
 import com.slxy.www.model.enums.EnumYesOrNo;
+import com.slxy.www.model.vo.SelectSubjectVo;
 import com.slxy.www.model.vo.SelectTopicVo;
 import com.slxy.www.service.ISelectTopicService;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.beans.IntrospectionException;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -179,6 +203,84 @@ public class SelectTopicController {
         return selectTopicService.topicList(modelAndView,vo);
     }
 
+
+    /***
+     * 导出选题报表
+     * @param request
+     * @param response
+     * @param vo
+     * @return
+     * @throws ClassNotFoundException
+     * @throws IntrospectionException
+     * @throws IllegalAccessException
+     * @throws ParseException
+     * @throws InvocationTargetException
+     * @throws UnsupportedEncodingException
+     */
+    @RequestMapping("/export")
+    @ResponseBody
+    public String export(HttpServletRequest request, HttpServletResponse response, SelectTopicVo vo) throws ClassNotFoundException, IntrospectionException, IllegalAccessException, ParseException, InvocationTargetException, UnsupportedEncodingException {
+        String fileName = "选题记录";
+        fileName = URLEncoder.encode(fileName, "UTF-8");
+        response.reset(); //清除buffer缓存
+        Map<String, Object> map = new HashMap<String, Object>();
+        // 指定下载的文件名
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
+        response.setContentType("application/vnd.ms-excel;charset=GB2312");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+        XSSFWorkbook workbook = null;
+        //导出Excel对象
+        workbook = selectTopicService.exportExcelInfo(vo);
+        OutputStream output;
+        try {
+            output = response.getOutputStream();
+            BufferedOutputStream bufferedOutPut = new BufferedOutputStream(output);
+            bufferedOutPut.flush();
+            workbook.write(bufferedOutPut);
+            bufferedOutPut.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Constant.SUCCESS;
+    }
+
+
+
+    @RequestMapping("/exportScore")
+    @ResponseBody
+    public String exportScore(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, IntrospectionException, IllegalAccessException, ParseException, InvocationTargetException, UnsupportedEncodingException {
+        String fileName = "选题成绩记录";
+        fileName = URLEncoder.encode(fileName, "UTF-8");
+        response.reset(); //清除buffer缓存
+        Map<String, Object> map = new HashMap<String, Object>();
+        // 指定下载的文件名
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
+        response.setContentType("application/vnd.ms-excel;charset=GB2312");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+        XSSFWorkbook workbook = null;
+        //导出Excel对象
+        workbook = selectTopicService.exportExcelScoreInfo();
+        OutputStream output;
+        checkException(response, workbook);
+        return Constant.SUCCESS;
+    }
+
+    private void checkException(HttpServletResponse response, XSSFWorkbook workbook) {
+        OutputStream output;
+        try {
+            output = response.getOutputStream();
+            BufferedOutputStream bufferedOutPut = new BufferedOutputStream(output);
+            bufferedOutPut.flush();
+            workbook.write(bufferedOutPut);
+            bufferedOutPut.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     /**

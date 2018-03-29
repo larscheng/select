@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.slxy.www.common.Constant;
+import com.slxy.www.common.ExcelUtil;
+import com.slxy.www.common.ExcelUtils;
 import com.slxy.www.common.utils.SelectMapStructMapper;
 import com.slxy.www.mapper.SelectMajorMapper;
 import com.slxy.www.mapper.SelectSubjectMapper;
@@ -19,12 +21,14 @@ import com.slxy.www.model.enums.EnumEnOrDis;
 import com.slxy.www.model.enums.EnumSubSelectStatus;
 import com.slxy.www.model.enums.EnumSubState;
 import com.slxy.www.model.enums.EnumUserType;
+import com.slxy.www.model.po.ExcelBean;
 import com.slxy.www.model.po.SelectScorePer;
 import com.slxy.www.model.vo.SelectSubjectVo;
 import com.slxy.www.model.vo.SelectTopicVo;
 import com.slxy.www.service.ISelectScorePerService;
 import com.slxy.www.service.ISelectTopicService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,10 +38,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.beans.IntrospectionException;
 import java.io.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -263,6 +269,76 @@ public class SelectTopicServiceImpl extends ServiceImpl<SelectTopicMapper, Selec
         selectSubject.setFinalTotalScore(finalTotalScore);
 
         return selectSubjectMapper.updateById(selectSubject) > 0 ? Constant.SUCCESS : Constant.ERROR;
+    }
+
+    /***
+     * 导出选题记录
+     * @param vo
+     * @return
+     * @throws InvocationTargetException
+     * @throws ClassNotFoundException
+     * @throws IntrospectionException
+     * @throws ParseException
+     * @throws IllegalAccessException
+     */
+    @Override
+    public XSSFWorkbook exportExcelInfo(SelectTopicVo vo) throws InvocationTargetException, ClassNotFoundException, IntrospectionException, ParseException, IllegalAccessException {
+        //根据条件查询数据，把数据装载到一个list中
+        List<SelectTopicDto> selectTopics = selectTopicMapper.selectAllTopic();
+        selectTopics.stream()
+                .map(selectTopicDto ->selectTopicDto.setTeaAuditStateName(EnumSubState.toMap().get(selectTopicDto.getTeaAuditState())))
+                .collect(Collectors.toList());
+        List<ExcelBean> excel=new ArrayList<>();
+        Map<Integer,List<ExcelBean>> map=new LinkedHashMap<>();
+        XSSFWorkbook xssfWorkbook=null;
+        //设置标题栏
+        excel.add(new ExcelBean("题目名称","subName",0));
+        excel.add(new ExcelBean("发布教师","teaName",0));
+        excel.add(new ExcelBean("教师电话","teaPhone",0));
+        excel.add(new ExcelBean("选题学生","stuName",0));
+        excel.add(new ExcelBean("学生电话","stuPhone",0));
+        excel.add(new ExcelBean("审核状态","teaAuditStateName",0));
+        excel.add(new ExcelBean("题目届别(级)","topicYear",0));
+        map.put(0, excel);
+        String sheetName = "月份收入";
+        //调用ExcelUtils的方法
+        xssfWorkbook = ExcelUtils.createExcelFile(SelectTopicDto.class, selectTopics, map, sheetName);
+        return xssfWorkbook;
+    }
+
+
+    /**
+     * 导出成绩记录
+     * @return
+     * @throws InvocationTargetException
+     * @throws ClassNotFoundException
+     * @throws IntrospectionException
+     * @throws ParseException
+     * @throws IllegalAccessException
+     */
+    @Override
+    public XSSFWorkbook exportExcelScoreInfo() throws InvocationTargetException, ClassNotFoundException, IntrospectionException, ParseException, IllegalAccessException {
+        //根据条件查询数据，把数据装载到一个list中
+        List<SelectTopicDto> selectTopics = selectTopicMapper.selectAllTopic();
+        List<ExcelBean> excel=new ArrayList<>();
+        Map<Integer,List<ExcelBean>> map=new LinkedHashMap<>();
+        XSSFWorkbook xssfWorkbook=null;
+        //设置标题栏
+        excel.add(new ExcelBean("题目名称","subName",0));
+        excel.add(new ExcelBean("发布教师","teaName",0));
+        excel.add(new ExcelBean("教师电话","teaPhone",0));
+        excel.add(new ExcelBean("选题学生","stuName",0));
+        excel.add(new ExcelBean("学生电话","stuPhone",0));
+        excel.add(new ExcelBean("指导老师评分","tutorScore",0));
+        excel.add(new ExcelBean("评阅老师评分","judgeScore",0));
+        excel.add(new ExcelBean("答辩的分","defenceScore",0));
+        excel.add(new ExcelBean("最终得分","finalTotalScore",0));
+        excel.add(new ExcelBean("题目届别(级)","topicYear",0));
+        map.put(0, excel);
+        String sheetName = "月份收入";
+        //调用ExcelUtils的方法
+        xssfWorkbook = ExcelUtils.createExcelFile(SelectTopicDto.class, selectTopics, map, sheetName);
+        return xssfWorkbook;
     }
 
 

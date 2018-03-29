@@ -19,4 +19,6 @@ import java.util.List;
 public interface SelectTopicMapper extends BaseMapper<SelectTopic> {
 
     List<SelectTopicDto> getTopicByPage(Page<SelectTopicDto> page, SelectTopicVo vo);
+
+    List<SelectTopicDto> selectAllTopic();
 }

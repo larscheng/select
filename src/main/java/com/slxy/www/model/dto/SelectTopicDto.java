@@ -106,6 +106,12 @@ public class SelectTopicDto extends PageVo {
      * 删除状态
      */
     private Integer delState;
+    /***
+     * 审核状态名
+     */
+    private String teaAuditStateName;
+
+
 
     public SelectTopicDto() {
     }
@@ -172,6 +178,15 @@ public class SelectTopicDto extends PageVo {
 
     public SelectTopicDto setDelState(Integer delState) {
         this.delState = delState;
+        return this;
+    }
+
+    public String getTeaAuditStateName() {
+        return teaAuditStateName;
+    }
+
+    public SelectTopicDto setTeaAuditStateName(String teaAuditStateName) {
+        this.teaAuditStateName = teaAuditStateName;
         return this;
     }
 

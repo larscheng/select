@@ -1,9 +1,12 @@
 package com.slxy.www.controller;
 
 
+import com.slxy.www.common.Constant;
 import com.slxy.www.model.enums.EnumSubState;
 import com.slxy.www.model.vo.SelectSubjectVo;
+import com.slxy.www.model.vo.SelectTopicVo;
 import com.slxy.www.service.ISelectSubjectService;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -15,6 +18,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.beans.IntrospectionException;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URLEncoder;
+import java.text.ParseException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -267,6 +280,35 @@ public class SelectSubjectController {
     @ResponseBody
     public String stuSelect(SelectSubjectVo vo) {
         return selectSubjectService.stuSelect(vo);
+    }
+
+    @RequestMapping("/export")
+    @ResponseBody
+    public String export(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, IntrospectionException, IllegalAccessException, ParseException, InvocationTargetException, UnsupportedEncodingException {
+        String fileName = "论文题目记录";
+        fileName = URLEncoder.encode(fileName, "UTF-8");
+        response.reset(); //清除buffer缓存
+        Map<String, Object> map = new HashMap<String, Object>();
+        // 指定下载的文件名
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
+        response.setContentType("application/vnd.ms-excel;charset=GB2312");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+        XSSFWorkbook workbook = null;
+        //导出Excel对象
+        workbook = selectSubjectService.exportExcelInfo();
+        OutputStream output;
+        try {
+            output = response.getOutputStream();
+            BufferedOutputStream bufferedOutPut = new BufferedOutputStream(output);
+            bufferedOutPut.flush();
+            workbook.write(bufferedOutPut);
+            bufferedOutPut.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Constant.SUCCESS;
     }
 
 }

@@ -116,13 +116,15 @@
 
                         <div class="widget">
 
-                            <div class="widget-head">
+                            <div class="widget-head" style="position: relative">
                                 <div class="pull-left">题目列表</div>
                                 <div class="widget-icons pull-right">
                                     <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                     <a href="#" class="wclose"><i class="icon-remove"></i></a>
                                 </div>
-
+                                <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
+                                    <button type="button" onclick="exportSubjectInfo()" class="btn btn-info pull-left " style="margin-right: 10px"><i class="icon-remove"></i>导出报表</button>
+                                </div>
                                 <div class="clearfix"></div>
                             </div>
 
@@ -231,6 +233,19 @@
     if(manType==3){
         url = "/selectSubject/subListAjax?selectId=${sessionScope.sessionUser.id}";
     }
+
+
+    function exportSubjectInfo() {
+        window.location.href="/selectSubject/export";
+    }
+
+
+
+
+
+
+
+
 
     $("#search").keydown(function (e) {
         if(event.keyCode == "13") {//判断如果按下的是回车键则执行下面的代码

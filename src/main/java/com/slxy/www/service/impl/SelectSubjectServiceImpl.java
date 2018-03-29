@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.slxy.www.common.Constant;
+import com.slxy.www.common.ExcelUtils;
 import com.slxy.www.common.utils.SelectMapStructMapper;
 import com.slxy.www.mapper.SelectDepartmentMapper;
 import com.slxy.www.mapper.SelectMajorMapper;
@@ -11,15 +12,18 @@ import com.slxy.www.mapper.SelectUserBaseMapper;
 import com.slxy.www.model.*;
 import com.slxy.www.mapper.SelectSubjectMapper;
 import com.slxy.www.model.dto.SelectSubjectDto;
+import com.slxy.www.model.dto.SelectTopicDto;
 import com.slxy.www.model.enums.EnumEnOrDis;
 import com.slxy.www.model.enums.EnumSubSelectStatus;
 import com.slxy.www.model.enums.EnumSubState;
 import com.slxy.www.model.enums.EnumSubType;
+import com.slxy.www.model.po.ExcelBean;
 import com.slxy.www.model.vo.SelectSubjectVo;
 import com.slxy.www.service.ISelectSubjectService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.slxy.www.service.ISelectTopicService;
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +36,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.beans.IntrospectionException;
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -459,6 +467,34 @@ public class SelectSubjectServiceImpl extends ServiceImpl<SelectSubjectMapper, S
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public XSSFWorkbook exportExcelInfo() throws InvocationTargetException, ClassNotFoundException, IntrospectionException, ParseException, IllegalAccessException {
+        //根据条件查询数据，把数据装载到一个list中
+        List<SelectSubjectDto> subjectDtos = selectSubjectMapper.selectAllSubject();
+        subjectDtos.stream()
+                .map(subjectDto ->
+                        subjectDto.setTypeName(EnumSubType.toMap().get(subjectDto.getSubType()))
+                        .setAdmAuditName(EnumSubState.toMap().get(subjectDto.getAdmAuditState()))
+                ).collect(Collectors.toList());
+        List<ExcelBean> excel=new ArrayList<>();
+        Map<Integer,List<ExcelBean>> map=new LinkedHashMap<>();
+        XSSFWorkbook xssfWorkbook=null;
+        //设置标题栏
+        excel.add(new ExcelBean("题目名称","subName",0));
+        excel.add(new ExcelBean("发布教师","subTeaName",0));
+        excel.add(new ExcelBean("教师电话","teaPhone",0));
+        excel.add(new ExcelBean("题目类型","typeName",0));
+        excel.add(new ExcelBean("题目届别(级)","subYear",0));
+        excel.add(new ExcelBean("审核状态","admAuditName",0));
+        excel.add(new ExcelBean("面向系别","forDepName",0));
+        excel.add(new ExcelBean("创建时间","gmtCreate",0));
+        map.put(0, excel);
+        String sheetName = "月份收入";
+        //调用ExcelUtils的方法
+        xssfWorkbook = ExcelUtils.createExcelFile(SelectSubjectDto.class, subjectDtos, map, sheetName);
+        return xssfWorkbook;
     }
 
 
