@@ -1,7 +1,8 @@
 package com.slxy.www.controller;
 
 
-import com.slxy.www.model.vo.SelectSubjectVo;
+import com.slxy.www.model.enums.EnumSubSelectStatus;
+import com.slxy.www.model.enums.EnumYesOrNo;
 import com.slxy.www.model.vo.SelectTopicVo;
 import com.slxy.www.service.ISelectTopicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +39,11 @@ public class SelectTopicController {
     @RequestMapping("/topicList")
     public ModelAndView stuList(ModelAndView  modelAndView, SelectTopicVo vo) {
         modelAndView.setViewName("topicModule/topicList");
+        vo.setDelState(EnumYesOrNo.NO.getValue());
         return selectTopicService.topicList(modelAndView,vo);
     }
+
+
 
     /***
      * 异步生成学生选题信息列表
@@ -150,7 +154,72 @@ public class SelectTopicController {
     }
 
 
+    /**
+     * 报表统计：成绩统计
+     * @param modelAndView
+     * @param vo
+     * @return
+     */
+    @RequestMapping("/topicScoreList")
+    public ModelAndView topicScoreList(ModelAndView  modelAndView, SelectTopicVo vo) {
+        modelAndView.setViewName("CountModule/topicScoreList");
+        vo.setTeaAuditState(EnumSubSelectStatus.SUCCESS.getValue());
+        return selectTopicService.topicList(modelAndView,vo);
+    }
 
+    /**
+     * 报表统计：选题记录
+     * @param modelAndView
+     * @param vo
+     * @return
+     */
+    @RequestMapping("/topicCountList")
+    public ModelAndView topicCountList(ModelAndView  modelAndView, SelectTopicVo vo) {
+        modelAndView.setViewName("CountModule/topicCountList");
+        return selectTopicService.topicList(modelAndView,vo);
+    }
+
+
+
+    /**
+     * 成绩上传列表
+     * @param modelAndView
+     * @param vo
+     * @return
+     */
+    @RequestMapping("/topicUploadList")
+    public ModelAndView topicUploadList(ModelAndView  modelAndView, SelectTopicVo vo) {
+        modelAndView.setViewName("scoreModule/scoreUploadList");
+        vo.setTeaAuditState(EnumSubSelectStatus.SUCCESS.getValue());
+        return selectTopicService.topicList(modelAndView,vo);
+    }
+
+
+    /**
+     * 成绩上传初始化
+     * @param modelAndView
+     * @param vo
+     * @return
+     */
+    @RequestMapping("/topicInitUpload")
+    public ModelAndView topicInitUpload(ModelAndView  modelAndView, SelectTopicVo vo) {
+        modelAndView.setViewName("scoreModule/scoreUpload");
+        return selectTopicService.topicDetails(modelAndView,vo);
+    }
+
+
+
+    /**
+     * 成绩上传初始化
+     * @param vo
+     * @return
+     */
+    @RequestMapping("/uploadScore")
+    @ResponseBody
+    public String uploadScore(SelectTopicVo vo) {
+
+        return selectTopicService.uploadScore(vo);
+    }
 
 }
 

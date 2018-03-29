@@ -71,6 +71,26 @@ public class SelectTopicVo extends PageVo {
      */
     private Date gmtModify;
 
+    /**
+     * 删除状态
+     */
+    private Integer delState;
 
+    /**
+     * 指导老师评分
+     */
+    private Double tutorScore;
+    /**
+     * 评阅老师评分
+     */
+    private Double judgeScore;
+    /**
+     * 答辩得分
+     */
+    private Double defenceScore;
+    /**
+     * 最终总得分
+     */
+    private Double finalTotalScore;
 }
 

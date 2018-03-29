@@ -15,6 +15,7 @@
         <result column="task_book" property="taskBook" />
         <result column="opening_report" property="openingReport" />
         <result column="dissertation" property="dissertation" />
+        <result column="del_state" property="delState" />
         <result column="gmt_create" property="gmtCreate" />
         <result column="gmt_modify" property="gmtModify" />
     </resultMap>
@@ -37,6 +38,13 @@
         <result column="sub_name" property="subName" />
         <result column="stu_name" property="stuName" />
         <result column="tea_name" property="teaName" />
+        <result column="tutor_score" property="tutorScore" />
+        <result column="judge_score" property="judgeScore" />
+        <result column="defence_score" property="defenceScore" />
+        <result column="final_total_score" property="finalTotalScore" />
+        <result column="tea_phone" property="teaPhone" />
+        <result column="stu_phone" property="stuPhone" />
+        <result column="del_state" property="delState" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -48,9 +56,11 @@
 
     <select id="getTopicByPage" resultMap="BaseResultDtoMap">
         SELECT
-        a.*, b.sub_name,
+        a.*, b.sub_name, b.tutor_score, b.judge_score, b.defence_score, b.final_total_score,
         c.user_name AS stu_name,
-        d.user_name AS tea_name
+        c.user_phone AS stu_phone,
+        d.user_name AS tea_name,
+        d.user_phone AS tea_phone
         FROM
         select_topic a
         LEFT JOIN select_subject b ON a.sub_id = b.id
@@ -69,6 +79,9 @@
         </if>
         <if test="@Ognl@isNotEmpty(teaAuditState)">
             and a.tea_audit_state = #{teaAuditState}
+        </if>
+        <if test="@Ognl@isNotEmpty(delState)">
+            and a.del_state = #{delState}
         </if>
         ORDER BY a.tea_audit_state DESC ,a.gmt_create DESC
     </select>

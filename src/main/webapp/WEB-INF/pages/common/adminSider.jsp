@@ -23,7 +23,7 @@
     <!-- If the main navigation has sub navigation, then add the class "has_sub" to "li" of main navigation. -->
     <ul id="nav" style="display: block;">
         <!-- Main menu with font awesome icon -->
-
+        <li><a href="${ctx}/test.jsp" target="mainFrame" ><i class="icon-list-alt"></i> 首页  </a></li>
         <li class="has_sub"><a href="#"><i class="icon-list-alt"></i> 管理员信息  <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
             <ul>
                 <li><a href="${ctx}/selectUserBase/admList" target="mainFrame" >管理员列表</a></li>
@@ -47,11 +47,23 @@
             </ul>
         </li>
         <li><a href="${ctx}/selectTopic/topicList" target="mainFrame" ><i class="icon-file-alt"></i> 选题信息列表 </a></li>
+
+        <li><a href="${ctx}/selectSubject/subAllList" target="mainFrame" ><i class="icon-file-alt"></i> 历届题目信息 </a></li>
+
+        <li class="has_sub"><a href="#"><i class="icon-file-alt"></i> 报表统计  <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
+            <ul>
+                <li><a href="${ctx}/selectSubject/subAllList" target="mainFrame">题目列表</a></li>
+                <li><a href="${ctx}/selectTopic/topicCountList"  target="mainFrame">选题列表</a></li>
+                <li><a href="${ctx}/selectTopic/topicScoreList"  target="mainFrame">成绩列表</a></li>
+            </ul>
+        </li>
+        <li><a href="${ctx}/selectTopic/topicUploadList" target="mainFrame" ><i class="icon-file-alt"></i> 成绩上传 </a></li>
         <li><a href="${ctx}/selectProcessControl/pcList"  target="mainFrame"><i class="icon-bar-chart"></i>流程控制管理</a></li>
-        <li><a href="tables.html"><i class="icon-table"></i>未作</a></li>
-        <li><a href="forms.html"><i class="icon-tasks"></i>未作</a></li>
-        <li><a href="ui.html"><i class="icon-magic"></i>未作</a></li>
-        <li><a href="calendar.html"><i class="icon-calendar"></i>未作</a></li>
+        <li><a href="${ctx}/selectScorePer/scoreList"  target="mainFrame"><i class="icon-bar-chart"></i>成绩比例划分</a></li>
+
+        <%--<li><a href="forms.html"><i class="icon-tasks"></i>未作</a></li>--%>
+        <%--<li><a href="ui.html"><i class="icon-magic"></i>未作</a></li>--%>
+        <%--<li><a href="calendar.html"><i class="icon-calendar"></i>未作</a></li>--%>
     </ul>
 </div>
 

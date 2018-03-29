@@ -57,54 +57,48 @@ public class SelectProcessControl implements Serializable {
         return id;
     }
 
-    public SelectProcessControl setId(Integer id) {
+    public void setId(Integer id) {
         this.id = id;
-        return this;
     }
 
     public String getProName() {
         return proName;
     }
 
-    public SelectProcessControl setProName(String proName) {
+    public void setProName(String proName) {
         this.proName = proName;
-        return this;
     }
 
     public Date getProStartTime() {
         return proStartTime;
     }
 
-    public SelectProcessControl setProStartTime(Date proStartTime) {
+    public void setProStartTime(Date proStartTime) {
         this.proStartTime = proStartTime;
-        return this;
     }
 
     public Date getProEndTime() {
         return proEndTime;
     }
 
-    public SelectProcessControl setProEndTime(Date proEndTime) {
+    public void setProEndTime(Date proEndTime) {
         this.proEndTime = proEndTime;
-        return this;
     }
 
     public Date getGmtCreate() {
         return gmtCreate;
     }
 
-    public SelectProcessControl setGmtCreate(Date gmtCreate) {
+    public void setGmtCreate(Date gmtCreate) {
         this.gmtCreate = gmtCreate;
-        return this;
     }
 
     public Date getGmtModify() {
         return gmtModify;
     }
 
-    public SelectProcessControl setGmtModify(Date gmtModify) {
+    public void setGmtModify(Date gmtModify) {
         this.gmtModify = gmtModify;
-        return this;
     }
 
     @Override

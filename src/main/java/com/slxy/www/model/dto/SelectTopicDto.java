@@ -93,6 +93,20 @@ public class SelectTopicDto extends PageVo {
      */
     private Double finalTotalScore;
 
+    /***
+     * 老师电话
+     */
+    private String teaPhone;
+    /***
+     * 学生电话
+     */
+    private String stuPhone;
+
+    /**
+     * 删除状态
+     */
+    private Integer delState;
+
     public SelectTopicDto() {
     }
 
@@ -152,9 +166,37 @@ public class SelectTopicDto extends PageVo {
         return taskFile;
     }
 
+    public Integer getDelState() {
+        return delState;
+    }
+
+    public SelectTopicDto setDelState(Integer delState) {
+        this.delState = delState;
+        return this;
+    }
+
+    public String getTeaPhone() {
+        return teaPhone;
+    }
+
+    public SelectTopicDto setTeaPhone(String teaPhone) {
+        this.teaPhone = teaPhone;
+        return this;
+    }
+
+    public String getStuPhone() {
+        return stuPhone;
+    }
+
+    public SelectTopicDto setStuPhone(String stuPhone) {
+        this.stuPhone = stuPhone;
+        return this;
+    }
+
     public Double getTutorScore() {
         return tutorScore;
     }
+
 
     public SelectTopicDto setTutorScore(Double tutorScore) {
         this.tutorScore = tutorScore;

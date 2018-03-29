@@ -16,4 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 public interface ISelectProcessControlService extends IService<SelectProcessControl> {
 
     ModelAndView pcList(ModelAndView modelAndView);
+
+    String updatePc(SelectProcessControl selectProcessControl);
 }

@@ -19,8 +19,10 @@ import com.slxy.www.model.enums.EnumEnOrDis;
 import com.slxy.www.model.enums.EnumSubSelectStatus;
 import com.slxy.www.model.enums.EnumSubState;
 import com.slxy.www.model.enums.EnumUserType;
+import com.slxy.www.model.po.SelectScorePer;
 import com.slxy.www.model.vo.SelectSubjectVo;
 import com.slxy.www.model.vo.SelectTopicVo;
+import com.slxy.www.service.ISelectScorePerService;
 import com.slxy.www.service.ISelectTopicService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +56,8 @@ public class SelectTopicServiceImpl extends ServiceImpl<SelectTopicMapper, Selec
     private SelectUserBaseMapper selectUserBaseMapper;
     @Autowired
     private SelectSubjectMapper selectSubjectMapper;
+    @Autowired
+    private ISelectScorePerService selectScorePerService;
 
 
     @Override
@@ -96,7 +100,7 @@ public class SelectTopicServiceImpl extends ServiceImpl<SelectTopicMapper, Selec
         if (!ObjectUtils.isEmpty(topic)){
             SelectTopicDto dto = SelectMapStructMapper.INSTANCE.SelectTopicPoToDto(topic);
             //题目名、各项得分
-            SelectSubject selectSubject = selectSubjectMapper.selectById(topic.getStuId());
+            SelectSubject selectSubject = selectSubjectMapper.selectById(topic.getSubId());
             if (!ObjectUtils.isEmpty(selectSubject)){
                 dto.setSubName(selectSubject.getSubName())
                         .setTutorScore(selectSubject.getTutorScore())
@@ -219,7 +223,46 @@ public class SelectTopicServiceImpl extends ServiceImpl<SelectTopicMapper, Selec
         if (ObjectUtils.isEmpty(topic)) {
             return Constant.SELECT_ERROR_NOT_EXIST;
         }
-        return this.deleteById(topic) ? Constant.SUCCESS : Constant.ERROR;
+        SelectTopic selectTopic = new SelectTopic()
+                .setId(id)
+                .setDelState(EnumEnOrDis.ENABLED.getValue());
+        return this.updateById(selectTopic) ? Constant.SUCCESS : Constant.ERROR;
+    }
+
+
+    /***
+     * 上传评分
+     * @param vo
+     * @return
+     */
+    @Override
+    public String uploadScore(SelectTopicVo vo) {
+        List<SelectScorePer> selectScorePers = selectScorePerService.selectList(new EntityWrapper<SelectScorePer>());
+        SelectTopic selectTopic = this.selectById(vo.getId());
+        if (ObjectUtils.isEmpty(selectTopic)){
+            return Constant.ERROR;
+        }
+        SelectSubject subject = selectSubjectMapper.selectById(selectTopic.getSubId());
+        SelectSubject selectSubject = new SelectSubject();
+        if (!ObjectUtils.isEmpty(vo.getTutorScore())){
+            //教师操作
+            selectSubject.setId(selectTopic.getSubId())
+                    .setTutorScore(vo.getTutorScore())
+                    .setJudgeScore(subject.getJudgeScore())
+                    .setDefenceScore(subject.getDefenceScore());
+        }else {
+            selectSubject.setId(selectTopic.getSubId())
+                    .setTutorScore(subject.getTutorScore())
+                    .setJudgeScore(ObjectUtils.isEmpty(vo.getJudgeScore())?0.0:vo.getJudgeScore())
+                    .setDefenceScore(ObjectUtils.isEmpty(vo.getDefenceScore())?0.0:vo.getDefenceScore());
+        }
+
+        Double finalTotalScore = selectSubject.getTutorScore()*(selectScorePers.get(0).getScorePer()/100.00)+
+                selectSubject.getJudgeScore()*(selectScorePers.get(1).getScorePer()/100.00)+
+                selectSubject.getDefenceScore()*(selectScorePers.get(2).getScorePer()/100.00);
+        selectSubject.setFinalTotalScore(finalTotalScore);
+
+        return selectSubjectMapper.updateById(selectSubject) > 0 ? Constant.SUCCESS : Constant.ERROR;
     }
 
 

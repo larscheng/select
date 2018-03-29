@@ -107,7 +107,7 @@
                         <div class="widget">
 
                             <div class="widget-head">
-                                <div class="pull-left">教师列表</div>
+                                <div class="pull-left">选题列表</div>
                                 <div class="widget-icons pull-right">
                                     <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                     <a href="#" class="wclose"><i class="icon-remove"></i></a>
@@ -125,7 +125,9 @@
                                         <th>序号</th>
                                         <th>题目名</th>
                                         <th>教师姓名</th>
+                                        <th>教师电话</th>
                                         <th>学生姓名</th>
+                                        <th>学生电话</th>
                                         <th>审核状态</th>
                                         <th>题目届别</th>
                                         <th>创建时间</th>
@@ -144,7 +146,9 @@
                                                     <td>${index.count}</td>
                                                     <td>${topic.subName}</td>
                                                     <td>${topic.teaName}</td>
+                                                    <td>${topic.teaPhone}</td>
                                                     <td>${topic.stuName}</td>
+                                                    <td>${topic.stuPhone}</td>
                                                     <td>
                                                         <c:set var="status" value="${topic.teaAuditState}"/>
                                                         <c:choose>
@@ -273,7 +277,7 @@
     });
 
     function search() {
-        var url = "/selectTopic/stuTopicAjaxList";
+        var url = "/selectTopic/stuTopicAjaxList?delState=0";
         if (manType == 3){
             url="/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
         }
@@ -292,7 +296,7 @@
     }
 
     function pageSearch(page) {
-        var url = "/selectTopic/stuTopicAjaxList";
+        var url = "/selectTopic/stuTopicAjaxList?delState=0";
         if (manType == 3){
             url="/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
         }
@@ -316,7 +320,7 @@
     }
 
     $("#searchSubmit").click(function(){
-        var url = "/selectTopic/stuTopicAjaxList";
+        var url = "/selectTopic/stuTopicAjaxList?delState=0";
         if (manType == 3){
             url="/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
         }
@@ -482,7 +486,9 @@
                     +"<td>"+(parseInt(index)+1)+"</td>"
                     +"<td>"+val.subName+"</td>"
                     +"<td>"+val.teaName+"</td>"
+                    +"<td>"+val.teaPhone+"</td>"
                     +"<td>"+val.stuName+"</td>"
+                    +"<td>"+val.stuPhone+"</td>"
                 ;
                     if (parseInt(val.teaAuditState) == 0){
                         item +=

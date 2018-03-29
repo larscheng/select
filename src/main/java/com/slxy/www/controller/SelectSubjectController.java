@@ -1,10 +1,7 @@
 package com.slxy.www.controller;
 
 
-import com.slxy.www.model.SelectSubject;
-import com.slxy.www.model.SelectUserBase;
 import com.slxy.www.model.enums.EnumSubState;
-import com.slxy.www.model.vo.SelectMajorVo;
 import com.slxy.www.model.vo.SelectSubjectVo;
 import com.slxy.www.service.ISelectSubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +55,23 @@ public class SelectSubjectController {
         return selectSubjectService.subList(modelAndView,vo);
     }
 
+    /***
+     * 历届论文列表
+     * @param modelAndView
+     * @param vo
+     * @return
+     */
+    @RequestMapping("/subAllList")
+    public ModelAndView subAllList(ModelAndView  modelAndView, SelectSubjectVo vo) {
+        modelAndView.setViewName("CountModule/subAllList");
+        return selectSubjectService.subList(modelAndView,vo);
+    }
 
+    /***
+     * 异步生成未审核论文列表
+     * @param vo
+     * @return
+     */
     @RequestMapping("/unSubListAjax")
     @ResponseBody
     public String unSubListAjax(SelectSubjectVo vo) {
@@ -66,7 +79,11 @@ public class SelectSubjectController {
         return selectSubjectService.subListAjax(vo);
     }
 
-
+    /***
+     * 异步生成论文列表
+     * @param vo
+     * @return
+     */
     @RequestMapping("/subListAjax")
     @ResponseBody
     public String subListAjax(SelectSubjectVo vo) {

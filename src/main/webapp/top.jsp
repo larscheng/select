@@ -15,49 +15,54 @@
 
 <!-- Header starts -->
 <header>
-    <div class="container">
-        <div class="row">
+    <!-- Logo section -->
+    <div class="col-md-3 ">
+        <!-- Logo. -->
+        <div class="logo">
+            <h1 class=" pull-left"><a href="#"><img src="resources/favicon.ico" width="60px" height="60px"><span class="bold"></span></a></h1>
+            <%--<div class="meta" style="line-height: 60px;color: black; font-size: 28px; font-family: 华文楷体 ;"><b>论文选题系统</b></div>--%>
+        </div>
+        <!-- Logo ends -->
+    </div>
 
-            <!-- Logo section -->
+    <div class="container">
+
+        <div class="row">
             <div class="col-md-4">
                 <!-- Logo. -->
-                <div class="logo">
-                    <h1><a href="#">logo<span class="bold"></span></a></h1>
-                    <p class="meta">商洛学院毕业选题系统</p>
+                <div class="logo pull-right">
+                    <%--<h1><a href="#"><img src="resources/favicon.ico" width="35px" height="35px"><span class="bold"></span></a></h1>--%>
+                    <%--<p class="meta">商洛学院毕业选题系统</p>--%>
                 </div>
                 <!-- Logo ends -->
             </div>
 
 
-            <ul class="pull-right" style="list-style: none; padding-top: 10px">
-                <li class="dropdown pull-right">
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#" style="color: black;padding-right: 50px;text-decoration: none;">
-
+            <ul class="pull-right" style="list-style: none;  line-height: 60px">
+                <li class="">
+                    <a  href="#" style=" ; font-size:15px;color: black;padding-right: 50px;text-decoration: none;">
+                        欢迎您 <i class="icon-user"></i> :
+                        <b>${sessionScope.get("sessionUser").userName}</b>
                         <c:choose>
                             <c:when test="${sessionScope.get('sessionUser').userType eq 0}">
-                                <i class="icon-user"></i>超级管理员 :
+                                超级管理员
                             </c:when>
                             <c:when test="${sessionScope.get('sessionUser').userType eq 1}">
-                                <i class="icon-user"></i>管理员 :
+                                管理员
                             </c:when>
                             <c:when test="${sessionScope.get('sessionUser').userType eq 2}">
-                                <i class="icon-user"></i>教师 :
+                                老师
                             </c:when>
                             <c:otherwise>
-                                <i class="icon-user"></i>学生 :
+                                同学
                             </c:otherwise>
                         </c:choose>
 
-                        ${sessionScope.get("sessionUser").userName}
 
-                        <b class="caret"></b>
+
                     </a>
 
-                    <!-- Dropdown menu -->
-                    <ul class="dropdown-menu">
 
-                        <li><a href="login.jsp"><i class="icon-off"></i> 退出</a></li>
-                    </ul>
                 </li>
 
             </ul>

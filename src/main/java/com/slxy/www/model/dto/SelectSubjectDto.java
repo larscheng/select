@@ -112,6 +112,12 @@ public class SelectSubjectDto extends  PageVo {
      * */
     private String subFile;
 
+    /**
+     * 教师电话
+     * */
+    private String teaPhone;
+
+
     public SelectSubjectDto() {
     }
 
@@ -193,6 +199,14 @@ public class SelectSubjectDto extends  PageVo {
 
     public String getSubFile() {
         return subFile;
+    }
+
+    public String getTeaPhone() {
+        return teaPhone;
+    }
+
+    public void setTeaPhone(String teaPhone) {
+        this.teaPhone = teaPhone;
     }
 
     public SelectSubjectDto setSubFile(String subFile) {

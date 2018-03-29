@@ -30,4 +30,6 @@ public interface ISelectTopicService extends IService<SelectTopic> {
     String uploadTaskBook(MultipartFile file,Integer id, HttpServletRequest request,Integer type);
 
     String topicDel(int i);
+
+    String uploadScore(SelectTopicVo vo);
 }

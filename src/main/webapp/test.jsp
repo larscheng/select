@@ -73,7 +73,10 @@
                                 <!-- Widget title -->
                                 <div class="widget-head">
                                     <div style="border: 1px solid red">
-                                        <a class="btn btn-default" href="http://localhost:8012/onlinePreview?url=http://localhost:8012/demo/2018橙色起点选课.xlsx" target="_blank">预览</a>
+                                        <a class="btn btn-default" href="http://10.200.0.64:8012/onlinePreview?url=http://10.200.0.64:8012/demo/2018橙色起点选课.xlsx" target="_blank">预览</a>
+                                    </div>
+                                    <div style="border: 1px solid red">
+                                        <a class="btn btn-default" href="${ctx}/selectUserBase/admList" target="mainFrame">预览</a>
                                     </div>
                                     <div class="pull-left">Chats</div>
                                     <div class="widget-icons pull-right">

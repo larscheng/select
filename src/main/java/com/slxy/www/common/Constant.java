@@ -56,5 +56,9 @@ public class Constant {
     public static final String SELECT_ERROR_NOT_AUDIT_SUCCESS = "该记录还未通过审核，不能进行此操作！";
 
 
+    //成绩比例
+    public static final String SCORE_INSERT_NAME_REPEAT = "组成模块名称重复！";
+
+
 }
 

@@ -70,12 +70,20 @@ public class SelectSubjectServiceImpl extends ServiceImpl<SelectSubjectMapper, S
      */
     @Override
     public ModelAndView subList(ModelAndView modelAndView, SelectSubjectVo vo) {
+        List<SelectDepartment> depList = selectDepartmentMapper.selectList(new EntityWrapper<SelectDepartment>().and("dep_status = {0}", EnumEnOrDis.ENABLED.getValue()));
+        if (!ObjectUtils.isEmpty(vo.getSelectId())){
+            //根据专业找系别
+            SelectUserBase userBase = selectUserBaseMapper.selectById(vo.getSelectId());
+            SelectMajor major = selectMajorMapper.selectById(userBase.getStuMajorId());
+            vo.setForDepId(major.getDepId());
+            depList = selectDepartmentMapper.selectList(new EntityWrapper<SelectDepartment>()
+                    .and("id = {0}", major.getDepId()));
+        }
         Page<SelectSubject> page = new Page<>(vo.getPage(),vo.getPageSize());
         List<SelectSubject> subjectList = selectSubjectMapper.getSubByPage(vo,page);
         List<SelectSubjectDto> subjectDtos = SelectMapStructMapper.INSTANCE.SelectSubjectsPoToDto(subjectList);
         Set<SelectUserBase> teaSet = new HashSet<>();
         this.setSubDto(subjectDtos, teaSet);
-        List<SelectDepartment> depList = selectDepartmentMapper.selectList(new EntityWrapper<SelectDepartment>().and("dep_status = {0}", EnumEnOrDis.ENABLED.getValue()));
         modelAndView.addObject("subjectList",subjectDtos);
         modelAndView.addObject("depList",depList);
         modelAndView.addObject("page",page);
@@ -91,17 +99,24 @@ public class SelectSubjectServiceImpl extends ServiceImpl<SelectSubjectMapper, S
      */
     @Override
     public String subListAjax(SelectSubjectVo vo) {
-
+        if (!ObjectUtils.isEmpty(vo.getSelectId())){
+            //根据专业找系别
+            SelectUserBase userBase = selectUserBaseMapper.selectById(vo.getSelectId());
+            SelectMajor major = selectMajorMapper.selectById(userBase.getStuMajorId());
+            vo.setForDepId(major.getDepId());
+        }
         Page<SelectSubject> page = new Page<>(vo.getPage(),vo.getPageSize());
         List<SelectSubject> subjectList = selectSubjectMapper.getSubByPage(vo,page);
         List<SelectSubjectDto> subjectDtos = SelectMapStructMapper.INSTANCE.SelectSubjectsPoToDto(subjectList);
         for (SelectSubjectDto dto:subjectDtos){
             dto.setTypeName(EnumSubType.toMap().get(dto.getSubType()));
             SelectUserBase userBase = selectUserBaseMapper.selectById(dto.getTeaId());
-            dto.setSubTeaName(userBase.getUserName());
+            //教师名、电话
+            dto.setSubTeaName(userBase.getUserName()).setTeaPhone(userBase.getUserPhone());
             //面向系别
             SelectDepartment selectDepartment = selectDepartmentMapper.selectById(dto.getForDepId());
             dto.setForDepName(selectDepartment.getDepName());
+            dto.setSubSelectStatusName(EnumSubSelectStatus.toMap().get(dto.getSubSelectStatus()));
         }
         Map<String,Object> map = new HashMap<>();
         map.put("subjectList",subjectDtos);
@@ -223,9 +238,9 @@ public class SelectSubjectServiceImpl extends ServiceImpl<SelectSubjectMapper, S
         for (SelectSubjectDto dto:subjectDtos){
             //类型名
             dto.setTypeName(EnumSubType.toMap().get(dto.getSubType()));
-            //教师名
+            //教师名、电话
             SelectUserBase userBase = selectUserBaseMapper.selectById(dto.getTeaId());
-            dto.setSubTeaName(userBase.getUserName());
+            dto.setSubTeaName(userBase.getUserName()).setTeaPhone(userBase.getUserPhone());
             SelectUserBase tea = selectUserBaseMapper.selectById(dto.getTeaId());
             teaSet.add(tea);
             //面向系别

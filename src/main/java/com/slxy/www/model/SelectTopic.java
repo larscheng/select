@@ -80,6 +80,12 @@ public class SelectTopic implements Serializable {
      */
     @TableField("dissertation")
     private String dissertation;
+
+    /**
+     * 删除状态
+     */
+    @TableField("del_state")
+    private Integer delState;
     /**
      * 创建时间
      */
@@ -132,6 +138,15 @@ public class SelectTopic implements Serializable {
 
     public Date getGmtModify() {
         return this.gmtModify;
+    }
+
+    public Integer getDelState() {
+        return delState;
+    }
+
+    public SelectTopic setDelState(Integer delState) {
+        this.delState = delState;
+        return this;
     }
 
     public String getTaskFile() {

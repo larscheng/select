@@ -134,6 +134,7 @@
                                         <th>序号</th>
                                         <th>题目名称</th>
                                         <th>发布教师</th>
+                                        <th>教师电话</th>
                                         <th>题目类型</th>
                                         <th>题目届别</th>
                                         <th>面向系别</th>
@@ -149,6 +150,7 @@
                                             <td>${index.count}</td>
                                             <td>${subject.subName}</td>
                                             <td>${subject.subTeaName}</td>
+                                            <td>${subject.teaPhone}</td>
                                             <td><span class="label label-primary">${subject.typeName}</span></td>
                                             <td>${subject.subYear}级</td>
                                             <td>${subject.forDepName}</td>
@@ -327,6 +329,7 @@
                     +"<td>"+(parseInt(index)+1)+"</td>"
                     +"<td>"+val.subName+"</td>"
                     +"<td>"+val.subTeaName+"</td>"
+                    +"<td>"+val.teaPhone+"</td>"
                     +"<td><span class='label label-primary'>"+val.typeName+"</span></td>"
                     +"<td>"+val.subYear+"级</td>"
                 ;

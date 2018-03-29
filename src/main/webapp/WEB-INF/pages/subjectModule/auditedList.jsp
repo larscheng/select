@@ -134,6 +134,7 @@
                                         <th>序号</th>
                                         <th>题目名称</th>
                                         <th>发布教师</th>
+                                        <th>教师电话</th>
                                         <th>题目类型</th>
                                         <th>题目届别</th>
                                         <th>审核状态</th>
@@ -150,6 +151,7 @@
                                             <td>${index.count}</td>
                                             <td>${subject.subName}</td>
                                             <td>${subject.subTeaName}</td>
+                                            <td>${subject.teaPhone}</td>
                                             <td><span class="label label-primary">${subject.typeName}</span></td>
                                             <td>${subject.subYear}级</td>
                                             <td>
@@ -333,6 +335,7 @@
                     +"<td>"+(parseInt(index)+1)+"</td>"
                     +"<td>"+val.subName+"</td>"
                     +"<td>"+val.subTeaName+"</td>"
+                    +"<td>"+val.teaPhone+"</td>"
                     +"<td><span class='label label-primary'>"+val.typeName+"</span></td>"
                     +"<td>"+val.subYear+"级</td>"
                 ;
@@ -341,6 +344,7 @@
                     item +=
                         "<td><span class='label label-success'>审核通过</span></td>"
                         +"<td>"+val.forDepName+"</td>"
+                        +"<td><span class='label label-primary'>"+val.subSelectStatusName+"</span></td>"
                         +"<td>"+time+"</td>"
                         +"<td>" +
                         "<button onclick='subjectDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
@@ -351,10 +355,12 @@
                     item+=
                         "<td><span class='label label-danger'>审核不通过</span></td>"
                         +"<td>"+val.forDepName+"</td>"
+                        +"<td><span class='label label-primary'>"+val.subSelectStatusName+"</span></td>"
                         +"<td>"+time+"</td>"
                         +"<td>" +
                         "<button onclick='subjectDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
                         "<button onclick='subSuccess("+val.id+")' class='btn btn-xs btn-success' style='margin-right: 5px'><i class='icon-ok-circle'>通过</i></button>" +
+                        "</td>"
                         +"</tr>"
                     ;
                 }

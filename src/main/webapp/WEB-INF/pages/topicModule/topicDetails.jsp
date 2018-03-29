@@ -119,7 +119,7 @@
                                             <c:when test="${requestScope.topicDetails.taskFile != null}">
                                                 <div class="form-group">
                                                     <label class="col-lg-4 control-label">任务书</label>
-                                                    <div class="col-lg-2 panel panel-default pdl" >
+                                                    <div class="col-lg-3 panel panel-default pdl" >
                                                             ${requestScope.topicDetails.taskFile}
                                                     </div>
                                                     <div class="col-lg-2">
@@ -145,7 +145,7 @@
                                             <c:when test="${requestScope.topicDetails.openingReport != null}">
                                                 <div class="form-group">
                                                     <label class="col-lg-4 control-label">开题报告</label>
-                                                    <div class="col-lg-2 panel panel-default pdl" >
+                                                    <div class="col-lg-3 panel panel-default pdl" >
                                                             ${requestScope.topicDetails.openingReport}
                                                     </div>
                                                     <div class="col-lg-2">
@@ -171,7 +171,7 @@
                                             <c:when test="${requestScope.topicDetails.dissertation != null}">
                                                 <div class="form-group">
                                                     <label class="col-lg-4 control-label">毕业论文</label>
-                                                    <div class="col-lg-2 panel panel-default pdl" >
+                                                    <div class="col-lg-3 panel panel-default pdl" >
                                                             ${requestScope.topicDetails.dissertation}
                                                     </div>
                                                     <div class="col-lg-2">
@@ -198,7 +198,7 @@
                                             <c:when test="${requestScope.topicDetails.taskFile != null}">
                                                 <div class="form-group">
                                                     <label class="col-lg-4 control-label">任务书</label>
-                                                    <div class="col-lg-2 panel panel-default pdl" >
+                                                    <div class="col-lg-3 panel panel-default pdl" >
                                                             ${requestScope.topicDetails.taskFile}
                                                     </div>
                                                     <div class="col-lg-2">
@@ -223,7 +223,7 @@
                                             <c:when test="${requestScope.topicDetails.openingReport != null}">
                                                 <div class="form-group">
                                                     <label class="col-lg-4 control-label">开题报告</label>
-                                                    <div class="col-lg-2 panel panel-default pdl" >
+                                                    <div class="col-lg-3 panel panel-default pdl" >
                                                             ${requestScope.topicDetails.openingReport}
                                                     </div>
                                                     <div class="col-lg-2">
@@ -248,7 +248,7 @@
                                             <c:when test="${requestScope.topicDetails.dissertation != null}">
                                                 <div class="form-group">
                                                     <label class="col-lg-4 control-label">毕业论文</label>
-                                                    <div class="col-lg-2 panel panel-default pdl" >
+                                                    <div class="col-lg-3 panel panel-default pdl" >
                                                             ${requestScope.topicDetails.dissertation}
                                                     </div>
                                                     <div class="col-lg-2">
