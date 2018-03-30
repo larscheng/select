@@ -76,26 +76,25 @@
 
                                         <label class="col-lg-4 control-label">题目名称</label>
                                         <input type="hidden" name="id" value="${requestScope.topicDetails.id}"/>
-                                        <div class="col-lg-4 panel panel-default pdl" >
-                                            ${requestScope.topicDetails.subName}
+                                        <div class="col-lg-4">
+                                            <input type="tel" disabled class="form-control" value="${requestScope.topicDetails.subName}"  name="subName" placeholder="电话">
                                         </div>
-
                                     </div>
 
                                     <div class="form-group">
                                         <label class="col-lg-4 control-label">发布教师</label>
 
-                                        <div class="col-lg-4 panel panel-default pdl" >
-                                            ${requestScope.topicDetails.teaName}
+                                        <div class="col-lg-4">
+                                            <input type="tel" disabled class="form-control" value="${requestScope.topicDetails.teaName}"  name="teaName" placeholder="电话">
                                         </div>
                                     </div>
 
                                         <div class="form-group">
                                             <label class="col-lg-4 control-label">选题学生</label>
-                                            <div class="col-lg-4 panel panel-default pdl" >
-                                                ${requestScope.topicDetails.stuName}
-                                            </div>
 
+                                            <div class="col-lg-4">
+                                                <input type="tel" disabled class="form-control" value="${requestScope.topicDetails.stuName}"  name="stuName" placeholder="电话">
+                                            </div>
                                         </div>
 
 
@@ -106,17 +105,16 @@
                                         <c:when test="${requestScope.topicDetails.teaAuditState eq 0}">
                                             <div class="form-group">
                                                 <label class="col-lg-4 control-label">选题时间</label>
-                                                <div class="col-lg-4 panel panel-default pdl" >
-                                                    <fmt:formatDate value="${requestScope.topicDetails.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                                <div class="col-lg-4">
+                                                    <input type="tel" disabled class="form-control" value="<fmt:formatDate value="${requestScope.topicDetails.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/>"  name="gmtCreate" placeholder="电话">
                                                 </div>
                                             </div>
                                         </c:when>
                                         <c:otherwise>
                                             <div class="form-group">
                                                 <label class="col-lg-4 control-label">审核时间</label>
-
-                                                <div class="col-lg-4 panel panel-default pdl" >
-                                                    <fmt:formatDate value="${requestScope.topicDetails.gmtModify}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                                                <div class="col-lg-4">
+                                                    <input type="tel" disabled class="form-control" value="<fmt:formatDate value="${requestScope.topicDetails.gmtModify}" pattern="yyyy-MM-dd HH:mm:ss"/>"  name="gmtCreate" placeholder="电话">
                                                 </div>
                                             </div>
                                         </c:otherwise>

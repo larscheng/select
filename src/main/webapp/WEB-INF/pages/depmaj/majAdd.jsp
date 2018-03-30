@@ -138,11 +138,66 @@
 <%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>
 
 <script type="text/javascript">
+    $(document).ready(function() {
+        /**
+         * 下面是进行插件初始化
+         * 你只需传入相应的键值对
+         * */
+        $('#addForm').bootstrapValidator({
+            message: 'This value is not valid',
+            feedbackIcons: {/*输入框不同状态，显示图片的样式*/
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {/*验证*/
+                majName: {/*键名username和input name值对应*/
+                    message: 'The username is not valid',
+                    validators: {
+                        notEmpty: {/*非空提示*/
+                            message: '专业名称不能为空'
+                        }
+                    }
+                },
+                majClassNum: {/*键名username和input name值对应*/
+                    message: 'The username is not valid',
+                    validators: {
+                        notEmpty: {/*非空提示*/
+                            message: '班级数不能为空'
+                        },regexp: {//正则验证
+                            regexp: /^[1-9]\d*$/,
+                            message: '所输入的数字不符要求'
+                        },
+                        stringLength: {/*长度提示*/
+                            min: 1,
+                            max: 1,
+                            message: '所输入的数字不符要求'
+                        }/*最后一个没有逗号*/
+                    }
+                },
+                depId: {
+                    enabled: false,
+                    validators: {
+                        notEmpty: {
+                            message: '所属系别不可为空'
+                        }
+                    }
+                }
+            }
+        });
+    });
 
 
     $(function(){
 
         $("#addSubmit").click(function(){
+
+            //获取表单对象
+            var bootstrapValidator = $("#addForm").data('bootstrapValidator');
+            //手动触发验证
+            bootstrapValidator.validate();
+
+            if(bootstrapValidator.isValid()){
             $.ajax({
                 type: "post",
                 url: "/selectMajor/majAdd",
@@ -161,6 +216,7 @@
                     alert("后台异常");
                 }
             });
+            }
         });
     });
 

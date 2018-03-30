@@ -244,12 +244,120 @@
 <%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>
 
 <script type="text/javascript">
-
+    $(document).ready(function() {
+        /**
+         * 下面是进行插件初始化
+         * 你只需传入相应的键值对
+         * */
+        $('#updateForm').bootstrapValidator({
+            message: 'This value is not valid',
+            feedbackIcons: {/*输入框不同状态，显示图片的样式*/
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {/*验证*/
+                teaPosition: {/*键名username和input name值对应*/
+                    message: 'The username is not valid',
+                    validators: {
+                        notEmpty: {/*非空提示*/
+                            message: '职称不能为空'
+                        }
+                    }
+                },
+                teaEducation: {/*键名username和input name值对应*/
+                    message: 'The username is not valid',
+                    validators: {
+                        notEmpty: {/*非空提示*/
+                            message: '学历不能为空'
+                        }
+                    }
+                },
+                teaDepName: {/*键名username和input name值对应*/
+                    message: 'The username is not valid',
+                    validators: {
+                        notEmpty: {/*非空提示*/
+                            message: '所属系别不能为空'
+                        }
+                    }
+                },
+                userCode: {/*键名username和input name值对应*/
+                    message: 'The username is not valid',
+                    validators: {
+                        notEmpty: {/*非空提示*/
+                            message: '账号不能为空'
+                        },
+                        stringLength: {/*长度提示*/
+                            min: 8,
+                            max: 8,
+                            message: '账号长度必须为8位'
+                        }/*最后一个没有逗号*/
+                    }
+                },
+                userName: {/*键名username和input name值对应*/
+                    message: 'The username is not valid',
+                    validators: {
+                        notEmpty: {/*非空提示*/
+                            message: '姓名不能为空'
+                        },
+                        stringLength: {/*长度提示*/
+                            min: 2,
+                            max: 8,
+                            message: '姓名长度必须为2到8位'
+                        }/*最后一个没有逗号*/
+                    }
+                },
+                userSex: {
+                    validators: {
+                        notEmpty: {
+                            message: '性别未选择'
+                        }
+                    }
+                },
+                userPhone: {
+                    message:'格式错误',
+                    validators: {
+                        notEmpty: {
+                            message: '电话号码不能为空'
+                        },
+                        stringLength: {
+                            min: 7,
+                            max: 15,
+                            message: '电话号码长度必须在7到15之间'
+                        }
+                    }
+                },
+                userQq: {
+                    message:'格式错误',
+                    validators: {
+                        notEmpty: {
+                            message: 'QQ号码不能为空'
+                        }
+                    }
+                },
+                userMail: {
+                    validators: {
+                        notEmpty: {
+                            message: '邮箱不能为空'
+                        },
+                        emailAddress: {
+                            message: '邮箱格式错误'
+                        }
+                    }
+                }
+            }
+        });
+    });
 
     $(function(){
 
         $("#updateSubmit").click(function(){
+            //获取表单对象
+            var bootstrapValidator = $("#updateForm").data('bootstrapValidator');
+            //手动触发验证
+            bootstrapValidator.validate();
 
+            if(bootstrapValidator.isValid()){
             $.ajax({
                 type: "post",
                 url: "/selectUserBase/teaUpdate",
@@ -269,6 +377,7 @@
                     alert(" 😥 系统异常，请与我们的工程师小哥哥联系！");
                 }
             });
+            }
         });
     });
 

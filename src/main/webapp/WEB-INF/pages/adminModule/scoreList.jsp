@@ -86,7 +86,7 @@
                                             </td>
                                             <td>${index.count}</td>
                                             <td>${score.scoreName}</td>
-                                            <td>${score.scorePer}%</td>
+                                            <td><b style="color: red">${score.scorePer}%</b></td>
                                             <td><fmt:formatDate value="${score.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 
                                             <td>

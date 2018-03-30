@@ -44,6 +44,8 @@
 <%--<script src="${ctx}/resources/js/charts.js"></script> <!-- Charts & Graphs -->--%>
 <script src="${ctx}/resources/beAlert/BeAlert.js"></script> <!-- pop -->
 
+<script type="text/javascript" src="${ctx}/resources/js/bootstrapValidator.js"></script>
+
 
 <!-- Script for this page -->
 

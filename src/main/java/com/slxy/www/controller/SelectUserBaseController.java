@@ -81,7 +81,43 @@ public class SelectUserBaseController {
     @RequestMapping("/admAdd")
     @ResponseBody
     public String admAdd(SelectUserBase userBase) {
+
         return selectUserBaseService.admAdd(userBase);
+    }
+
+
+
+    /***
+     * admin删除
+     * @param userBaseVo
+     * @return
+     */
+    @RequestMapping("/admDelete")
+    @ResponseBody
+    public String admDelete(SelectUserBaseVo userBaseVo) {
+        return selectUserBaseService.admDelete(userBaseVo);
+    }
+
+    /***
+     * 管理员批量删除
+     * @param selectedIDs
+     * @return
+     */
+    @RequestMapping("/admDeleteAll")
+    @ResponseBody
+    public String admDeleteAll(Integer[] selectedIDs) {
+        return selectUserBaseService.admDeleteAll(selectedIDs);
+    }
+
+    /**
+     * adm启用禁用
+     * @param userBaseVo
+     * @return
+     */
+    @RequestMapping("/admAble")
+    @ResponseBody
+    public String admAble(SelectUserBaseVo userBaseVo) {
+        return selectUserBaseService.admAble(userBaseVo);
     }
 
 
@@ -145,7 +181,11 @@ public class SelectUserBaseController {
         return selectUserBaseService.stuDelete(userBaseVo);
     }
 
-
+    /***
+     * 学生批量删除
+     * @param selectedIDs
+     * @return
+     */
     @RequestMapping("/stuDeleteAll")
     @ResponseBody
     public String stuDeleteAll(Integer[] selectedIDs) {

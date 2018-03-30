@@ -122,10 +122,41 @@
 <script type="text/javascript">
 
 
+    $(document).ready(function() {
+        /**
+         * 下面是进行插件初始化
+         * 你只需传入相应的键值对
+         * */
+        $('#addForm').bootstrapValidator({
+            message: 'This value is not valid',
+            feedbackIcons: {/*输入框不同状态，显示图片的样式*/
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {/*验证*/
+                depName: {/*键名username和input name值对应*/
+                    message: 'The username is not valid',
+                    validators: {
+                        notEmpty: {/*非空提示*/
+                            message: '系别名称不可为空'
+                        }
+                    }
+                }
+            }
+        });
+    });
+
+
     $(function(){
 
         $("#addSubmit").click(function(){
+            //获取表单对象
+            var bootstrapValidator = $("#addForm").data('bootstrapValidator');
+            //手动触发验证
+            bootstrapValidator.validate();
 
+            if(bootstrapValidator.isValid()){
             $.ajax({
                 type: "post",
                 url: "/selectDepartment/depAdd",
@@ -145,6 +176,7 @@
                     alert(" 😰 系统异常，请与我们程序员哥哥联系！");
                 }
             });
+            }
         });
     });
 

@@ -60,7 +60,7 @@
                                 </div>
                                 <c:if test="${sessionScope.sessionUser.userType eq 0 }">
                                     <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
-                                        <button type="button" onclick="stuDeleteAll()" class="btn btn-info pull-left " style="margin-right: 10px"><i class="icon-remove"></i>批量删除</button>
+                                        <button type="button" onclick="admDeleteAll()" class="btn btn-info pull-left " style="margin-right: 10px"><i class="icon-remove"></i>批量删除</button>
                                         <button type="button"  onclick="window.location.href='/selectUserBase/initAddAdmin';" style="margin-right: 10px" class="btn btn-info pull-left "><i class="icon-upload"></i>管理员添加</button>
                                     </div>
                                 </c:if>
@@ -113,14 +113,14 @@
                                                     <c:set var="status" value="${user.userStatus}"/>
                                                     <c:choose>
                                                         <c:when test="${status eq 0}">
-                                                            <button class="btn btn-xs btn-success"><i class="icon-ok"></i>启用</button>
+                                                            <button class="btn btn-xs btn-success" onclick="admAble(${user.id})"><i class="icon-ok"></i>启用</button>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <button class="btn btn-xs btn-danger"><i class="icon-remove"></i>禁用</button>
+                                                            <button class="btn btn-xs btn-danger" onclick="admDisAble(${user.id})"><i class="icon-remove"></i>禁用</button>
                                                         </c:otherwise>
                                                     </c:choose>
-                                                    <button class="btn btn-xs btn-warning"><i class="icon-pencil"></i>编辑</button>
-                                                    <button class="btn btn-xs btn-danger"><i class="icon-remove">删除</i></button>
+                                                    <button class="btn btn-xs btn-warning" onclick="admUpdate(${user.id})"><i class="icon-pencil"></i>编辑</button>
+                                                    <button class="btn btn-xs btn-danger" onclick="admDelete(${user.id})"><i class="icon-remove">删除</i></button>
 
                                                 </td>
                                             </c:if>
@@ -195,6 +195,134 @@
 function aaa() {
     $(".datetimepicker").height(280);
 }
+
+    function admAble(id){
+        confirm(" 😲 确认启用？","",function (isConfirm) {
+            if (isConfirm){
+                $.ajax({
+                    type:"POST",
+                    url:"/selectUserBase/admAble",
+                    data:{"id":id,"userStatus":1},
+                    dataType:"json",
+                    success:function(msg){
+                        if("OK"!=msg){
+                            alert(" 😅 "+msg);
+                        }else {
+                            alert(" 😋 启用成功","",function () {
+                                location.href="/selectUserBase/admList";
+                            },{type:"success",confirmButtonText:"好的"});
+                        }
+                    },
+                    error:function(e){
+                        alert("😥 系统异常，请与我们的工程师联系！");
+                    }
+                });
+            }
+        });
+    }
+
+
+    function admDisAble(id){
+        confirm(" 😲 确认禁用？","",function (isConfirm) {
+            if (isConfirm){
+                $.ajax({
+                    type:"POST",
+                    url:"/selectUserBase/admAble",
+                    data:{"id":id,"userStatus":0},
+                    dataType:"json",
+                    success:function(msg){
+                        if("OK"!=msg){
+                            alert(" 😅 "+msg);
+                        }else{
+                            alert(" 😋 禁用成功！","",function () {
+                                location.href="/selectUserBase/admList";
+                            },{type:"success",confirmButtonText:"好的"});
+                        }
+                    },
+                    error:function(e){
+                        alert("😥 系统异常，请与我们的工程师联系！");
+                    }
+                });
+            }
+        });
+
+    }
+
+    function admDelete(id){
+        confirm(" 😲 确认删除吗？","",function (isconfirm) {
+            if (isconfirm){
+                $.ajax({
+                    type:"POST",
+                    url:"/selectUserBase/admDelete",
+                    data:{"id":id},
+                    dataType:"json",
+                    success:function(msg){
+                        if("OK"!=msg){
+                            alert(" 😅 "+msg);
+                        }else{
+                            alert(" 😋 删除成功！","",function () {
+                                location.href="/selectUserBase/admList";
+                            },{type:"success",confirmButtonText:"好的"});
+                        }
+                    },
+                    error:function(e){
+                        alert("😥 系统异常，请与我们的工程师联系！");
+                    }
+                });
+            }
+        })
+
+    }
+
+    function admDeleteAll(){
+        var arrayId = new Array();
+        $('input[name="ids"]:checked').each(function(){arrayId.push($(this).val());});
+        if(arrayId.length==0){
+            alert(" 😨 无实例选中");
+            event.preventDefault(); // 兼容标准浏览器
+            window.event.returnValue = false; // 兼容IE6~8
+        }else{
+            confirm(" 😲 确认删除吗？","",function (is) {
+                if (is){
+                    $.ajax({
+                        type:"POST",
+                        url:"/selectUserBase/admDeleteAll",
+                        data: { "selectedIDs": arrayId },
+                        dataType:"json",
+                        traditional: true,
+                        success:function(msg){
+                            if("OK"!=msg){
+                                alert(" 😅 "+msg);
+                            }else{
+                                alert(" 😋 删除成功！","",function () {
+                                    location.href="/selectUserBase/admList";
+                                },{type:"success",confirmButtonText:"好的"});
+                            }
+
+                        },
+                        error:function(e){
+                            alert("😥 系统异常，请与我们的工程师联系！");
+                        }
+                    });
+                }
+            })
+
+        }
+
+    }
+
+
+    function admUpdate(id) {
+        window.location.href='/selectUserBase/admSelfInfo?id='+id;
+    }
+
+
+
+
+
+
+
+
 
 </script>
 

@@ -39,7 +39,7 @@
 <link href="${ctx}/resources/beAlert/BeAlert.css" rel="stylesheet">
 <!-- Widgets stylesheet -->
 <%--<link href="${ctx}/resources/style/widgets.css" rel="stylesheet">--%>
-
+<link rel="stylesheet" href="${ctx}/resources/style/bootstrapValidator.css"/>
 
 
 

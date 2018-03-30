@@ -166,38 +166,64 @@
 
 <script type="text/javascript">
 
-    /***
-     * 根据专业查询并生成班级下拉
-     */
-    function initClass() {
-        $.ajax({
-            type: "post",
-            url: "/selectUserBase/initClass",
-            data:{"stuMajorName":$("#stuMajorName").val()},
-            dataType:"json",
-            success:function(msg){
-                if (parseInt(msg)>0){
-                    $("#stuClass").html(null);
-                    $("#stuClass").append( "<option value='' selected>---请选择---</option>" );
-                    for (var i =1 ; i<=msg ; i++){
-                        $("#stuClass").append( "<option value="+i+">"+i+"班</option>" );
+    $(document).ready(function() {
+        /**
+         * 下面是进行插件初始化
+         * 你只需传入相应的键值对
+         * */
+        $('#addForm').bootstrapValidator({
+            message: 'This value is not valid',
+            feedbackIcons: {/*输入框不同状态，显示图片的样式*/
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {/*验证*/
+                forDepId: {/*键名username和input name值对应*/
+                    message: 'The username is not valid',
+                    validators: {
+                        notEmpty: {/*非空提示*/
+                            message: '系别不能为空'
+                        }
                     }
-                }else {
-                    alert(" 😥 "+msg);
+                },
+                subYear: {/*键名username和input name值对应*/
+                    message: 'The username is not valid',
+                    validators: {
+                        notEmpty: {/*非空提示*/
+                            message: '届别不能为空'
+                        }
+                    }
+                },
+                subType: {/*键名username和input name值对应*/
+                    message: 'The username is not valid',
+                    validators: {
+                        notEmpty: {/*非空提示*/
+                            message: '题目类型不能为空'
+                        }
+                    }
+                },
+                subName: {/*键名username和input name值对应*/
+                    message: 'The username is not valid',
+                    validators: {
+                        notEmpty: {/*非空提示*/
+                            message: '题目名称不能为空'
+                        }
+                    }
                 }
-            },//end success
-            error: function(e) {
-                alert(" 😥 系统异常，请与我们的工程师联系！");
             }
         });
-    }
-
-
+    });
 
     $(function(){
 
         $("#addSubmit").click(function(){
+            //获取表单对象
+            var bootstrapValidator = $("#addForm").data('bootstrapValidator');
+            //手动触发验证
+            bootstrapValidator.validate();
 
+            if(bootstrapValidator.isValid()){
             var teaId = ${sessionScope.sessionUser.id}
             $("#teaId").val(teaId);
             var formData = new FormData($( "#addForm" )[0]);  // 要求使用的html对象
@@ -226,6 +252,7 @@
                     alert(" 😥 系统异常，请与我们的工程师小哥哥联系！");
                 }
             });
+            }
         });
     });
 

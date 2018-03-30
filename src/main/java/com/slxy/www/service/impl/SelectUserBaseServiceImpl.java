@@ -181,7 +181,7 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
     public String stuAble(SelectUserBaseVo userBaseVo) {
         SelectUserBase userBase = this.selectById(userBaseVo.getId());
         SelectMajor selectMajor = selectMajorMapper.selectById(userBase.getStuMajorId());
-        //判断所属专业
+        //启用，判断所属专业是否被禁用
         if (ObjectUtils.isEmpty(selectMajor)||selectMajor.getMajStatus().equals(EnumEnOrDis.DISABLED.getValue())){
             logger.info(Constant.STU_ABLE_ERROR_MAJ_DISABLE);
             return Constant.STU_ABLE_ERROR_MAJ_DISABLE;
@@ -717,8 +717,25 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
         String msg = checkCodeAndName(user);
         if (!StringUtils.isEmpty(msg)) return msg;
         user.setGmtCreate(new Date())
-                .setUserType(EnumUserType.ADMIN0.getValue())
+                .setUserType(EnumUserType.ADMIN.getValue())
                 .setUserPassword(Constant.USER_PASSWORD);
         return this.insert(user)?Constant.SUCCESS:Constant.ERROR;
+    }
+
+    @Override
+    public String admDeleteAll(Integer[] selectedIDs) {
+        return this.deleteBatchIds(Arrays.asList(selectedIDs))?Constant.SUCCESS:Constant.ERROR;
+    }
+
+    @Override
+    public String admDelete(SelectUserBaseVo userBaseVo) {
+        return this.deleteById(userBaseVo.getId())?Constant.SUCCESS:Constant.ERROR;
+    }
+
+    @Override
+    public String admAble(SelectUserBaseVo userBaseVo) {
+        SelectUserBase selectUserBase = new SelectUserBase().setId(userBaseVo.getId()).setUserStatus(userBaseVo.getUserStatus());
+
+        return this.updateById(selectUserBase)?Constant.SUCCESS:Constant.ERROR;
     }
 }

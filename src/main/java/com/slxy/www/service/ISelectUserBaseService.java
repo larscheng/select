@@ -58,4 +58,10 @@ public interface ISelectUserBaseService extends IService<SelectUserBase> {
     void down(HttpServletRequest request, HttpServletResponse response,String fileName) throws Exception;
 
     String admAdd(SelectUserBase userBase);
+
+    String admDeleteAll(Integer[] selectedIDs);
+
+    String admDelete(SelectUserBaseVo userBaseVo);
+
+    String admAble(SelectUserBaseVo userBaseVo);
 }
