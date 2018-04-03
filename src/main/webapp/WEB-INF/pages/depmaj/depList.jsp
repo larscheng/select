@@ -60,7 +60,7 @@
                                 </div>
                                 <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
                                         <button type="button" style="margin-right: 10px"  class="btn btn-info pull-left" onclick="depDeleteAll()"><i class="icon-remove"> </i>批量删除</button>
-                                        <button type="button" style="margin-right: 10px" onclick="window.location.href='/selectDepartment/depInitAdd';" class="btn btn-success pull-left"><i class="icon-edit"> </i>添加系别</button>
+                                        <button type="button" style="margin-right: 10px" onclick="window.location.href='${ctx}/selectDepartment/depInitAdd';" class="btn btn-success pull-left"><i class="icon-edit"> </i>添加系别</button>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -114,9 +114,9 @@
                                                                 <button class="btn btn-xs btn-danger"  onclick="depDisable('${dep.id}')"><i class="icon-remove"></i>禁用</button>
                                                             </c:otherwise>
                                                         </c:choose>
-                                                        <button class="btn btn-xs btn-warning" onclick="window.location.href='/selectDepartment/depInitUpdate?id=${dep.id}';"><i class="icon-pencil">编辑</i>
+                                                        <button class="btn btn-xs btn-warning" onclick="window.location.href='${ctx}/selectDepartment/depInitUpdate?id=${dep.id}';"><i class="icon-pencil">编辑</i>
                                                         </button>
-                                                        <button class="btn btn-xs btn-info" onclick="window.location.href='/selectDepartment/depFind?id=${dep.id}';"><i class="icon-pencil">查看</i>
+                                                        <button class="btn btn-xs btn-info" onclick="window.location.href='${ctx}/selectDepartment/depFind?id=${dep.id}';"><i class="icon-pencil">查看</i>
                                                         </button>
                                                         <button class="btn btn-xs btn-danger" onclick="depDelete('${dep.id}')"><i class="icon-remove">删除</i>
                                                         </button>
@@ -200,7 +200,7 @@
 
                         $.ajax({
                             type:"POST",
-                            url:"/selectDepartment/depDeleteAll",
+                            url:"${ctx}/selectDepartment/depDeleteAll",
                             data: { "selectedIDs": arrayid },
                             dataType:"json",
                             traditional: true,
@@ -209,7 +209,7 @@
                                     alert(" 🔞 "+msg);
                                 }else{
                                     alert(" 👌 删除成功","", function () {
-                                        location.href="/selectDepartment/depList";
+                                        location.href="${ctx}/selectDepartment/depList";
                                     }, {type: 'success', confirmButtonText: '好的'});
                                 }
                             },
@@ -232,7 +232,7 @@
 
                     $.ajax({
                         type:"POST",
-                        url:"/selectDepartment/depDisable",
+                        url:"${ctx}/selectDepartment/depDisable",
                         data:{"id":id,"depStatus":0},
                         dataType:"json",
                         success:function(msg){
@@ -240,7 +240,7 @@
                                 alert(" 😝 "+msg);
                             }else {
                                 alert(" 👍 禁用成功", "", function () {
-                                    location.href="/selectDepartment/depList";
+                                    location.href="${ctx}/selectDepartment/depList";
                                 }, {type: 'success', confirmButtonText: '好的'});
                             }
                         },
@@ -258,7 +258,7 @@
                 if (isConfirm) {
                     $.ajax({
                         type:"POST",
-                        url:"/selectDepartment/depDisable",
+                        url:"${ctx}/selectDepartment/depDisable",
                         data:{"id":id,"depStatus":1},
                         dataType:"json",
                         success:function(msg){
@@ -266,7 +266,7 @@
                                 alert(" 😝 "+msg);
                             }else {
                                 alert(" 👍 启用成功", "", function () {
-                                    location.href="/selectDepartment/depList";
+                                    location.href="${ctx}/selectDepartment/depList";
                                 }, {type: 'success', confirmButtonText: '好的'});
                             }
                         },
@@ -284,7 +284,7 @@
                 if (isConfirm) {
                     $.ajax({
                         type:"POST",
-                        url:"/selectDepartment/depDelete",
+                        url:"${ctx}/selectDepartment/depDelete",
                         data:{"id":id},
                         dataType:"json",
                         success:function(msg){
@@ -292,7 +292,7 @@
                                 alert(" 😝 "+msg);
                             }else{
                                 alert(" 👍 删除成功","", function () {
-                                    location.href="/selectDepartment/depList";
+                                    location.href="${ctx}/selectDepartment/depList";
                                 }, {type: 'success', confirmButtonText: '好的'});
                             }
                         },

@@ -159,7 +159,7 @@
             if(bootstrapValidator.isValid()){
             $.ajax({
                 type: "post",
-                url: "/selectDepartment/depAdd",
+                url: "${ctx}/selectDepartment/depAdd",
                 data: $("#addForm").serialize(),
                 dataType:"json",
                 success:function(msg){
@@ -167,7 +167,7 @@
                         alert(msg);
                     }else {
                         alert(" 👏 添加成功","",function () {
-                            location.href="/selectDepartment/depList";
+                            location.href="${ctx}/selectDepartment/depList";
                         },{type:"success",confirmButtonText:"好的"});
                     }
 

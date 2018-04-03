@@ -91,7 +91,7 @@
 
                                             <td>
 
-                                                <button class="btn btn-xs btn-warning" onclick="window.location.href='/selectScorePer/updateInitScore?id=${score.id}';"><i class="icon-pencil">编辑</i>
+                                                <button class="btn btn-xs btn-warning" onclick="window.location.href='${ctx}/selectScorePer/updateInitScore?id=${score.id}';"><i class="icon-pencil">编辑</i>
                                                 </button>
                                                 <%--<button class="btn btn-xs btn-danger" onclick="delScore('${score.id}')"><i class="icon-remove">删除</i>--%>
                                                 </button>
@@ -147,7 +147,7 @@
 
                         $.ajax({
                             type:"POST",
-                            url:"/selectScorePer/delAllScore",
+                            url:"${ctx}/selectScorePer/delAllScore",
                             data: { "selectedIDs": arrayid },
                             dataType:"json",
                             traditional: true,
@@ -156,7 +156,7 @@
                                     alert(" 🔞 "+msg);
                                 }else{
                                     alert(" 👌 删除成功","", function () {
-                                        location.href="/selectScorePer/scoreList";
+                                        location.href="${ctx}/selectScorePer/scoreList";
                                     }, {type: 'success', confirmButtonText: '好的'});
                                 }
                             },
@@ -176,7 +176,7 @@
                 if (isConfirm) {
                     $.ajax({
                         type:"POST",
-                        url:"/selectScorePer/delScore",
+                        url:"${ctx}/selectScorePer/delScore",
                         data:{"id":id},
                         dataType:"json",
                         success:function(msg){
@@ -184,7 +184,7 @@
                                 alert(" 😝 "+msg);
                             }else{
                                 alert(" 👍 删除成功","", function () {
-                                    location.href="/selectScorePer/scoreList";
+                                    location.href="${ctx}/selectScorePer/scoreList";
                                 }, {type: 'success', confirmButtonText: '好的'});
                             }
                         },

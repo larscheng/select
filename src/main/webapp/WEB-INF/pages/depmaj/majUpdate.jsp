@@ -208,7 +208,7 @@
             if(bootstrapValidator.isValid()){
             $.ajax({
                 type: "post",
-                url: "/selectMajor/majUpdate",
+                url: "${ctx}/selectMajor/majUpdate",
                 data: $("#updateForm").serialize(),
                 dataType:"json",
                 success:function(msg){
@@ -216,7 +216,7 @@
                         alert(msg);
                     }else{
                         alert("编辑成功！","",function () {
-                            location.href="/selectMajor/majList";
+                            location.href="${ctx}/selectMajor/majList";
                         },{type:"success",confirmButtonText:"好的"});
                     }
 

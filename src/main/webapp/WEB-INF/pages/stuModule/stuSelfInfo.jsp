@@ -233,7 +233,7 @@
     function initClass() {
         $.ajax({
             type: "post",
-            url: "/selectUserBase/initClass",
+            url: "${ctx}/selectUserBase/initClass",
             data:{"stuMajorId":$("#stuMajorId").val()},
             dataType:"json",
             success:function(msg){
@@ -373,7 +373,7 @@
             if(bootstrapValidator.isValid()){
             $.ajax({
                 type: "post",
-                url: "/selectUserBase/stuUpdate",
+                url: "${ctx}/selectUserBase/stuUpdate",
                 data: $("#updateForm").serialize(),
                 dataType:"json",
                 success:function(msg){
@@ -381,7 +381,7 @@
                         alert(" 😅 "+msg);
                     }else {
                         alert(" 😎 修改成功！","",function () {
-                            location.href="/selectUserBase/stuSelfInfo?id=${sessionScope.sessionUser.id}";
+                            location.href="${ctx}/selectUserBase/stuSelfInfo?id=${sessionScope.sessionUser.id}";
                         },{type:"success",confirmButtonText:"好的"});
                     }
 

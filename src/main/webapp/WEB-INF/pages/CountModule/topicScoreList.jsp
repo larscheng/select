@@ -273,9 +273,9 @@
     });
 
     function search() {
-        var url = "/selectTopic/stuTopicAjaxList?teaAuditState=2";
+        var url = "${ctx}/selectTopic/stuTopicAjaxList?teaAuditState=2";
         if (manType == 3){
-            url="/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
+            url="${ctx}/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
         }
         $.ajax({
             type: "post",
@@ -292,9 +292,9 @@
     }
 
     function pageSearch(page) {
-        var url = "/selectTopic/stuTopicAjaxList";
+        var url = "${ctx}/selectTopic/stuTopicAjaxList";
         if (manType == 3){
-            url="/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
+            url="${ctx}/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
         }
         $.ajax({
             type: "post",
@@ -316,9 +316,9 @@
     }
 
     $("#searchSubmit").click(function(){
-        var url = "/selectTopic/stuTopicAjaxList";
+        var url = "${ctx}/selectTopic/stuTopicAjaxList";
         if (manType == 3){
-            url="/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
+            url="${ctx}/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
         }
         $.ajax({
             type: "post",
@@ -341,7 +341,7 @@
             if (isConfirm){
                 $.ajax({
                     type:"POST",
-                    url:"/selectUserBase/teaAble",
+                    url:"${ctx}/selectUserBase/teaAble",
                     data:{"id":id,"userStatus":1},
                     dataType:"json",
                     success:function(msg){
@@ -349,7 +349,7 @@
                             alert(" 😅 "+msg);
                         }else {
                             alert(" 😋 启用成功","",function () {
-                                location.href="/selectUserBase/teaList";
+                                location.href="${ctx}/selectUserBase/teaList";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -367,7 +367,7 @@
             if (isConfirm){
                 $.ajax({
                     type:"POST",
-                    url:"/selectUserBase/teaAble",
+                    url:"${ctx}/selectUserBase/teaAble",
                     data:{"id":id,"userStatus":0},
                     dataType:"json",
                     success:function(msg){
@@ -375,7 +375,7 @@
                             alert(" 😅 "+msg);
                         }else{
                             alert(" 😋 禁用成功！","",function () {
-                                location.href="/selectUserBase/teaList";
+                                location.href="${ctx}/selectUserBase/teaList";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -395,7 +395,7 @@
             if (isConfirm){
                 $.ajax({
                     type:"POST",
-                    url:"/selectTopic/topicDel",
+                    url:"${ctx}/selectTopic/topicDel",
                     data:{"id":id},
                     dataType:"json",
                     success:function(msg){
@@ -403,7 +403,7 @@
                             alert(" 😅 "+msg);
                         }else {
                             alert(" 😋 删除成功","",function () {
-                                location.href="/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}";
+                                location.href="${ctx}/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -428,7 +428,7 @@
                 if (is){
                     $.ajax({
                         type:"POST",
-                        url:"/selectUserBase/teaDeleteAll",
+                        url:"${ctx}/selectUserBase/teaDeleteAll",
                         data: { "selectedIDs": arrayId },
                         dataType:"json",
                         traditional: true,
@@ -437,7 +437,7 @@
                                 alert(" 😅 "+msg);
                             }else{
                                 alert(" 😋 删除成功！","",function () {
-                                    location.href="/selectUserBase/teaList";
+                                    location.href="${ctx}/selectUserBase/teaList";
                                 },{type:"success",confirmButtonText:"好的"});
                             }
 
@@ -454,15 +454,15 @@
     }
 
     function topicDetails(id) {
-        window.location.href="/selectTopic/topicDetails?id="+id;
+        window.location.href="${ctx}/selectTopic/topicDetails?id="+id;
     }
 
     function teaUpdate(id) {
-        window.location.href='/selectUserBase/teaInitUpdate?id='+id;
+        window.location.href='${ctx}/selectUserBase/teaInitUpdate?id='+id;
     }
 
     function exportScoreInfo() {
-        window.location.href="/selectTopic/exportScore";
+        window.location.href="${ctx}/selectTopic/exportScore";
     }
 
 

@@ -237,14 +237,14 @@
 <script type="text/javascript">
     sessionStorage.setItem("userType",${sessionScope.userType});
     var manType = sessionStorage.getItem("userType");
-    var url = "/selectSubject/subListAjax";
+    var url = "${ctx}/selectSubject/subListAjax";
     if(manType==3){
-        url = "/selectSubject/subListAjax?selectId=${sessionScope.sessionUser.id}";
+        url = "${ctx}/selectSubject/subListAjax?selectId=${sessionScope.sessionUser.id}";
     }
 
 
     function exportSubjectInfo() {
-        window.location.href="/selectSubject/export";
+        window.location.href="${ctx}/selectSubject/export";
     }
 
 
@@ -316,7 +316,7 @@
 
 
     function subjectDetails(id) {
-        window.location.href="/selectSubject/subjectDetail?id="+id;
+        window.location.href="${ctx}/selectSubject/subjectDetail?id="+id;
     }
 
 

@@ -117,7 +117,7 @@
                                     <a href="#" class="wclose"><i class="icon-remove"></i></a>
                                 </div>
                                 <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
-                                    <button type="button"  onclick="window.location.href='/selectSubject/initSubAdd';" class="btn btn-info pull-left "><i class="icon-upload"></i>题目添加</button>
+                                    <button type="button"  onclick="window.location.href='${ctx}/selectSubject/initSubAdd';" class="btn btn-info pull-left "><i class="icon-upload"></i>题目添加</button>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -245,7 +245,7 @@
     function search() {
         $.ajax({
             type: "post",
-            url: "/selectSubject/mySubListAjax",
+            url: "${ctx}/selectSubject/mySubListAjax",
             data:{"search":$(" input[ name='search' ] ").val(),
                 "teaId":${sessionScope.sessionUser.id}
             },
@@ -262,7 +262,7 @@
     function pageSearch(page) {
         $.ajax({
             type: "post",
-            url: "/selectSubject/mySubListAjax",
+            url: "${ctx}/selectSubject/mySubListAjax",
             data:{"page":page,
                 "teaId":${sessionScope.sessionUser.id},
                 "search":$(" input[ name='search' ] ").val(),
@@ -284,7 +284,7 @@
         $("#teaId").val(${sessionScope.sessionUser.id});
         $.ajax({
             type: "post",
-            url: "/selectSubject/mySubListAjax",
+            url: "${ctx}/selectSubject/mySubListAjax",
             data: $("#searchForm").serialize(),
             dataType:"json",
             success:function(objects){
@@ -298,7 +298,7 @@
 
 
     function subjectDetails(id) {
-        window.location.href="/selectSubject/subjectDetail?id="+id;
+        window.location.href="${ctx}/selectSubject/subjectDetail?id="+id;
     }
 
 

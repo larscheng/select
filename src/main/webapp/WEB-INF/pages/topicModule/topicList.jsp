@@ -345,7 +345,7 @@
             if (isConfirm){
                 $.ajax({
                     type:"POST",
-                    url:"/selectUserBase/teaAble",
+                    url:"${ctx}/selectUserBase/teaAble",
                     data:{"id":id,"userStatus":1},
                     dataType:"json",
                     success:function(msg){
@@ -353,7 +353,7 @@
                             alert(" 😅 "+msg);
                         }else {
                             alert(" 😋 启用成功","",function () {
-                                location.href="/selectUserBase/teaList";
+                                location.href="${ctx}/selectUserBase/teaList";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -371,7 +371,7 @@
             if (isConfirm){
                 $.ajax({
                     type:"POST",
-                    url:"/selectUserBase/teaAble",
+                    url:"${ctx}/selectUserBase/teaAble",
                     data:{"id":id,"userStatus":0},
                     dataType:"json",
                     success:function(msg){
@@ -379,7 +379,7 @@
                             alert(" 😅 "+msg);
                         }else{
                             alert(" 😋 禁用成功！","",function () {
-                                location.href="/selectUserBase/teaList";
+                                location.href="${ctx}/selectUserBase/teaList";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -432,7 +432,7 @@
                 if (is){
                     $.ajax({
                         type:"POST",
-                        url:"/selectUserBase/teaDeleteAll",
+                        url:"${ctx}/selectUserBase/teaDeleteAll",
                         data: { "selectedIDs": arrayId },
                         dataType:"json",
                         traditional: true,
@@ -441,7 +441,7 @@
                                 alert(" 😅 "+msg);
                             }else{
                                 alert(" 😋 删除成功！","",function () {
-                                    location.href="/selectUserBase/teaList";
+                                    location.href="${ctx}/selectUserBase/teaList";
                                 },{type:"success",confirmButtonText:"好的"});
                             }
 
@@ -458,11 +458,11 @@
     }
 
     function topicDetails(id) {
-        window.location.href="/selectTopic/topicDetails?id="+id;
+        window.location.href="${ctx}/selectTopic/topicDetails?id="+id;
     }
 
     function teaUpdate(id) {
-        window.location.href='/selectUserBase/teaInitUpdate?id='+id;
+        window.location.href='${ctx}/selectUserBase/teaInitUpdate?id='+id;
     }
 
 

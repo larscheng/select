@@ -146,14 +146,14 @@
         $("#updateSubmit").click(function(){
             $.ajax({
                 type: "post",
-                url: "/selectMajor/majUpdate",
+                url: "${ctx}/selectMajor/majUpdate",
                 data: $("#updateForm").serialize(),
                 dataType:"json",
                 success:function(msg){
                     if("OK"!=msg){
                         alert(msg);
                     }
-                    location.href="/selectMajor/majList";
+                    location.href="${ctx}/selectMajor/majList";
                 },
                 error: function(e) {
                     alert("后台异常");

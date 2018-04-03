@@ -209,7 +209,7 @@
         $("#updateSubmit").click(function(){
             $.ajax({
                 type: "post",
-                url: "/selectTopic/uploadScore",
+                url: "${ctx}/selectTopic/uploadScore",
                 data: $("#updateForm").serialize(),
                 dataType:"json",
                 success:function(msg){

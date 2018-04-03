@@ -269,9 +269,9 @@
     });
 
     function search() {
-        var url = "/selectTopic/stuTopicAjaxList?teaAuditState=2&teaId=${sessionScope.sessionUser.id}";
+        var url = "${ctx}/selectTopic/stuTopicAjaxList?teaAuditState=2&teaId=${sessionScope.sessionUser.id}";
         if(manType==0||manType==1){
-            url = "/selectTopic/stuTopicAjaxList?teaAuditState=2";
+            url = "${ctx}/selectTopic/stuTopicAjaxList?teaAuditState=2";
         }
         $.ajax({
             type: "post",
@@ -288,9 +288,9 @@
     }
 
     function pageSearch(page) {
-        var url = "/selectTopic/stuTopicAjaxList?teaAuditState=2&teaId=${sessionScope.sessionUser.id}";
+        var url = "${ctx}/selectTopic/stuTopicAjaxList?teaAuditState=2&teaId=${sessionScope.sessionUser.id}";
         if(manType==0||manType==1){
-            url = "/selectTopic/stuTopicAjaxList?teaAuditState=2";
+            url = "${ctx}/selectTopic/stuTopicAjaxList?teaAuditState=2";
         }
         $.ajax({
             type: "post",
@@ -312,9 +312,9 @@
     }
 
     $("#searchSubmit").click(function(){
-        var url = "/selectTopic/stuTopicAjaxList?teaAuditState=2&teaId=${sessionScope.sessionUser.id}";
+        var url = "${ctx}/selectTopic/stuTopicAjaxList?teaAuditState=2&teaId=${sessionScope.sessionUser.id}";
         if(manType==0||manType==1){
-            url = "/selectTopic/stuTopicAjaxList?teaAuditState=2";
+            url = "${ctx}/selectTopic/stuTopicAjaxList?teaAuditState=2";
         }
         $.ajax({
             type: "post",
@@ -334,10 +334,10 @@
 
 
     function topicDetails(id) {
-        window.location.href="/selectTopic/topicDetails?id="+id;
+        window.location.href="${ctx}/selectTopic/topicDetails?id="+id;
     }
     function topicInitUpload(id) {
-        window.location.href="/selectTopic/topicInitUpload?id="+id;
+        window.location.href="${ctx}/selectTopic/topicInitUpload?id="+id;
     }
 
 

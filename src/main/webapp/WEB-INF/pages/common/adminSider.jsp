@@ -24,6 +24,7 @@
     <ul id="nav" style="display: block;">
         <!-- Main menu with font awesome icon -->
         <li><a href="${ctx}/test.jsp" target="mainFrame" ><i class="icon-list-alt"></i> 首页  </a></li>
+        <li><a href="${ctx}/selectBugLog/bugInitList" target="mainFrame" ><i class="icon-list-alt"></i> <b style="color: red">bug提交，谢谢 </b> </a></li>
         <li class="has_sub"><a href="#"><i class="icon-list-alt"></i> 管理员信息  <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
             <ul>
                 <li><a href="${ctx}/selectUserBase/admList" target="mainFrame" >管理员列表</a></li>

@@ -134,7 +134,7 @@
 
             $.ajax({
                 type: "post",
-                url: "/selectScorePer/updateScore",
+                url: "${ctx}/selectScorePer/updateScore",
                 data: $("#updateForm").serialize(),
                 dataType:"json",
                 success:function(msg){
@@ -142,7 +142,7 @@
                         alert(" 😅 "+msg);
                     }else {
                         alert(" 😎 修改成功！","",function () {
-                            location.href="/selectScorePer/scoreList";
+                            location.href="${ctx}/selectScorePer/scoreList";
                         },{type:"success",confirmButtonText:"好的"});
                     }
 

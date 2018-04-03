@@ -11,7 +11,7 @@
     <title>Title</title>
     <%@include file="/WEB-INF/pages/common/macTopCommon.jsp" %>
 </head>
-<bodyl>
+<body>
 <footer>
     <div class="container">
         <div class="row">
@@ -23,5 +23,5 @@
     </div>
 </footer>
 <%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>
-</bodyl>
+</body>
 </html>

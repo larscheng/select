@@ -245,7 +245,7 @@
             if (isConfirm){
                 $.ajax({
                     type:"POST",
-                    url:"/selectSubject/subAudited",
+                    url:"${ctx}/selectSubject/subAudited",
                     data:{"id":id,"admAuditState":2,"admAuditId":${sessionScope.sessionUser.id}},
                     dataType:"json",
                     success:function(msg){
@@ -253,7 +253,7 @@
                             alert(" 😅 "+msg);
                         }else {
                             alert(" 😋 审核通过","",function () {
-                                location.href="/selectSubject/unSubList";
+                                location.href="${ctx}/selectSubject/unSubList";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -272,7 +272,7 @@
             if (isConfirm){
                 $.ajax({
                     type:"POST",
-                    url:"/selectSubject/subAudited",
+                    url:"${ctx}/selectSubject/subAudited",
                     data:{"id":id,"admAuditState":1,"admAuditId":${sessionScope.sessionUser.id},"admAuditContent":$("#reason").val()},
                     dataType:"json",
                     success:function(msg){
@@ -280,7 +280,7 @@
                             alert(" 😅 "+msg);
                         }else{
                             alert(" 😋 审核完成！","",function () {
-                                location.href="/selectSubject/unSubList";
+                                location.href="${ctx}/selectSubject/unSubList";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -303,7 +303,7 @@
 
             $.ajax({
                 type: "post",
-                url: "/selectUserBase/teaUpdate",
+                url: "${ctx}/selectUserBase/teaUpdate",
                 data: $("#updateForm").serialize(),
                 dataType:"json",
                 success:function(msg){
@@ -311,7 +311,7 @@
                         alert(" 😅 "+msg);
                     }else {
                         alert(" 😎 修改成功","",function () {
-                            location.href="/selectUserBase/teaList";
+                            location.href="${ctx}/selectUserBase/teaList";
                         },{type:"success",confirmButtonText:"好的"});
                     }
 

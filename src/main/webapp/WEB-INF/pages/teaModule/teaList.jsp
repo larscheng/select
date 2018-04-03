@@ -134,8 +134,8 @@
                                                 <input type="file" id="fileField" name="fileField" style="display: none" onchange="teaUpload()"/>
                                             </form>
                                         </div>
-                                        <button type="button"  onclick="window.location.href='/selectUserBase/teaInitAdd';" style="margin-right: 10px" class="btn btn-info pull-left "><i class="icon-upload"></i>教师添加</button>
-                                        <button type="button"  onclick="window.location.href='/selectUserBase/teaFileDown';" class="btn btn-default pull-left "><i class="icon-upload"></i>模板下载</button>
+                                        <button type="button"  onclick="window.location.href='${ctx}/selectUserBase/teaInitAdd';" style="margin-right: 10px" class="btn btn-info pull-left "><i class="icon-upload"></i>教师添加</button>
+                                        <button type="button"  onclick="window.location.href='${ctx}/selectUserBase/teaFileDown';" class="btn btn-default pull-left "><i class="icon-upload"></i>模板下载</button>
 
                                     </div>
                                 </c:if>
@@ -212,7 +212,7 @@
 
                                                         <button class="btn btn-xs btn-info" onclick="teaDetails(${user.id})"><i class="icon-pencil"></i>详情</button>
                                                         <c:if test="${sessionScope.sessionUser.userType eq 1 || sessionScope.sessionUser.userType eq 0}">
-                                                            <button class="btn btn-xs btn-warning" onclick="window.location.href='/selectUserBase/teaInitUpdate?id=${user.id}';"><i class="icon-pencil"></i>编辑</button>
+                                                            <button class="btn btn-xs btn-warning" onclick="window.location.href='${ctx}/selectUserBase/teaInitUpdate?id=${user.id}';"><i class="icon-pencil"></i>编辑</button>
                                                             <button class="btn btn-xs btn-danger" onclick="teaDelete('${user.id}')"><i class="icon-remove">删除</i></button>
                                                         </c:if>
                                                     </td>
@@ -229,21 +229,21 @@
                                             <li><a href="#" class="btn  disabled">上一页</a></li>
                                         </c:if>
                                         <c:if test="${page.current-1 > 0}">
-                                            <li><a class="disabled" href="/selectUserBase/teaList?page=${page.current-1}">上一页</a></li>
-                                            <li><a href="/selectUserBase/teaList?page=${page.current-1}">${page.current-1}</a></li>
+                                            <li><a class="disabled" href="${ctx}/selectUserBase/teaList?page=${page.current-1}">上一页</a></li>
+                                            <li><a href="${ctx}/selectUserBase/teaList?page=${page.current-1}">${page.current-1}</a></li>
                                         </c:if>
 
 
-                                        <li><a href="/selectUserBase/teaList?page=${page.current}">${page.current}</a></li>
+                                        <li><a href="${ctx}/selectUserBase/teaList?page=${page.current}">${page.current}</a></li>
 
                                         <c:if test="${page.current+1 <= page.pages}">
-                                            <li><a href="/selectUserBase/teaList?page=${page.current+1}">${page.current+1}</a></li>
+                                            <li><a href="${ctx}/selectUserBase/teaList?page=${page.current+1}">${page.current+1}</a></li>
                                         </c:if>
                                         <c:if test="${page.current+2 <= page.pages}">
-                                            <li><a href="/selectUserBase/teaList?page=${page.current+2}">${page.current+2}</a></li>
+                                            <li><a href="${ctx}/selectUserBase/teaList?page=${page.current+2}">${page.current+2}</a></li>
                                         </c:if>
                                         <c:if test="${page.current+1 <= page.pages}">
-                                            <li><a href="/selectUserBase/teaList?page=${page.current+1}">下一页</a></li>
+                                            <li><a href="${ctx}/selectUserBase/teaList?page=${page.current+1}">下一页</a></li>
                                         </c:if>
                                         <c:if test="${page.current+1 > page.pages}">
                                             <li><a class="btn  disabled" href="#">下一页</a></li>
@@ -281,7 +281,7 @@
                 $("#fileField").click();
             } else {
                 //after click the cancel
-                window.location.href='/selectUserBase/teaFileDown';
+                window.location.href='${ctx}/selectUserBase/teaFileDown';
             }
         }, {confirmButtonText: '已有模板', cancelButtonText: '下载模板', width: 400});
     }
@@ -289,7 +289,7 @@
     function teaUpload() {
         $.ajax({
             type:'POST',
-            url:'/selectUserBase/teaUpload', //你处理上传文件的服务端
+            url:'${ctx}/selectUserBase/teaUpload', //你处理上传文件的服务端
             data: new FormData($('#uploadForm')[0]),
             async: false,
             cache: false,
@@ -298,7 +298,7 @@
             dataType:"json",
             success: function (msg) {//调用成功时怎么处理
                     alert("😋"+msg,"",function () {
-                        location.href="/selectUserBase/teaList";
+                        location.href="${ctx}/selectUserBase/teaList";
                     },{type:"success",confirmButtonText:"好的"});
             },//end success
             error: function(e) {
@@ -319,7 +319,7 @@
     function search() {
         $.ajax({
             type: "post",
-            url: "/selectUserBase/teaListAjax",
+            url: "${ctx}/selectUserBase/teaListAjax",
             data:{"search":$(" input[ name='search' ] ").val()},
             dataType:"json",
             success:function(objects){
@@ -334,7 +334,7 @@
     function pageSearch(page) {
         $.ajax({
             type: "post",
-            url: "/selectUserBase/teaListAjax",
+            url: "${ctx}/selectUserBase/teaListAjax",
             data:{"page":page,
                 "search":$(" input[ name='search' ] ").val(),
                 "userSex":$(" select[ name='userSex' ] ").val(),
@@ -356,7 +356,7 @@
     $("#searchSubmit").click(function(){
         $.ajax({
             type: "post",
-            url: "/selectUserBase/teaListAjax",
+            url: "${ctx}/selectUserBase/teaListAjax",
             data: $("#searchForm").serialize(),
             dataType:"json",
             success:function(objects){
@@ -375,7 +375,7 @@
             if (isConfirm){
                 $.ajax({
                     type:"POST",
-                    url:"/selectUserBase/teaAble",
+                    url:"${ctx}/selectUserBase/teaAble",
                     data:{"id":id,"userStatus":1},
                     dataType:"json",
                     success:function(msg){
@@ -383,7 +383,7 @@
                             alert(" 😅 "+msg);
                         }else {
                             alert(" 😋 启用成功","",function () {
-                                location.href="/selectUserBase/teaList";
+                                location.href="${ctx}/selectUserBase/teaList";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -401,7 +401,7 @@
             if (isConfirm){
                 $.ajax({
                     type:"POST",
-                    url:"/selectUserBase/teaAble",
+                    url:"${ctx}/selectUserBase/teaAble",
                     data:{"id":id,"userStatus":0},
                     dataType:"json",
                     success:function(msg){
@@ -409,7 +409,7 @@
                             alert(" 😅 "+msg);
                         }else{
                             alert(" 😋 禁用成功！","",function () {
-                                location.href="/selectUserBase/teaList";
+                                location.href="${ctx}/selectUserBase/teaList";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -429,7 +429,7 @@
             if (isconfirm){
                 $.ajax({
                     type:"POST",
-                    url:"/selectUserBase/teaDelete",
+                    url:"${ctx}/selectUserBase/teaDelete",
                     data:{"id":id},
                     dataType:"json",
                     success:function(msg){
@@ -437,7 +437,7 @@
                             alert(" 😅 "+msg);
                         }else{
                             alert(" 😋 删除成功！","",function () {
-                                location.href="/selectUserBase/teaList";
+                                location.href="${ctx}/selectUserBase/teaList";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -462,7 +462,7 @@
                 if (is){
                     $.ajax({
                         type:"POST",
-                        url:"/selectUserBase/teaDeleteAll",
+                        url:"${ctx}/selectUserBase/teaDeleteAll",
                         data: { "selectedIDs": arrayId },
                         dataType:"json",
                         traditional: true,
@@ -471,7 +471,7 @@
                                 alert(" 😅 "+msg);
                             }else{
                                 alert(" 😋 删除成功！","",function () {
-                                    location.href="/selectUserBase/teaList";
+                                    location.href="${ctx}/selectUserBase/teaList";
                                 },{type:"success",confirmButtonText:"好的"});
                             }
 
@@ -488,11 +488,11 @@
     }
 
     function teaDetails(id) {
-        window.location.href="/selectUserBase/teaDetails?id="+id;
+        window.location.href="${ctx}/selectUserBase/teaDetails?id="+id;
     }
 
     function teaUpdate(id) {
-        window.location.href='/selectUserBase/teaInitUpdate?id='+id;
+        window.location.href='${ctx}/selectUserBase/teaInitUpdate?id='+id;
     }
 
 

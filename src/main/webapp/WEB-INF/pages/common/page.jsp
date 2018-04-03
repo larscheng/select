@@ -17,24 +17,24 @@
         <li><a href="#" class="btn  disabled">上一页</a></li>
     </c:if>
     <c:if test="${page.current-1 > 0}">
-        <li><a class="disabled" href="/selectUserBase/userList?page=${page.current-1}">上一页</a></li>
-        <li><a href="/selectUserBase/userList?page=${page.current-1}">${page.current-1}</a></li>
+        <li><a class="disabled" href="${ctx}/selectUserBase/userList?page=${page.current-1}">上一页</a></li>
+        <li><a href="${ctx}/selectUserBase/userList?page=${page.current-1}">${page.current-1}</a></li>
     </c:if>
 
     <c:if test="${page.current-1 > 0}">
 
     </c:if>
 
-    <li><a href="/selectUserBase/userList?page=${page.current}">${page.current}</a></li>
+    <li><a href="${ctx}/selectUserBase/userList?page=${page.current}">${page.current}</a></li>
 
     <c:if test="${page.current+1 <= page.pages}">
-        <li><a href="/selectUserBase/userList?page=${page.current+1}">${page.current+1}</a></li>
+        <li><a href="${ctx}/selectUserBase/userList?page=${page.current+1}">${page.current+1}</a></li>
     </c:if>
     <c:if test="${page.current+2 <= page.pages}">
-        <li><a href="/selectUserBase/userList?page=${page.current+2}">${page.current+2}</a></li>
+        <li><a href="${ctx}/selectUserBase/userList?page=${page.current+2}">${page.current+2}</a></li>
     </c:if>
     <c:if test="${page.current+1 <= page.pages}">
-        <li><a href="/selectUserBase/userList?page=${page.current+1}">下一页</a></li>
+        <li><a href="${ctx}/selectUserBase/userList?page=${page.current+1}">下一页</a></li>
     </c:if>
     <c:if test="${page.current+1 > page.pages}">
         <li><a class="btn  disabled" href="#">下一页</a></li>

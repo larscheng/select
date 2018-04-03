@@ -60,7 +60,7 @@
                                 </div>
                                 <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
                                         <button type="button" onclick="majDeleteAll()" class="btn btn-info pull-left" style="margin-right: 10px"><i class="icon-remove"> </i>批量删除</button>
-                                        <button type="button" style="margin-right: 10px" onclick="window.location.href='/selectMajor/majInitAdd';"  class="btn btn-success pull-left"><i class="icon-edit"> </i>添加专业</button>
+                                        <button type="button" style="margin-right: 10px" onclick="window.location.href='${ctx}/selectMajor/majInitAdd';"  class="btn btn-success pull-left"><i class="icon-edit"> </i>添加专业</button>
 
                                 </div>
                                 <div class="clearfix"></div>
@@ -119,9 +119,9 @@
                                                                 <button class="btn btn-xs btn-danger"  onclick="majDisAble('${maj.id}')"><i class="icon-remove"></i>禁用</button>
                                                             </c:otherwise>
                                                         </c:choose>
-                                                        <button class="btn btn-xs btn-warning" onclick="window.location.href='/selectMajor/majInitUpdate?Id=${maj.id}';"><i class="icon-pencil">编辑</i>
+                                                        <button class="btn btn-xs btn-warning" onclick="window.location.href='${ctx}/selectMajor/majInitUpdate?Id=${maj.id}';"><i class="icon-pencil">编辑</i>
                                                         </button>
-                                                        <button class="btn btn-xs btn-info" onclick="window.location.href='/selectMajor/majFind?Id=${maj.id}';"><i class="icon-pencil">查看</i>
+                                                        <button class="btn btn-xs btn-info" onclick="window.location.href='${ctx}/selectMajor/majFind?Id=${maj.id}';"><i class="icon-pencil">查看</i>
                                                         </button>
                                                         <button class="btn btn-xs btn-danger" onclick="majDelete('${maj.id}')"><i class="icon-remove">删除</i>
                                                         </button>
@@ -195,7 +195,7 @@
                 if (isConfirm){
                     $.ajax({
                         type:"POST",
-                        url:"/selectMajor/majDisable",
+                        url:"${ctx}/selectMajor/majDisable",
                         data:{"id":id,"majStatus":1},
                         dataType:"json",
                         success:function(msg){
@@ -203,7 +203,7 @@
                                 alert(msg);
                             }else {
                                 alert("启用成功","",function () {
-                                    location.href="/selectMajor/majList";
+                                    location.href="${ctx}/selectMajor/majList";
                                 },{type:"success",confirmButtonText:"好的"});
                             }
                         },
@@ -221,7 +221,7 @@
                 if (isConfirm){
                     $.ajax({
                         type:"POST",
-                        url:"/selectMajor/majDisable",
+                        url:"${ctx}/selectMajor/majDisable",
                         data:{"id":id,"majStatus":0},
                         dataType:"json",
                         success:function(msg){
@@ -229,7 +229,7 @@
                                 alert(msg);
                             }else{
                                 alert("禁用成功！","",function () {
-                                    location.href="/selectMajor/majList";
+                                    location.href="${ctx}/selectMajor/majList";
                                 },{type:"success",confirmButtonText:"好的"});
                             }
                         },
@@ -247,7 +247,7 @@
                 if (isconfirm){
                     $.ajax({
                         type:"POST",
-                        url:"/selectMajor/majDelete",
+                        url:"${ctx}/selectMajor/majDelete",
                         data:{"id":id},
                         dataType:"json",
                         success:function(msg){
@@ -255,7 +255,7 @@
                                 alert(msg);
                             }else{
                                 alert("删除成功！","",function () {
-                                    location.href="/selectMajor/majList";
+                                    location.href="${ctx}/selectMajor/majList";
                                 },{type:"success",confirmButtonText:"好的"});
                             }
                         },
@@ -280,7 +280,7 @@
                     if (is){
                         $.ajax({
                             type:"POST",
-                            url:"/selectMajor/majDeleteAll",
+                            url:"${ctx}/selectMajor/majDeleteAll",
                             data: { "selectedIDs": arrayId },
                             dataType:"json",
                             traditional: true,
@@ -289,7 +289,7 @@
                                     alert(msg);
                                 }else{
                                     alert("删除成功！","",function () {
-                                        location.href="/selectMajor/majList";
+                                        location.href="${ctx}/selectMajor/majList";
                                     },{type:"success",confirmButtonText:"好的"});
                                 }
 

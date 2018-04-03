@@ -279,9 +279,9 @@
     });
 
     function search() {
-        var url = "/selectTopic/stuTopicAjaxList";
+        var url = "${ctx}/selectTopic/stuTopicAjaxList";
         if (manType == 3){
-            url="/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
+            url="${ctx}/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
         }
         $.ajax({
             type: "post",
@@ -298,9 +298,9 @@
     }
 
     function pageSearch(page) {
-        var url = "/selectTopic/stuTopicAjaxList";
+        var url = "${ctx}/selectTopic/stuTopicAjaxList";
         if (manType == 3){
-            url="/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
+            url="${ctx}/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
         }
         $.ajax({
             type: "post",
@@ -322,9 +322,9 @@
     }
 
     $("#searchSubmit").click(function(){
-        var url = "/selectTopic/stuTopicAjaxList";
+        var url = "${ctx}/selectTopic/stuTopicAjaxList";
         if (manType == 3){
-            url="/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
+            url="${ctx}/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
         }
         $.ajax({
             type: "post",
@@ -348,7 +348,7 @@
             if (isConfirm){
                 $.ajax({
                     type:"POST",
-                    url:"/selectTopic/topicDel",
+                    url:"${ctx}/selectTopic/topicDel",
                     data:{"id":id},
                     dataType:"json",
                     success:function(msg){
@@ -356,7 +356,7 @@
                             alert(" 😅 "+msg);
                         }else {
                             alert(" 😋 删除成功","",function () {
-                                location.href="/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}";
+                                location.href="${ctx}/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -371,14 +371,14 @@
 
 
     function topicDetails(id) {
-        window.location.href="/selectTopic/topicDetails?id="+id;
+        window.location.href="${ctx}/selectTopic/topicDetails?id="+id;
     }
 
 
 
 
     function exportTopicInfo() {
-        window.location.href="/selectTopic/export";
+        window.location.href="${ctx}/selectTopic/export";
     }
 
 

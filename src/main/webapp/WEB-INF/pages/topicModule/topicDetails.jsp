@@ -413,11 +413,11 @@
     function uploadTaskBook(type) {
         var uploadUrl;
         if (type === 1){
-            uploadUrl = "/selectTopic/uploadTaskBook";
+            uploadUrl = "${ctx}/selectTopic/uploadTaskBook";
         }else if (type === 2){
-            uploadUrl = "/selectTopic/uploadOpeningReport";
+            uploadUrl = "${ctx}/selectTopic/uploadOpeningReport";
         }else {
-            uploadUrl = "/selectTopic/uploadDissertation";
+            uploadUrl = "${ctx}/selectTopic/uploadDissertation";
         }
         var formData = new FormData($( "#updateForm" )[0]);  // 要求使用的html对象
         console.log(uploadUrl);
@@ -438,7 +438,7 @@
                             alert(" 😅 "+msg);
                         }else {
                             alert(" 😋 上传成功","",function () {
-                                location.href="/selectTopic/topicDetails?id=${requestScope.topicDetails.id}";
+                                location.href="${ctx}/selectTopic/topicDetails?id=${requestScope.topicDetails.id}";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -459,7 +459,7 @@
             if (isConfirm){
                 $.ajax({
                     type:"POST",
-                    url:"/selectTopic/topicDel",
+                    url:"${ctx}/selectTopic/topicDel",
                     data:{"id":id},
                     dataType:"json",
                     success:function(msg){
@@ -467,7 +467,7 @@
                             alert(" 😅 "+msg);
                         }else {
                             alert(" 😋 删除成功","",function () {
-                                location.href="/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}";
+                                location.href="${ctx}/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },

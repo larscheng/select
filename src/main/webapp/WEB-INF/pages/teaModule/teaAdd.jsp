@@ -333,7 +333,7 @@
             if(bootstrapValidator.isValid()){
             $.ajax({
                 type: "post",
-                url: "/selectUserBase/teaAdd",
+                url: "${ctx}/selectUserBase/teaAdd",
                 data: $("#addForm").serialize(),
                 dataType:"json",
                 success:function(msg){
@@ -341,7 +341,7 @@
                         alert(" 😅 "+msg);
                     }else {
                         alert(" 😎 添加成功","",function () {
-                            location.href="/selectUserBase/teaList";
+                            location.href="${ctx}/selectUserBase/teaList";
                         },{type:"success",confirmButtonText:"好的"});
                     }
 

@@ -200,7 +200,7 @@
     function initClass() {
         $.ajax({
             type: "post",
-            url: "/selectUserBase/initClass",
+            url: "${ctx}/selectUserBase/initClass",
             data:{"stuMajorId":$("#stuMajorId").val()},
             dataType:"json",
             success:function(msg){
@@ -341,7 +341,7 @@
             if(bootstrapValidator.isValid()){
             $.ajax({
                 type: "post",
-                url: "/selectUserBase/stuAdd",
+                url: "${ctx}/selectUserBase/stuAdd",
                 data: $("#addForm").serialize(),
                 dataType:"json",
                 success:function(msg){
@@ -349,7 +349,7 @@
                         alert(" 😅 "+msg);
                     }else {
                         alert(" 😎 添加成功","",function () {
-                            location.href="/selectUserBase/stuList";
+                            location.href="${ctx}/selectUserBase/stuList";
                         },{type:"success",confirmButtonText:"好的"});
                     }
 

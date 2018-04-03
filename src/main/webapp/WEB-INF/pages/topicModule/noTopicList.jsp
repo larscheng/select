@@ -322,7 +322,7 @@
         }
 
     });
-    var url="/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
+    var url="${ctx}/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
     function search() {
 
         $.ajax({
@@ -384,7 +384,7 @@
             if (isConfirm){
                 $.ajax({
                     type:"POST",
-                    url:"/selectTopic/topicAudited",
+                    url:"${ctx}/selectTopic/topicAudited",
                     data:{"id":id,"teaAuditState":2},
                     dataType:"json",
                     success:function(msg){
@@ -392,7 +392,7 @@
                             alert(" 😅 "+msg);
                         }else {
                             alert(" 😋 审核通过","",function () {
-                                window.location.href= "/selectTopic/noTopicList?teaId=${sessionScope.sessionUser.id}";
+                                window.location.href= "${ctx}/selectTopic/noTopicList?teaId=${sessionScope.sessionUser.id}";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -411,7 +411,7 @@
             if (isConfirm){
                 $.ajax({
                     type:"POST",
-                    url:"/selectTopic/topicAudited",
+                    url:"${ctx}/selectTopic/topicAudited",
                     data:{"id":$("#hid").val(),"teaAuditState":1,"teaAuditContent":$("#reason").val()},
                     dataType:"json",
                     success:function(msg){
@@ -419,7 +419,7 @@
                             alert(" 😅 "+msg);
                         }else{
                             alert(" 😋 审核完成！","",function () {
-                                window.location.href= "/selectTopic/noTopicList?teaId=${sessionScope.sessionUser.id}";
+                                window.location.href= "${ctx}/selectTopic/noTopicList?teaId=${sessionScope.sessionUser.id}";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -433,7 +433,7 @@
     }
 
     function topicDetails(id) {
-        window.location.href="/selectTopic/topicDetails?id="+id;
+        window.location.href="${ctx}/selectTopic/topicDetails?id="+id;
     }
 
 

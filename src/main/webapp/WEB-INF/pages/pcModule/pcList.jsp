@@ -146,7 +146,7 @@
         var edate = new Date(e);
         $.ajax({
             type: "post",
-            url: "/selectProcessControl/updatePc", //你处理上传文件的服务端
+            url: "${ctx}/selectProcessControl/updatePc", //你处理上传文件的服务端
             data: {"id" : id,
                 "proStartTime" :sdate,
                 "proEndTime" : edate
@@ -157,7 +157,7 @@
                     alert(" 😅 " + msg);
                 } else {
                     alert(" 😋 修改成功", "", function () {
-                        location.href = "/selectProcessControl/pcList";
+                        location.href = "${ctx}/selectProcessControl/pcList";
                     }, {type: "success", confirmButtonText: "好的"});
                 }
 

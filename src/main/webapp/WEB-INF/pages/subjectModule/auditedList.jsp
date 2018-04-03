@@ -245,7 +245,7 @@
     function search() {
         $.ajax({
             type: "post",
-            url: "/selectSubject/subListAjax",
+            url: "${ctx}/selectSubject/subListAjax",
             data:{"search":$(" input[ name='search' ] ").val()},
             dataType:"json",
             success:function(objects){
@@ -260,7 +260,7 @@
     function pageSearch(page) {
         $.ajax({
             type: "post",
-            url: "/selectSubject/subListAjax",
+            url: "${ctx}/selectSubject/subListAjax",
             data:{"page":page,
                 "search":$(" input[ name='search' ] ").val(),
                 "admAuditState":$(" select[ name='admAuditState' ] ").val(),
@@ -281,7 +281,7 @@
     $("#searchSubmit").click(function(){
         $.ajax({
             type: "post",
-            url: "/selectSubject/subListAjax",
+            url: "${ctx}/selectSubject/subListAjax",
             data: $("#searchForm").serialize(),
             dataType:"json",
             success:function(objects){
@@ -299,7 +299,7 @@
             if (isConfirm){
                 $.ajax({
                     type:"POST",
-                    url:"/selectSubject/subAudited",
+                    url:"${ctx}/selectSubject/subAudited",
                     data:{"id":id,"admAuditState":2,"admAuditId":${sessionScope.sessionUser.id}},
                     dataType:"json",
                     success:function(msg){
@@ -307,7 +307,7 @@
                             alert(" 😅 "+msg);
                         }else {
                             alert(" 😋 审核通过","",function () {
-                                location.href="/selectSubject/subList";
+                                location.href="${ctx}/selectSubject/subList";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -322,7 +322,7 @@
 
 
     function subjectDetails(id) {
-        window.location.href="/selectSubject/subjectDetail?id="+id;
+        window.location.href="${ctx}/selectSubject/subjectDetail?id="+id;
     }
 
 

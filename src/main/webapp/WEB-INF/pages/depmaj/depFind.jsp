@@ -129,7 +129,7 @@
         $("#updateSubmit").click(function(){
             $.ajax({
                 type: "post",
-                url: "/selectDepartment/depUpdate",
+                url: "${ctx}/selectDepartment/depUpdate",
                 data: $("#updateForm").serialize(),
                 dataType:"json",
                 success:function(msg){
@@ -137,7 +137,7 @@
                         alert(msg);
                     }else {
                         alert("编辑成功","",function () {
-                            location.href="/selectDepartment/depList";
+                            location.href="${ctx}/selectDepartment/depList";
                         },{type:"success",confirmButtonText:"好的"});
                     }
                 },

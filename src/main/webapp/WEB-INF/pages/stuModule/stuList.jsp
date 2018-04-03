@@ -135,8 +135,8 @@
                                                 <input type="file" id="fileField" name="fileField" style="display: none" onchange="ajaxUpload()"/>
                                             </form>
                                         </div>
-                                        <button type="button"  onclick="window.location.href='/selectUserBase/stuInitAdd';" style="margin-right: 10px" class="btn btn-info pull-left "><i class="icon-upload"></i>学生添加</button>
-                                        <button type="button"  onclick="window.location.href='/selectUserBase/stuFileDown';" class="btn btn-default pull-left "><i class="icon-upload"></i>模板下载</button>
+                                        <button type="button"  onclick="window.location.href='${ctx}/selectUserBase/stuInitAdd';" style="margin-right: 10px" class="btn btn-info pull-left "><i class="icon-upload"></i>学生添加</button>
+                                        <button type="button"  onclick="window.location.href='${ctx}/selectUserBase/stuFileDown';" class="btn btn-default pull-left "><i class="icon-upload"></i>模板下载</button>
                                     </div>
                                 </c:if>
                                 <div class="clearfix"></div>
@@ -207,7 +207,7 @@
                                                                     <button class="btn btn-xs btn-danger"  onclick="stuDisAble('${user.id}')"><i class="icon-remove"></i>禁用</button>
                                                                 </c:otherwise>
                                                             </c:choose>
-                                                            <button class="btn btn-xs btn-warning" onclick="window.location.href='/selectUserBase/stuInitUpdate?id=${user.id}';"><i class="icon-pencil">编辑</i>
+                                                            <button class="btn btn-xs btn-warning" onclick="window.location.href='${ctx}/selectUserBase/stuInitUpdate?id=${user.id}';"><i class="icon-pencil">编辑</i>
                                                             </button>
                                                             <button class="btn btn-xs btn-danger" onclick="stuDelete('${user.id}')"><i class="icon-remove">删除</i></button>
                                                         </td>
@@ -225,21 +225,21 @@
                                             <li><a href="#" class="btn btn-default" disabled="disabled">上一页</a></li>
                                         </c:if>
                                         <c:if test="${page.current-1 > 0}">
-                                            <li><a class="disabled" href="/selectUserBase/stuList?page=${page.current-1}">上一页</a></li>
-                                            <li><a href="/selectUserBase/stuList?page=${page.current-1}">${page.current-1}</a></li>
+                                            <li><a class="disabled" href="${ctx}/selectUserBase/stuList?page=${page.current-1}">上一页</a></li>
+                                            <li><a href="${ctx}/selectUserBase/stuList?page=${page.current-1}">${page.current-1}</a></li>
                                         </c:if>
 
 
-                                        <li><a href="/selectUserBase/stuList?page=${page.current}">${page.current}</a></li>
+                                        <li><a href="${ctx}/selectUserBase/stuList?page=${page.current}">${page.current}</a></li>
 
                                         <c:if test="${page.current+1 <= page.pages}">
-                                            <li><a href="/selectUserBase/stuList?page=${page.current+1}">${page.current+1}</a></li>
+                                            <li><a href="${ctx}/selectUserBase/stuList?page=${page.current+1}">${page.current+1}</a></li>
                                         </c:if>
                                         <c:if test="${page.current+2 <= page.pages}">
-                                            <li><a href="/selectUserBase/stuList?page=${page.current+2}">${page.current+2}</a></li>
+                                            <li><a href="${ctx}/selectUserBase/stuList?page=${page.current+2}">${page.current+2}</a></li>
                                         </c:if>
                                         <c:if test="${page.current+1 <= page.pages}">
-                                            <li><a href="/selectUserBase/stuList?page=${page.current+1}">下一页</a></li>
+                                            <li><a href="${ctx}/selectUserBase/stuList?page=${page.current+1}">下一页</a></li>
                                         </c:if>
                                         <c:if test="${page.current+1 > page.pages}">
                                             <li><a class="btn  disabled" href="#">下一页</a></li>
@@ -277,7 +277,7 @@
     function initClass() {
         $.ajax({
             type: "post",
-            url: "/selectUserBase/initClass",
+            url: "${ctx}/selectUserBase/initClass",
             data:{"stuMajorId":$("#stuMajorId").val()},
             dataType:"json",
             success:function(msg){
@@ -308,7 +308,7 @@
             } else {
                 //after click the cancel
                 //TODO 跳转到下载页
-                window.location.href='/selectUserBase/stuFileDown';
+                window.location.href='${ctx}/selectUserBase/stuFileDown';
             }
         }, {confirmButtonText: '已有模板', cancelButtonText: '下载模板', width: 400});
     }
@@ -317,7 +317,7 @@
 //        alert("nininini");
         $.ajax({
             type:'POST',
-            url:'/selectUserBase/stuUpload', //你处理上传文件的服务端
+            url:'${ctx}/selectUserBase/stuUpload', //你处理上传文件的服务端
             data: new FormData($('#uploadForm')[0]),
             async: false,
             cache: false,
@@ -326,7 +326,7 @@
             dataType:"json",
             success: function (msg) {//调用成功时怎么处理
                     alert(" 😋 "+msg,"",function () {
-                        location.href="/selectUserBase/stuList";
+                        location.href="${ctx}/selectUserBase/stuList";
                     },{type:"success",confirmButtonText:"好的"});
 
             },//end success
@@ -345,7 +345,7 @@
     function search() {
         $.ajax({
             type: "post",
-            url: "/selectUserBase/stuListAjax",
+            url: "${ctx}/selectUserBase/stuListAjax",
             data:{"search":$(" input[ name='search' ] ").val()},
             dataType:"json",
             success:function(objects){
@@ -360,7 +360,7 @@
     function pageSearch(page) {
         $.ajax({
             type: "post",
-            url: "/selectUserBase/stuListAjax",
+            url: "${ctx}/selectUserBase/stuListAjax",
             data:{"page":page,
                 "search":$(" input[ name='search' ] ").val(),
                 "userSex":$(" select[ name='userSex' ] ").val(),
@@ -382,7 +382,7 @@
     $("#searchSubmit").click(function(){
         $.ajax({
             type: "post",
-            url: "/selectUserBase/stuListAjax",
+            url: "${ctx}/selectUserBase/stuListAjax",
             data: $("#searchForm").serialize(),
             dataType:"json",
             success:function(objects){
@@ -399,7 +399,7 @@
             if (isConfirm){
                 $.ajax({
                     type:"POST",
-                    url:"/selectUserBase/stuAble",
+                    url:"${ctx}/selectUserBase/stuAble",
                     data:{"id":id,"userStatus":1},
                     dataType:"json",
                     success:function(msg){
@@ -407,7 +407,7 @@
                             alert(" 😅 "+msg);
                         }else {
                             alert(" 😋 启用成功","",function () {
-                                location.href="/selectUserBase/stuList";
+                                location.href="${ctx}/selectUserBase/stuList";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -425,7 +425,7 @@
             if (isConfirm){
                 $.ajax({
                     type:"POST",
-                    url:"/selectUserBase/stuAble",
+                    url:"${ctx}/selectUserBase/stuAble",
                     data:{"id":id,"userStatus":0},
                     dataType:"json",
                     success:function(msg){
@@ -433,7 +433,7 @@
                             alert(" 😅 "+msg);
                         }else{
                             alert(" 😋 禁用成功！","",function () {
-                                location.href="/selectUserBase/stuList";
+                                location.href="${ctx}/selectUserBase/stuList";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -448,7 +448,7 @@
 
 
     function stuUpdate(id) {
-        window.location.href='/selectUserBase/stuInitUpdate?id='+id;
+        window.location.href='${ctx}/selectUserBase/stuInitUpdate?id='+id;
     }
 
 
@@ -457,7 +457,7 @@
             if (isconfirm){
                 $.ajax({
                     type:"POST",
-                    url:"/selectUserBase/stuDelete",
+                    url:"${ctx}/selectUserBase/stuDelete",
                     data:{"id":id},
                     dataType:"json",
                     success:function(msg){
@@ -465,7 +465,7 @@
                             alert(" 😅 "+msg);
                         }else{
                             alert(" 😋 删除成功！","",function () {
-                                location.href="/selectUserBase/stuList";
+                                location.href="${ctx}/selectUserBase/stuList";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -490,7 +490,7 @@
                 if (is){
                     $.ajax({
                         type:"POST",
-                        url:"/selectUserBase/stuDeleteAll",
+                        url:"${ctx}/selectUserBase/stuDeleteAll",
                         data: { "selectedIDs": arrayId },
                         dataType:"json",
                         traditional: true,
@@ -499,7 +499,7 @@
                                 alert(" 😅 "+msg);
                             }else{
                                 alert(" 😋 删除成功！","",function () {
-                                    location.href="/selectUserBase/stuList";
+                                    location.href="${ctx}/selectUserBase/stuList";
                                 },{type:"success",confirmButtonText:"好的"});
                             }
 

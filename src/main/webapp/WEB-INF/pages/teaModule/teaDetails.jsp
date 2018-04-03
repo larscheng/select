@@ -207,7 +207,7 @@
 
             $.ajax({
                 type: "post",
-                url: "/selectUserBase/teaUpdate",
+                url: "${ctx}/selectUserBase/teaUpdate",
                 data: $("#updateForm").serialize(),
                 dataType:"json",
                 success:function(msg){
@@ -215,7 +215,7 @@
                         alert(" 😅 "+msg);
                     }else {
                         alert(" 😎 修改成功","",function () {
-                            location.href="/selectUserBase/teaList";
+                            location.href="${ctx}/selectUserBase/teaList";
                         },{type:"success",confirmButtonText:"好的"});
                     }
 

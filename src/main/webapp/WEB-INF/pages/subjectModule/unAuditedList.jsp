@@ -270,7 +270,7 @@
     function search() {
         $.ajax({
             type: "post",
-            url: "/selectSubject/unSubListAjax",
+            url: "${ctx}/selectSubject/unSubListAjax",
             data:{"search":$(" input[ name='search' ] ").val()},
             dataType:"json",
             success:function(objects){
@@ -285,7 +285,7 @@
     function pageSearch(page) {
         $.ajax({
             type: "post",
-            url: "/selectSubject/unSubListAjax",
+            url: "${ctx}/selectSubject/unSubListAjax",
             data:{"page":page,
                 "search":$(" input[ name='search' ] ").val(),
                 "subType":$(" select[ name='subType' ] ").val(),
@@ -305,7 +305,7 @@
     $("#searchSubmit").click(function(){
         $.ajax({
             type: "post",
-            url: "/selectSubject/unSubListAjax",
+            url: "${ctx}/selectSubject/unSubListAjax",
             data: $("#searchForm").serialize(),
             dataType:"json",
             success:function(objects){
@@ -324,7 +324,7 @@
             if (isConfirm){
                 $.ajax({
                     type:"POST",
-                    url:"/selectSubject/subAudited",
+                    url:"${ctx}/selectSubject/subAudited",
                     data:{"id":id,"admAuditState":2,"admAuditId":${sessionScope.sessionUser.id}},
                     dataType:"json",
                     success:function(msg){
@@ -332,7 +332,7 @@
                             alert(" 😅 "+msg);
                         }else {
                             alert(" 😋 审核通过","",function () {
-                                location.href="/selectSubject/unSubList";
+                                location.href="${ctx}/selectSubject/unSubList";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -351,7 +351,7 @@
             if (isConfirm){
                 $.ajax({
                     type:"POST",
-                    url:"/selectSubject/subAudited",
+                    url:"${ctx}/selectSubject/subAudited",
                     data:{"id":$("#hid").val(),"admAuditState":1,"admAuditId":${sessionScope.sessionUser.id},"admAuditContent":$("#reason").val()},
                     dataType:"json",
                     success:function(msg){
@@ -359,7 +359,7 @@
                             alert(" 😅 "+msg);
                         }else{
                             alert(" 😋 审核完成！","",function () {
-                                location.href="/selectSubject/unSubList";
+                                location.href="${ctx}/selectSubject/unSubList";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -384,7 +384,7 @@
                 if (is){
                     $.ajax({
                         type:"POST",
-                        url:"/selectSubject/subSuccessAll",
+                        url:"${ctx}/selectSubject/subSuccessAll",
                         data: { "selectedIDs": arrayId },
                         dataType:"json",
                         traditional: true,
@@ -393,7 +393,7 @@
                                 alert(" 😅 "+msg);
                             }else{
                                 alert(" 😋 审核成功！","",function () {
-                                    location.href="/selectSubject/unSubList";
+                                    location.href="${ctx}/selectSubject/unSubList";
                                 },{type:"success",confirmButtonText:"好的"});
                             }
 
@@ -410,7 +410,7 @@
     }
 
     function subDetails(id) {
-        window.location.href="/selectSubject/subDetail?id="+id;
+        window.location.href="${ctx}/selectSubject/subDetail?id="+id;
     }
 
 

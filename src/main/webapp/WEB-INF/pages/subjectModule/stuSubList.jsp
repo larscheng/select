@@ -292,7 +292,7 @@
     function search() {
         $.ajax({
             type: "post",
-            url: "/selectSubject/stuSubListAjax",
+            url: "${ctx}/selectSubject/stuSubListAjax",
             data:{"search":$(" input[ name='search' ] ").val(),"selectId":id},
             dataType:"json",
             success:function(objects){
@@ -307,7 +307,7 @@
     function pageSearch(page) {
         $.ajax({
             type: "post",
-            url: "/selectSubject/stuSubListAjax",
+            url: "${ctx}/selectSubject/stuSubListAjax",
             data:{"page":page,"selectId":id,
                 "search":$(" input[ name='search' ] ").val(),
                 "admAuditState":$(" select[ name='admAuditState' ] ").val(),
@@ -329,7 +329,7 @@
         $("#selectId").val(id);
         $.ajax({
             type: "post",
-            url: "/selectSubject/stuSubListAjax",
+            url: "${ctx}/selectSubject/stuSubListAjax",
             data: $("#searchForm").serialize(),
             dataType:"json",
             success:function(objects){
@@ -345,7 +345,7 @@
     function selectSub() {
         $.ajax({
             type:"POST",
-            url:"/selectSubject/stuSelect",
+            url:"${ctx}/selectSubject/stuSelect",
             data:{"id":$("#hid").val(),"selectReason":$("#selectReason").val(),"selectId":${sessionScope.sessionUser.id}},
             dataType:"json",
             success:function(msg){
@@ -353,7 +353,7 @@
                     alert(" 😅 "+msg);
                 }else{
                     alert(" 😋 选题成功！请等待教师审核","",function () {
-                        location.href="/selectSubject/stuSubList?selectId=${sessionScope.sessionUser.id}";
+                        location.href="${ctx}/selectSubject/stuSubList?selectId=${sessionScope.sessionUser.id}";
                     },{type:"success",confirmButtonText:"好的"});
                 }
             },

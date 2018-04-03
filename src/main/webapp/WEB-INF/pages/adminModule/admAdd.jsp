@@ -267,7 +267,7 @@
                 //表单提交的方法、比如ajax提交
                 $.ajax({
                 type: "post",
-                    url: "/selectUserBase/admAdd",
+                    url: "${ctx}/selectUserBase/admAdd",
                     data: $("#addForm").serialize(),
                     dataType:"json",
                     success:function(msg){
@@ -275,7 +275,7 @@
                         alert(" 😅 "+msg);
                     }else {
                         alert(" 😎 添加成功","",function () {
-                            location.href="/selectUserBase/admList";
+                            location.href="${ctx}/selectUserBase/admList";
                         },{type:"success",confirmButtonText:"好的"});
                     }
 

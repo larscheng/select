@@ -61,7 +61,7 @@
                                 <c:if test="${sessionScope.sessionUser.userType eq 0 }">
                                     <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
                                         <button type="button" onclick="admDeleteAll()" class="btn btn-info pull-left " style="margin-right: 10px"><i class="icon-remove"></i>批量删除</button>
-                                        <button type="button"  onclick="window.location.href='/selectUserBase/initAddAdmin';" style="margin-right: 10px" class="btn btn-info pull-left "><i class="icon-upload"></i>管理员添加</button>
+                                        <button type="button"  onclick="window.location.href='${ctx}/selectUserBase/initAddAdmin';" style="margin-right: 10px" class="btn btn-info pull-left "><i class="icon-upload"></i>管理员添加</button>
                                     </div>
                                 </c:if>
 
@@ -144,21 +144,21 @@
                                             <li><a href="#" class="btn  disabled">上一页</a></li>
                                         </c:if>
                                         <c:if test="${page.current-1 > 0}">
-                                            <li><a class="disabled" href="/selectUserBase/userList?page=${page.current-1}">上一页</a></li>
-                                            <li><a href="/selectUserBase/userList?page=${page.current-1}">${page.current-1}</a></li>
+                                            <li><a class="disabled" href="${ctx}/selectUserBase/userList?page=${page.current-1}">上一页</a></li>
+                                            <li><a href="${ctx}/selectUserBase/userList?page=${page.current-1}">${page.current-1}</a></li>
                                         </c:if>
 
 
-                                        <li><a href="/selectUserBase/userList?page=${page.current}">${page.current}</a></li>
+                                        <li><a href="${ctx}/selectUserBase/userList?page=${page.current}">${page.current}</a></li>
 
                                         <c:if test="${page.current+1 <= page.pages}">
-                                            <li><a href="/selectUserBase/userList?page=${page.current+1}">${page.current+1}</a></li>
+                                            <li><a href="${ctx}/selectUserBase/userList?page=${page.current+1}">${page.current+1}</a></li>
                                         </c:if>
                                         <c:if test="${page.current+2 <= page.pages}">
-                                            <li><a href="/selectUserBase/userList?page=${page.current+2}">${page.current+2}</a></li>
+                                            <li><a href="${ctx}/selectUserBase/userList?page=${page.current+2}">${page.current+2}</a></li>
                                         </c:if>
                                         <c:if test="${page.current+1 <= page.pages}">
-                                            <li><a href="/selectUserBase/userList?page=${page.current+1}">下一页</a></li>
+                                            <li><a href="${ctx}/selectUserBase/userList?page=${page.current+1}">下一页</a></li>
                                         </c:if>
                                         <c:if test="${page.current+1 > page.pages}">
                                             <li><a class="btn  disabled" href="#">下一页</a></li>
@@ -209,7 +209,7 @@ function aaa() {
             if (isConfirm){
                 $.ajax({
                     type:"POST",
-                    url:"/selectUserBase/admAble",
+                    url:"${ctx}/selectUserBase/admAble",
                     data:{"id":id,"userStatus":1},
                     dataType:"json",
                     success:function(msg){
@@ -217,7 +217,7 @@ function aaa() {
                             alert(" 😅 "+msg);
                         }else {
                             alert(" 😋 启用成功","",function () {
-                                location.href="/selectUserBase/admList";
+                                location.href="${ctx}/selectUserBase/admList";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -235,7 +235,7 @@ function aaa() {
             if (isConfirm){
                 $.ajax({
                     type:"POST",
-                    url:"/selectUserBase/admAble",
+                    url:"${ctx}/selectUserBase/admAble",
                     data:{"id":id,"userStatus":0},
                     dataType:"json",
                     success:function(msg){
@@ -243,7 +243,7 @@ function aaa() {
                             alert(" 😅 "+msg);
                         }else{
                             alert(" 😋 禁用成功！","",function () {
-                                location.href="/selectUserBase/admList";
+                                location.href="${ctx}/selectUserBase/admList";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -261,7 +261,7 @@ function aaa() {
             if (isconfirm){
                 $.ajax({
                     type:"POST",
-                    url:"/selectUserBase/admDelete",
+                    url:"${ctx}/selectUserBase/admDelete",
                     data:{"id":id},
                     dataType:"json",
                     success:function(msg){
@@ -269,7 +269,7 @@ function aaa() {
                             alert(" 😅 "+msg);
                         }else{
                             alert(" 😋 删除成功！","",function () {
-                                location.href="/selectUserBase/admList";
+                                location.href="${ctx}/selectUserBase/admList";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -294,7 +294,7 @@ function aaa() {
                 if (is){
                     $.ajax({
                         type:"POST",
-                        url:"/selectUserBase/admDeleteAll",
+                        url:"${ctx}/selectUserBase/admDeleteAll",
                         data: { "selectedIDs": arrayId },
                         dataType:"json",
                         traditional: true,
@@ -303,7 +303,7 @@ function aaa() {
                                 alert(" 😅 "+msg);
                             }else{
                                 alert(" 😋 删除成功！","",function () {
-                                    location.href="/selectUserBase/admList";
+                                    location.href="${ctx}/selectUserBase/admList";
                                 },{type:"success",confirmButtonText:"好的"});
                             }
 
@@ -321,7 +321,7 @@ function aaa() {
 
 
     function admUpdate(id) {
-        window.location.href='/selectUserBase/admSelfInfo?id='+id;
+        window.location.href='${ctx}/selectUserBase/admSelfInfo?id='+id;
     }
 
 

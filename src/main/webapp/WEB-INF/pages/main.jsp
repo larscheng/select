@@ -6,7 +6,7 @@
 <html>
 <head>
     <title>后台管理</title>
-    <link rel="alternate icon" type="image/x-icon" href="/resources/favicon.ico">
+    <link rel="alternate icon" type="image/x-icon" href="${ctx}/resources/favicon.ico">
 </head>
 <frameset rows="66,*,40" cols="*" frameborder="yes" border="0" framespacing="0" scrolling="yes" >
 
@@ -15,7 +15,7 @@
     <frameset cols="230,*" frameborder="No" border="0" framespacing="0" scrolling="No">
         <frame src="${ctx}/sider.jsp" name="leftFrame" scrolling="No" noresize="noresize"
                id="leftFrame" title="leftFrame" />
-        <frame src="${ctx}/test.jsp"  name="mainFrame"  border="0"  noresize="noresize"
+        <frame src="${ctx}/test.jsp" name="mainFrame" border="0" noresize="noresize"
                id="mainFrame" title="mainFrame" />
     </frameset>
     <frame  src="${ctx}/footer.jsp"  name="footFrame" scrolling="No"  border="0" noresize="noresize"

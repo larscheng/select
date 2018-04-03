@@ -229,7 +229,7 @@
             var formData = new FormData($( "#addForm" )[0]);  // 要求使用的html对象
             $.ajax({
                 type: "post",
-                url: "/selectSubject/subAdd",
+                url: "${ctx}/selectSubject/subAdd",
 //                data: $("#addForm").serialize(),
                 data: formData,
                 async: true,
@@ -243,7 +243,7 @@
                         alert(" 😅 "+msg);
                     }else {
                         alert(" 😎 添加成功","",function () {
-                            location.href="/selectSubject/mySubList?teaId=${sessionScope.sessionUser.id}";
+                            location.href="${ctx}/selectSubject/mySubList?teaId=${sessionScope.sessionUser.id}";
                         },{type:"success",confirmButtonText:"好的"});
                     }
 
