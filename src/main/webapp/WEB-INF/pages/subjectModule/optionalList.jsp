@@ -144,30 +144,38 @@
                                     </tr>
                                     </thead>
                                     <tbody id="items">
-                                    <c:forEach var="subject" items="${requestScope.subjectList}" varStatus="index">
-                                        <tr>
-                                            <td  class=" text-center"><input type="checkbox" name="ids" value="${subject.id}" /></td>
-                                            <td>${index.count}</td>
-                                            <td>${subject.subName}</td>
-                                            <td>${subject.subTeaName}</td>
-                                            <td>${subject.teaPhone}</td>
-                                            <td><span class="label label-primary">${subject.typeName}</span></td>
-                                            <td>${subject.subYear}级</td>
-                                            <td>${subject.forDepName}</td>
-                                            <td> <span class="label label-primary">${subject.subSelectStatusName}</span></td>
-                                            <td><fmt:formatDate value="${subject.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                            <td>
-                                                <button class="btn btn-xs btn-info" onclick="subjectDetails(${subject.id})"><i class="icon-pencil"></i>详情</button>
-                                                <c:if test="${subject.subSelectStatus eq 0}">
-                                                    <c:if test="${sessionScope.userType eq 3}">
-                                                        <button class="btn btn-xs btn-success " onclick="subSuccess(${subject.id})"><i class="icon-ok-circle"></i>选择</button>
-                                                    </c:if>
 
-                                                </c:if>
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
 
+                                    <c:choose>
+                                        <c:when test="${empty requestScope.subjectList }">
+                                            <tr><td colspan='14' class='text-center'> 😑 暂无数据！</td></tr>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:forEach var="subject" items="${requestScope.subjectList}" varStatus="index">
+                                                <tr>
+                                                    <td  class=" text-center"><input type="checkbox" name="ids" value="${subject.id}" /></td>
+                                                    <td>${index.count}</td>
+                                                    <td>${subject.subName}</td>
+                                                    <td>${subject.subTeaName}</td>
+                                                    <td>${subject.teaPhone}</td>
+                                                    <td><span class="label label-primary">${subject.typeName}</span></td>
+                                                    <td>${subject.subYear}级</td>
+                                                    <td>${subject.forDepName}</td>
+                                                    <td> <span class="label label-primary">${subject.subSelectStatusName}</span></td>
+                                                    <td><fmt:formatDate value="${subject.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td>
+                                                        <button class="btn btn-xs btn-info" onclick="subjectDetails(${subject.id})"><i class="icon-pencil"></i>详情</button>
+                                                        <c:if test="${subject.subSelectStatus eq 0}">
+                                                            <c:if test="${sessionScope.userType eq 3}">
+                                                                <button class="btn btn-xs btn-success " onclick="subSuccess(${subject.id})"><i class="icon-ok-circle"></i>选择</button>
+                                                            </c:if>
+
+                                                        </c:if>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:otherwise>
+                                    </c:choose>
                                     </tbody>
                                 </table>
 

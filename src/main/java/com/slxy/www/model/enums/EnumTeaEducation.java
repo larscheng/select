@@ -38,6 +38,13 @@ public enum EnumTeaEducation {
         }
         return enumDataMap;
     }
+    public static Map<String,Integer> toMap2() {
+        Map<String,Integer> enumDataMap = new HashMap<String,Integer>();
+        for (EnumTeaEducation type : EnumTeaEducation.values()) {
+            enumDataMap.put( type.getName(),type.getValue());
+        }
+        return enumDataMap;
+    }
 
     /**
      * 根据内容索引

@@ -165,53 +165,61 @@
                                     </tr>
                                     </thead>
                                     <tbody id="items">
-                                    <c:forEach var="user" items="${requestScope.userList}" varStatus="index">
-                                        <tr>
-                                            <td  class=" text-center"><input type="checkbox" name="ids" value="${user.id}" /></td>
-                                            <td>${index.count}</td>
-                                            <td>${user.userName}</td>
-                                            <td>${user.userCode}</td>
-                                            <td>${user.sex}</td>
-                                            <td><a href="mailto:${user.userMail}">${user.userMail}</a></td>
-                                            <td>${user.userPhone}</td>
-                                            <td><a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=${user.userQq}">${user.userQq}</a></td>
-                                            <td>${user.teaDepName}</td>
-                                            <td><span class="label label-primary">${user.teaPositionZ}</span></td>
-                                            <td><span class="label label-warning">${user.teaEducationZ}</span></td>
-                                            <td>
-                                                <c:set var="status" value="${user.userStatus}"/>
-                                                <c:choose>
-                                                    <c:when test="${status eq 1}">
-                                                        <span class="label label-success">启用</span>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <span class="label label-danger">禁用</span>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </td>
-                                            <td><fmt:formatDate value="${user.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                            <td>
-                                                <c:if test="${sessionScope.sessionUser.userType eq 1|| sessionScope.sessionUser.userType eq 0}">
-                                                    <c:set var="status" value="${user.userStatus}"/>
-                                                    <c:choose>
-                                                        <c:when test="${status eq 0}">
-                                                            <button class="btn btn-xs btn-success" onclick="teaAble(${user.id})"><i class="icon-ok"></i>启用</button>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <button class="btn btn-xs btn-danger" onclick="teaDisAble(${user.id})"><i class="icon-remove"></i>禁用</button>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </c:if>
 
-                                                <button class="btn btn-xs btn-info" onclick="teaDetails(${user.id})"><i class="icon-pencil"></i>详情</button>
-                                                <c:if test="${sessionScope.sessionUser.userType eq 1 || sessionScope.sessionUser.userType eq 0}">
-                                                    <button class="btn btn-xs btn-warning" onclick="window.location.href='/selectUserBase/teaInitUpdate?id=${user.id}';"><i class="icon-pencil"></i>编辑</button>
-                                                    <button class="btn btn-xs btn-danger" onclick="teaDelete('${user.id}')"><i class="icon-remove">删除</i></button>
-                                                </c:if>
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
 
+                                    <c:choose>
+                                        <c:when test="${empty requestScope.userList }">
+                                            <tr><td colspan='14' class='text-center'> 😑 暂无数据！</td></tr>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:forEach var="user" items="${requestScope.userList}" varStatus="index">
+                                                <tr>
+                                                    <td  class=" text-center"><input type="checkbox" name="ids" value="${user.id}" /></td>
+                                                    <td>${index.count}</td>
+                                                    <td>${user.userName}</td>
+                                                    <td>${user.userCode}</td>
+                                                    <td>${user.sex}</td>
+                                                    <td><a href="mailto:${user.userMail}">${user.userMail}</a></td>
+                                                    <td>${user.userPhone}</td>
+                                                    <td><a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=${user.userQq}">${user.userQq}</a></td>
+                                                    <td>${user.teaDepName}</td>
+                                                    <td><span class="label label-primary">${user.teaPositionZ}</span></td>
+                                                    <td><span class="label label-warning">${user.teaEducationZ}</span></td>
+                                                    <td>
+                                                        <c:set var="status" value="${user.userStatus}"/>
+                                                        <c:choose>
+                                                            <c:when test="${status eq 1}">
+                                                                <span class="label label-success">启用</span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="label label-danger">禁用</span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+                                                    <td><fmt:formatDate value="${user.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td>
+                                                        <c:if test="${sessionScope.sessionUser.userType eq 1|| sessionScope.sessionUser.userType eq 0}">
+                                                            <c:set var="status" value="${user.userStatus}"/>
+                                                            <c:choose>
+                                                                <c:when test="${status eq 0}">
+                                                                    <button class="btn btn-xs btn-success" onclick="teaAble(${user.id})"><i class="icon-ok"></i>启用</button>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <button class="btn btn-xs btn-danger" onclick="teaDisAble(${user.id})"><i class="icon-remove"></i>禁用</button>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </c:if>
+
+                                                        <button class="btn btn-xs btn-info" onclick="teaDetails(${user.id})"><i class="icon-pencil"></i>详情</button>
+                                                        <c:if test="${sessionScope.sessionUser.userType eq 1 || sessionScope.sessionUser.userType eq 0}">
+                                                            <button class="btn btn-xs btn-warning" onclick="window.location.href='/selectUserBase/teaInitUpdate?id=${user.id}';"><i class="icon-pencil"></i>编辑</button>
+                                                            <button class="btn btn-xs btn-danger" onclick="teaDelete('${user.id}')"><i class="icon-remove">删除</i></button>
+                                                        </c:if>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:otherwise>
+                                    </c:choose>
                                     </tbody>
                                 </table>
 

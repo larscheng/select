@@ -39,6 +39,13 @@ public enum EnumTeaPosition {
         }
         return enumDataMap;
     }
+    public static Map<String,Integer> toMap2() {
+        Map<String,Integer> enumDataMap = new HashMap<String,Integer>();
+        for (EnumTeaPosition type : EnumTeaPosition.values()) {
+            enumDataMap.put( type.getName(),type.getValue());
+        }
+        return enumDataMap;
+    }
 
     /**
      * 根据内容索引
@@ -61,4 +68,7 @@ public enum EnumTeaPosition {
     public String getName() {
         return name;
     }
+
+
+
 }

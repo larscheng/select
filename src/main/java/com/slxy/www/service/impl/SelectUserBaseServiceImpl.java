@@ -372,7 +372,7 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
         try {
             importVOS = ExcelUtil.excelToList(importFile.getInputStream(), "import", ImportStuVo.class, map, new String[]{});
         } catch (Exception e) {
-            logger.info("ERROR -> 车型导入 : " + e.getMessage());
+            logger.info("ERROR -> 学生导入 : " + e.getMessage());
             return Constant.STU_IMPORT_ERROR_FILE_ERROR;
         }
 
@@ -390,7 +390,7 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
                 logger.info("添加失败 : " + importStuVo.toString());
                 continue;
             }
-            //车辆初始化
+            //学生初始化
             try {
                 if (!this.initStu(importStuVo)) {
                     logger.info("学生导入失败 : " + importStuVo.getUserName());
@@ -439,7 +439,7 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
         SelectUserBase userBase = new SelectUserBase()
                 .setUserName(importStuVo.getUserName())
                 .setUserCode(importStuVo.getUserCode())
-                .setUserSex(importStuVo.getUserSex())
+                .setUserSex(EnumUserSex.toMap2().get(importStuVo.getUserSex()))
                 .setUserMail(importStuVo.getUserMail())
                 .setUserPhone(importStuVo.getUserPhone())
                 .setUserQq(importStuVo.getUserQq())
@@ -685,13 +685,13 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
         SelectUserBase userBase = new SelectUserBase()
                 .setUserName(importTeaVo.getUserName())
                 .setUserCode(importTeaVo.getUserCode())
-                .setUserSex(importTeaVo.getUserSex())
+                .setUserSex(EnumUserSex.toMap2().get(importTeaVo.getUserSex()))
                 .setUserMail(importTeaVo.getUserMail())
                 .setUserPhone(importTeaVo.getUserPhone())
                 .setUserQq(importTeaVo.getUserQq())
-                .setTeaPosition(importTeaVo.getTeaPosition())
+                .setTeaPosition(EnumTeaPosition.toMap2().get(importTeaVo.getTeaPosition()))
                 .setTeaMajorName(importTeaVo.getTeaMajorName())
-                .setTeaEducation(importTeaVo.getTeaEducation())
+                .setTeaEducation(EnumTeaEducation.toMap2().get(importTeaVo.getTeaEducation()))
                 .setTeaDepId(department.getId())
                 .setUserPassword(Constant.USER_PASSWORD)
                 .setUserType(EnumUserType.TEACHER.getValue())
@@ -703,6 +703,10 @@ public class SelectUserBaseServiceImpl extends ServiceImpl<SelectUserBaseMapper,
         }
         return true;
     }
+
+
+
+
 
     /***
      * 管理员添加

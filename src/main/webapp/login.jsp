@@ -54,26 +54,26 @@
 								<div class="form-group">
 									<label class="control-label col-lg-3">账号</label>
 									<div class="col-lg-9">
-										<input type="text" class="form-control" name="userName"  placeholder="Email">
+										<input type="text" id="userCode" class="form-control" name="userCode"  placeholder="请输入账号学号">
 									</div>
 								</div>
 								<!-- Password -->
 								<div class="form-group">
 									<label class="control-label col-lg-3">密码</label>
 									<div class="col-lg-9">
-										<input type="password" class="form-control" name="userPassword" placeholder="Password">
+										<input type="password" class="form-control" name="userPassword" placeholder="请输入密码">
 									</div>
 								</div>
 								<!-- Remember me checkbox and sign in button -->
-								<%--<div class="form-group">--%>
-									<%--<div class="col-lg-8 col-lg-offset-3">--%>
-										<%--<div class="checkbox">--%>
-											<%--<label>--%>
-												<%--<input type="checkbox"> 记住我--%>
-											<%--</label>--%>
-										<%--</div>--%>
-									<%--</div>--%>
-								<%--</div>--%>
+								<div class="form-group">
+									<div class="col-lg-8 col-lg-offset-3">
+
+											<label id="msg" style="display: block">
+												<b style="color: red">${requestScope.msg}</b>
+											</label>
+
+									</div>
+								</div>
 								<div class="col-lg-9 col-lg-offset-2">
 									<button type="submit" class="btn btn-danger">登录</button>
 									<button type="reset" class="btn btn-default">重填</button>
@@ -96,12 +96,18 @@
 
 
 <!-- JS -->
-<script src="resources/js/jquery.js"></script>
-<script src="resources/js/bootstrap.js"></script>
+<script src="${ctx}/resources/js/jquery.js"></script>
+<script src="${ctx}/resources/js/bootstrap.js"></script>
+
 <script type="text/javascript" src="${ctx}/resources/js/bootstrapValidator.js"></script>
 
 <script type="text/javascript">
+    $("input").focus(function(){
+        $("#msg").css("display","none");
+    });
+
     $(document).ready(function() {
+
         /**
          * 下面是进行插件初始化
          * 你只需传入相应的键值对
@@ -109,7 +115,7 @@
         $('#defaultForm').bootstrapValidator({
             message: 'This value is not valid',
             fields: {/*验证*/
-                userName: {/*键名username和input name值对应*/
+                userCode: {/*键名username和input name值对应*/
                     message: 'The username is not valid',
                     validators: {
                         notEmpty: {/*非空提示*/

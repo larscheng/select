@@ -29,7 +29,7 @@ public class ImportTeaVo {
     /**
      * 性别 1男，2女
      */
-    private Integer userSex;
+    private String userSex;
     /**
      * 邮箱
      */
@@ -45,7 +45,7 @@ public class ImportTeaVo {
     /**
      * 教师职称 1教授，2副教授，3讲师，4助教
      */
-    private Integer teaPosition;
+    private String teaPosition;
     /**
      * 教师专业名称
      */
@@ -53,7 +53,7 @@ public class ImportTeaVo {
     /**
      * 教师学历 1博士，2硕士，3本科
      */
-    private Integer teaEducation;
+    private String teaEducation;
     /**
      * 教师所属系别
      */

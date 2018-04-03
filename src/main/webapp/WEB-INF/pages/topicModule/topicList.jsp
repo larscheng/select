@@ -137,7 +137,7 @@
                                     <tbody id="items">
                                     <c:choose>
                                         <c:when test="${empty requestScope.topicList }">
-                                            <tr><td colspan='9' class='text-center'> 😑 暂无数据！</td></tr>
+                                            <tr><td colspan='12' class='text-center'> 😑 暂无数据！</td></tr>
                                         </c:when>
                                         <c:otherwise>
                                             <c:forEach var="topic" items="${requestScope.topicList}" varStatus="index">

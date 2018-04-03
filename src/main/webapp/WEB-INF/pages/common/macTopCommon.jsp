@@ -23,7 +23,8 @@
 <%--<link rel="stylesheet" href="${ctx}/resources/style/bootstrap-datetimepicker.min.css">--%>
 
 <link href="${ctx}/resources/jquery/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
-<link rel="stylesheet" href="${ctx}/resources/style/bootstrap.min.css">
+<link rel="stylesheet" href="https://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
+<%--<link rel="stylesheet" href="${ctx}/resources/style/bootstrap3-2.min.css">--%>
 <!-- CLEditor -->
 <link rel="stylesheet" href="${ctx}/resources/style/jquery.cleditor.css">
 

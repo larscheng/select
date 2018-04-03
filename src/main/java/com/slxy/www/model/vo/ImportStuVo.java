@@ -30,7 +30,7 @@ public class ImportStuVo {
     /**
      * 性别 1男，2女
      */
-    private Integer userSex;
+    private String userSex;
     /**
      * 邮箱
      */

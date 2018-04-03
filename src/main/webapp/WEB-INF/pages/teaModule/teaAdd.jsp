@@ -101,10 +101,10 @@
 
                                         <label class="col-lg-1 control-label">所属系别</label>
                                         <div class="col-lg-2" >
-                                            <select name="teaDepName" class="form-control">
+                                            <select name="teaDepId" class="form-control">
                                                 <option value="" selected>---请选择---</option>
                                                 <c:forEach var="dep" items="${requestScope.teaDepList}">
-                                                    <option value="${dep.depName}">${dep.depName}</option>
+                                                    <option value="${dep.id}">${dep.depName}</option>
                                                 </c:forEach>
                                             </select>
                                         </div>

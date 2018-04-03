@@ -87,45 +87,53 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach var="user" items="${requestScope.userList}" varStatus="index">
-                                        <tr>
-                                            <td  class=" text-center"><input type="checkbox" value="${user.id}" /></td>
-                                            <td>${index.count}</td>
-                                            <td>${user.userName}</td>
-                                            <td>${user.userCode}</td>
-                                            <td>${user.userMail}</td>
-                                            <td>${user.userPhone}</td>
-                                            <td>${user.userQq}</td>
-                                            <td><fmt:formatDate value="${user.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                            <td>
-                                                <c:set var="status" value="${user.userStatus}"/>
-                                                <c:choose>
-                                                    <c:when test="${status eq 1}">
-                                                        <span class="label label-success">启用</span>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <span class="label label-danger">禁用</span>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </td>
-                                            <c:if test="${sessionScope.sessionUser.userType eq 0 }">
-                                                <td>
-                                                    <c:set var="status" value="${user.userStatus}"/>
-                                                    <c:choose>
-                                                        <c:when test="${status eq 0}">
-                                                            <button class="btn btn-xs btn-success" onclick="admAble(${user.id})"><i class="icon-ok"></i>启用</button>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <button class="btn btn-xs btn-danger" onclick="admDisAble(${user.id})"><i class="icon-remove"></i>禁用</button>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                    <button class="btn btn-xs btn-warning" onclick="admUpdate(${user.id})"><i class="icon-pencil"></i>编辑</button>
-                                                    <button class="btn btn-xs btn-danger" onclick="admDelete(${user.id})"><i class="icon-remove">删除</i></button>
+                                    <c:choose>
+                                        <c:when test="${empty requestScope.userList }">
+                                            <tr><td colspan='9' class='text-center'> 😑 暂无数据！</td></tr>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:forEach var="user" items="${requestScope.userList}" varStatus="index">
+                                                <tr>
+                                                    <td  class=" text-center"><input type="checkbox" value="${user.id}" /></td>
+                                                    <td>${index.count}</td>
+                                                    <td>${user.userName}</td>
+                                                    <td>${user.userCode}</td>
+                                                    <td>${user.userMail}</td>
+                                                    <td>${user.userPhone}</td>
+                                                    <td>${user.userQq}</td>
+                                                    <td><fmt:formatDate value="${user.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td>
+                                                        <c:set var="status" value="${user.userStatus}"/>
+                                                        <c:choose>
+                                                            <c:when test="${status eq 1}">
+                                                                <span class="label label-success">启用</span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="label label-danger">禁用</span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+                                                    <c:if test="${sessionScope.sessionUser.userType eq 0 }">
+                                                        <td>
+                                                            <c:set var="status" value="${user.userStatus}"/>
+                                                            <c:choose>
+                                                                <c:when test="${status eq 0}">
+                                                                    <button class="btn btn-xs btn-success" onclick="admAble(${user.id})"><i class="icon-ok"></i>启用</button>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <button class="btn btn-xs btn-danger" onclick="admDisAble(${user.id})"><i class="icon-remove"></i>禁用</button>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                            <button class="btn btn-xs btn-warning" onclick="admUpdate(${user.id})"><i class="icon-pencil"></i>编辑</button>
+                                                            <button class="btn btn-xs btn-danger" onclick="admDelete(${user.id})"><i class="icon-remove">删除</i></button>
 
-                                                </td>
-                                            </c:if>
-                                        </tr>
-                                    </c:forEach>
+                                                        </td>
+                                                    </c:if>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:otherwise>
+                                    </c:choose>
+
 
                                     </tbody>
                                 </table>

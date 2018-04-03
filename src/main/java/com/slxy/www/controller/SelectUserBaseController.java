@@ -4,6 +4,7 @@ package com.slxy.www.controller;
 import com.slxy.www.common.LoginRequired;
 import com.slxy.www.mapper.SelectUserBaseMapper;
 import com.slxy.www.model.SelectUserBase;
+import com.slxy.www.model.enums.EnumEnOrDis;
 import com.slxy.www.model.vo.SelectUserBaseVo;
 import com.slxy.www.model.enums.EnumUserType;
 import com.slxy.www.service.ISelectUserBaseService;
@@ -38,10 +39,19 @@ public class SelectUserBaseController {
 
     @RequestMapping("/login")
     public ModelAndView index(SelectUserBase userBase,ModelAndView  modelAndView) {
-        SelectUserBase selectUserBase = selectUserBaseMapper.selectOne((userBase));
-        if (ObjectUtils.isEmpty(selectUserBase)||!userBase.getUserPassword().equals(selectUserBase.getUserPassword())){
-            modelAndView.setViewName("redirect:/login.jsp");
-            modelAndView.addObject("msg","请重新登录");
+        SelectUserBase user = new SelectUserBase().setUserCode(userBase.getUserCode());
+        SelectUserBase selectUserBase = selectUserBaseMapper.selectOne((user));
+        if (ObjectUtils.isEmpty(selectUserBase)){
+            modelAndView.setViewName("../../login");
+            modelAndView.addObject("msg","该用户不存在，请重新登录");
+            return modelAndView;
+        }else if (selectUserBase.getUserStatus().equals(EnumEnOrDis.DISABLED.getValue())){
+            modelAndView.setViewName("../../login");
+            modelAndView.addObject("msg","该用户已被禁用，请重新登录");
+            return modelAndView;
+        }else if (!userBase.getUserPassword().equals(selectUserBase.getUserPassword())){
+            modelAndView.setViewName("../../login");
+            modelAndView.addObject("msg","账号密码错误，请重新登录");
             return modelAndView;
         }
         modelAndView.setViewName("main");
@@ -56,7 +66,8 @@ public class SelectUserBaseController {
         //通过session.invalidata()方法来注销当前的session
         session.invalidate();
 
-        modelAndView.setViewName("redirect:/login.jsp");
+//        modelAndView.setViewName("main");
+        modelAndView.setViewName("../../login");
 
         return modelAndView;
     }

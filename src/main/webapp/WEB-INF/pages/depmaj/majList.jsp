@@ -82,47 +82,57 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach var="maj" items="${requestScope.majList}" varStatus="index">
-                                        <tr>
-                                            <td class="center">
-                                                <input name="ids" type="checkbox" value="${maj.id}"/>
-                                            </td>
-                                            <td>${index.count}</td>
-                                            <td>${maj.majName}</td>
-                                            <td>${maj.majClassNum}</td>
-                                            <td>${maj.depName}</td>
-                                            <td>
-                                                <c:set var="status" value="${maj.majStatus}"/>
-                                                <c:choose>
-                                                    <c:when test="${status eq 1}">
-                                                        <span class="label label-success">启用</span>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <span class="label label-danger">禁用</span>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </td>
-                                            <td><fmt:formatDate value="${maj.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 
-                                            <td>
-                                                <c:choose>
-                                                    <c:when test="${status eq 0}">
-                                                        <button class="btn btn-xs btn-success"  onclick="majAble('${maj.id}')"><i class="icon-ok"></i>启用</button>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <button class="btn btn-xs btn-danger"  onclick="majDisAble('${maj.id}')"><i class="icon-remove"></i>禁用</button>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                                <button class="btn btn-xs btn-warning" onclick="window.location.href='/selectMajor/majInitUpdate?Id=${maj.id}';"><i class="icon-pencil">编辑</i>
-                                                </button>
-                                                <button class="btn btn-xs btn-info" onclick="window.location.href='/selectMajor/majFind?Id=${maj.id}';"><i class="icon-pencil">查看</i>
-                                                </button>
-                                                <button class="btn btn-xs btn-danger" onclick="majDelete('${maj.id}')"><i class="icon-remove">删除</i>
-                                                </button>
+                                    <c:choose>
+                                        <c:when test="${empty requestScope.majList }">
+                                            <tr><td colspan='9' class='text-center'> 😑 暂无数据！</td></tr>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:forEach var="maj" items="${requestScope.majList}" varStatus="index">
+                                                <tr>
+                                                    <td class="center">
+                                                        <input name="ids" type="checkbox" value="${maj.id}"/>
+                                                    </td>
+                                                    <td>${index.count}</td>
+                                                    <td>${maj.majName}</td>
+                                                    <td>${maj.majClassNum}</td>
+                                                    <td>${maj.depName}</td>
+                                                    <td>
+                                                        <c:set var="status" value="${maj.majStatus}"/>
+                                                        <c:choose>
+                                                            <c:when test="${status eq 1}">
+                                                                <span class="label label-success">启用</span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="label label-danger">禁用</span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+                                                    <td><fmt:formatDate value="${maj.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
+                                                    <td>
+                                                        <c:choose>
+                                                            <c:when test="${status eq 0}">
+                                                                <button class="btn btn-xs btn-success"  onclick="majAble('${maj.id}')"><i class="icon-ok"></i>启用</button>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <button class="btn btn-xs btn-danger"  onclick="majDisAble('${maj.id}')"><i class="icon-remove"></i>禁用</button>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                        <button class="btn btn-xs btn-warning" onclick="window.location.href='/selectMajor/majInitUpdate?Id=${maj.id}';"><i class="icon-pencil">编辑</i>
+                                                        </button>
+                                                        <button class="btn btn-xs btn-info" onclick="window.location.href='/selectMajor/majFind?Id=${maj.id}';"><i class="icon-pencil">查看</i>
+                                                        </button>
+                                                        <button class="btn btn-xs btn-danger" onclick="majDelete('${maj.id}')"><i class="icon-remove">删除</i>
+                                                        </button>
+
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+
+                                        </c:otherwise>
+                                    </c:choose>
+
 
                                     </tbody>
                                 </table>

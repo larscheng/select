@@ -38,6 +38,14 @@ public enum EnumUserSex {
         return enumDataMap;
     }
 
+    public static Map<String,Integer> toMap2() {
+        Map<String,Integer> enumDataMap = new HashMap<String,Integer>();
+        for (EnumUserSex type : EnumUserSex.values()) {
+            enumDataMap.put( type.getName(),type.getValue());
+        }
+        return enumDataMap;
+    }
+
     /**
      * 根据内容索引
      * @param value

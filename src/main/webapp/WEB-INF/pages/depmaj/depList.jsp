@@ -79,45 +79,55 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach var="dep" items="${depList}" varStatus="index">
-                                        <tr>
-                                            <td class=" text-center">
-                                                <input name="ids" type="checkbox" value="${dep.id}"/>
-                                            </td>
-                                            <td>${index.count}</td>
-                                            <td>${dep.depName}</td>
-                                            <td>
-                                                <c:set var="status" value="${dep.depStatus}"/>
-                                                <c:choose>
-                                                    <c:when test="${status eq 1}">
-                                                        <span class="label label-success">启用</span>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <span class="label label-danger">禁用</span>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </td>
-                                            <td><fmt:formatDate value="${dep.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 
-                                            <td>
-                                                <c:choose>
-                                                    <c:when test="${status eq 0}">
-                                                        <button class="btn btn-xs btn-success" onclick="depAble('${dep.id}')"><i class="icon-ok"></i>启用</button>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <button class="btn btn-xs btn-danger"  onclick="depDisable('${dep.id}')"><i class="icon-remove"></i>禁用</button>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                                <button class="btn btn-xs btn-warning" onclick="window.location.href='/selectDepartment/depInitUpdate?id=${dep.id}';"><i class="icon-pencil">编辑</i>
-                                                </button>
-                                                <button class="btn btn-xs btn-info" onclick="window.location.href='/selectDepartment/depFind?id=${dep.id}';"><i class="icon-pencil">查看</i>
-                                                </button>
-                                                <button class="btn btn-xs btn-danger" onclick="depDelete('${dep.id}')"><i class="icon-remove">删除</i>
-                                                </button>
+                                    <c:choose>
+                                        <c:when test="${empty requestScope.depList }">
+                                            <tr><td colspan='9' class='text-center'> 😑 暂无数据！</td></tr>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:forEach var="dep" items="${requestScope.depList}" varStatus="index">
+                                                <tr>
+                                                    <td class=" text-center">
+                                                        <input name="ids" type="checkbox" value="${dep.id}"/>
+                                                    </td>
+                                                    <td>${index.count}</td>
+                                                    <td>${dep.depName}</td>
+                                                    <td>
+                                                        <c:set var="status" value="${dep.depStatus}"/>
+                                                        <c:choose>
+                                                            <c:when test="${status eq 1}">
+                                                                <span class="label label-success">启用</span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="label label-danger">禁用</span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+                                                    <td><fmt:formatDate value="${dep.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
+                                                    <td>
+                                                        <c:choose>
+                                                            <c:when test="${status eq 0}">
+                                                                <button class="btn btn-xs btn-success" onclick="depAble('${dep.id}')"><i class="icon-ok"></i>启用</button>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <button class="btn btn-xs btn-danger"  onclick="depDisable('${dep.id}')"><i class="icon-remove"></i>禁用</button>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                        <button class="btn btn-xs btn-warning" onclick="window.location.href='/selectDepartment/depInitUpdate?id=${dep.id}';"><i class="icon-pencil">编辑</i>
+                                                        </button>
+                                                        <button class="btn btn-xs btn-info" onclick="window.location.href='/selectDepartment/depFind?id=${dep.id}';"><i class="icon-pencil">查看</i>
+                                                        </button>
+                                                        <button class="btn btn-xs btn-danger" onclick="depDelete('${dep.id}')"><i class="icon-remove">删除</i>
+                                                        </button>
+
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+
+                                        </c:otherwise>
+                                    </c:choose>
+
 
                                     </tbody>
                                 </table>

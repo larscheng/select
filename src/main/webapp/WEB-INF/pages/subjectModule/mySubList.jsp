@@ -141,9 +141,12 @@
                                     </tr>
                                     </thead>
                                     <tbody id="items">
+
+
+
                                     <c:choose>
-                                        <c:when test="${fn:length(requestScope.subjectList) < 0}">
-                                            <tr><td colspan='5' class='text-center'> 😑 暂无数据！</td></tr>
+                                        <c:when test="${empty requestScope.subjectList }">
+                                            <tr><td colspan='14' class='text-center'> 😑 暂无数据！</td></tr>
                                         </c:when>
                                         <c:otherwise>
                                             <c:forEach var="subject" items="${requestScope.subjectList}" varStatus="index">
@@ -178,6 +181,7 @@
                                             </c:forEach>
                                         </c:otherwise>
                                     </c:choose>
+
 
                                     </tbody>
                                 </table>
