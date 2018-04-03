@@ -414,7 +414,8 @@ public class SelectSubjectServiceImpl extends ServiceImpl<SelectSubjectMapper, S
 
         //先判断是否已经选过题目
         SelectTopic selectTopic = new SelectTopic()
-                .setStuId(vo.getSelectId());
+                .setStuId(vo.getSelectId())
+                .setDelState(EnumEnOrDis.DISABLED.getValue());
         selectTopic = selectTopicService.selectOne(new EntityWrapper<SelectTopic>(selectTopic));
         if (!ObjectUtils.isEmpty(selectTopic)){
             logger.info("您已选过题目，请勿重复选择！");

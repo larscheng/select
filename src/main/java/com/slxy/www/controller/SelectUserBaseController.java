@@ -1,6 +1,7 @@
 package com.slxy.www.controller;
 
 
+import com.slxy.www.common.LoginRequired;
 import com.slxy.www.mapper.SelectUserBaseMapper;
 import com.slxy.www.model.SelectUserBase;
 import com.slxy.www.model.vo.SelectUserBaseVo;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -48,12 +50,27 @@ public class SelectUserBaseController {
         return modelAndView;
     }
 
+
+    @RequestMapping("/logout")
+    public ModelAndView logout(HttpSession session, ModelAndView  modelAndView) {
+        //通过session.invalidata()方法来注销当前的session
+        session.invalidate();
+
+        modelAndView.setViewName("redirect:/login.jsp");
+
+        return modelAndView;
+    }
+
+
+
+
     /**
      * 管理员列表
      * @param modelAndView
      * @param userBaseVo
      * @return
      */
+    @LoginRequired(value = "adm")
     @RequestMapping("/admList")
     public ModelAndView admList(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
         modelAndView.setViewName("adminModule/admList");
@@ -66,6 +83,7 @@ public class SelectUserBaseController {
      * @param modelAndView
      * @return
      */
+    @LoginRequired(value = "adm")
     @RequestMapping("/initAddAdmin")
     public ModelAndView initAddAdmin(ModelAndView  modelAndView) {
         modelAndView.setViewName("adminModule/admAdd");
@@ -78,6 +96,7 @@ public class SelectUserBaseController {
      * @param userBase
      * @return
      */
+    @LoginRequired(value = "adm")
     @RequestMapping("/admAdd")
     @ResponseBody
     public String admAdd(SelectUserBase userBase) {
@@ -92,6 +111,7 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
+    @LoginRequired(value = "adm")
     @RequestMapping("/admDelete")
     @ResponseBody
     public String admDelete(SelectUserBaseVo userBaseVo) {
@@ -103,6 +123,7 @@ public class SelectUserBaseController {
      * @param selectedIDs
      * @return
      */
+    @LoginRequired(value = "adm")
     @RequestMapping("/admDeleteAll")
     @ResponseBody
     public String admDeleteAll(Integer[] selectedIDs) {
@@ -114,6 +135,7 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
+    @LoginRequired(value = "adm")
     @RequestMapping("/admAble")
     @ResponseBody
     public String admAble(SelectUserBaseVo userBaseVo) {
@@ -127,11 +149,26 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
+    @LoginRequired(value = "adm")
     @RequestMapping("/admSelfInfo")
     public ModelAndView admSelfInfo(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
         modelAndView.setViewName("/adminModule/admSelfInfo");
         return selectUserBaseService.stuInitAddAndUpdate(modelAndView,userBaseVo);
     }
+
+
+    /**
+     * adm修改
+     * @param userBase
+     * @return
+     */
+    @LoginRequired(value = "adm")
+    @RequestMapping("/admUpdate")
+    @ResponseBody
+    public String admUpdate(SelectUserBase userBase) {
+        return selectUserBaseService.stuUpdate(userBase);
+    }
+
 
     /******************************************    学生   *****************************************************/
     /**
@@ -164,6 +201,7 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
+    @LoginRequired(value = "admTea")
     @RequestMapping("/stuAble")
     @ResponseBody
     public String stuAble(SelectUserBaseVo userBaseVo) {
@@ -175,6 +213,7 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
+    @LoginRequired(value = "admTea")
     @RequestMapping("/stuDelete")
     @ResponseBody
     public String stuDelete(SelectUserBaseVo userBaseVo) {
@@ -186,6 +225,7 @@ public class SelectUserBaseController {
      * @param selectedIDs
      * @return
      */
+    @LoginRequired(value = "admTea")
     @RequestMapping("/stuDeleteAll")
     @ResponseBody
     public String stuDeleteAll(Integer[] selectedIDs) {
@@ -200,6 +240,7 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
+    @LoginRequired(value = "stu")
     @RequestMapping("/stuSelfInfo")
     public ModelAndView stuSelfInfo(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
         modelAndView.setViewName("/stuModule/stuSelfInfo");
@@ -214,6 +255,7 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
+    @LoginRequired(value = "admTea")
     @RequestMapping("/stuInitUpdate")
     public ModelAndView stuInitUpdate(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
         modelAndView.setViewName("/stuModule/stuUpdate");
@@ -237,6 +279,7 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
+    @LoginRequired(value = "admTea")
     @RequestMapping("/stuInitAdd")
     public ModelAndView stuInitAdd(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
 
@@ -249,6 +292,7 @@ public class SelectUserBaseController {
      * @param userBase
      * @return
      */
+    @LoginRequired(value = "admTea")
     @RequestMapping("/stuAdd")
     @ResponseBody
     public String stuAdd(SelectUserBase userBase) {
@@ -262,6 +306,7 @@ public class SelectUserBaseController {
      * @return
      * @throws IOException
      */
+    @LoginRequired(value = "admTea")
     @RequestMapping(value = "/stuUpload", method = RequestMethod.POST)
     @ResponseBody
     public String stuUpload(HttpServletRequest request) throws IOException {
@@ -286,6 +331,7 @@ public class SelectUserBaseController {
      * @param response
      * @throws Exception
      */
+    @LoginRequired(value = "admTea")
     @RequestMapping("/stuFileDown")
     public void stuFileDown(HttpServletRequest request,HttpServletResponse response) throws Exception {
         String fileName= "select_students.xls";
@@ -302,6 +348,7 @@ public class SelectUserBaseController {
      * @param response
      * @throws Exception
      */
+    @LoginRequired(value = "adm")
     @RequestMapping("/teaFileDown")
     public void teaFileDown(HttpServletRequest request,HttpServletResponse response) throws Exception {
         String fileName= "select_teachers.xls";
@@ -337,6 +384,7 @@ public class SelectUserBaseController {
      * @param userBase
      * @return
      */
+    @LoginRequired(value = "adm")
     @RequestMapping("/teaAble")
     @ResponseBody
     public String teaAble(SelectUserBase userBase) {
@@ -349,6 +397,7 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
+    @LoginRequired(value = "adm")
     @RequestMapping("/teaInitAdd")
     public ModelAndView teaInitAdd(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
         modelAndView.setViewName("/teaModule/teaAdd");
@@ -360,6 +409,7 @@ public class SelectUserBaseController {
      * @param userBase
      * @return
      */
+    @LoginRequired(value = "adm")
     @RequestMapping("/teaAdd")
     @ResponseBody
     public String teaAdd(SelectUserBase userBase) {
@@ -375,6 +425,7 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
+    @LoginRequired(value = "admTea")
     @RequestMapping("/teaSelfInfo")
     public ModelAndView teaSelfInfo(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
         modelAndView.setViewName("/teaModule/teaSelfInfo");
@@ -388,6 +439,7 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
+    @LoginRequired(value = "admTea")
     @RequestMapping("/teaInitUpdate")
     public ModelAndView teaInitUpdate(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
         modelAndView.setViewName("/teaModule/teaUpdate");
@@ -399,6 +451,7 @@ public class SelectUserBaseController {
      * @param userBase
      * @return
      */
+    @LoginRequired(value = "admTea")
     @RequestMapping("/teaUpdate")
     @ResponseBody
     public String teaUpdate(SelectUserBase userBase) {
@@ -410,6 +463,7 @@ public class SelectUserBaseController {
      * @param userBase
      * @return
      */
+    @LoginRequired(value = "admTea")
     @RequestMapping("/teaDelete")
     @ResponseBody
     public String teaDelete(SelectUserBase userBase) {
@@ -421,6 +475,7 @@ public class SelectUserBaseController {
      * @param selectedIDs
      * @return
      */
+    @LoginRequired(value = "admTea")
     @RequestMapping("/teaDeleteAll")
     @ResponseBody
     public String teaDeleteAll(Integer[] selectedIDs) {
@@ -433,6 +488,7 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
+    @LoginRequired(value = "admTea")
     @RequestMapping("/teaDetails")
     public ModelAndView teaDetails(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
         modelAndView.setViewName("teaModule/teaDetails");
@@ -446,6 +502,7 @@ public class SelectUserBaseController {
      * @return
      * @throws IOException
      */
+    @LoginRequired(value = "admTea")
     @RequestMapping(value = "/teaUpload", method = RequestMethod.POST)
     @ResponseBody
     public String teaUpload(HttpServletRequest request) throws IOException {

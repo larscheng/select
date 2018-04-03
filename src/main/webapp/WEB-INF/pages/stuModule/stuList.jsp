@@ -126,17 +126,19 @@
                                     <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                     <a href="#" class="wclose"><i class="icon-remove"></i></a>
                                 </div>
-                                <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
-                                    <button type="button" onclick="stuDeleteAll()" class="btn btn-info pull-left " style="margin-right: 10px"><i class="icon-remove"></i>批量删除</button>
-                                    <button type="button" class="btn btn-info pull-left " onclick="upload()" style="margin-right: 10px"><i class="icon-upload"></i>批量导入</button>
-                                    <div style="display: none">
-                                        <form id="uploadForm"  >
-                                            <input type="file" id="fileField" name="fileField" style="display: none" onchange="ajaxUpload()"/>
-                                        </form>
+                                <c:if test="${sessionScope.userType != 3}">
+                                    <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
+                                        <button type="button" onclick="stuDeleteAll()" class="btn btn-info pull-left " style="margin-right: 10px"><i class="icon-remove"></i>批量删除</button>
+                                        <button type="button" class="btn btn-info pull-left " onclick="upload()" style="margin-right: 10px"><i class="icon-upload"></i>批量导入</button>
+                                        <div style="display: none">
+                                            <form id="uploadForm"  >
+                                                <input type="file" id="fileField" name="fileField" style="display: none" onchange="ajaxUpload()"/>
+                                            </form>
+                                        </div>
+                                        <button type="button"  onclick="window.location.href='/selectUserBase/stuInitAdd';" style="margin-right: 10px" class="btn btn-info pull-left "><i class="icon-upload"></i>学生添加</button>
+                                        <button type="button"  onclick="window.location.href='/selectUserBase/stuFileDown';" class="btn btn-default pull-left "><i class="icon-upload"></i>模板下载</button>
                                     </div>
-                                    <button type="button"  onclick="window.location.href='/selectUserBase/stuInitAdd';" style="margin-right: 10px" class="btn btn-info pull-left "><i class="icon-upload"></i>学生添加</button>
-                                    <button type="button"  onclick="window.location.href='/selectUserBase/stuFileDown';" class="btn btn-default pull-left "><i class="icon-upload"></i>模板下载</button>
-                                </div>
+                                </c:if>
                                 <div class="clearfix"></div>
                             </div>
 
@@ -158,7 +160,9 @@
                                         <th>届别</th>
                                         <th>状态</th>
                                         <th>创建时间</th>
+                                        <c:if test="${sessionScope.userType != 3}">
                                         <th>操作</th>
+                                        </c:if>
                                     </tr>
                                     </thead>
                                     <tbody id="items">
@@ -169,9 +173,9 @@
                                             <td>${user.userName}</td>
                                             <td>${user.userCode}</td>
                                             <td>${user.sex}</td>
-                                            <td>${user.userMail}</td>
+                                            <td><a href="mailto:${user.userMail}">${user.userMail}</a></td>
                                             <td>${user.userPhone}</td>
-                                            <td>${user.userQq}</td>
+                                            <td><a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=${user.userQq}">${user.userQq}</a></td>
                                             <td>${user.stuMajorName}</td>
                                             <td>${user.stuClass}班</td>
                                             <td>${user.stuYear}级</td>
@@ -187,19 +191,21 @@
                                                 </c:choose>
                                             </td>
                                             <td><fmt:formatDate value="${user.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                            <td>
-                                                <c:choose>
-                                                    <c:when test="${status eq 0}">
-                                                        <button class="btn btn-xs btn-success"  onclick="stuAble('${user.id}')"><i class="icon-ok"></i>启用</button>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <button class="btn btn-xs btn-danger"  onclick="stuDisAble('${user.id}')"><i class="icon-remove"></i>禁用</button>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                                <button class="btn btn-xs btn-warning" onclick="window.location.href='/selectUserBase/stuInitUpdate?id=${user.id}';"><i class="icon-pencil">编辑</i>
-                                                </button>
-                                                <button class="btn btn-xs btn-danger" onclick="stuDelete('${user.id}')"><i class="icon-remove">删除</i></button>
-                                            </td>
+                                            <c:if test="${sessionScope.userType != 3}">
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${status eq 0}">
+                                                            <button class="btn btn-xs btn-success"  onclick="stuAble('${user.id}')"><i class="icon-ok"></i>启用</button>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <button class="btn btn-xs btn-danger"  onclick="stuDisAble('${user.id}')"><i class="icon-remove"></i>禁用</button>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                    <button class="btn btn-xs btn-warning" onclick="window.location.href='/selectUserBase/stuInitUpdate?id=${user.id}';"><i class="icon-pencil">编辑</i>
+                                                    </button>
+                                                    <button class="btn btn-xs btn-danger" onclick="stuDelete('${user.id}')"><i class="icon-remove">删除</i></button>
+                                                </td>
+                                            </c:if>
                                         </tr>
                                     </c:forEach>
 
@@ -257,6 +263,7 @@
 <%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>
 <script type="text/javascript">
 
+    var manType = ${sessionScope.userType};
     /***
      * 根据专业查询并生成班级下拉
      */
@@ -512,48 +519,64 @@
             $("#items").append("<tr><td colspan='14' class='text-center'> 😑 暂无数据！</td></tr>");
         }else{
             $(stuList).each(function (index) {
-            var val = stuList[index];
-            var time = getLocalTime(val.gmtCreate);
-            var item =
-                "<tr>"
-                +"<td class='text-center'>"+"<input type='checkbox' name='ids' value='"+val.id+"'/>"+"</td>"
-                +"<td>"+(parseInt(index)+1)+"</td>"
-                +"<td>"+val.userName+"</td>"
-                +"<td>"+val.userCode+"</td>"
-                +"<td>"+val.sex+"</td>"
-                +"<td>"+val.userMail+"</td>"
-                +"<td>"+val.userPhone+"</td>"
-                +"<td>"+val.userQq+"</td>"
-                +"<td>"+val.stuMajorName+"</td>"
-                +"<td>"+val.stuClass+"班</td>"
-                +"<td>"+val.stuYear+"级</td>"
+                var val = stuList[index];
+                var time = getLocalTime(val.gmtCreate);
+                var item =
+                    "<tr>"
+                    +"<td class='text-center'>"+"<input type='checkbox' name='ids' value='"+val.id+"'/>"+"</td>"
+                    +"<td>"+(parseInt(index)+1)+"</td>"
+                    +"<td>"+val.userName+"</td>"
+                    +"<td>"+val.userCode+"</td>"
+                    +"<td>"+val.sex+"</td>"
+                    +"<td><a href='mailto:"+val.userMail+"'>"+val.userMail+"</a></td>"
+                    +"<td>"+val.userPhone+"</td>"
+                    +"<td><a href='tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin="+val.userQq+"'>"+val.userQq+"</a></td>"
+                    +"<td>"+val.stuMajorName+"</td>"
+                    +"<td>"+val.stuClass+"班</td>"
+                    +"<td>"+val.stuYear+"级</td>"
 
-            ;
-//                    console.log(item);
-            if (parseInt(val.userStatus) == 1){
-                item +=
-                    "<td><span class='label label-success'>启用</span></td>"
-                    +"<td>"+time+"</td>"
-                    +"<td>" +
-                    "<button onclick='stuDisAble("+val.id+")' class='btn btn-xs btn-danger' style='margin-right: 5px'><i class='icon-remove'></i>禁用</button>" +
-                    "<button onclick='stuUpdate("+val.id+")' class='btn btn-xs btn-warning' style='margin-right: 5px'><i class='icon-pencil'></i>编辑</button>" +
-                    "<button onclick='stuDelete("+val.id+")' class='btn btn-xs btn-danger' style='margin-right: 5px'><i class='icon-remove'>删除</i></button>" +
-                    "</td>"
-                    +"</tr>"
                 ;
-            }else{
-                item+=
-                    "<td><span class='label label-danger'>禁用</span></td>"
-                    +"<td>"+time+"</td>"
-                    +"<td>" +
-                    "<button onclick='stuAble("+val.id+")' class='btn btn-xs btn-success' style='margin-right: 5px'><i class='icon-ok'></i>启用</button>" +
-                    "<button onclick='stuUpdate("+val.id+")' class='btn btn-xs btn-warning' style='margin-right: 5px'><i class='icon-pencil'></i>编辑</button>" +
-                    "<button onclick='stuDelete("+val.id+")' class='btn btn-xs btn-danger' style='margin-right: 5px'><i class='icon-remove'>删除</i></button>" +
-                    "</td>"
-                    +"</tr>"
-                ;
-            }
-            $("#items").append(item);
+    //                    console.log(item);
+                if (parseInt(val.userStatus) == 1){
+                    item +=
+                        "<td><span class='label label-success'>启用</span></td>"
+                        +"<td>"+time+"</td>"
+                        ;
+
+                }else{
+                    item+=
+                        "<td><span class='label label-danger'>禁用</span></td>"
+                        +"<td>"+time+"</td>"
+                        ;
+                }
+                if (parseInt(manType)!=3){
+
+                    if (parseInt(val.userStatus) == 1){
+                        item+=
+                            "<td>" +
+                            "<button onclick='stuDisAble("+val.id+")' class='btn btn-xs btn-danger' style='margin-right: 5px'><i class='icon-ok'></i>禁用</button>" +
+                            "<button onclick='stuUpdate("+val.id+")' class='btn btn-xs btn-warning' style='margin-right: 5px'><i class='icon-pencil'></i>编辑</button>" +
+                            "<button onclick='stuDelete("+val.id+")' class='btn btn-xs btn-danger' style='margin-right: 5px'><i class='icon-remove'>删除</i></button>" +
+                            "</td>"
+                            +"</tr>"
+                        ;
+
+                    }else{
+                        item+=
+                            "<td>" +
+                            "<button onclick='stuAble("+val.id+")' class='btn btn-xs btn-success' style='margin-right: 5px'><i class='icon-ok'></i>启用</button>" +
+                            "<button onclick='stuUpdate("+val.id+")' class='btn btn-xs btn-warning' style='margin-right: 5px'><i class='icon-pencil'></i>编辑</button>" +
+                            "<button onclick='stuDelete("+val.id+")' class='btn btn-xs btn-danger' style='margin-right: 5px'><i class='icon-remove'>删除</i></button>" +
+                            "</td>"
+                            +"</tr>"
+                        ;
+                    }
+
+
+                    }
+
+                console.log(item);
+                $("#items").append(item);
         });
         }
         $(".pagination").html(null);

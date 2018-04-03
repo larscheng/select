@@ -11,6 +11,14 @@
     <meta name="author" content="">
     <%@include file="/WEB-INF/pages/common/macTopCommon.jsp" %>
 
+    <link rel="stylesheet" href="${ctx}/resources/style/bootstrap4.0.min.css">
+    <style>
+        /* Make the image fully responsive */
+        .carousel-inner img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 
 </head>
 
@@ -23,14 +31,14 @@
 
     <!-- Page heading -->
     <div class="page-head">
-        <h2 class="pull-left"><i class="icon-file-alt"></i> Gallery</h2>
+        <h2 class="pull-left"><i class="icon-file-alt"></i> 首页</h2>
 
         <!-- Breadcrumb -->
         <div class="bread-crumb pull-right">
-            <a href="index.html"><i class="icon-home"></i> Home</a>
+            <a href="index.html"><i class="icon-home"></i> 首页</a>
             <!-- Divider -->
             <span class="divider">/</span>
-            <a href="#" class="bread-current">Dashboard</a>
+            <a href="#" class="bread-current">选题管理系统</a>
         </div>
 
         <div class="clearfix"></div>
@@ -42,59 +50,124 @@
 
     <div class="matter">
         <div class="container">
-            <div class="row">
+            <div class="row small">
                 <div class="col-md-12">
+                    <%--轮播--%>
+                    <%--<div id="myCarousel" class="carousel slide">--%>
+                        <%--<!-- 轮播（Carousel）指标 -->--%>
+                        <%--<ol class="carousel-indicators">--%>
+                            <%--<li data-target="#myCarousel" data-slide-to="0" class="active"></li>--%>
+                            <%--<li data-target="#myCarousel" data-slide-to="1"></li>--%>
+                            <%--<li data-target="#myCarousel" data-slide-to="2"></li>--%>
+                        <%--</ol>--%>
+                        <%--<!-- 轮播（Carousel）项目 -->--%>
+                        <%--<div class="carousel-inner data">--%>
+                            <%--<div class="item active">--%>
+                                <%--<img src="${ctx}/resources/img/photos/上铺.jpg" alt="First slide">--%>
+                                <%--<div class="carousel-caption">标题 1</div>--%>
+                            <%--</div>--%>
+                            <%--<div class="item">--%>
+                                <%--<img src="${ctx}/resources/img/photos/小柴.jpg" alt="Second slide">--%>
+                                <%--<div class="carousel-caption">标题 2</div>--%>
+                            <%--</div>--%>
+                            <%--<div class="item">--%>
+                                <%--<img src="${ctx}/resources/img/photos/笑柴.jpg" alt="Third slide">--%>
+                                <%--<div class="carousel-caption">标题 3</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                        <%--<!-- 轮播（Carousel）导航 -->--%>
+                        <%--<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">--%>
+                            <%--<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>--%>
+                            <%--<span class="sr-only">Previous</span>--%>
+                        <%--</a>--%>
+                        <%--<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">--%>
+                            <%--<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>--%>
+                            <%--<span class="sr-only">Next</span>--%>
+                        <%--</a>--%>
+                    <%--</div>--%>
 
-                    <div class="widget worange">
-                        <!-- Widget head -->
-                        <div class="widget-head">
-                            <i class="icon-lock"></i> 登录
+
+                        <div id="demo" class="carousel slide" data-ride="carousel">
+
+                            <!-- 指示符 -->
+                            <ul class="carousel-indicators">
+                                <li data-target="#demo" data-slide-to="0" class="active"></li>
+                                <li data-target="#demo" data-slide-to="1"></li>
+                                <li data-target="#demo" data-slide-to="2"></li>
+                            </ul>
+
+                            <!-- 轮播图片 -->
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="http://static.runoob.com/images/mix/img_fjords_wide.jpg">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="http://static.runoob.com/images/mix/img_nature_wide.jpg">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="http://static.runoob.com/images/mix/img_mountains_wide.jpg">
+                                </div>
+                            </div>
+
+                            <!-- 左右切换按钮 -->
+                            <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                                <span class="carousel-control-prev-icon"></span>
+                            </a>
+                            <a class="carousel-control-next" href="#demo" data-slide="next">
+                                <span class="carousel-control-next-icon"></span>
+                            </a>
+
                         </div>
 
-                        <div class="widget-content">
-                            <div class="padd">
-                                <!-- Login form -->
-                                <form id="defaultForm" class="form-horizontal" action="${ctx}/selectUserBase/login" method="post">
-                                    <!-- Email -->
-                                    <div class="form-group">
-                                        <label class="control-label col-lg-3" for="inputEmail">账号</label>
-                                        <div class="col-lg-9">
-                                            <input type="text" class="form-control" name="userName" id="inputEmail" placeholder="Email">
-                                        </div>
-                                    </div>
-                                    <!-- Password -->
-                                    <div class="form-group">
-                                        <label class="control-label col-lg-3" for="inputPassword">密码</label>
-                                        <div class="col-lg-9">
-                                            <input type="password" class="form-control" name="userPassword" id="inputPassword" placeholder="Password">
-                                        </div>
-                                    </div>
-                                    <!-- Remember me checkbox and sign in button -->
-                                    <div class="form-group">
-                                        <div class="col-lg-9 col-lg-offset-3">
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input type="checkbox"> 记住我
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-9 col-lg-offset-2">
-                                        <button type="submit" class="btn btn-danger">登录</button>
-                                        <button type="reset" class="btn btn-default">重填</button>
-                                    </div>
-                                    <br />
-                                </form>
 
+                                <%--折叠--%>
+                        <div class="panel-group" id="accordion">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapseOne">
+                                            点击我进行展开，再次点击我进行折叠。第 1 部分
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse collapse ">
+                                    <div class="panel-body">
+                                        合上！！！！
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapseTwo">
+                                            点击我进行展开，再次点击我进行折叠。第 2 部分
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseTwo" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapseThree">
+                                            点击我进行展开，再次点击我进行折叠。第 3 部分
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseThree" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
-                        <div class="widget-foot">
-                            Not Registred? <a href="#">Register here</a>
-                        </div>
-                    </div>
-
-
 
                 </div>
             </div>
@@ -108,7 +181,6 @@
 <div class="clearfix"></div>
 
  <%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>
-
 <script type="text/javascript">
     $(document).ready(function() {
         /**

@@ -24,6 +24,17 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+
+    <!-- 配置去空格过滤器 -->
+    <filter>
+        <filter-name>ParameterTrimFilter</filter-name>
+        <filter-class>com.slxy.www.filter.ParameterTrimFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ParameterTrimFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <!-- Spring监听器 -->
     <listener>
         <description>Spring监听器</description>
@@ -54,7 +65,17 @@
     <session-config>
         <session-timeout>15</session-timeout>
     </session-config>
-    
+
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error.html</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error.html</location>
+    </error-page>
+
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>

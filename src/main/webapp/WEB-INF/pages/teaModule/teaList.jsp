@@ -172,9 +172,9 @@
                                             <td>${user.userName}</td>
                                             <td>${user.userCode}</td>
                                             <td>${user.sex}</td>
-                                            <td>${user.userMail}</td>
+                                            <td><a href="mailto:${user.userMail}">${user.userMail}</a></td>
                                             <td>${user.userPhone}</td>
-                                            <td>${user.userQq}</td>
+                                            <td><a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=${user.userQq}">${user.userQq}</a></td>
                                             <td>${user.teaDepName}</td>
                                             <td><span class="label label-primary">${user.teaPositionZ}</span></td>
                                             <td><span class="label label-warning">${user.teaEducationZ}</span></td>
@@ -509,16 +509,16 @@
                     +"<td>"+val.userName+"</td>"
                     +"<td>"+val.userCode+"</td>"
                     +"<td>"+val.sex+"</td>"
-                    +"<td>"+val.userMail+"</td>"
+                    +"<td><a href='mailto:"+val.userMail+"'>"+val.userMail+"</a></td>"
                     +"<td>"+val.userPhone+"</td>"
-                    +"<td>"+val.userQq+"</td>"
+                    +"<td><a href='tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin="+val.userQq+"'>"+val.userQq+"</a></td>"
                     +"<td>"+val.teaDepName+"</td>"
                     +"<td><span class='label label-primary'>"+val.teaPositionZ+"</span></td>"
                     +"<td><span class='label label-warning'>"+val.teaEducationZ+"</span></td>"
 
                 ;
                 var manType = sessionStorage.getItem("userType");
-                if (manType == 1){
+                if (parseInt(manType) == 1 ||parseInt(manType) == 0){
                     if (parseInt(val.userStatus) == 1){
                         item +=
                             "<td><span class='label label-success'>启用</span></td>"

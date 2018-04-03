@@ -60,6 +60,7 @@
         <li><a href="${ctx}/selectTopic/topicUploadList" target="mainFrame" ><i class="icon-file-alt"></i> 成绩上传 </a></li>
         <li><a href="${ctx}/selectProcessControl/pcList"  target="mainFrame"><i class="icon-bar-chart"></i>流程控制管理</a></li>
         <li><a href="${ctx}/selectScorePer/scoreList"  target="mainFrame"><i class="icon-bar-chart"></i>成绩比例划分</a></li>
+        <li><a href="${ctx}/selectUserBase/logout"  target="_top"><i class="icon-bar-chart"></i>注销</a></li>
 
         <%--<li><a href="forms.html"><i class="icon-tasks"></i>未作</a></li>--%>
         <%--<li><a href="ui.html"><i class="icon-magic"></i>未作</a></li>--%>

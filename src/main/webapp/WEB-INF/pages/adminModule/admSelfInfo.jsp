@@ -262,7 +262,7 @@
                 //表单提交的方法、比如ajax提交
             $.ajax({
                 type: "post",
-                url: "/selectUserBase/stuUpdate",
+                url: "/selectUserBase/admUpdate",
                 data: $("#updateForm").serialize(),
                 dataType:"json",
                 success:function(msg){

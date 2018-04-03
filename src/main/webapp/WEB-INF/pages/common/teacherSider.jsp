@@ -54,8 +54,10 @@
         <li><a href="${ctx}/selectTopic/topicUploadList?teaId=${sessionScope.sessionUser.id}" target="mainFrame" ><i class="icon-file-alt"></i> 成绩上传 </a></li>
 
         <li><a href="${ctx}/selectSubject/subAllList" target="mainFrame" ><i class="icon-file-alt"></i> 历届题目信息 </a></li>
+        <li><a href="${ctx}/selectUserBase/logout"  target="_top"><i class="icon-bar-chart"></i>注销</a></li>
 
-        <%--<li><a href="charts.html"><i class="icon-bar-chart"></i>图表</a></li>--%>
+
+    <%--<li><a href="charts.html"><i class="icon-bar-chart"></i>图表</a></li>--%>
         <%--<li><a href="tables.html"><i class="icon-table"></i>表格</a></li>--%>
         <%--<li><a href="forms.html"><i class="icon-tasks"></i>表单</a></li>--%>
         <%--<li><a href="ui.html"><i class="icon-magic"></i>UI图标</a></li>--%>
