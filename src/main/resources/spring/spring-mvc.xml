@@ -67,13 +67,6 @@
 
     <!-- 拦截器的配置 -->
     <mvc:interceptors>
-        <!--<bean class="com.slxy.www.filter.AuthorizationInterceptor"/>-->
-        <!--<bean class="com.slxy.www.filter.LoginInterceptor"/>-->
-        <!--<mvc:interceptor>-->
-            <!--<mvc:mapping path="/selectUserBase/admSelfInfo"/>-->
-            <!--&lt;!&ndash; 定义在 mvc:interceptor 下面的 Interceptor，表示对特定的请求进行拦截 &ndash;&gt;-->
-            <!--<bean class="com.slxy.www.filter.AuthorizationInterceptor"/>-->
-        <!--</mvc:interceptor>-->
 
         <mvc:interceptor>
             <mvc:mapping path="/**"/>

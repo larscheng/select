@@ -57,19 +57,24 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             String param = methodAnnotation.value();
             if (!ObjectUtils.isEmpty(admin)) {
                 try {
+                    boolean boo = false;
                     if (param.equals("stu")){
-                        return Objects.equals(admin.getUserType(), EnumUserType.STUDENT.getValue());
+                        boo =  Objects.equals(admin.getUserType(), EnumUserType.STUDENT.getValue());
                     }else if (param.equals("tea")){
-                        return Objects.equals(admin.getUserType(), EnumUserType.TEACHER.getValue());
+                        boo =  Objects.equals(admin.getUserType(), EnumUserType.TEACHER.getValue());
                     }else if (param.equals("adm")){
-                        return Objects.equals(admin.getUserType(), EnumUserType.ADMIN0.getValue())||
+                        boo =  Objects.equals(admin.getUserType(), EnumUserType.ADMIN0.getValue())||
                                 Objects.equals(admin.getUserType(), EnumUserType.ADMIN.getValue());
                     }else if (param.equals("admTea")){
-                        return Objects.equals(admin.getUserType(), EnumUserType.ADMIN0.getValue())||
+                        boo =  Objects.equals(admin.getUserType(), EnumUserType.ADMIN0.getValue())||
                                 Objects.equals(admin.getUserType(), EnumUserType.ADMIN.getValue())||
                                 Objects.equals(admin.getUserType(), EnumUserType.TEACHER.getValue());
-
                     }
+                    if (!boo){
+                        System.out.println("========"+name+"===>LoginInterceptor preHandle 拦截，权限不足！");
+                        request.getRequestDispatcher("/auth.html").forward(request, response);
+                    }
+                    return boo;
                 } catch (Exception e) {
                     response.setCharacterEncoding("UTF-8");
                     System.out.println("========"+name+"===>LoginInterceptor preHandle 拦截，登录已过期，请重新登录！");

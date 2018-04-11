@@ -211,11 +211,12 @@ public class SelectTopicServiceImpl extends ServiceImpl<SelectTopicMapper, Selec
                 while ((-1 != (len = in.read(buffer)))) {
                     ot.write(buffer, 0, len);
                 }
+                return this.updateById(selectTopic)?Constant.SUCCESS:Constant.ERROR;
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        return this.updateById(selectTopic)?Constant.SUCCESS:Constant.ERROR;
+        return Constant.ERROR;
     }
 
     /***

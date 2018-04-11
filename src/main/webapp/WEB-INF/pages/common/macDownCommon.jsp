@@ -5,45 +5,19 @@
 
 
 
-<%--<script type="text/javascript" src="${ctx}/resources/js/jquery.js" charset="UTF-8"></script>--%>
 <script type="text/javascript" src="${ctx}/resources/jquery/jquery.js" charset="UTF-8"></script>
-<script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/bootstrap.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="${ctx}/resources/jquery/bootstrap-datetimepicker.js" charset="UTF-8"></script>
 <script type="text/javascript" src="${ctx}/resources/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 
-<!-- JS -->
-<%--<script src="${ctx}/resources/js/jquery.js"></script> <!-- jQuery -->--%>
-<%--<script src="${ctx}/resources/js/bootstrap.js"></script> <!-- Bootstrap -->--%>
-<%--<script src="${ctx}/resources/js/jquery-ui-1.9.2.custom.min.js"></script> <!-- jQuery UI -->--%>
+<script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
 <script src="${ctx}/resources/js/fullcalendar.min.js"></script> <!-- Full Google Calendar - Calendar -->
-<%--<script src="${ctx}/resources/js/jquery.rateit.min.js"></script> <!-- RateIt - Star rating -->--%>
 <script src="${ctx}/resources/js/jquery.prettyPhoto.js"></script> <!-- prettyPhoto -->
 
-<!-- jQuery Flot -->
-<%--<script src="${ctx}/resources/js/excanvas.min.js"></script>--%>
-<%--<script src="${ctx}/resources/js/jquery.flot.js"></script>--%>
-<%--<script src="${ctx}/resources/js/jquery.flot.resize.js"></script>--%>
-<%--<script src="${ctx}/resources/js/jquery.flot.pie.js"></script>--%>
-<%--<script src="${ctx}/resources/js/jquery.flot.stack.js"></script>--%>
-
-<!-- jQuery Notification - Noty -->
-<%--<script src="${ctx}/resources/js/jquery.noty.js"></script> <!-- jQuery Notify -->--%>
-<%--<script src="${ctx}/resources/js/themes/default.js"></script> <!-- jQuery Notify -->--%>
-<%--<script src="${ctx}/resources/js/layouts/bottom.js"></script> <!-- jQuery Notify -->--%>
-<%--<script src="${ctx}/resources/js/layouts/topRight.js"></script> <!-- jQuery Notify -->--%>
-<%--<script src="${ctx}/resources/js/layouts/top.js"></script> <!-- jQuery Notify -->--%>
-<!-- jQuery Notification ends -->
 
 <script src="${ctx}/resources/js/jquery.cleditor.min.js"></script> <!-- CLEditor -->
 
-<%--<script src="${ctx}/resources/js/bootstrap-datetimepicker.min.js"></script> <!-- Date picker -->--%>
-<%--<script src="${ctx}/resources/js/jquery.uniform.min.js"></script> <!-- jQuery Uniform -->--%>
-<%--<script src="${ctx}/resources/js/bootstrap-switch.min.js"></script> <!-- Bootstrap Toggle -->--%>
-<%--<script src="${ctx}/resources/js/filter.js"></script> <!-- Filter for support page -->--%>
-
-<%--<script src="${ctx}/resources/js/charts.js"></script> <!-- Charts & Graphs -->--%>
 <script src="${ctx}/resources/beAlert/BeAlert.js"></script> <!-- pop -->
 
 <script type="text/javascript" src="${ctx}/resources/js/bootstrapValidator.js"></script>

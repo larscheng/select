@@ -102,8 +102,6 @@
 		</div>
 		<div class="row">
 			<div class="col-md-12 center">
-				<%--<img src="/resources/favicon.ico" width="60px" height="60px" alt="">--%>
-
 				<b style="color: red">(管理员)测试账号：66666666，密码：123456。</br> 其他角色账号可自行添加测试</b>
 			</div>
 		</div>
