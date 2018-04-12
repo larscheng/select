@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.slxy.www.dao.ISelectUserBaseMapper">
+
+	<!-- 通用查询结果列-->
+	<resultMap id="SelectUserBaseResultMap" type="com.slxy.www.domain.po.SelectUserBase">
+		<id column="id" property="id" />
+ 		<result column="user_code" property="userCode" />
+ 		<result column="user_password" property="userPassword" />
+ 		<result column="user_name" property="userName" />
+ 		<result column="user_sex" property="userSex" />
+ 		<result column="user_mail" property="userMail" />
+ 		<result column="user_phone" property="userPhone" />
+ 		<result column="user_qq" property="userQq" />
+ 		<result column="stu_major_id" property="stuMajorId" />
+ 		<result column="stu_class" property="stuClass" />
+ 		<result column="stu_year" property="stuYear" />
+ 		<result column="tea_position" property="teaPosition" />
+ 		<result column="tea_major_name" property="teaMajorName" />
+ 		<result column="tea_education" property="teaEducation" />
+ 		<result column="tea_direction" property="teaDirection" />
+ 		<result column="tea_dep_id" property="teaDepId" />
+ 		<result column="tea_info" property="teaInfo" />
+ 		<result column="user_status" property="userStatus" />
+ 		<result column="user_type" property="userType" />
+ 		<result column="operator_id" property="operatorId" />
+ 		<result column="gmt_create" property="gmtCreate" />
+ 		<result column="gmt_modify" property="gmtModify" />
+	</resultMap>
+
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.slxy.www.dao.ISelectDepartmentMapper">
+
+	<!-- 通用查询结果列-->
+	<resultMap id="SelectDepartmentResultMap" type="com.slxy.www.domain.po.SelectDepartment">
+		<id column="id" property="id" />
+ 		<result column="dep_name" property="depName" />
+ 		<result column="dep_info" property="depInfo" />
+ 		<result column="dep_status" property="depStatus" />
+ 		<result column="gmt_create" property="gmtCreate" />
+ 		<result column="gmt_modify" property="gmtModify" />
+	</resultMap>
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		id, dep_name, dep_status, dep_info,DATE_FORMAT(gmt_create, '%Y-%m-%d %H:%i:%s') AS gmt_create,DATE_FORMAT(gmt_modify, '%Y-%m-%d %H:%i:%s') AS gmt_modify
+	</sql>
+
+
+	<select id="getDepByPage" resultMap="SelectDepartmentResultMap">
+		SELECT <include refid="Base_Column_List"/> FROM select_department ORDER BY dep_status DESC, gmt_create DESC
+	</select>
+
+
+	<select id="selectTeaDep" resultMap="SelectDepartmentResultMap">
+		SELECT <include refid="Base_Column_List"/> FROM select_department WHERE dep_status=1
+	</select>
+</mapper>

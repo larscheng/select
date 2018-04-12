@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.slxy.www.dao.ISelectSubjectMapper">
+
+	<!-- 通用查询结果列-->
+	<resultMap id="SelectSubjectResultMap" type="com.slxy.www.domain.po.SelectSubject">
+		<id column="id" property="id" />
+ 		<result column="sub_name" property="subName" />
+ 		<result column="tea_id" property="teaId" />
+ 		<result column="sub_type" property="subType" />
+ 		<result column="sub_file" property="subFile" />
+ 		<result column="sub_content" property="subContent" />
+ 		<result column="sub_select_status" property="subSelectStatus" />
+ 		<result column="adm_audit_state" property="admAuditState" />
+ 		<result column="adm_audit_content" property="admAuditContent" />
+ 		<result column="adm_audit_id" property="admAuditId" />
+ 		<result column="tutor_score" property="tutorScore" />
+ 		<result column="judge_score" property="judgeScore" />
+ 		<result column="defence_score" property="defenceScore" />
+ 		<result column="final_total_score" property="finalTotalScore" />
+ 		<result column="for_dep_id" property="forDepId" />
+ 		<result column="sub_year" property="subYear" />
+ 		<result column="gmt_create" property="gmtCreate" />
+ 		<result column="gmt_modify" property="gmtModify" />
+	</resultMap>
+
+	<resultMap id="BaseResultDtoMap" type="com.slxy.www.domain.dto.SelectSubjectDto">
+		<id column="id" property="id" />
+		<result column="sub_name" property="subName" />
+		<result column="tea_id" property="teaId" />
+		<result column="sub_type" property="subType" />
+		<result column="sub_content" property="subContent" />
+		<result column="adm_audit_state" property="admAuditState" />
+		<result column="adm_audit_content" property="admAuditContent" />
+		<result column="adm_audit_id" property="admAuditId" />
+		<result column="sub_select_status" property="subSelectStatus" />
+		<result column="tutor_score" property="tutorScore" />
+		<result column="judge_score" property="judgeScore" />
+		<result column="defence_score" property="defenceScore" />
+		<result column="final_total_score" property="finalTotalScore" />
+		<result column="sub_year" property="subYear" />
+		<result column="for_dep_id" property="forDepId" />
+		<result column="gmt_create" property="gmtCreate" />
+		<result column="gmt_modify" property="gmtModify" />
+		<result column="dep_name" property="forDepName" />
+		<result column="user_name" property="subTeaName" />
+		<result column="user_phone" property="teaPhone" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		id, sub_name, tea_id, sub_type, sub_content, adm_audit_state, adm_audit_content, adm_audit_id, sub_select_status,
+		tutor_score,judge_score, defence_score, final_total_score, sub_year, for_dep_id, gmt_create, gmt_modify
+	</sql>
+
+	<select id="getSubByPage" resultMap="SelectSubjectResultMap">
+		SELECT <include refid="Base_Column_List"/> FROM select_subject a WHERE 1=1
+		<if test="@Ognl@isNotEmpty(search)">
+			and (a.sub_name like '%${search}%' or
+			a.sub_year like '%${search}%')
+		</if>
+		<if test="@Ognl@isNotEmpty(admAuditState)">
+			and a.adm_audit_state = #{admAuditState}
+		</if>
+		<if test="@Ognl@isNotEmpty(subType)">
+			and a.sub_type = #{subType}
+		</if>
+		<if test="@Ognl@isNotEmpty(teaId)">
+			and a.tea_id = #{teaId}
+		</if>
+		<if test="@Ognl@isNotEmpty(forDepId)">
+			and a.for_dep_id = #{forDepId}
+		</if>
+		<if test="@Ognl@isEmpty(admAuditState)">
+			and a.adm_audit_state in  (1,2)
+		</if>
+		ORDER BY a.adm_audit_state DESC ,a.gmt_create DESC
+	</select>
+
+
+
+
+	<select id="getMySubByPage" resultMap="SelectSubjectResultMap">
+		SELECT <include refid="Base_Column_List"/> FROM select_subject a WHERE 1=1
+		<if test="@Ognl@isNotEmpty(search)">
+			and (a.sub_name like '%${search}%' or
+			a.sub_year like '%${search}%')
+		</if>
+		<if test="@Ognl@isNotEmpty(admAuditState)">
+			and a.adm_audit_state = #{admAuditState}
+		</if>
+		<if test="@Ognl@isNotEmpty(subType)">
+			and a.sub_type = #{subType}
+		</if>
+		<if test="@Ognl@isNotEmpty(teaId)">
+			and a.tea_id = #{teaId}
+		</if>
+		<if test="@Ognl@isNotEmpty(forDepId)">
+			and a.for_dep_id = #{forDepId}
+		</if>
+		<if test="@Ognl@isNotEmpty(subYear)">
+			and a.sub_year = #{subYear}
+		</if>
+		<if test="@Ognl@isNotEmpty(searchBgnTime)">
+			and (
+			DATE_FORMAT(a.gmt_create,'%Y-%m-%d')  &gt;= '${searchBgnTime}'
+			)
+		</if>
+		<if test="@Ognl@isNotEmpty(searchEndTime)">
+			and (
+			DATE_FORMAT(a.gmt_create,'%Y-%m-%d')  &lt;= '${searchEndTime}'
+			)
+		</if>
+		ORDER BY a.adm_audit_state DESC ,a.gmt_create DESC
+	</select>
+
+	<select id="selectAllSubject" resultMap="BaseResultDtoMap">
+		SELECT
+		a.*,
+		b.dep_name,
+		c.user_name,
+		c.user_phone
+		FROM select_subject a
+		LEFT JOIN select_department b ON a.for_dep_id = b.id
+		LEFT JOIN select_user_base c ON  a.tea_id = c.id
+		WHERE 1=1
+		ORDER BY a.adm_audit_state DESC ,a.gmt_create DESC
+	</select>
+
+
+</mapper>
