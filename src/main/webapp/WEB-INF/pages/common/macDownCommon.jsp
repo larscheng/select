@@ -7,11 +7,12 @@
 
 <script type="text/javascript" src="${ctx}/resources/jquery/jquery.js" charset="UTF-8"></script>
 <script type="text/javascript" src="${ctx}/resources/js/bootstrap.js"></script>
-<script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+
 <script type="text/javascript" src="${ctx}/resources/jquery/bootstrap-datetimepicker.js" charset="UTF-8"></script>
 <script type="text/javascript" src="${ctx}/resources/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 
-<script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
+<%--<script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>--%>
+<%--<script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>--%>
 <script src="${ctx}/resources/js/fullcalendar.min.js"></script> <!-- Full Google Calendar - Calendar -->
 <script src="${ctx}/resources/js/jquery.prettyPhoto.js"></script> <!-- prettyPhoto -->
 

@@ -180,6 +180,8 @@
 <div class="clearfix"></div>
 
  <%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>
+<script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         /**
