@@ -347,7 +347,7 @@
         confirm(" 😲 确认删除吗？","",function (isConfirm) {
             if (isConfirm){
                 $.ajax({
-                    type:"POST",
+                    type:"GET",
                     url:"${ctx}/selectTopic/topicDel",
                     data:{"id":id},
                     dataType:"json",

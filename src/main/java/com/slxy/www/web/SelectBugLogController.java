@@ -4,11 +4,11 @@ import com.slxy.www.common.Constant;
 import com.slxy.www.dao.ISelectBugLogMapper;
 import com.slxy.www.domain.dto.SelectBugLogDto;
 import com.slxy.www.domain.po.SelectBugLog;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
@@ -30,6 +30,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/selectBugLog")
+@Api(tags = "bug管理", description = "bug页面功能")
 public class SelectBugLogController {
     @Autowired
     private ISelectBugLogMapper selectBugLogMapper;
@@ -41,7 +42,8 @@ public class SelectBugLogController {
      * @param modelAndView
      * @return
      */
-    @RequestMapping("/bugInitList")
+    @ApiOperation(value = "初始化bug列表", notes = "")
+    @RequestMapping(value = "/bugInitList",method = RequestMethod.GET)
     public ModelAndView bugList(ModelAndView modelAndView) {
         List<SelectBugLogDto> bugLog = selectBugLogMapper.selectTenLog();
         modelAndView.addObject("bugList",bugLog);
@@ -54,9 +56,10 @@ public class SelectBugLogController {
      * @param selectBugLog
      * @return
      */
-    @RequestMapping("/bugAdd")
+    @ApiOperation(value = "添加bug", notes = "")
+    @RequestMapping(value = "/bugAdd",method = RequestMethod.POST)
     @ResponseBody
-    public String bugAdd(SelectBugLog selectBugLog) {
+    public String bugAdd(@RequestBody SelectBugLog selectBugLog) {
         selectBugLog.setGmtCreate(new Date());
         return selectBugLogMapper.insert(selectBugLog)>0 ? Constant.SUCCESS:Constant.ERROR;
     }

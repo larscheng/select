@@ -34,7 +34,7 @@
 
         <!-- Breadcrumb -->
         <div class="bread-crumb pull-right">
-            <a href="index.html"><i class="icon-home"></i> 首页</a>
+            <a href="${ctx}/index" target="_top"><i class="icon-home"></i> 首页</a>
             <!-- Divider -->
             <span class="divider">/</span>
             <a href="#" class="bread-current">选题管理系统</a>

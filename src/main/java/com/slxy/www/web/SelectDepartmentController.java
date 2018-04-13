@@ -3,9 +3,13 @@ package com.slxy.www.web;
 import com.slxy.www.domain.po.SelectDepartment;
 import com.slxy.www.domain.vo.SelectDepartmentVo;
 import com.slxy.www.service.SelectDepartmentService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,6 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 @RequestMapping("/selectDepartment")
+@Api(tags = "系别管理", description = "系别模块功能")
 public class SelectDepartmentController {
 
     @Autowired
@@ -39,7 +44,8 @@ public class SelectDepartmentController {
      * @param vo
      * @return
      */
-    @RequestMapping("/depList")
+    @ApiOperation(value = "系别列表")
+    @RequestMapping(value = "/depList",method = RequestMethod.GET)
     public ModelAndView depList(ModelAndView modelAndView, SelectDepartmentVo vo) {
         return selectDepartmentService.depList(modelAndView,vo);
     }
@@ -49,7 +55,8 @@ public class SelectDepartmentController {
      * @param modelAndView
      * @return
      */
-    @RequestMapping("/depInitAdd")
+    @ApiOperation(value = "跳转添加系别页")
+    @RequestMapping(value = "/depInitAdd",method = RequestMethod.GET)
     public ModelAndView depInitAdd(ModelAndView modelAndView) {
         modelAndView.setViewName("depmaj/depAdd");
         return modelAndView;
@@ -60,7 +67,8 @@ public class SelectDepartmentController {
      * @param selectDepartment
      * @return
      */
-    @RequestMapping("/depAdd")
+    @ApiOperation(value = "跳转添加系别页")
+    @RequestMapping(value = "/depAdd",method = RequestMethod.POST)
     @ResponseBody
     public String depAdd(SelectDepartment selectDepartment) {
         return selectDepartmentService.depAdd(selectDepartment);
@@ -72,7 +80,8 @@ public class SelectDepartmentController {
      * @param selectDepartment
      * @return
      */
-    @RequestMapping(value={"/depDisable","/depUpdate"})
+    @ApiOperation(value = "系别启禁用、编辑系别")
+    @RequestMapping(value={"/depDisable","/depUpdate"},method =RequestMethod.POST )
     @ResponseBody
     public String depDisableAndUpdate(SelectDepartment selectDepartment) {
         return selectDepartmentService.depDisableAndUpdate(selectDepartment);
@@ -84,7 +93,8 @@ public class SelectDepartmentController {
      * @param modelAndView
      * @return
      */
-    @RequestMapping("/depInitUpdate")
+    @ApiOperation(value = "初始化系别编辑并跳转页面")
+    @RequestMapping( value = "/depInitUpdate", method = RequestMethod.GET)
     public ModelAndView depInitUpdate(Integer id, ModelAndView modelAndView) {
         SelectDepartment selectDepartment = selectDepartmentService.selectById(id);
         modelAndView.setViewName("depmaj/depUpdate");
@@ -99,7 +109,8 @@ public class SelectDepartmentController {
      * @param modelAndView
      * @return
      */
-    @RequestMapping("/depFind")
+    @ApiOperation(value = "系别查看")
+    @RequestMapping(value = "/depFind",method = RequestMethod.GET)
     public ModelAndView depFind(Integer id, ModelAndView modelAndView) {
         SelectDepartment selectDepartment = selectDepartmentService.selectById(id);
         modelAndView.setViewName("depmaj/depFind");
@@ -113,7 +124,8 @@ public class SelectDepartmentController {
      * @param selectDepartment
      * @return
      */
-    @RequestMapping("/depDelete")
+    @ApiOperation(value = "系别删除")
+    @RequestMapping(value = "/depDelete",method = RequestMethod.POST)
     @ResponseBody
     public String depDelete(SelectDepartment selectDepartment) {
         return selectDepartmentService.depDelete(selectDepartment);
@@ -125,7 +137,8 @@ public class SelectDepartmentController {
      * @param selectedIDs
      * @return
      */
-    @RequestMapping("/depDeleteAll")
+    @ApiOperation(value = "系别批量删除")
+    @RequestMapping(value = "/depDeleteAll",method = RequestMethod.POST)
     @ResponseBody
     public String depDeleteAll(Integer[] selectedIDs) {
         return selectDepartmentService.depDeleteAll(selectedIDs);

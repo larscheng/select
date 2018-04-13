@@ -4,10 +4,13 @@ import com.slxy.www.common.Constant;
 import com.slxy.www.domain.vo.SelectSubjectVo;
 import com.slxy.www.enums.EnumSubState;
 import com.slxy.www.service.SelectSubjectService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,6 +43,7 @@ import java.util.Map;
  * @author zhengql
  * @since 2018-01-25
  */
+@Api(tags = "论文管理", description = "论文模块功能")
 @Controller
 @RequestMapping("/selectSubject")
 public class SelectSubjectController {
@@ -52,7 +56,8 @@ public class SelectSubjectController {
      * @param vo
      * @return
      */
-    @RequestMapping("/unSubList")
+    @ApiOperation(value = "获取未审核论文", notes = "")
+    @RequestMapping(value = "/unSubList",method = RequestMethod.GET)
     public ModelAndView unSubList(ModelAndView  modelAndView, SelectSubjectVo vo) {
         modelAndView.setViewName("subjectModule/unAuditedList");
         vo.setAdmAuditState(EnumSubState.Untreated.getValue());
@@ -65,7 +70,8 @@ public class SelectSubjectController {
      * @param vo
      * @return
      */
-    @RequestMapping("/subList")
+    @ApiOperation(value = "获取已审核论文", notes = "")
+    @RequestMapping(value = "/subList",method = RequestMethod.GET)
     public ModelAndView subList(ModelAndView  modelAndView, SelectSubjectVo vo) {
         modelAndView.setViewName("subjectModule/auditedList");
         return selectSubjectService.subList(modelAndView,vo);
@@ -77,7 +83,8 @@ public class SelectSubjectController {
      * @param vo
      * @return
      */
-    @RequestMapping("/subAllList")
+    @ApiOperation(value = "历届论文列表", notes = "")
+    @RequestMapping(value = "/subAllList",method = RequestMethod.GET)
     public ModelAndView subAllList(ModelAndView  modelAndView, SelectSubjectVo vo) {
         modelAndView.setViewName("CountModule/subAllList");
         return selectSubjectService.subList(modelAndView,vo);
@@ -88,7 +95,8 @@ public class SelectSubjectController {
      * @param vo
      * @return
      */
-    @RequestMapping("/unSubListAjax")
+    @ApiOperation(value = "异步生成未审核列表", notes = "")
+    @RequestMapping(value = "/unSubListAjax",method = RequestMethod.POST)
     @ResponseBody
     public String unSubListAjax(SelectSubjectVo vo) {
         vo.setAdmAuditState(EnumSubState.Untreated.getValue());
@@ -100,7 +108,8 @@ public class SelectSubjectController {
      * @param vo
      * @return
      */
-    @RequestMapping("/subListAjax")
+    @ApiOperation(value = "异步生成论文列表", notes = "")
+    @RequestMapping(value = "/subListAjax",method = RequestMethod.POST)
     @ResponseBody
     public String subListAjax(SelectSubjectVo vo) {
         return selectSubjectService.subListAjax(vo);
@@ -112,7 +121,8 @@ public class SelectSubjectController {
      * @param vo
      * @return
      */
-    @RequestMapping("/subAudited")
+    @ApiOperation(value = "审核论文", notes = "")
+    @RequestMapping(value = "/subAudited",method = RequestMethod.POST)
     @ResponseBody
     public String subAudited(SelectSubjectVo vo) {
         return selectSubjectService.subAudited(vo);
@@ -123,7 +133,8 @@ public class SelectSubjectController {
      * @param selectedIDs
      * @return
      */
-    @RequestMapping("/subSuccessAll")
+    @ApiOperation(value = "批量审核通过", notes = "")
+    @RequestMapping(value = "/subSuccessAll",method = RequestMethod.POST)
     @ResponseBody
     public String subSuccessAll(Integer[] selectedIDs) {
         return selectSubjectService.subSuccessAll(selectedIDs);
@@ -136,7 +147,8 @@ public class SelectSubjectController {
      * @param vo
      * @return
      */
-    @RequestMapping("/subDetail")
+    @ApiOperation(value = "题目详情（未审核）", notes = "")
+    @RequestMapping(value = "/subDetail",method = RequestMethod.GET)
     public ModelAndView subDetail(ModelAndView  modelAndView, SelectSubjectVo vo) {
         modelAndView.setViewName("subjectModule/subDetails");
         return selectSubjectService.subDetail(modelAndView,vo);
@@ -148,7 +160,8 @@ public class SelectSubjectController {
      * @param vo
      * @return
      */
-    @RequestMapping("/subjectDetail")
+    @ApiOperation(value = "查看题目详情（已审核）", notes = "")
+    @RequestMapping(value = "/subjectDetail",method = RequestMethod.GET)
     public ModelAndView subjectDetail(ModelAndView  modelAndView, SelectSubjectVo vo) {
         modelAndView.setViewName("subjectModule/subjectDetails");
         return selectSubjectService.subDetail(modelAndView,vo);
@@ -166,7 +179,8 @@ public class SelectSubjectController {
      * @param vo
      * @return
      */
-    @RequestMapping("/mySubList")
+    @ApiOperation(value = "获得我的题目（教师）", notes = "")
+    @RequestMapping(value = "/mySubList",method = RequestMethod.GET)
     public ModelAndView mySubList(ModelAndView  modelAndView, SelectSubjectVo vo) {
         modelAndView.setViewName("subjectModule/mySubList");
         return selectSubjectService.mySubList(modelAndView,vo);
@@ -177,7 +191,8 @@ public class SelectSubjectController {
      * @param vo
      * @return
      */
-    @RequestMapping("/mySubListAjax")
+    @ApiOperation(value = "异步生成我的题目列表（教师）", notes = "")
+    @RequestMapping(value = "/mySubListAjax",method = RequestMethod.POST)
     @ResponseBody
     public String mySubListAjax(SelectSubjectVo vo) {
         return selectSubjectService.mySubListAjax(vo);
@@ -188,7 +203,8 @@ public class SelectSubjectController {
      * @param modelAndView
      * @return
      */
-    @RequestMapping("/initSubAdd")
+    @ApiOperation(value = "题目添加初始化", notes = "")
+    @RequestMapping(value = "/initSubAdd",method = RequestMethod.GET)
     public ModelAndView initSubAdd(ModelAndView  modelAndView) {
         modelAndView.setViewName("subjectModule/subAdd");
         return selectSubjectService.initSubAdd(modelAndView);
@@ -199,7 +215,8 @@ public class SelectSubjectController {
      * @param vo
      * @return
      */
-    @RequestMapping("/subAdd")
+    @ApiOperation(value = "题目添加", notes = "")
+    @RequestMapping(value = "/subAdd",method = RequestMethod.POST)
     @ResponseBody
     public String subAdd(@RequestParam("subFile") MultipartFile file, SelectSubjectVo vo, HttpServletRequest request) {
         return selectSubjectService.subAdd(file,vo,request);
@@ -211,7 +228,8 @@ public class SelectSubjectController {
      * @param modelAndView
      * @return
      */
-    @RequestMapping("/optionalList")
+    @ApiOperation(value = "通过审核的题目列表", notes = "")
+    @RequestMapping(value = "/optionalList",method = RequestMethod.GET)
     public ModelAndView optionalList(ModelAndView  modelAndView,SelectSubjectVo vo) {
         modelAndView.setViewName("subjectModule/optionalList");
         vo.setAdmAuditState(EnumSubState.SUCCESS.getValue());
@@ -224,7 +242,8 @@ public class SelectSubjectController {
      * @param vo
      * @return
      */
-    @RequestMapping("/optionalListAjax")
+    @ApiOperation(value = "异步获取所有通过审核的题目列表", notes = "")
+    @RequestMapping(value = "/optionalListAjax",method = RequestMethod.POST)
     @ResponseBody
     public String optionalListAjax(SelectSubjectVo vo) {
         vo.setAdmAuditState(EnumSubState.SUCCESS.getValue());
@@ -238,7 +257,8 @@ public class SelectSubjectController {
      * @param response
      * @throws Exception
      */
-    @RequestMapping("/subFileDown")
+    @ApiOperation(value = "学生模板下载", notes = "")
+    @RequestMapping(value = "/subFileDown",method = RequestMethod.GET)
     public void stuFileDown(HttpServletRequest request,HttpServletResponse response,String fileName) throws Exception {
 
         selectSubjectService.downSubFile(request,response,fileName);
@@ -256,7 +276,8 @@ public class SelectSubjectController {
      * @param vo
      * @return
      */
-    @RequestMapping("/stuSubList")
+    @ApiOperation(value = "获取学生可见的题目列表", notes = "本届、本系")
+    @RequestMapping(value = "/stuSubList",method = RequestMethod.GET)
     public ModelAndView stuSubList(ModelAndView  modelAndView, SelectSubjectVo vo) {
         modelAndView.setViewName("subjectModule/stuSubList");
         return selectSubjectService.stuSubList(modelAndView,vo);
@@ -267,7 +288,8 @@ public class SelectSubjectController {
      * @param vo
      * @return
      */
-    @RequestMapping("/stuSubListAjax")
+    @ApiOperation(value = "获取所有通过审核的题目列表", notes = "")
+    @RequestMapping(value = "/stuSubListAjax",method = RequestMethod.POST)
     @ResponseBody
     public String stuSubListAjax(SelectSubjectVo vo) {
         vo.setAdmAuditState(EnumSubState.SUCCESS.getValue());
@@ -279,13 +301,15 @@ public class SelectSubjectController {
      * @param vo
      * @return
      */
-    @RequestMapping("/stuSelect")
+    @ApiOperation(value = "学生选题", notes = "")
+    @RequestMapping(value = "/stuSelect",method = RequestMethod.POST)
     @ResponseBody
     public String stuSelect(SelectSubjectVo vo) {
         return selectSubjectService.stuSelect(vo);
     }
 
-    @RequestMapping("/export")
+    @ApiOperation(value = "导出论文题目记录", notes = "")
+    @RequestMapping(value = "/export",method = RequestMethod.POST)
     @ResponseBody
     public String export(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, IntrospectionException, IllegalAccessException, ParseException, InvocationTargetException, UnsupportedEncodingException {
         String fileName = "论文题目记录";

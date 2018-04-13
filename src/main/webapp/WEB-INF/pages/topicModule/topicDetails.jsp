@@ -32,7 +32,7 @@
 
         <!-- Breadcrumb -->
         <div class="bread-crumb pull-right">
-            <a href="index.html"><i class="icon-home"></i> 选题信息管理</a>
+            <a href="${ctx}/index" target="_top"><i class="icon-home"></i> 选题信息管理</a>
             <!-- Divider -->
             <span class="divider">/</span>
             <a href="#" class="bread-current">首页</a>
@@ -458,7 +458,7 @@
         confirm(" 😲 确认删除吗？","",function (isConfirm) {
             if (isConfirm){
                 $.ajax({
-                    type:"POST",
+                    type:"GET",
                     url:"${ctx}/selectTopic/topicDel",
                     data:{"id":id},
                     dataType:"json",

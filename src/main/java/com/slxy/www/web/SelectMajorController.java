@@ -3,9 +3,12 @@ package com.slxy.www.web;
 import com.slxy.www.domain.po.SelectMajor;
 import com.slxy.www.domain.vo.SelectMajorVo;
 import com.slxy.www.service.SelectMajorService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 @RequestMapping("/selectMajor")
+@Api(tags = "专业管理", description = "专业模块功能")
 public class SelectMajorController {
 
     @Autowired
@@ -37,7 +41,8 @@ public class SelectMajorController {
      * @param vo
      * @return
      */
-    @RequestMapping("/majList")
+    @ApiOperation(value = "专业列表", notes = "")
+    @RequestMapping(value = "/majList",method = RequestMethod.GET)
     public ModelAndView majList(ModelAndView  modelAndView, SelectMajorVo vo) {
         return selectMajorService.majList(modelAndView,vo);
     }
@@ -47,7 +52,8 @@ public class SelectMajorController {
      * @param selectMajor
      * @return
      */
-    @RequestMapping(value={"/majDisable","/majUpdate"})
+    @ApiOperation(value = "专业启用禁用、编辑", notes = "")
+    @RequestMapping(value={"/majDisable","/majUpdate"},method = RequestMethod.POST)
     @ResponseBody
     public String majDisableAndUpdate(SelectMajor selectMajor) {
         return selectMajorService.majDisableAndUpdate(selectMajor);
@@ -58,7 +64,8 @@ public class SelectMajorController {
      * @param modelAndView
      * @return
      */
-    @RequestMapping("/majInitAdd")
+    @ApiOperation(value = "专业添加初始化", notes = "")
+    @RequestMapping(value = "/majInitAdd",method = RequestMethod.GET)
     public ModelAndView majInitAdd(ModelAndView modelAndView) {
         return selectMajorService.majInitAdd(modelAndView);
     }
@@ -68,7 +75,8 @@ public class SelectMajorController {
      * @param modelAndView
      * @return
      */
-    @RequestMapping("/majInitUpdate")
+    @ApiOperation(value = "专业编辑初始化", notes = "")
+    @RequestMapping(value = "/majInitUpdate",method = RequestMethod.GET)
     public ModelAndView majInitUpdate(ModelAndView modelAndView, SelectMajor selectMajor) {
         return selectMajorService.majInitUpdate(modelAndView,selectMajor);
     }
@@ -79,25 +87,30 @@ public class SelectMajorController {
      * @param modelAndView
      * @return
      */
-    @RequestMapping("/majFind")
+    @ApiOperation(value = "专业查看", notes = "")
+    @RequestMapping(value = "/majFind",method = RequestMethod.GET)
     public ModelAndView majFind(ModelAndView modelAndView,SelectMajor selectMajor) {
         modelAndView = selectMajorService.majInitUpdate(modelAndView,selectMajor);
         modelAndView.setViewName("/depmaj/majFind");
         return modelAndView;
     }
-    @RequestMapping("/majAdd")
+
+    @ApiOperation(value = "专业添加", notes = "")
+    @RequestMapping(value = "/majAdd",method = RequestMethod.POST)
     @ResponseBody
     public String majAdd(SelectMajor selectMajor) {
         return selectMajorService.majAdd(selectMajor);
     }
 
-    @RequestMapping("/majDelete")
+    @ApiOperation(value = "专业删除", notes = "")
+    @RequestMapping(value = "/majDelete",method = RequestMethod.POST)
     @ResponseBody
     public String majDelete(SelectMajor selectMajor) {
         return selectMajorService.majDel(selectMajor);
     }
 
-    @RequestMapping("/majDeleteAll")
+    @ApiOperation(value = "专业批量删除", notes = "")
+    @RequestMapping(value = "/majDeleteAll",method = RequestMethod.POST)
     @ResponseBody
     public String majDeleteAll(Integer[] selectedIDs) {
         return selectMajorService.majDelAll(selectedIDs);

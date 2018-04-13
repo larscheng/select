@@ -8,6 +8,8 @@ import com.slxy.www.enums.EnumEnOrDis;
 import com.slxy.www.enums.EnumUserType;
 import com.slxy.www.filter.LoginRequired;
 import com.slxy.www.service.SelectUserBaseService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
@@ -29,6 +31,7 @@ import java.util.Map;
  * @since 2018-01-06
  */
 @Controller
+@Api(tags = "用户管理", description = "用户模块功能")
 @RequestMapping("/selectUserBase")
 @SessionAttributes(value = {"sessionUser","userType"})
 public class SelectUserBaseController {
@@ -38,12 +41,14 @@ public class SelectUserBaseController {
     @Autowired
     private ISelectUserBaseMapper selectUserBaseMapper;
 
-    @RequestMapping("/")
+    @ApiOperation(value = "首页跳转", notes = "")
+    @RequestMapping(value = "/",method = RequestMethod.GET)
     public String index(){return "login";}
 
 
 
-    @RequestMapping("/login")
+    @ApiOperation(value = "登录", notes = "")
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
     public ModelAndView index(SelectUserBase userBase, ModelAndView  modelAndView) {
         SelectUserBase user = new SelectUserBase().setUserCode(userBase.getUserCode());
         SelectUserBase selectUserBase = selectUserBaseMapper.selectOne((user));
@@ -67,7 +72,8 @@ public class SelectUserBaseController {
     }
 
 
-    @RequestMapping("/logout")
+    @ApiOperation(value = "注销", notes = "")
+    @RequestMapping(value = "/logout",method = RequestMethod.GET)
     public ModelAndView logout(HttpSession session, ModelAndView  modelAndView) {
         //通过session.invalidata()方法来注销当前的session
         session.invalidate();
@@ -87,8 +93,9 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
+    @ApiOperation(value = "获取管理员列表", notes = "")
     @LoginRequired(value = "adm")
-    @RequestMapping("/admList")
+    @RequestMapping(value = "/admList",method = RequestMethod.GET)
     public ModelAndView admList(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
         modelAndView.setViewName("adminModule/admList");
         userBaseVo.setUserType(EnumUserType.ADMIN.getValue());
@@ -100,8 +107,9 @@ public class SelectUserBaseController {
      * @param modelAndView
      * @return
      */
+    @ApiOperation(value = "初始化管理员添加", notes = "")
     @LoginRequired(value = "adm")
-    @RequestMapping("/initAddAdmin")
+    @RequestMapping(value = "/initAddAdmin",method = RequestMethod.GET)
     public ModelAndView initAddAdmin(ModelAndView  modelAndView) {
         modelAndView.setViewName("adminModule/admAdd");
         return modelAndView;
@@ -113,8 +121,9 @@ public class SelectUserBaseController {
      * @param userBase
      * @return
      */
+    @ApiOperation(value = "管理员添加", notes = "")
     @LoginRequired(value = "adm")
-    @RequestMapping("/admAdd")
+    @RequestMapping(value = "/admAdd",method = RequestMethod.POST)
     @ResponseBody
     public String admAdd(SelectUserBase userBase) {
 
@@ -128,8 +137,9 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
+    @ApiOperation(value = "管理员删除", notes = "")
     @LoginRequired(value = "adm")
-    @RequestMapping("/admDelete")
+    @RequestMapping(value = "/admDelete",method = RequestMethod.POST)
     @ResponseBody
     public String admDelete(SelectUserBaseVo userBaseVo) {
         return selectUserBaseService.admDelete(userBaseVo);
@@ -140,8 +150,9 @@ public class SelectUserBaseController {
      * @param selectedIDs
      * @return
      */
+    @ApiOperation(value = "管理员批量删除", notes = "")
     @LoginRequired(value = "adm")
-    @RequestMapping("/admDeleteAll")
+    @RequestMapping(value = "/admDeleteAll",method = RequestMethod.POST)
     @ResponseBody
     public String admDeleteAll(Integer[] selectedIDs) {
         return selectUserBaseService.admDeleteAll(selectedIDs);
@@ -152,8 +163,9 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
+    @ApiOperation(value = "管理员启用禁用", notes = "")
     @LoginRequired(value = "adm")
-    @RequestMapping("/admAble")
+    @RequestMapping(value = "/admAble",method = RequestMethod.POST)
     @ResponseBody
     public String admAble(SelectUserBaseVo userBaseVo) {
         return selectUserBaseService.admAble(userBaseVo);
@@ -166,8 +178,9 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
+    @ApiOperation(value = "管理员信息修改（本人）", notes = "")
     @LoginRequired(value = "adm")
-    @RequestMapping("/admSelfInfo")
+    @RequestMapping(value = "/admSelfInfo",method = RequestMethod.GET)
     public ModelAndView admSelfInfo(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
         modelAndView.setViewName("/adminModule/admSelfInfo");
         return selectUserBaseService.stuInitAddAndUpdate(modelAndView,userBaseVo);
@@ -179,8 +192,9 @@ public class SelectUserBaseController {
      * @param userBase
      * @return
      */
+    @ApiOperation(value = "管理员修改", notes = "")
     @LoginRequired(value = "adm")
-    @RequestMapping("/admUpdate")
+    @RequestMapping(value = "/admUpdate",method = RequestMethod.POST)
     @ResponseBody
     public String admUpdate(SelectUserBase userBase) {
         return selectUserBaseService.stuUpdate(userBase);
@@ -194,7 +208,8 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
-    @RequestMapping("/stuList")
+    @ApiOperation(value = "学生列表初始化", notes = "")
+    @RequestMapping(value = "/stuList",method = RequestMethod.GET)
     public ModelAndView stuList(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
         userBaseVo.setUserType(EnumUserType.STUDENT.getValue());
         modelAndView.setViewName("/stuModule/stuList");
@@ -206,7 +221,9 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
-    @RequestMapping("/stuListAjax")
+
+    @ApiOperation(value = "异步生成学生列表", notes = "")
+    @RequestMapping(value = "/stuListAjax",method = RequestMethod.POST)
     @ResponseBody
     public String stuListAjax(SelectUserBaseVo userBaseVo) {
         userBaseVo.setUserType(EnumUserType.STUDENT.getValue());
@@ -218,8 +235,9 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
+    @ApiOperation(value = "学生启用禁用", notes = "")
     @LoginRequired(value = "admTea")
-    @RequestMapping("/stuAble")
+    @RequestMapping(value = "/stuAble",method = RequestMethod.POST)
     @ResponseBody
     public String stuAble(SelectUserBaseVo userBaseVo) {
         return selectUserBaseService.stuAble(userBaseVo);
@@ -230,8 +248,9 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
+    @ApiOperation(value = "学生删除", notes = "")
     @LoginRequired(value = "admTea")
-    @RequestMapping("/stuDelete")
+    @RequestMapping(value = "/stuDelete",method = RequestMethod.POST)
     @ResponseBody
     public String stuDelete(SelectUserBaseVo userBaseVo) {
         return selectUserBaseService.stuDelete(userBaseVo);
@@ -242,8 +261,9 @@ public class SelectUserBaseController {
      * @param selectedIDs
      * @return
      */
+    @ApiOperation(value = "教师批量删除", notes = "")
     @LoginRequired(value = "admTea")
-    @RequestMapping("/stuDeleteAll")
+    @RequestMapping(value = "/stuDeleteAll",method = RequestMethod.GET)
     @ResponseBody
     public String stuDeleteAll(Integer[] selectedIDs) {
         return selectUserBaseService.stuDeleteAll(selectedIDs);
@@ -257,8 +277,9 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
+    @ApiOperation(value = "学生个人信息变更", notes = "")
     @LoginRequired(value = "stu")
-    @RequestMapping("/stuSelfInfo")
+    @RequestMapping(value = "/stuSelfInfo",method = RequestMethod.GET)
     public ModelAndView stuSelfInfo(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
         modelAndView.setViewName("/stuModule/stuSelfInfo");
         return selectUserBaseService.stuInitAddAndUpdate(modelAndView,userBaseVo);
@@ -272,8 +293,9 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
+    @ApiOperation(value = "学生修改初始化", notes = "")
     @LoginRequired(value = "admTea")
-    @RequestMapping("/stuInitUpdate")
+    @RequestMapping(value = "/stuInitUpdate",method = RequestMethod.GET)
     public ModelAndView stuInitUpdate(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
         modelAndView.setViewName("/stuModule/stuUpdate");
         return selectUserBaseService.stuInitAddAndUpdate(modelAndView,userBaseVo);
@@ -284,7 +306,8 @@ public class SelectUserBaseController {
      * @param userBase
      * @return
      */
-    @RequestMapping("/stuUpdate")
+    @ApiOperation(value = "学生修改", notes = "")
+    @RequestMapping(value = "/stuUpdate",method = RequestMethod.POST)
     @ResponseBody
     public String stuUpdate(SelectUserBase userBase) {
         return selectUserBaseService.stuUpdate(userBase);
@@ -296,8 +319,9 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
+    @ApiOperation(value = "学生添加初始化", notes = "")
     @LoginRequired(value = "admTea")
-    @RequestMapping("/stuInitAdd")
+    @RequestMapping(value = "/stuInitAdd",method = RequestMethod.GET)
     public ModelAndView stuInitAdd(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
 
         modelAndView.setViewName("/stuModule/stuAdd");
@@ -309,8 +333,9 @@ public class SelectUserBaseController {
      * @param userBase
      * @return
      */
+    @ApiOperation(value = "学生添加", notes = "")
     @LoginRequired(value = "admTea")
-    @RequestMapping("/stuAdd")
+    @RequestMapping(value = "/stuAdd",method = RequestMethod.POST)
     @ResponseBody
     public String stuAdd(SelectUserBase userBase) {
         return selectUserBaseService.stuAdd(userBase);
@@ -323,6 +348,7 @@ public class SelectUserBaseController {
      * @return
      * @throws IOException
      */
+    @ApiOperation(value = "学生导入", notes = "")
     @LoginRequired(value = "admTea")
     @RequestMapping(value = "/stuUpload", method = RequestMethod.POST)
     @ResponseBody
@@ -335,6 +361,7 @@ public class SelectUserBaseController {
      * @param userBase
      * @return
      */
+    @ApiOperation(value = "根据专业查询班级数", notes = "")
     @RequestMapping(value = "/initClass", method = RequestMethod.POST)
     @ResponseBody
     public String initClass(SelectUserBase userBase) {
@@ -348,8 +375,9 @@ public class SelectUserBaseController {
      * @param response
      * @throws Exception
      */
+    @ApiOperation(value = "学生模板下载", notes = "")
     @LoginRequired(value = "admTea")
-    @RequestMapping("/stuFileDown")
+    @RequestMapping(value = "/stuFileDown",method = RequestMethod.GET)
     public void stuFileDown(HttpServletRequest request,HttpServletResponse response) throws Exception {
         String fileName= "select_students.xls";
         selectUserBaseService.down(request,response,fileName);
@@ -365,8 +393,9 @@ public class SelectUserBaseController {
      * @param response
      * @throws Exception
      */
+    @ApiOperation(value = "教师模板下载", notes = "")
     @LoginRequired(value = "adm")
-    @RequestMapping("/teaFileDown")
+    @RequestMapping(value = "/teaFileDown",method = RequestMethod.GET)
     public void teaFileDown(HttpServletRequest request,HttpServletResponse response) throws Exception {
         String fileName= "select_teachers.xls";
         selectUserBaseService.down(request,response,fileName);
@@ -377,7 +406,8 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
-    @RequestMapping("/teaList")
+    @ApiOperation(value = "教师列表初始化", notes = "")
+    @RequestMapping(value = "/teaList",method = RequestMethod.GET)
     public ModelAndView teaList(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
         userBaseVo.setUserType(EnumUserType.TEACHER.getValue());
         modelAndView.setViewName("/teaModule/teaList");
@@ -389,7 +419,8 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
-    @RequestMapping("/teaListAjax")
+    @ApiOperation(value = "异步生成教师列表", notes = "")
+    @RequestMapping(value = "/teaListAjax",method = RequestMethod.POST)
     @ResponseBody
     public String teaListAjax(SelectUserBaseVo userBaseVo) {
         userBaseVo.setUserType(EnumUserType.TEACHER.getValue());
@@ -401,8 +432,9 @@ public class SelectUserBaseController {
      * @param userBase
      * @return
      */
+    @ApiOperation(value = "教师启用禁用", notes = "")
     @LoginRequired(value = "adm")
-    @RequestMapping("/teaAble")
+    @RequestMapping(value = "/teaAble",method = RequestMethod.POST)
     @ResponseBody
     public String teaAble(SelectUserBase userBase) {
         return selectUserBaseService.teaAble(userBase);
@@ -414,8 +446,9 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
+    @ApiOperation(value = "教师添加初始化", notes = "")
     @LoginRequired(value = "adm")
-    @RequestMapping("/teaInitAdd")
+    @RequestMapping(value = "/teaInitAdd",method = RequestMethod.GET)
     public ModelAndView teaInitAdd(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
         modelAndView.setViewName("/teaModule/teaAdd");
         return selectUserBaseService.teaInitAddAndUpdate(modelAndView,userBaseVo);
@@ -426,8 +459,9 @@ public class SelectUserBaseController {
      * @param userBase
      * @return
      */
+    @ApiOperation(value = "教师添加", notes = "")
     @LoginRequired(value = "adm")
-    @RequestMapping("/teaAdd")
+    @RequestMapping(value = "/teaAdd",method = RequestMethod.POST)
     @ResponseBody
     public String teaAdd(SelectUserBase userBase) {
         return selectUserBaseService.teaAdd(userBase);
@@ -442,8 +476,9 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
+    @ApiOperation(value = "教师个人信息编辑（本人）", notes = "")
     @LoginRequired(value = "admTea")
-    @RequestMapping("/teaSelfInfo")
+    @RequestMapping(value = "/teaSelfInfo",method = RequestMethod.GET)
     public ModelAndView teaSelfInfo(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
         modelAndView.setViewName("/teaModule/teaSelfInfo");
         return selectUserBaseService.teaInitAddAndUpdate(modelAndView,userBaseVo);
@@ -456,8 +491,9 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
+    @ApiOperation(value = "教师编辑初始化", notes = "")
     @LoginRequired(value = "admTea")
-    @RequestMapping("/teaInitUpdate")
+    @RequestMapping(value = "/teaInitUpdate",method = RequestMethod.GET)
     public ModelAndView teaInitUpdate(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
         modelAndView.setViewName("/teaModule/teaUpdate");
         return selectUserBaseService.teaInitAddAndUpdate(modelAndView,userBaseVo);
@@ -468,8 +504,9 @@ public class SelectUserBaseController {
      * @param userBase
      * @return
      */
+    @ApiOperation(value = "教师修改", notes = "")
     @LoginRequired(value = "admTea")
-    @RequestMapping("/teaUpdate")
+    @RequestMapping(value = "/teaUpdate",method = RequestMethod.POST)
     @ResponseBody
     public String teaUpdate(SelectUserBase userBase) {
         return selectUserBaseService.teaUpdate(userBase);
@@ -480,8 +517,9 @@ public class SelectUserBaseController {
      * @param userBase
      * @return
      */
+    @ApiOperation(value = "教师删除", notes = "")
     @LoginRequired(value = "admTea")
-    @RequestMapping("/teaDelete")
+    @RequestMapping(value = "/teaDelete",method = RequestMethod.POST)
     @ResponseBody
     public String teaDelete(SelectUserBase userBase) {
         return selectUserBaseService.teaDelete(userBase);
@@ -492,8 +530,9 @@ public class SelectUserBaseController {
      * @param selectedIDs
      * @return
      */
+    @ApiOperation(value = "教师批量删除", notes = "")
     @LoginRequired(value = "admTea")
-    @RequestMapping("/teaDeleteAll")
+    @RequestMapping(value = "/teaDeleteAll",method = RequestMethod.POST)
     @ResponseBody
     public String teaDeleteAll(Integer[] selectedIDs) {
         return selectUserBaseService.teaDeleteAll(selectedIDs);
@@ -505,8 +544,9 @@ public class SelectUserBaseController {
      * @param userBaseVo
      * @return
      */
+    @ApiOperation(value = "教师详情", notes = "")
     @LoginRequired(value = "admTea")
-    @RequestMapping("/teaDetails")
+    @RequestMapping(value = "/teaDetails",method = RequestMethod.GET)
     public ModelAndView teaDetails(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
         modelAndView.setViewName("teaModule/teaDetails");
         return selectUserBaseService.teaInitAddAndUpdate(modelAndView,userBaseVo);
@@ -519,6 +559,7 @@ public class SelectUserBaseController {
      * @return
      * @throws IOException
      */
+    @ApiOperation(value = "教师导入", notes = "")
     @LoginRequired(value = "admTea")
     @RequestMapping(value = "/teaUpload", method = RequestMethod.POST)
     @ResponseBody

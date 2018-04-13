@@ -30,7 +30,7 @@
 
         <!-- Breadcrumb -->
         <div class="bread-crumb pull-right">
-            <a href="index.html"><i class="icon-home"></i>系别编辑</a>
+            <a href="${ctx}/index" target="_top"><i class="icon-home"></i>系别编辑</a>
             <!-- Divider -->
             <span class="divider">/</span>
             <a href="#" class="bread-current">首页</a>

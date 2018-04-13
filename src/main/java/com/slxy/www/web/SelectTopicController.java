@@ -5,10 +5,13 @@ import com.slxy.www.domain.vo.SelectTopicVo;
 import com.slxy.www.enums.EnumSubSelectStatus;
 import com.slxy.www.enums.EnumYesOrNo;
 import com.slxy.www.service.SelectTopicService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,6 +39,7 @@ import java.util.Map;
  * @author zhengql123
  * @since 2018-02-04
  */
+@Api(tags = "选题管理", description = "选题模块功能")
 @Controller
 @RequestMapping("/selectTopic")
 public class SelectTopicController {
@@ -48,7 +52,9 @@ public class SelectTopicController {
      * @param vo
      * @return
      */
-    @RequestMapping("/topicList")
+
+    @ApiOperation(value = "获取选题信息列表", notes = "")
+    @RequestMapping(value = "/topicList",method = RequestMethod.GET)
     public ModelAndView stuList(ModelAndView  modelAndView, SelectTopicVo vo) {
         modelAndView.setViewName("topicModule/topicList");
         vo.setDelState(EnumYesOrNo.NO.getValue());
@@ -62,7 +68,8 @@ public class SelectTopicController {
      * @param vo
      * @return
      */
-    @RequestMapping("/stuTopicAjaxList")
+    @ApiOperation(value = "异步生成学生选题信息列表", notes = "")
+    @RequestMapping(value = "/stuTopicAjaxList",method = RequestMethod.POST)
     @ResponseBody
     public String stuTopicAjaxList(SelectTopicVo vo) {
         return selectTopicService.stuTopicAjaxList(vo);
@@ -85,7 +92,8 @@ public class SelectTopicController {
      * @param vo
      * @return
      */
-    @RequestMapping("/noTopicList")
+    @ApiOperation(value = "待审核选题列表", notes = "")
+    @RequestMapping(value = "/noTopicList",method = RequestMethod.GET)
     public ModelAndView noTopicList(ModelAndView  modelAndView, SelectTopicVo vo) {
         modelAndView.setViewName("topicModule/noTopicList");
         return selectTopicService.topicList(modelAndView,vo);
@@ -97,7 +105,8 @@ public class SelectTopicController {
      * @param vo
      * @return
      */
-    @RequestMapping("/topicDetails")
+    @ApiOperation(value = "选题详情", notes = "")
+    @RequestMapping(value = "/topicDetails",method = RequestMethod.GET)
     public ModelAndView topicDetails(ModelAndView  modelAndView, SelectTopicVo vo) {
         modelAndView.setViewName("topicModule/topicDetails");
         return selectTopicService.topicDetails(modelAndView,vo);
@@ -108,7 +117,8 @@ public class SelectTopicController {
      * @param vo
      * @return
      */
-    @RequestMapping("/topicAudited")
+    @ApiOperation(value = "教师审核选题", notes = "")
+    @RequestMapping(value = "/topicAudited",method = RequestMethod.POST)
     @ResponseBody
     public String topicAudited(SelectTopicVo vo) {
         return selectTopicService.topicAudited(vo);
@@ -121,7 +131,8 @@ public class SelectTopicController {
      * @param request
      * @return
      */
-    @RequestMapping("/uploadTaskBook")
+    @ApiOperation(value = "学生上传题目任务书", notes = "")
+    @RequestMapping(value = "/uploadTaskBook",method = RequestMethod.POST)
     @ResponseBody
     public String uploadTaskBook(@RequestParam("taskFile") MultipartFile file, @RequestParam("id")String id, HttpServletRequest request) {
         return selectTopicService.uploadTaskBook(file,Integer.parseInt(id),request,1);
@@ -134,7 +145,8 @@ public class SelectTopicController {
      * @param request
      * @return
      */
-    @RequestMapping("/uploadOpeningReport")
+    @ApiOperation(value = "学生上传题目开题报告", notes = "")
+    @RequestMapping(value = "/uploadOpeningReport",method = RequestMethod.POST)
     @ResponseBody
     public String uploadOpeningReport(@RequestParam("openingReport") MultipartFile file, @RequestParam("id")String id, HttpServletRequest request) {
         return selectTopicService.uploadTaskBook(file,Integer.parseInt(id),request,2);
@@ -147,7 +159,8 @@ public class SelectTopicController {
      * @param request
      * @return
      */
-    @RequestMapping("/uploadDissertation")
+    @ApiOperation(value = "学生上传题目毕业论文", notes = "")
+    @RequestMapping(value = "/uploadDissertation",method = RequestMethod.POST)
     @ResponseBody
     public String uploadDissertation(@RequestParam("dissertation") MultipartFile file, @RequestParam("id")String id, HttpServletRequest request) {
         return selectTopicService.uploadTaskBook(file,Integer.parseInt(id),request,3);
@@ -159,7 +172,8 @@ public class SelectTopicController {
      * @param id
      * @return
      */
-    @RequestMapping("/topicDel")
+    @ApiOperation(value = "删除选题记录", notes = "假删除")
+    @RequestMapping(value = "/topicDel",method = RequestMethod.GET)
     @ResponseBody
     public String topicDel(@RequestParam("id")String id) {
         return selectTopicService.topicDel(Integer.parseInt(id));
@@ -172,7 +186,8 @@ public class SelectTopicController {
      * @param vo
      * @return
      */
-    @RequestMapping("/topicScoreList")
+    @ApiOperation(value = "报表统计：成绩列表获取", notes = "")
+    @RequestMapping(value = "/topicScoreList",method = RequestMethod.GET)
     public ModelAndView topicScoreList(ModelAndView  modelAndView, SelectTopicVo vo) {
         modelAndView.setViewName("CountModule/topicScoreList");
         vo.setTeaAuditState(EnumSubSelectStatus.SUCCESS.getValue());
@@ -185,7 +200,8 @@ public class SelectTopicController {
      * @param vo
      * @return
      */
-    @RequestMapping("/topicCountList")
+    @ApiOperation(value = "报表统计：选题记录获取", notes = "")
+    @RequestMapping(value = "/topicCountList",method = RequestMethod.GET)
     public ModelAndView topicCountList(ModelAndView  modelAndView, SelectTopicVo vo) {
         modelAndView.setViewName("CountModule/topicCountList");
         return selectTopicService.topicList(modelAndView,vo);
@@ -205,7 +221,8 @@ public class SelectTopicController {
      * @throws InvocationTargetException
      * @throws UnsupportedEncodingException
      */
-    @RequestMapping("/export")
+    @ApiOperation(value = "导出选题记录", notes = "")
+    @RequestMapping(value = "/export",method = RequestMethod.POST)
     @ResponseBody
     public String export(HttpServletRequest request, HttpServletResponse response, SelectTopicVo vo) throws ClassNotFoundException, IntrospectionException, IllegalAccessException, ParseException, InvocationTargetException, UnsupportedEncodingException {
         String fileName = "选题记录";
@@ -235,8 +252,8 @@ public class SelectTopicController {
     }
 
 
-
-    @RequestMapping("/exportScore")
+    @ApiOperation(value = "导出成绩记录", notes = "")
+    @RequestMapping(value = "/exportScore",method = RequestMethod.POST)
     @ResponseBody
     public String exportScore(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, IntrospectionException, IllegalAccessException, ParseException, InvocationTargetException, UnsupportedEncodingException {
         String fileName = "选题成绩记录";
@@ -277,7 +294,8 @@ public class SelectTopicController {
      * @param vo
      * @return
      */
-    @RequestMapping("/topicUploadList")
+    @ApiOperation(value = "成绩上传列表", notes = "")
+    @RequestMapping(value = "/topicUploadList",method = RequestMethod.GET)
     public ModelAndView topicUploadList(ModelAndView  modelAndView, SelectTopicVo vo) {
         modelAndView.setViewName("scoreModule/scoreUploadList");
         vo.setTeaAuditState(EnumSubSelectStatus.SUCCESS.getValue());
@@ -291,7 +309,8 @@ public class SelectTopicController {
      * @param vo
      * @return
      */
-    @RequestMapping("/topicInitUpload")
+    @ApiOperation(value = "成绩上传初始化", notes = "")
+    @RequestMapping(value = "/topicInitUpload",method = RequestMethod.GET)
     public ModelAndView topicInitUpload(ModelAndView  modelAndView, SelectTopicVo vo) {
         modelAndView.setViewName("scoreModule/scoreUpload");
         return selectTopicService.topicDetails(modelAndView,vo);
@@ -300,11 +319,12 @@ public class SelectTopicController {
 
 
     /**
-     * 成绩上传初始化
+     * 成绩上传
      * @param vo
      * @return
      */
-    @RequestMapping("/uploadScore")
+    @ApiOperation(value = "成绩上传", notes = "")
+    @RequestMapping(value = "/uploadScore",method = RequestMethod.POST)
     @ResponseBody
     public String uploadScore(SelectTopicVo vo) {
 

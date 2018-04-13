@@ -31,7 +31,7 @@
 
         <!-- Breadcrumb -->
         <div class="bread-crumb pull-right">
-            <a href="index.html"><i class="icon-home"></i> 论文信息管理</a>
+            <a href="${ctx}/index" target="_top"><i class="icon-home"></i> 论文信息管理</a>
             <!-- Divider -->
             <span class="divider">/</span>
             <a href="#" class="bread-current">首页</a>
