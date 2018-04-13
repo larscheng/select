@@ -233,7 +233,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>mybatisplus-spring-mvc</finalName>
+		<finalName>select</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
