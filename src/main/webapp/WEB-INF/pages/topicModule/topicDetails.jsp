@@ -124,7 +124,7 @@
                                                     </div>
                                                     <div class="col-lg-2">
                                                         <a class="btn btn-info"
-                                                           href="http://localhost:8012/onlinePreview?url=http://localhost:8012/${requestScope.topicDetails.taskFile}" target="_blank">预览</a>
+                                                           href="http://127.0.0.1:8012/onlinePreview?url=http://127.0.0.1:8012/${requestScope.topicDetails.taskFile}" target="_blank">预览</a>
                                                         <a class="btn btn-info"
                                                            href="${ctx}/selectSubject/subFileDown?fileName=${requestScope.topicDetails.taskFile}" target="_blank">下载</a>
                                                     </div>
