@@ -65,7 +65,7 @@ public class MybatisPlusSqlInterceptor implements Interceptor {
         long timing = SystemClock.now() - start;
         logger.debug("SQL Time : " + timing + " ms" + " - ID : " + statementId + "  ->  Execute SQL : " + sql);
 
-        if (executeTime > 0 && timing > executeTime) {
+        if (/*executeTime > 0 && */timing > executeTime) {
             logger.warn("SQL Time : " + timing + " ms" + " - ID : " + statementId + "  ->  Execute SQL : " + sql);
         }
 

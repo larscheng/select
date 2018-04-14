@@ -20,6 +20,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
 import java.util.Map;
 
 /**
@@ -33,7 +37,7 @@ import java.util.Map;
 @Controller
 @Api(tags = "用户管理", description = "用户模块功能")
 @RequestMapping("/selectUserBase")
-@SessionAttributes(value = {"sessionUser","userType"})
+@SessionAttributes(value = {"sessionUser","userType","sessionIp"})
 public class SelectUserBaseController {
 
     @Autowired
@@ -67,10 +71,45 @@ public class SelectUserBaseController {
         }
         modelAndView.setViewName("main");
         modelAndView.addObject("sessionUser",selectUserBase);
+        modelAndView.addObject("sessionIp",this.getIp());
         modelAndView.addObject("userType",selectUserBase.getUserType());
         return modelAndView;
     }
 
+
+    /**
+     * 获取IP地址
+     * @return
+     */
+    private   String getIp(){
+        Enumeration allNetInterfaces = null;
+        try {
+            allNetInterfaces = NetworkInterface.getNetworkInterfaces();
+        } catch (java.net.SocketException e) {
+            e.printStackTrace();
+        }
+        InetAddress ip = null;
+        while (allNetInterfaces.hasMoreElements())
+        {
+            NetworkInterface netInterface = (NetworkInterface) allNetInterfaces
+                    .nextElement();
+//            System.out.println(netInterface.getName());
+            Enumeration addresses = netInterface.getInetAddresses();
+            while (addresses.hasMoreElements())
+            {
+                ip = (InetAddress) addresses.nextElement();
+                if (ip != null && ip instanceof Inet4Address)
+                {
+                    if(ip.getHostAddress().equals("127.0.0.1")){
+                        continue;
+                    }
+//                    System.out.println("/u672c/u673a/u7684IP = " + ip.getHostAddress());
+                    return ip.getHostAddress();
+                }
+            }
+        }
+        return "127.0.0.1";
+    }
 
     @ApiOperation(value = "注销", notes = "")
     @RequestMapping(value = "/logout",method = RequestMethod.GET)

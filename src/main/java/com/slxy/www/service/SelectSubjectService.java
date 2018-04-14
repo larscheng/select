@@ -306,7 +306,7 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
         if (!ObjectUtils.isEmpty(file)){
 //            String fileDir =request.getServletContext().getRealPath("");
 //            String demoDir = "downFile";
-            String fileDir = "C:/Users/Administrator/Desktop/online/";
+            String fileDir = "D:/select_files/";
             String demoDir = "demo";
             String demoPath = demoDir + File.separator;
             String fileName = file.getOriginalFilename();
@@ -449,7 +449,7 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
 //            inputStream=new FileInputStream(baseAbsoluteFilePath+fileRelativePath);
 
 
-            String fileRelativePath="C:/Users/Administrator/Desktop/online/"+fileName;//文件相对于webRoot的路径
+            String fileRelativePath="D:/select_files/"+fileName;//文件相对于webRoot的路径
             inputStream=new FileInputStream(fileRelativePath);
             byte[] buff=new byte[1024];
             Integer readLength=0;

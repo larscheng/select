@@ -155,7 +155,7 @@
                                         </div>
                                         <div class="col-lg-2">
                                             <a class="btn btn-info"
-                                               href="http://10.200.0.64:8012/onlinePreview?url=http://10.200.0.64:8012/${requestScope.sub.subFile}" target="_blank">预览</a>
+                                               href="http://${sessionScope.sessionIp}:8012/onlinePreview?url=http://${sessionScope.sessionIp}:8012/${requestScope.sub.subFile}" target="_blank">预览</a>
                                             <a class="btn btn-info"
                                                href="${ctx}/selectSubject/subFileDown?fileName=${requestScope.sub.subFile}" target="_blank">下载</a>
                                         </div>
