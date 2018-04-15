@@ -20,7 +20,7 @@
 
 <!-- Form area -->
 <div class="error-page">
-  <div class="container">
+  <div class="" style="margin: auto;width: 1000px">
 
     <div class="row">
       <div class="col-md-6">
@@ -34,13 +34,13 @@
               <div class="widget-content">
                 <div class="padd error">
                   
-                  <h2 style="color: red">为了您的账户安全请修改密码先😐</h2>
-                  <p>密码是您最重要的信息，请设置新密码后进入系统😐😐😐😐😐</p>
+                  <h2 style="color: red;text-align: center" >为了您的账户安全请修改密码先😐</h2>
+                  <p style="text-align: center">密码是您最重要的信息，请设置新密码后进入系统😐😐😐😐😐</p>
 
 
 
                     <div class="widget-content">
-                        <div class="padd">
+                        <div class="">
                             <hr />
                             <!-- Form starts.  -->
                             <form class="form-horizontal" role="form" id="updateForm">
@@ -55,9 +55,22 @@
                                 <div class="form-group">
                                     <label class="col-lg-4 control-label">邮箱</label>
                                     <div class="col-lg-8">
-                                        <input type="email" class="form-control" name="userMail" placeholder="接收新密码的邮箱">
+                                        <input type="email" class="form-control" value="${sessionScope.sessionUser.userMail}" name="userMail" placeholder="接收新密码的邮箱">
                                         <input type="hidden" id="userId" class="form-control" name="userId" value="${sessionScope.sessionUser.id}" placeholder="">
 
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">手机号码</label>
+                                    <div class="col-lg-8">
+                                        <input type="tel" class="form-control" name="userPhone" placeholder="您的手机号(选填)">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">qq号</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" class="form-control" name="userQq" placeholder="您的QQ号(选填)">
                                     </div>
                                 </div>
 
@@ -83,8 +96,8 @@
                                 </div>
 
                                 <hr />
-                                <div class="form-group">
-                                    <div class="col-lg-offset-3 col-lg-9">
+                                <div class="form-group center">
+                                    <div class="col-lg-offset-1 col-lg-9">
                                         <button type="button" id="updateSubmit" class="btn btn-success">提交</button>
                                         <button type="reset" class="btn btn-info">重填</button>
                                         <button type="button" class="btn btn-info" onclick="window.history.go(-1);">返回</button>
@@ -98,8 +111,8 @@
                     </div>
 
                 </div>
-                  <div class="horizontal-links col-lg-offset-3 ">
-                  <a href="${ctx}/login.jsp">首页</a> | <a href="#">About Us</a> | <a href="#">Contact us</a> | <a href="#">FAQ</a>
+                  <div class="horizontal-links center">
+                  <a href="${ctx}/login">首页</a> | <a href="#">About Us</a> | <a href="#">Contact us</a> | <a href="#">FAQ</a>
                  </div>
 
 

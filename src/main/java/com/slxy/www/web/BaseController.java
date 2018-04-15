@@ -153,7 +153,10 @@ private ISelectUserBaseMapper selectUserBaseMapper;
         }
         SelectUserBase selectUserBase = new SelectUserBase()
                 .setId(userBase.getId())
-                .setUserPassword(changePs.getNewPassWord());
+                .setUserPassword(changePs.getNewPassWord())
+                .setUserMail(changePs.getUserMail())
+                .setUserPhone(ObjectUtils.isEmpty(changePs.getUserPhone())?userBase.getUserPhone():changePs.getUserPhone())
+                .setUserQq(ObjectUtils.isEmpty(changePs.getUserQq())?userBase.getUserQq():changePs.getUserQq());
         //TODO 发邮件通知
 
         return selectUserBaseMapper.updateById(selectUserBase)>0 ? JSONObject.toJSONString(Constant.SUCCESS):JSONObject.toJSONString(Constant.ERROR);

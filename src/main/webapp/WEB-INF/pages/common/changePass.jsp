@@ -82,7 +82,7 @@
                                     <div class="form-group">
                                         <label class="col-lg-4 control-label">邮箱</label>
                                         <div class="col-lg-8">
-                                            <input type="email" class="form-control" name="userMail" placeholder="接收新密码的邮箱">
+                                            <input type="email" value="${sessionScope.sessionUser.userMail}" class="form-control" name="userMail" placeholder="接收新密码的邮箱">
                                             <input type="hidden" id="userId" class="form-control" name="userId" value="${sessionScope.sessionUser.id}" placeholder="">
 
                                         </div>

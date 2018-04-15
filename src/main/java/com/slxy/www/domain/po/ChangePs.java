@@ -15,10 +15,27 @@ public class ChangePs implements Serializable {
     private String passWord;
     private String newPassWord;
     private String newPassWord2;
+    private String userPhone;
+    private String userQq;
 
     private Integer userType;
     private String userCode;
 
+    public String getUserPhone() {
+        return userPhone;
+    }
+
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
+    }
+
+    public String getUserQq() {
+        return userQq;
+    }
+
+    public void setUserQq(String userQq) {
+        this.userQq = userQq;
+    }
 
     public Integer getUserType() {
         return userType;
