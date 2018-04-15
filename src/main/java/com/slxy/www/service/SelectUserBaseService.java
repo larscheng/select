@@ -403,7 +403,7 @@ public class SelectUserBaseService extends  ServiceImpl <ISelectUserBaseMapper, 
         }
         logger.info("本次导入学生数 : " + importVOS.size() + " , 导入成功 : " + importSuccessCount + " , 导入失败 : " + importErrorList.size());
 
-        return "导入成功 : " + importSuccessCount + " , 导入失败 : " + importErrorList.size() + (importErrorList.size() <= 0 ? "" : " , 失败学生姓名 : " + importErrorList.toString());
+        return JSONObject.toJSONString("导入成功 : " + importSuccessCount + " , 导入失败 : " + importErrorList.size() + (importErrorList.size() <= 0 ? "" : " , 失败学生姓名 : " + importErrorList.toString()));
     }
 
 
@@ -655,7 +655,7 @@ public class SelectUserBaseService extends  ServiceImpl <ISelectUserBaseMapper, 
         }
         logger.info("本次导入教师数 : " + importVOS.size() + " , 导入成功 : " + importSuccessCount + " , 导入失败 : " + importErrorList.size());
 
-        return "导入成功 : " + importSuccessCount + " , 导入失败 : " + importErrorList.size() + (importErrorList.size() <= 0 ? "" : " , 失败教师姓名 : " + importErrorList.toString());
+        return JSONObject.toJSONString("导入成功 : " + importSuccessCount + " , 导入失败 : " + importErrorList.size() + (importErrorList.size() <= 0 ? "" : " , 失败教师姓名 : " + importErrorList.toString()));
     }
 
 

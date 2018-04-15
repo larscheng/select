@@ -98,13 +98,14 @@
                             <!-- 轮播图片 -->
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
-                                    <img src="http://static.runoob.com/images/mix/img_fjords_wide.jpg">
+                                    <img src="${ctx}/resources/img/photos/3.jpg">
+                                    <%--<img src="http://static.runoob.com/images/mix/img_fjords_wide.jpg">--%>
                                 </div>
                                 <div class="carousel-item">
-                                    <img src="http://static.runoob.com/images/mix/img_nature_wide.jpg">
+                                    <img src="${ctx}/resources/img/photos/2.jpg">
                                 </div>
                                 <div class="carousel-item">
-                                    <img src="http://static.runoob.com/images/mix/img_mountains_wide.jpg">
+                                    <img src="${ctx}/resources/img/photos/5.jpg">
                                 </div>
                             </div>
 

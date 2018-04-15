@@ -311,7 +311,7 @@ public class SelectUserBaseController {
      */
     @ApiOperation(value = "教师批量删除", notes = "")
     @LoginRequired(value = "admTea")
-    @RequestMapping(value = "/stuDeleteAll",method = RequestMethod.GET)
+    @RequestMapping(value = "/stuDeleteAll",method = RequestMethod.POST)
     @ResponseBody
     public String stuDeleteAll(Integer[] selectedIDs) {
         return selectUserBaseService.stuDeleteAll(selectedIDs);
