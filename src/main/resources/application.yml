@@ -1,5 +1,8 @@
 server:
   port: 8088
+  #session过期时间10分钟
+  session:
+    timeout: 600
 
 spring:
   datasource:
@@ -12,6 +15,13 @@ spring:
       suffix: .jsp
       prefix: /WEB-INF/pages/
 
+#  文件上传大小限制
+  http:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+      enabled: true
+
 #热部署生效
 
   devtools:
@@ -21,7 +31,6 @@ spring:
 #      additional-paths: src/main/java
       #classpath目录下的WEB-INF文件夹内容修改不重启
       exclude: WEB-INF/**
-
 
 
 mybatis:

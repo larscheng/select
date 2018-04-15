@@ -441,7 +441,7 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
             outputStream = response.getOutputStream();
             response.setContentType("application/octet-stream;charset=UTF-8");// 设置文件输出类型
             response.setHeader("Content-disposition", "attachment; filename="
-                    + new String(fileName.getBytes("utf-8"), "ISO8859-1"));//设置下载的文件名
+                    + new String(fileName.substring(5).getBytes("utf-8"), "ISO8859-1"));//设置下载的文件名
 //            String baseAbsoluteFilePath=request.getServletContext().getRealPath("");//获取的是项目在磁盘中的绝对路径，最后包括"\"
 //
 //            String fileRelativePath="WEB-INF/file/"+fileName;//文件相对于webRoot的路径
@@ -493,4 +493,16 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
     }
 
 
+    public String checkSubName(SelectSubject selectSubject) {
+        List<SelectSubject> subjects = selectSubjectMapper.selectList(new EntityWrapper<>(new SelectSubject().setSubName(selectSubject.getSubName())));
+
+        Map<String,Boolean> map = new HashMap<>();
+        if (!CollectionUtils.isEmpty(subjects)){
+            map.put("valid",false);
+        }else {
+            map.put("valid",true);
+        }
+
+        return JSONObject.toJSONString(map);
+    }
 }

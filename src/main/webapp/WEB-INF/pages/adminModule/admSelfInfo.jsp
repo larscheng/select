@@ -25,13 +25,13 @@
         <!-- Page heading -->
         <h2 class="pull-left">
             <!-- page meta -->
-            <span class="page-meta">我的信息</span>
+            <span class="page-meta">信息编辑</span>
         </h2>
 
 
         <!-- Breadcrumb -->
         <div class="bread-crumb pull-right">
-            <a href="${ctx}/index" target="_top"><i class="icon-home"></i> 我的信息</a>
+            <a href="${ctx}/index" target="_top"><i class="icon-home"></i> 信息编辑</a>
             <!-- Divider -->
             <span class="divider">/</span>
             <a href="#" class="bread-current">首页</a>
@@ -56,11 +56,15 @@
 
                     <div class="widget wgreen">
 
-                        <div class="widget-head">
+                        <div class="widget-head"  style="position: relative">
                             <div class="pull-left">信息</div>
                             <div class="widget-icons pull-right">
                                 <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                 <a href="#" class="wclose"><i class="icon-remove"></i></a>
+                            </div>
+                            <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
+
+                                <button type="button"  onclick="window.location.href='${ctx}/initChangePs';" style="margin-right: 10px" class="btn btn-info pull-left "><i class="icon-upload"></i>密码修改</button>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -76,7 +80,7 @@
                                         <label class="col-lg-4 control-label">账号</label>
                                         <div class="col-lg-8">
                                             <input type="hidden" class="form-control" name="id" value="${requestScope.user.id}" placeholder="学生账号">
-                                            <input type="text" class="form-control" name="userCode" value="${requestScope.user.userCode}" placeholder="学生账号">
+                                            <input type="text" disabled class="form-control" name="userCode" value="${requestScope.user.userCode}" placeholder="学生账号">
                                         </div>
                                     </div>
 
@@ -99,7 +103,7 @@
                                                 </label>
                                             </c:if>
 
-                                            <c:if test="${requestScope.user.userSex eq 0}">
+                                            <c:if test="${requestScope.user.userSex eq 2}">
                                                 <label class="radio-inline">
                                                     <input type="radio" name="userSex"  value="1" >男
                                                 </label>

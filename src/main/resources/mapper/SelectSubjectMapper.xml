@@ -74,6 +74,12 @@
 		<if test="@Ognl@isEmpty(admAuditState)">
 			and a.adm_audit_state in  (1,2)
 		</if>
+		<if test="@Ognl@isNotEmpty(searchBgnTime)">
+			and DATE_FORMAT(a.gmt_create,'%Y-%m-%d')  <![CDATA[>=]]> #{searchBgnTime}
+		</if>
+		<if test="@Ognl@isNotEmpty(searchEndTime)">
+			and DATE_FORMAT(a.gmt_create,'%Y-%m-%d')  <![CDATA[<=]]> #{searchEndTime}
+		</if>
 		ORDER BY a.adm_audit_state DESC ,a.gmt_create DESC
 	</select>
 

@@ -1,7 +1,11 @@
 package com.slxy.www.web;
 
 
+import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.slxy.www.common.Constant;
 import com.slxy.www.dao.ISelectUserBaseMapper;
+import com.slxy.www.domain.po.ChangePs;
 import com.slxy.www.domain.po.SelectUserBase;
 import com.slxy.www.domain.vo.SelectUserBaseVo;
 import com.slxy.www.enums.EnumEnOrDis;
@@ -12,6 +16,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,8 +28,7 @@ import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.util.Enumeration;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -44,10 +48,6 @@ public class SelectUserBaseController {
     private SelectUserBaseService selectUserBaseService;
     @Autowired
     private ISelectUserBaseMapper selectUserBaseMapper;
-
-    @ApiOperation(value = "首页跳转", notes = "")
-    @RequestMapping(value = "/",method = RequestMethod.GET)
-    public String index(){return "login";}
 
 
 
@@ -69,7 +69,11 @@ public class SelectUserBaseController {
             modelAndView.addObject("msg","账号密码错误，请重新登录");
             return modelAndView;
         }
-        modelAndView.setViewName("main");
+        if (userBase.getUserPassword().equals(Constant.USER_PASSWORD)){
+            modelAndView.setViewName("changePs");
+        }else {
+            modelAndView.setViewName("main");
+        }
         modelAndView.addObject("sessionUser",selectUserBase);
         modelAndView.addObject("sessionIp",this.getIp());
         modelAndView.addObject("userType",selectUserBase.getUserType());
@@ -124,7 +128,12 @@ public class SelectUserBaseController {
     }
 
 
-
+    @ApiOperation(value = "校验账号", notes = "")
+    @RequestMapping(value = "/checkCode" ,method = RequestMethod.POST)
+    @ResponseBody
+    public String checkCode(ChangePs changePs){
+        return selectUserBaseService.checkCode(changePs);
+    }
 
     /**
      * 管理员列表

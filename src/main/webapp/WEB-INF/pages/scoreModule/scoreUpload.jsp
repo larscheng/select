@@ -131,7 +131,7 @@
                                         </div>
                                     </c:if>
 
-                                        <c:if test="${sessionScope.userType eq 0 ||sessionScope.userType eq 1 }">
+                                        <c:if test="${sessionScope.userType eq 0 || sessionScope.userType eq 1 }">
                                             <div class="form-group ">
 
                                                 <label class="col-lg-4 control-label">评阅老师打分</label>

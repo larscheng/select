@@ -222,7 +222,7 @@ public class SelectTopicController {
      * @throws UnsupportedEncodingException
      */
     @ApiOperation(value = "导出选题记录", notes = "")
-    @RequestMapping(value = "/export",method = RequestMethod.POST)
+    @RequestMapping(value = "/export",method = RequestMethod.GET)
     @ResponseBody
     public String export(HttpServletRequest request, HttpServletResponse response, SelectTopicVo vo) throws ClassNotFoundException, IntrospectionException, IllegalAccessException, ParseException, InvocationTargetException, UnsupportedEncodingException {
         String fileName = "选题记录";
@@ -253,7 +253,7 @@ public class SelectTopicController {
 
 
     @ApiOperation(value = "导出成绩记录", notes = "")
-    @RequestMapping(value = "/exportScore",method = RequestMethod.POST)
+    @RequestMapping(value = "/exportScore",method = RequestMethod.GET)
     @ResponseBody
     public String exportScore(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, IntrospectionException, IllegalAccessException, ParseException, InvocationTargetException, UnsupportedEncodingException {
         String fileName = "选题成绩记录";

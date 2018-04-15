@@ -1,5 +1,6 @@
 package com.slxy.www.web;
 
+import com.alibaba.fastjson.JSONObject;
 import com.slxy.www.common.Constant;
 import com.slxy.www.dao.ISelectBugLogMapper;
 import com.slxy.www.domain.dto.SelectBugLogDto;
@@ -59,9 +60,9 @@ public class SelectBugLogController {
     @ApiOperation(value = "添加bug", notes = "")
     @RequestMapping(value = "/bugAdd",method = RequestMethod.POST)
     @ResponseBody
-    public String bugAdd(@RequestBody SelectBugLog selectBugLog) {
+    public String bugAdd(SelectBugLog selectBugLog) {
         selectBugLog.setGmtCreate(new Date());
-        return selectBugLogMapper.insert(selectBugLog)>0 ? Constant.SUCCESS:Constant.ERROR;
+        return selectBugLogMapper.insert(selectBugLog)>0 ? JSONObject.toJSONString(Constant.SUCCESS):JSONObject.toJSONString(Constant.ERROR);
     }
 }
 

@@ -137,7 +137,7 @@
                                         <label class="col-lg-4 control-label">学生账号</label>
                                         <div class="col-lg-8">
                                             <input type="hidden" class="form-control" name="id" value="${requestScope.user.id}" placeholder="学生账号">
-                                            <input type="text" class="form-control" name="userCode" value="${requestScope.user.userCode}" placeholder="学生账号">
+                                            <input type="text" disabled class="form-control" name="userCode" value="${requestScope.user.userCode}" placeholder="学生账号">
                                         </div>
                                     </div>
 

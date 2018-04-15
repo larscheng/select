@@ -112,7 +112,7 @@
                                         <label class="col-lg-4 control-label">题目名称</label>
                                         <div class="col-lg-8">
                                             <input type="hidden" class="form-control" id="teaId" name="teaId" >
-                                            <input type="text" class="form-control" name="subName" placeholder="题目名称">
+                                            <input type="text" class="form-control" id="subName" name="subName" placeholder="题目名称">
                                         </div>
                                     </div>
 
@@ -208,6 +208,20 @@
                     validators: {
                         notEmpty: {/*非空提示*/
                             message: '题目名称不能为空'
+                        },
+                         //有6字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
+                        remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}
+                            url: '${ctx}/selectSubject/checkSubName',//验证地址
+                            data: function(validator) {
+                                return {
+                                    userCode: $('#subName').val()
+                                };
+                            },
+                            dataType: "json",
+                            message: '该名称已存在！',//提示消息
+                            delay :  5000,//每输入一个字符，就发ajax请求，服务器压力还是太大，设置2秒发送一次ajax（默认输入一个字符，提交一次，服务器压力太大）
+                            type: 'POST'//请求方式
+
                         }
                     }
                 }

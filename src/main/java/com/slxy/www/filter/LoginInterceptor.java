@@ -78,12 +78,14 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                 } catch (Exception e) {
                     response.setCharacterEncoding("UTF-8");
                     System.out.println("========"+name+"===>LoginInterceptor preHandle 拦截，登录已过期，请重新登录！ip:"+ip);
+                    response.getWriter().write("<script>window.open('/','_top')</script>");
                     return false;
                 }
             } else {
                 response.setCharacterEncoding("UTF-8");
                 System.out.println("========"+name+"===>LoginInterceptor preHandle 拦截，尚未登录！ip:"+ip);
-                request.getRequestDispatcher("/login.jsp").forward(request, response);
+//                request.getRequestDispatcher("/login.jsp").forward(request, response);
+                response.getWriter().write("<script>window.open('/','_top')</script>");
                 return false;
             }
         }

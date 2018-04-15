@@ -1,6 +1,7 @@
 package com.slxy.www.web;
 
 import com.slxy.www.common.Constant;
+import com.slxy.www.domain.po.SelectSubject;
 import com.slxy.www.domain.vo.SelectSubjectVo;
 import com.slxy.www.enums.EnumSubState;
 import com.slxy.www.service.SelectSubjectService;
@@ -210,6 +211,14 @@ public class SelectSubjectController {
         return selectSubjectService.initSubAdd(modelAndView);
     }
 
+
+    @ApiOperation(value = "校验题目名称是否重复", notes = "")
+    @RequestMapping(value = "/checkSubName",method = RequestMethod.POST)
+    @ResponseBody
+    public String checkSubName(SelectSubject selectSubject) {
+        return selectSubjectService.checkSubName(selectSubject);
+    }
+
     /**
      * 题目添加
      * @param vo
@@ -309,7 +318,7 @@ public class SelectSubjectController {
     }
 
     @ApiOperation(value = "导出论文题目记录", notes = "")
-    @RequestMapping(value = "/export",method = RequestMethod.POST)
+    @RequestMapping(value = "/export",method = RequestMethod.GET)
     @ResponseBody
     public String export(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, IntrospectionException, IllegalAccessException, ParseException, InvocationTargetException, UnsupportedEncodingException {
         String fileName = "论文题目记录";

@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,7 +78,7 @@
                                             <label class="col-lg-1 control-label">总分</label>
 
                                             <div class="col-lg-1 panel panel-default pdl" >
-                                                <c:out value="${requestScope.sub.finalTotalScore}" default="0"/>
+                                                <b style="color: red"><c:out value="${requestScope.sub.finalTotalScore}" default="0"/></b>
                                             </div>
                                         </div>
 
@@ -88,7 +89,7 @@
 
                                             <div class="col-lg-1 panel panel-default pdl" >
 
-                                                <c:out value="${requestScope.sub.tutorScore}" default="0"/>
+                                                <b style="color: red"><c:out value="${requestScope.sub.tutorScore}" default="0"/></b>
                                             </div>
 
 
@@ -97,14 +98,14 @@
 
                                             <div class="col-lg-1 panel panel-default pdl" >
 
-                                                <c:out value="${requestScope.sub.judgeScore}" default="0"/>
+                                                <b style="color: red"><c:out value="${requestScope.sub.judgeScore}" default="0"/></b>
                                             </div>
 
                                             <label class="col-lg-2 control-label">答辩得分</label>
 
                                             <div class="col-lg-1 panel panel-default pdl" >
 
-                                                <c:out value="${requestScope.sub.defenceScore}" default="0"/>
+                                                <b style="color: red"><c:out value="${requestScope.sub.defenceScore}" default="0"/></b>
                                             </div>
 
 
@@ -150,8 +151,9 @@
                                     <div class="form-group">
 
                                         <label class="col-lg-4 control-label">题目文件</label>
-                                        <div class="col-lg-2 panel panel-default pdl" >
-                                            ${requestScope.sub.subFile}
+                                        <div class="col-lg-4 panel panel-default pdl" >
+                                            <%--${requestScope.sub.subFile}--%>
+                                                ${fn:substringAfter( requestScope.sub.subFile, "demo/")}
                                         </div>
                                         <div class="col-lg-2">
                                             <a class="btn btn-info"
@@ -172,7 +174,7 @@
                                     <div class="form-group">
                                         <label class="col-lg-4 control-label">审核状态</label>
                                         <div class="col-lg-4 panel panel-default pdl" >
-                                            ${requestScope.sub.subState}
+                                            <b style="color: red">${requestScope.sub.subState}</b>
                                         </div>
                                     </div>
 
@@ -180,7 +182,7 @@
                                             <label class="col-lg-4 control-label">审核意见</label>
 
                                             <div class="col-lg-4 panel panel-default pdl" >
-                                                <c:out value="${requestScope.sub.admAuditContent}" default="无" escapeXml="false"/>
+                                                <b style="color: red"><c:out value="${requestScope.sub.admAuditContent}" default="无" escapeXml="false"/></b>
                                             </div>
                                         </div>
 

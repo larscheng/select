@@ -56,11 +56,15 @@
 
                     <div class="widget wgreen">
 
-                        <div class="widget-head">
+                        <div class="widget-head"  style="position: relative">
                             <div class="pull-left">信息</div>
                             <div class="widget-icons pull-right">
                                 <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                 <a href="#" class="wclose"><i class="icon-remove"></i></a>
+                            </div>
+                            <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
+
+                                <button type="button"  onclick="window.location.href='${ctx}/initChangePs';" style="margin-right: 10px" class="btn btn-info pull-left "><i class="icon-upload"></i>密码修改</button>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -137,7 +141,7 @@
                                         <label class="col-lg-4 control-label">学生账号</label>
                                         <div class="col-lg-8">
                                             <input type="hidden" class="form-control" name="id" value="${requestScope.user.id}" placeholder="学生账号">
-                                            <input type="text" class="form-control" name="userCode" value="${requestScope.user.userCode}" placeholder="学生账号">
+                                            <input type="text" disabled class="form-control" name="userCode" value="${requestScope.user.userCode}" placeholder="学生账号">
                                         </div>
                                     </div>
 

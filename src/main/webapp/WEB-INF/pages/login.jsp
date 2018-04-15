@@ -59,7 +59,7 @@
 					<div class="widget-content">
 						<div class="padd">
 							<!-- Login form -->
-							<form id="defaultForm" class="form-horizontal" action="${ctx}/selectUserBase/login" method="post">
+							<form id="defaultForm" class="form-horizontal" action="${ctx}/login"  method="post">
 								<!-- Email -->
 								<div class="form-group">
 									<label class="control-label col-lg-3">账号</label>

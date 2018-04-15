@@ -78,6 +78,12 @@
 		<if test="@Ognl@isNotEmpty(delState)">
 			and a.del_state = #{delState}
 		</if>
+		<if test="@Ognl@isNotEmpty(searchBgnTime)">
+			and DATE_FORMAT(a.gmt_create,'%Y-%m-%d')  <![CDATA[>=]]> #{searchBgnTime}
+		</if>
+		<if test="@Ognl@isNotEmpty(searchEndTime)">
+			and DATE_FORMAT(a.gmt_create,'%Y-%m-%d')  <![CDATA[<=]]> #{searchEndTime}
+		</if>
 		ORDER BY a.tea_audit_state DESC ,a.gmt_create DESC
 	</select>
 

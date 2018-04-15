@@ -11,6 +11,7 @@ import com.slxy.www.dao.ISelectDepartmentMapper;
 import com.slxy.www.dao.ISelectMajorMapper;
 import com.slxy.www.dao.ISelectUserBaseMapper;
 import com.slxy.www.domain.dto.SelectUserBaseDto;
+import com.slxy.www.domain.po.ChangePs;
 import com.slxy.www.domain.po.SelectDepartment;
 import com.slxy.www.domain.po.SelectMajor;
 import com.slxy.www.domain.po.SelectUserBase;
@@ -22,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -732,5 +734,32 @@ public class SelectUserBaseService extends  ServiceImpl <ISelectUserBaseMapper, 
         SelectUserBase selectUserBase = new SelectUserBase().setId(userBaseVo.getId()).setUserStatus(userBaseVo.getUserStatus());
 
         return this.updateById(selectUserBase)?JSONObject.toJSONString(Constant.SUCCESS):JSONObject.toJSONString(Constant.ERROR);
+    }
+
+    /**
+     * 账号重复检测
+     * @param changePs
+     * @return
+     */
+    public String checkCode(ChangePs changePs) {
+        List<SelectUserBase> userBases = selectUserBaseMapper.selectList(new EntityWrapper<>(new SelectUserBase().setUserCode(changePs.getUserCode())));
+//        List<SelectUserBase> userBases = selectUserBaseMapper.selectList(new EntityWrapper<SelectUserBase>()
+//                .and("user_code=?",changePs.getUserCode())
+//                .and("user_type=?",changePs.getUserType())
+//        );
+//        if (changePs.getUserType().equals(EnumUserType.ADMIN.getValue())||changePs.getUserType().equals(EnumUserType.ADMIN0.getValue())){
+//            userBases = selectUserBaseMapper.selectList(new EntityWrapper<SelectUserBase>()
+//                    .and("user_code=?",changePs.getUserCode())
+//                    .in("user_type",new Integer[]{EnumUserType.ADMIN.getValue(),EnumUserType.ADMIN0.getValue()})
+//            );
+//        }
+        Map<String,Boolean> map = new HashMap<>();
+        if (!CollectionUtils.isEmpty(userBases)){
+            map.put("valid",false);
+        }else {
+            map.put("valid",true);
+        }
+
+        return JSONObject.toJSONString(map);
     }
 }

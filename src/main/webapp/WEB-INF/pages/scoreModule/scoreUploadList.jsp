@@ -344,7 +344,7 @@
 
 
 
-    function initTeaPage(objects) {
+    function initTeaPage(obj) {
 //        var obj =JSON.parse(objects);
         var topicList = obj.topicList;
         $("#items").html(null);

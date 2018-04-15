@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html lang="en">
@@ -78,7 +79,7 @@
                                             <label class="col-lg-1 control-label">总分</label>
 
                                             <div class="col-lg-1 panel panel-default pdl" >
-                                                <c:out value="${requestScope.topicDetails.finalTotalScore}" default="0"/>
+                                                <b style="color:red;"><c:out value="${requestScope.topicDetails.finalTotalScore}" default="0"/></b>
                                             </div>
                                         </div>
 
@@ -120,7 +121,8 @@
                                                 <div class="form-group">
                                                     <label class="col-lg-4 control-label">任务书</label>
                                                     <div class="col-lg-3 panel panel-default pdl" >
-                                                            ${requestScope.topicDetails.taskFile}
+                                                            <%--${requestScope.topicDetails.taskFile}--%>
+                                                                    ${fn:substringAfter( requestScope.topicDetails.taskFile, "demo/")}
                                                     </div>
                                                     <div class="col-lg-2">
                                                         <a class="btn btn-info"
@@ -146,7 +148,8 @@
                                                 <div class="form-group">
                                                     <label class="col-lg-4 control-label">开题报告</label>
                                                     <div class="col-lg-3 panel panel-default pdl" >
-                                                            ${requestScope.topicDetails.openingReport}
+                                                            <%--${requestScope.topicDetails.openingReport}--%>
+                                                                    ${fn:substringAfter( requestScope.topicDetails.openingReport, "demo/")}
                                                     </div>
                                                     <div class="col-lg-2">
                                                         <a class="btn btn-info"
@@ -172,7 +175,8 @@
                                                 <div class="form-group">
                                                     <label class="col-lg-4 control-label">毕业论文</label>
                                                     <div class="col-lg-3 panel panel-default pdl" >
-                                                            ${requestScope.topicDetails.dissertation}
+                                                            <%--${requestScope.topicDetails.dissertation}--%>
+                                                                    ${fn:substringAfter( requestScope.topicDetails.dissertation, "demo/")}
                                                     </div>
                                                     <div class="col-lg-2">
                                                         <a class="btn btn-info"
@@ -199,7 +203,8 @@
                                                 <div class="form-group">
                                                     <label class="col-lg-4 control-label">任务书</label>
                                                     <div class="col-lg-3 panel panel-default pdl" >
-                                                            ${requestScope.topicDetails.taskFile}
+                                                            <%--${requestScope.topicDetails.taskFile}--%>
+                                                                    ${fn:substringAfter( requestScope.topicDetails.taskFile, "demo/")}
                                                     </div>
                                                     <div class="col-lg-2">
                                                         <a class="btn btn-info"
@@ -224,7 +229,8 @@
                                                 <div class="form-group">
                                                     <label class="col-lg-4 control-label">开题报告</label>
                                                     <div class="col-lg-3 panel panel-default pdl" >
-                                                            ${requestScope.topicDetails.openingReport}
+                                                            <%--${requestScope.topicDetails.openingReport}--%>
+                                                                    ${fn:substringAfter( requestScope.topicDetails.openingReport, "demo/")}
                                                     </div>
                                                     <div class="col-lg-2">
                                                         <a class="btn btn-info"
@@ -249,7 +255,8 @@
                                                 <div class="form-group">
                                                     <label class="col-lg-4 control-label">毕业论文</label>
                                                     <div class="col-lg-3 panel panel-default pdl" >
-                                                            ${requestScope.topicDetails.dissertation}
+                                                            <%--${requestScope.topicDetails.dissertation}--%>
+                                                                    ${fn:substringAfter( requestScope.topicDetails.dissertation, "demo/")}
                                                     </div>
                                                     <div class="col-lg-2">
                                                         <a class="btn btn-info"

@@ -34,7 +34,7 @@
         <li><a href="${ctx}/selectSubject/subAllList?selectId=${sessionScope.sessionUser.id}" target="mainFrame" ><i class="icon-file-alt"></i> 历届论文信息 </a></li>
 
         <li><a href="${ctx}/selectTopic/topicUploadList?stuId=${sessionScope.sessionUser.id}" target="mainFrame"><i class="icon-calendar"></i>成绩查询</a></li>
-        <li><a href="${ctx}/selectUserBase/logout"  target="_top"><i class="icon-bar-chart"></i>注销</a></li>
+        <li><a href="${ctx}/logout" target="_top"><i class="icon-bar-chart"></i>注销</a></li>
 
     </ul>
 </div>
