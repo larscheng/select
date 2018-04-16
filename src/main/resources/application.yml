@@ -15,15 +15,14 @@ spring:
       suffix: .jsp
       prefix: /WEB-INF/pages/
 
-#  文件上传大小限制
+  #  文件上传大小限制
   http:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
       enabled: true
 
-#热部署生效
-
+  #热部署生效
   devtools:
     restart:
       enabled: true
@@ -31,7 +30,17 @@ spring:
 #      additional-paths: src/main/java
       #classpath目录下的WEB-INF文件夹内容修改不重启
       exclude: WEB-INF/**
-
+  mail:
+      host: smtp.163.com
+      username: 13108018752@163.com
+      password: zql123456
+      properties:
+        mail:
+          smtp:
+            auth: true
+            starttls:
+              enable: true
+              required: true
 
 mybatis:
   type-aliases-package: com.slxy.www.domain.po

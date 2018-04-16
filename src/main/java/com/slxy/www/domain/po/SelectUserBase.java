@@ -99,6 +99,10 @@ public class SelectUserBase implements Serializable {
 	@TableField(value = "operator_id")
 	private Integer operatorId;
 
+	/** 用户验证码 */
+	@TableField(value = "six_code")
+	private String sixCode;
+
 	/** 创建时间 */
 	@TableField(value = "gmt_create")
 	private Date gmtCreate;
@@ -306,4 +310,12 @@ public class SelectUserBase implements Serializable {
 		return this;
 	}
 
+	public String getSixCode() {
+		return sixCode;
+	}
+
+	public SelectUserBase setSixCode(String sixCode) {
+		this.sixCode = sixCode;
+		return this;
+	}
 }

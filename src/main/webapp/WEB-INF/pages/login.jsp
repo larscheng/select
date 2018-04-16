@@ -94,8 +94,13 @@
 						</div>
 					</div>
 
-					<div class="widget-foot">
-						<p class="copy">Copyright &copy; 2018 | <a href="#">商洛学院</a></p>
+					<div class="widget-foot center">
+						<p class="copy">
+							<a href="#">商洛学院</a>|
+							Copyright &copy; 2018|
+							<a href="${ctx}/initForgetPs">忘记密码</a>
+						</p>
+
 					</div>
 				</div>
 			</div>

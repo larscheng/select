@@ -23,6 +23,7 @@
  		<result column="tea_info" property="teaInfo" />
  		<result column="user_status" property="userStatus" />
  		<result column="user_type" property="userType" />
+ 		<result column="six_code" property="sixCode" />
  		<result column="operator_id" property="operatorId" />
  		<result column="gmt_create" property="gmtCreate" />
  		<result column="gmt_modify" property="gmtModify" />

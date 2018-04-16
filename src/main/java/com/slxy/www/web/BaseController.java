@@ -14,6 +14,7 @@ import com.slxy.www.dao.ISelectUserBaseMapper;
 import com.slxy.www.domain.po.ChangePs;
 import com.slxy.www.domain.po.SelectUserBase;
 import com.slxy.www.enums.EnumEnOrDis;
+import com.slxy.www.service.SelectJavaMailService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ import java.net.NetworkInterface;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * <p>
@@ -45,11 +47,14 @@ import java.util.Map;
 @Api(tags = "基础控制器", description = "跳转页面")
 @SessionAttributes(value = {"sessionUser","userType","sessionIp"})
 public class BaseController {
-@Autowired
-private ISelectUserBaseMapper selectUserBaseMapper;
+    @Autowired
+    private ISelectUserBaseMapper selectUserBaseMapper;
+
+    @Autowired
+    private SelectJavaMailService selectJavaMailService;
 
     @ApiOperation(value = "登录页跳转", notes = "")
-    @RequestMapping(value = {"/","","/login"} ,method = RequestMethod.GET)
+    @RequestMapping(value = {"/",""} ,method = RequestMethod.GET)
     public String index(){return "login";}
 
     @ApiOperation(value = "首页跳转", notes = "")
@@ -147,7 +152,12 @@ private ISelectUserBaseMapper selectUserBaseMapper;
     @RequestMapping(value = "/changePs" ,method = RequestMethod.POST)
     @ResponseBody
     public String changePs(ChangePs changePs){
-        SelectUserBase userBase = selectUserBaseMapper.selectById(changePs.getUserId());
+        SelectUserBase userBase  = new SelectUserBase();
+        if (ObjectUtils.isEmpty(changePs.getUserCode())){
+            userBase = selectUserBaseMapper.selectById(changePs.getUserId());
+        }else {
+            userBase = selectUserBaseMapper.selectOne(new SelectUserBase().setUserCode(changePs.getUserCode()));
+        }
         if (ObjectUtils.isEmpty(userBase)){
             return JSONObject.toJSONString("用户不存在");
         }
@@ -156,8 +166,10 @@ private ISelectUserBaseMapper selectUserBaseMapper;
                 .setUserPassword(changePs.getNewPassWord())
                 .setUserMail(changePs.getUserMail())
                 .setUserPhone(ObjectUtils.isEmpty(changePs.getUserPhone())?userBase.getUserPhone():changePs.getUserPhone())
-                .setUserQq(ObjectUtils.isEmpty(changePs.getUserQq())?userBase.getUserQq():changePs.getUserQq());
-        //TODO 发邮件通知
+                .setUserQq(ObjectUtils.isEmpty(changePs.getUserQq())?userBase.getUserQq():changePs.getUserQq())
+                .setSixCode("");
+        //发邮件通知
+        selectJavaMailService.sendHtmlMail(changePs.getUserMail(),userBase.getUserName(),changePs.getNewPassWord(),"密码重置");
 
         return selectUserBaseMapper.updateById(selectUserBase)>0 ? JSONObject.toJSONString(Constant.SUCCESS):JSONObject.toJSONString(Constant.ERROR);
 
@@ -167,7 +179,12 @@ private ISelectUserBaseMapper selectUserBaseMapper;
     @RequestMapping(value = "/checkPs" ,method = RequestMethod.POST)
     @ResponseBody
     public String checkPs(ChangePs changePs){
-        SelectUserBase userBase = selectUserBaseMapper.selectById(changePs.getUserId());
+        SelectUserBase userBase  = new SelectUserBase();
+        if (ObjectUtils.isEmpty(changePs.getUserCode())){
+            userBase = selectUserBaseMapper.selectById(changePs.getUserId());
+        }else {
+            userBase = selectUserBaseMapper.selectOne(new SelectUserBase().setUserCode(changePs.getUserCode()));
+        }
         Map<String,Boolean> map = new HashMap<>();
         if (!userBase.getUserPassword().equals(changePs.getPassWord())){
             map.put("valid",false);
@@ -175,6 +192,74 @@ private ISelectUserBaseMapper selectUserBaseMapper;
             map.put("valid",true);
         }
 
+        return JSONObject.toJSONString(map);
+    }
+
+    @ApiOperation(value = "忘记密码跳转", notes = "")
+    @RequestMapping(value = "/initForgetPs" ,method = RequestMethod.GET)
+    public String initForgetPs(){return "forgetPs";}
+
+    /**
+     * 获取6位验证码
+     * @return
+     */
+    private  String getSix() {
+        Random rad = new Random();
+
+        String result = rad.nextInt(1000000) + "";
+
+        if (result.length() != 6) {
+            return getSix();
+        }
+        return result;
+    }
+
+    @ApiOperation(value = "校验用户邮箱", notes = "")
+    @RequestMapping(value = "/checkMail" ,method = RequestMethod.POST)
+    @ResponseBody
+    public String checkMail(ChangePs changePs){
+        SelectUserBase userBase = selectUserBaseMapper.selectOne(new SelectUserBase()
+                .setUserCode(changePs.getUserCode())
+                .setUserMail(changePs.getUserMail()));
+        Map<String,Boolean> map = new HashMap<>();
+        if (ObjectUtils.isEmpty(userBase)){
+            map.put("valid",false);//显示信息
+        }else {
+            map.put("valid",true);
+        }
+
+        return JSONObject.toJSONString(map);
+    }
+
+    @ApiOperation(value = "发送验证码", notes = "")
+    @RequestMapping(value = "/sendSixCode" ,method = RequestMethod.POST)
+    @ResponseBody
+    public String sendSixCode(ChangePs changePs){
+        SelectUserBase userBase = selectUserBaseMapper.selectOne(new SelectUserBase()
+                .setUserCode(changePs.getUserCode()));
+        String sixCode = getSix();
+        SelectUserBase selectUserBase = new SelectUserBase()
+                .setId(userBase.getId())
+                .setSixCode(sixCode);
+        //验证码邮件
+        selectJavaMailService.sendHtmlMail(changePs.getUserMail(),userBase.getUserName(),sixCode,"修改密码的验证码");
+
+        return selectUserBaseMapper.updateById(selectUserBase)>0 ? JSONObject.toJSONString(Constant.SUCCESS):JSONObject.toJSONString(Constant.ERROR);
+    }
+
+    @ApiOperation(value = "校验验证码", notes = "")
+    @RequestMapping(value = "/checkSixCode" ,method = RequestMethod.POST)
+    @ResponseBody
+    public String checkSixCode(ChangePs changePs){
+        SelectUserBase userBase = selectUserBaseMapper.selectOne(new SelectUserBase()
+                .setUserCode(changePs.getUserCode())
+                .setSixCode(changePs.getSixCode()));
+        Map<String,Boolean> map = new HashMap<>();
+        if (ObjectUtils.isEmpty(userBase)){
+            map.put("valid",false);//显示信息
+        }else {
+            map.put("valid",true);
+        }
         return JSONObject.toJSONString(map);
     }
 

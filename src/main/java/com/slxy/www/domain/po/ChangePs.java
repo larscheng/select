@@ -17,9 +17,18 @@ public class ChangePs implements Serializable {
     private String newPassWord2;
     private String userPhone;
     private String userQq;
+    private String sixCode;
 
     private Integer userType;
     private String userCode;
+
+    public String getSixCode() {
+        return sixCode;
+    }
+
+    public void setSixCode(String sixCode) {
+        this.sixCode = sixCode;
+    }
 
     public String getUserPhone() {
         return userPhone;
