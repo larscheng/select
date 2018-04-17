@@ -20,7 +20,7 @@
         <!-- Logo. -->
         <div class="logo">
             <h1 class=" pull-left"><a href="#"><img src="resources/favicon.ico" width="60px" height="60px"><span class="bold"></span></a></h1>
-            <div class="meta" style="line-height: 60px;color: black; font-size: 28px; font-family: 华文楷体 ;"><b>论文选题系统</b></div>
+            <div class="meta" style="line-height: 60px;color: black; font-size: 28px; font-family: 华文楷体 ;"><b>毕业设计综合信息管理系统</b></div>
         </div>
         <!-- Logo ends -->
     </div>

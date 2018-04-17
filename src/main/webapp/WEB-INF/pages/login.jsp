@@ -44,7 +44,7 @@
 			<div class="col-md-12 center">
 				<%--<img src="/resources/favicon.ico" width="60px" height="60px" alt="">--%>
 
-				<b style="font-size: 35px ;line-height: 60px">选题系统</b>
+				<b style="font-size: 35px ;line-height: 60px;color: white">毕业设计综合信息管理系统</b>
 			</div>
 		</div>
 		<div class="row">
@@ -107,7 +107,8 @@
 		</div>
 		<div class="row">
 			<div class="col-md-12 center">
-				<b style="color: red">(管理员)测试账号：66666666，密码：123456。</br> 其他角色账号可自行添加测试</b>
+				<b style="color: red">(管理员)测试账号：66666666，密码：123456。</br> 其他角色账号可自行添加测试</br> </b>
+				<b style="color: red;font-size: larger">请在google浏览器中使用本系统!!!</b>
 			</div>
 		</div>
 	</div>

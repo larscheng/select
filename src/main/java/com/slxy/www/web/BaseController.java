@@ -45,7 +45,7 @@ import java.util.Random;
  */
 @Controller
 @Api(tags = "基础控制器", description = "跳转页面")
-@SessionAttributes(value = {"sessionUser","userType","sessionIp"})
+//@SessionAttributes(value = {"sessionUser","userType","sessionIp"})
 public class BaseController {
     @Autowired
     private ISelectUserBaseMapper selectUserBaseMapper;
@@ -65,7 +65,13 @@ public class BaseController {
 
     @ApiOperation(value = "登录", notes = "")
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public ModelAndView index(SelectUserBase userBase, ModelAndView  modelAndView) {
+    public ModelAndView index(SelectUserBase userBase, ModelAndView  modelAndView,HttpSession session) {
+        SelectUserBase sessionUser = (SelectUserBase)session.getAttribute("sessionUser");
+        if (!ObjectUtils.isEmpty(sessionUser)){
+            modelAndView.setViewName("/login");
+            modelAndView.addObject("msg","请先将已登录的用户注销");
+            return modelAndView;
+        }
         SelectUserBase user = new SelectUserBase().setUserCode(userBase.getUserCode());
         SelectUserBase selectUserBase = selectUserBaseMapper.selectOne((user));
         if (ObjectUtils.isEmpty(selectUserBase)){
@@ -86,9 +92,12 @@ public class BaseController {
         }else {
             modelAndView.setViewName("main");
         }
-        modelAndView.addObject("sessionUser",selectUserBase);
-        modelAndView.addObject("sessionIp",this.getIp());
-        modelAndView.addObject("userType",selectUserBase.getUserType());
+//        modelAndView.addObject("sessionUser",selectUserBase);
+//        modelAndView.addObject("sessionIp",this.getIp());
+//        modelAndView.addObject("userType",selectUserBase.getUserType());
+        session.setAttribute("sessionUser",selectUserBase);
+        session.setAttribute("sessionIp",this.getIp());
+        session.setAttribute("userType",selectUserBase.getUserType());
         return modelAndView;
     }
 

@@ -71,6 +71,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                     if (!boo){
                         System.out.println("========"+name+"===>LoginInterceptor preHandle 拦截，权限不足！ip:"+ip);
                         request.getRequestDispatcher("/auth.html").forward(request, response);
+//                        response.getWriter().write("<script>window.open('/auth.html','_top')</script>");
                     }else {
                         System.out.println("========"+name+"===>LoginInterceptor preHandle 拥有权限，通过！ip:"+ip);
                     }

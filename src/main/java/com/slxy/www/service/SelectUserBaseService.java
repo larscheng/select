@@ -35,6 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -233,6 +234,14 @@ public class SelectUserBaseService extends  ServiceImpl <ISelectUserBaseMapper, 
             modelAndView.addObject("user",userBase);
         }
         List<SelectUserBase> yearList = selectUserBaseMapper.selectStuYear();
+        if (CollectionUtils.isEmpty(yearList)){
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+            Date date = new Date();
+            Integer year  = Integer.parseInt(sdf.format(date));
+            for (int i = -4; i<2 ;i++){
+                yearList.add(new SelectUserBase().setStuYear(Integer.toString(year+i)));
+            }
+        }
         List<SelectMajor> majorList = selectMajorMapper.selectList(new EntityWrapper<SelectMajor>(new SelectMajor().setMajStatus(EnumEnOrDis.ENABLED.getValue())));
         List<SelectUserBase> classList = selectUserBaseMapper.selectStuClass();
         modelAndView.addObject("yearList",yearList);
@@ -346,7 +355,7 @@ public class SelectUserBaseService extends  ServiceImpl <ISelectUserBaseMapper, 
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         MultipartFile importFile = multipartRequest.getFile("fileField");
         if (importFile == null || !"select_students.xls".equals(importFile.getOriginalFilename())) {
-            return JSONObject.toJSONString(Constant.STU_IMPORT_ERROR_FILE_ERROR);
+            return JSONObject.toJSONString(Constant.STU_IMPORT_ERROR_FILE_NAME_ERROR);
         }
         // Excel的表头与文字对应，获取Excel表头
         LinkedHashMap<String, String> map = new LinkedHashMap<>(9);
@@ -597,7 +606,7 @@ public class SelectUserBaseService extends  ServiceImpl <ISelectUserBaseMapper, 
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         MultipartFile importFile = multipartRequest.getFile("fileField");
         if (importFile == null || !"select_teachers.xls".equals(importFile.getOriginalFilename())) {
-            return JSONObject.toJSONString(Constant.STU_IMPORT_ERROR_FILE_ERROR);
+            return JSONObject.toJSONString(Constant.STU_IMPORT_ERROR_FILE_NAME_ERROR);
         }
         // Excel的表头与文字对应，获取Excel表头
         LinkedHashMap<String, String> map = new LinkedHashMap<>(10);

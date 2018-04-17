@@ -11,6 +11,7 @@
 <!-- prettyPhoto -->
 <link rel="stylesheet" href="${ctx}/resources/style/prettyPhoto.css">
 
+<link rel="stylesheet" href="${ctx}/resources/style/font-awesome.css">
 
 <link href="${ctx}/resources/jquery/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
 <link rel="stylesheet" href="https://apps.bdimg.com/libs/bootstrap/3.2.0/css/bootstrap.min.css">
