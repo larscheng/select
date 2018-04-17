@@ -12,7 +12,7 @@
 	<!-- Stylesheets -->
 	<link href="${ctx}/resources/style/bootstrap.css" rel="stylesheet">
 	<!-- Font awesome icon -->
-	<link rel="stylesheet" href="${ctx}/resources/style/font-awesome.css">
+	<%--<link rel="stylesheet" href="${ctx}/resources/style/font-awesome.css">--%>
 
 	<link href="${ctx}/resources/jquery/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
 

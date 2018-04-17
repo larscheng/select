@@ -250,10 +250,10 @@ public class SelectUserBaseService extends  ServiceImpl <ISelectUserBaseMapper, 
     public String stuUpdate(SelectUserBase userBase) {
         //校验重复
         SelectUserBase selectUserBase = this.selectById(userBase.getId());
-        if (!userBase.getUserCode().equals(selectUserBase.getUserCode())){
-            String msg = checkCodeAndName(userBase);
-            if (!StringUtils.isEmpty(msg)) return msg;
-        }
+//        if (!userBase.getUserCode().equals(selectUserBase.getUserCode())){
+//            String msg = checkCodeAndName(userBase);
+//            if (!StringUtils.isEmpty(msg)) return msg;
+//        }
 
         return this.updateById(userBase)?JSONObject.toJSONString(Constant.SUCCESS):JSONObject.toJSONString(Constant.ERROR);
     }
@@ -556,8 +556,8 @@ public class SelectUserBaseService extends  ServiceImpl <ISelectUserBaseMapper, 
      */
     
     public String teaUpdate(SelectUserBase userBase) {
-        String msg = checkCodeAndName(userBase);
-        if (StringUtils.isEmpty(msg)) return msg;
+//        String msg = checkCodeAndName(userBase);
+//        if (StringUtils.isEmpty(msg)) return msg;
         return this.updateById(userBase)?JSONObject.toJSONString(Constant.SUCCESS):JSONObject.toJSONString(Constant.ERROR);
     }
 

@@ -12,6 +12,8 @@
 <head>
     <title>Title</title>
     <%@include file="/WEB-INF/pages/common/macTopCommon.jsp" %>
+    <!-- Font awesome icon -->
+    <link rel="stylesheet" href="${ctx}/resources/style/font-awesome.css">
 </head>
 <body>
 
