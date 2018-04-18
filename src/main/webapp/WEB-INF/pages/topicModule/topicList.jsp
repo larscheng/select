@@ -172,6 +172,9 @@
                                                                 <button  type="button" class="btn  btn-xs  btn-danger" onclick="topicDel(${topic.id})"><i class="icon-warning-sign"></i>删除</button>
                                                             </c:if>
                                                         </c:if>
+                                                        <c:if test="${sessionScope.userType eq 0 || sessionScope.userType eq 1 }">
+                                                            <button  type="button" class="btn  btn-xs  btn-danger" onclick="delTopic(${topic.id})"><i class="icon-warning-sign"></i>删除</button>
+                                                        </c:if>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -338,48 +341,20 @@
         });
     });
 
-
-
-    function teaAble(id){
-        confirm(" 😲 确认启用？","",function (isConfirm) {
-            if (isConfirm){
+    function delTopic(id) {
+        confirm(" 😲 确认删除吗？","",function (isconfirm) {
+            if (isconfirm){
                 $.ajax({
                     type:"POST",
-                    url:"${ctx}/selectUserBase/teaAble",
-                    data:{"id":id,"userStatus":1},
-                    dataType:"json",
-                    success:function(msg){
-                        if("OK"!=msg){
-                            alert(" 😅 "+msg);
-                        }else {
-                            alert(" 😋 启用成功","",function () {
-                                location.href="${ctx}/selectUserBase/teaList";
-                            },{type:"success",confirmButtonText:"好的"});
-                        }
-                    },
-                    error:function(e){
-                        alert("😥 系统异常，请与我们的工程师联系！");
-                    }
-                });
-            }
-        });
-    }
-
-
-    function teaDisAble(id){
-        confirm(" 😲 确认禁用？","",function (isConfirm) {
-            if (isConfirm){
-                $.ajax({
-                    type:"POST",
-                    url:"${ctx}/selectUserBase/teaAble",
-                    data:{"id":id,"userStatus":0},
+                    url:"${ctx}/selectTopic/delTopic",
+                    data:{"id":id},
                     dataType:"json",
                     success:function(msg){
                         if("OK"!=msg){
                             alert(" 😅 "+msg);
                         }else{
-                            alert(" 😋 禁用成功！","",function () {
-                                location.href="${ctx}/selectUserBase/teaList";
+                            alert(" 😋 删除成功！","",function () {
+                                location.href="${ctx}/selectTopic/topicList";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -388,10 +363,8 @@
                     }
                 });
             }
-        });
-
+        })
     }
-
 
 
     function topicDel(id){

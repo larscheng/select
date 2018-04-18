@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.slxy.www.common.Constant;
 import com.slxy.www.domain.po.SelectMajor;
+import com.slxy.www.domain.po.SelectUserBase;
 import com.slxy.www.domain.vo.SelectDepartmentVo;
 import com.slxy.www.enums.EnumEnOrDis;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class SelectDepartmentService extends  ServiceImpl <ISelectDepartmentMapp
 
     @Autowired
     private SelectMajorService selectMajorService;
+
+    @Autowired
+    private SelectUserBaseService selectUserBaseService;
 
 
     /**
@@ -104,7 +108,16 @@ public class SelectDepartmentService extends  ServiceImpl <ISelectDepartmentMapp
             if (!CollectionUtils.isEmpty(selectMajors)) {
                 return JSONObject.toJSONString(Constant.DEP_DISABLE_ERROR);
             }
+            //是否有启用的教师
+            List<SelectUserBase> selectUserBases = selectUserBaseService.selectList(new EntityWrapper<>(new SelectUserBase()
+                    .setTeaDepId(selectDepartment.getId())
+                    .setUserStatus(EnumEnOrDis.ENABLED.getValue())
+                    ));
+            if (!CollectionUtils.isEmpty(selectUserBases)) {
+                return JSONObject.toJSONString(Constant.DEP_DISABLE_ERROR_TEACHER);
+            }
         }
+        //编辑/启用
         selectDepartmentMapper.updateById(selectDepartment);
         return JSONObject.toJSONString(Constant.SUCCESS);
     }
@@ -119,15 +132,17 @@ public class SelectDepartmentService extends  ServiceImpl <ISelectDepartmentMapp
      *  @version        : v1.00
      *  @Author         : zhengql@senthink.com
      */
-
+    //存在教师不可删除,存在专业不可删除
     public String depDelete(SelectDepartment selectDepartment) {
-        //是否有启用中的所属专业
-        SelectMajor selectMajor = new SelectMajor();
-        selectMajor.setDepId(selectDepartment.getId());
-        selectMajor.setMajStatus(EnumEnOrDis.ENABLED.getValue());
-        List<SelectMajor> selectMajors = selectMajorService.selectList(new EntityWrapper<SelectMajor>(selectMajor));
+        //是否有所属专业
+        List<SelectMajor> selectMajors = selectMajorService.selectList(new EntityWrapper<>(new SelectMajor().setDepId(selectDepartment.getId())));
         if (!CollectionUtils.isEmpty(selectMajors)) {
             return JSONObject.toJSONString(Constant.DEP_DELETE_ERROR);
+        }
+        //是否有教师
+        List<SelectUserBase> selectUserBases = selectUserBaseService.selectList(new EntityWrapper<>(new SelectUserBase().setTeaDepId(selectDepartment.getId())));
+        if (!CollectionUtils.isEmpty(selectUserBases)) {
+            return JSONObject.toJSONString(Constant.DEP_DELETE_ERROR_EXIST_TEACHER);
         }
         selectDepartmentMapper.deleteById(selectDepartment);
         return JSONObject.toJSONString(Constant.SUCCESS);
@@ -151,10 +166,15 @@ public class SelectDepartmentService extends  ServiceImpl <ISelectDepartmentMapp
             SelectDepartment selectDepartment =selectDepartmentMapper.selectById(id);
             SelectMajor selectMajor = new SelectMajor();
             selectMajor.setDepId(id);
-            selectMajor.setMajStatus(EnumEnOrDis.ENABLED.getValue());
             List<SelectMajor> selectMajors = selectMajorService.selectList(new EntityWrapper<SelectMajor>(selectMajor));
+
             if (!CollectionUtils.isEmpty(selectMajors)) {
                 return JSONObject.toJSONString(Constant.DEP_DELETE_ERROR_NAME+selectDepartment.getDepName());
+            }
+
+            List<SelectUserBase> selectUserBases = selectUserBaseService.selectList(new EntityWrapper<>(new SelectUserBase().setTeaDepId(id)));
+            if (!CollectionUtils.isEmpty(selectUserBases)) {
+                return JSONObject.toJSONString(Constant.DEP_DELETE_ERROR_EXIST_TEACHER_NAME+selectDepartment.getDepName());
             }
         }
         if (this.deleteBatchIds(Arrays.asList(selectedIDs))){

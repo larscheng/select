@@ -331,5 +331,13 @@ public class SelectTopicController {
         return selectTopicService.uploadScore(vo);
     }
 
+
+    @ApiOperation(value = "删除选题", notes = "")
+    @RequestMapping(value = "/delTopic",method = RequestMethod.POST)
+    @ResponseBody
+    public String delTopic(SelectTopicVo vo) {
+        return selectTopicService.delTopic(vo);
+    }
+
 }
 

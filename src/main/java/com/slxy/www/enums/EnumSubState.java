@@ -15,6 +15,7 @@ public enum EnumSubState {
     Untreated(0, "未处理"),
     FAIL(1, "审核不通过"),
     SUCCESS(2, "审核通过"),
+    OVER(3, "结题"),
     ;
 
     private Integer      value;

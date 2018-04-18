@@ -15,6 +15,7 @@ public enum EnumSubSelectStatus {
     Untreated(0, "未选"),
     FAIL(1, "正在审核"),
     SUCCESS(2, "已被选"),
+    OVER(3, "结题"),
     ;
 
     private Integer      value;

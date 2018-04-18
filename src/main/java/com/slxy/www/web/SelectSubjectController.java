@@ -168,6 +168,17 @@ public class SelectSubjectController {
         return selectSubjectService.subDetail(modelAndView,vo);
     }
 
+    @ApiOperation(value = "删除题目", notes = "")
+    @RequestMapping(value = "/delSub",method = RequestMethod.POST)
+    @ResponseBody
+    public String delSub(SelectSubjectVo vo) {
+        return selectSubjectService.delSub(vo);
+    }
+
+
+
+
+
 
 
     //****************************************************教师**********************************************************//

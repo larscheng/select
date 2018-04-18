@@ -172,7 +172,7 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
         if (!ObjectUtils.isEmpty(file)){
 //            String fileDir =request.getServletContext().getRealPath("");
 //            String demoDir = "downFile";
-            String fileDir = "D:/select_files/";
+            String fileDir = Constant.FILE_DIR;
             String demoDir = "demo";
             String demoPath = demoDir + File.separator;
             String fileName = file.getOriginalFilename();
@@ -329,6 +329,45 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
         return xssfWorkbook;
     }
 
+    /***
+     * 删除选题记录
+     * 已被选未结题的选题记录不可删除
+     * @param vo
+     * @return
+     */
+    public String delTopic(SelectTopicVo vo) {
+        //检测状态
+        SelectTopic topic = this.selectById(vo.getId());
+        SelectSubject selectSubject  = selectSubjectMapper.selectById(topic.getSubId());
+        if (EnumSubSelectStatus.SUCCESS.getValue().equals(selectSubject.getSubSelectStatus())){
+            return JSONObject.toJSONString(Constant.SELECT_DEL_ERROR);
+        }
 
+        SelectTopic selectTopic = this.selectById(vo.getId());
+        //删除记录，删除文件
+        deleteFile(Constant.FILE_DIR+selectTopic.getTaskFile());
+        deleteFile(Constant.FILE_DIR+selectTopic.getOpeningReport());
+        deleteFile(Constant.FILE_DIR+selectTopic.getDissertation());
+        return this.deleteById(selectTopic) ? JSONObject.toJSONString(Constant.SUCCESS) : JSONObject.toJSONString(Constant.ERROR);
+
+    }
+
+
+
+    /***
+     * 删除文件
+     * @param sPath 路径+文件名
+     * @return
+     */
+    public  boolean deleteFile(String sPath) {
+        Boolean flag = false;
+        File file = new File(sPath);
+        // 路径为文件且不为空则进行删除
+        if (file.isFile() && file.exists()) {
+            file.delete();
+            flag = true;
+        }
+        return flag;
+    }
 }
 

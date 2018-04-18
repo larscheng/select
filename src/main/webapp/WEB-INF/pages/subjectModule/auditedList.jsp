@@ -175,9 +175,13 @@
                                                     <td><fmt:formatDate value="${subject.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>
                                                         <button class="btn btn-xs btn-info" onclick="subjectDetails(${subject.id})"><i class="icon-pencil"></i>详情</button>
+                                                        <c:if test="${subject.subSelectStatus != 2}">
+                                                            <button class="btn btn-xs btn-danger" onclick="subDel(${subject.id})"><i class="icon-pencil"></i>删除</button>
+                                                        </c:if>
                                                         <c:if test="${subject.admAuditState eq 1}">
                                                             <button class="btn btn-xs btn-success" onclick="subSuccess(${subject.id})"><i class="icon-ok-circle"></i>通过</button>
                                                         </c:if>
+
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -323,6 +327,32 @@
 
     function subjectDetails(id) {
         window.location.href="${ctx}/selectSubject/subjectDetail?id="+id;
+    }
+
+
+    function subDel(id) {
+        confirm(" 😲 确认删除吗？","",function (isconfirm) {
+            if (isconfirm){
+                $.ajax({
+                    type:"POST",
+                    url:"${ctx}/selectSubject/delSub",
+                    data:{"id":id},
+                    dataType:"json",
+                    success:function(msg){
+                        if("OK"!=msg){
+                            alert(" 😅 "+msg);
+                        }else{
+                            alert(" 😋 删除成功！","",function () {
+                                location.href="${ctx}/selectSubject/subList";
+                            },{type:"success",confirmButtonText:"好的"});
+                        }
+                    },
+                    error:function(e){
+                        alert("😥 系统异常，请与我们的工程师联系！");
+                    }
+                });
+            }
+        })
     }
 
 

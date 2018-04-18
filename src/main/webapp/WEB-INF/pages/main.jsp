@@ -22,4 +22,11 @@
             id="footFrame" title="footFrame" />
 
 </frameset>
+<body onunload="window.location='${ctx}/logout'">
+
+</body>
 </html>
+
+<script type="text/javascript">
+
+</script>

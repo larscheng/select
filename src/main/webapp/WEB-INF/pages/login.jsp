@@ -59,7 +59,7 @@
 					<div class="widget-content">
 						<div class="padd">
 							<!-- Login form -->
-							<form id="defaultForm" class="form-horizontal" action="${ctx}/login"  method="post">
+							<form id="defaultForm" class="form-horizontal" <%-- action="${ctx}/login" --%> method="post">
 								<!-- Email -->
 								<div class="form-group">
 									<label class="control-label col-lg-3">账号</label>
@@ -71,21 +71,21 @@
 								<div class="form-group">
 									<label class="control-label col-lg-3">密码</label>
 									<div class="col-lg-9">
-										<input type="password" class="form-control" name="userPassword" placeholder="请输入密码">
+										<input type="password" class="form-control" id="userPassword" name="userPassword" placeholder="请输入密码">
 									</div>
 								</div>
 								<!-- Remember me checkbox and sign in button -->
 								<div class="form-group">
 									<div class="col-lg-8 col-lg-offset-3">
+										<b>
+											<div id="msg" style="display: block;  color: red">
 
-											<label id="msg" style="display: block">
-												<b style="color: red">${requestScope.msg}</b>
-											</label>
-
+											</div>
+										</b>
 									</div>
 								</div>
 								<div class="col-lg-9 col-lg-offset-4">
-									<button type="submit" class="btn btn-danger">登录</button>
+									<button type="button" id="loginSubmit" class="btn btn-danger">登录</button>
 									<button type="reset" class="btn btn-default">重填</button>
 								</div>
 								<br />
@@ -130,8 +130,11 @@
 <script type="text/javascript">
     $("input").focus(function(){
         $("#msg").css("display","none");
+        $("#msg").text("");
     });
-
+    $("input").blur(function(){
+        $("#msg").css("display","block");
+    });
     $(document).ready(function() {
 
         /**
@@ -149,6 +152,7 @@
                         },
                         stringLength: {/*长度提示*/
                             min: 8,
+							max: 8,
                             message: '账号长度必须位8位'
                         }/*最后一个没有逗号*/
                     }
@@ -169,6 +173,83 @@
             }
         });
     });
+
+
+    /**
+     * 校验文本是否为空
+     * tips：提示信息
+     * 使用方法：$("#id").validate("提示文本");
+     * @itmyhome
+     */
+    $.fn.validate = function(tips){
+
+        if($(this).val() == "" || $.trim($(this).val()).length == 0){
+            return false;
+        }else {
+            return true;
+        }
+    };
+
+
+    $("#loginSubmit").click(function(){
+        //获取表单对象
+        var bootstrapValidator = $("#defaultForm").data('bootstrapValidator');
+        //手动触发验证
+        bootstrapValidator.validate();
+
+        if(bootstrapValidator.isValid()){
+            login()
+        }
+    });
+
+
+    $(document).keyup(function(event){
+        if(event.keyCode ==13){
+                $("#msg").css("display","block");
+            login()
+        }
+    });
+
+
+    function login() {
+        if (!$("#userCode").validate()) {
+            $("#msg").text(" 😅 请填写您的账号");
+            return;
+        }
+        if (!$("#userCode").validate()) {
+            $("#msg").text(" 😅 请填写您的密码");
+
+            return;
+        }
+        $.ajax({
+            type: "post",
+            url: "${ctx}/login",
+            data: $("#defaultForm").serialize(),
+//                data: formData,
+            async: true,
+//                // 下面三个参数要指定，如果不指定，会报一个JQuery的错误
+//                cache: false,
+//                contentType: false,
+//                processData: false,
+            dataType: "json",
+            success: function (msg) {
+                if ("OK" == msg) {
+                    location.href = "${ctx}/index";
+                } else if ("NO" == msg) {
+                    location.href = "${ctx}/initChangePs";
+                } else {
+                    $("#userCode").val("");
+                    $("#userPassword").val("");
+                    $("#msg").text(msg);
+                }
+
+            },
+            error: function (e) {
+                alert(" 😥 系统异常，请与我们的工程师小哥哥联系！");
+            }
+        });
+    }
+
 </script>
 
 </body>

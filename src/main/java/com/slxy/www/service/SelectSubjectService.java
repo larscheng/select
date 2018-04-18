@@ -306,7 +306,7 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
         if (!ObjectUtils.isEmpty(file)){
 //            String fileDir =request.getServletContext().getRealPath("");
 //            String demoDir = "downFile";
-            String fileDir = "D:/select_files/";
+            String fileDir = Constant.FILE_DIR;
             String demoDir = "demo";
             String demoPath = demoDir + File.separator;
             String fileName = file.getOriginalFilename();
@@ -449,7 +449,7 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
 //            inputStream=new FileInputStream(baseAbsoluteFilePath+fileRelativePath);
 
 
-            String fileRelativePath="D:/select_files/"+fileName;//文件相对于webRoot的路径
+            String fileRelativePath=Constant.FILE_DIR+fileName;//文件相对于webRoot的路径
             inputStream=new FileInputStream(fileRelativePath);
             byte[] buff=new byte[1024];
             Integer readLength=0;
@@ -459,7 +459,7 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
             outputStream.close();
             inputStream.close();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+            //
             e.printStackTrace();
         }
     }
@@ -504,5 +504,49 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
         }
 
         return JSONObject.toJSONString(map);
+    }
+
+    /***
+     * 删除题目
+     * @param vo
+     * @return
+     */
+    @Transactional
+    public String delSub(SelectSubjectVo vo) {
+
+        //检测题目状态，是否处在 已被选 状态
+        SelectSubject selectSubject = this.selectById(vo.getId());
+        if (EnumSubSelectStatus.SUCCESS.getValue().equals(selectSubject.getSubSelectStatus())){
+            return JSONObject.toJSONString(Constant.SUB_DEL_ERROR);
+        }
+
+        SelectTopic selectTopic = selectTopicService.selectOne(new EntityWrapper<>(new SelectTopic().setSubId(selectSubject.getId())));
+        if (!ObjectUtils.isEmpty(selectTopic)){
+            //存在选题记录----删除一切
+            deleteFile(Constant.FILE_DIR+selectTopic.getTaskFile());
+            deleteFile(Constant.FILE_DIR+selectTopic.getOpeningReport());
+            deleteFile(Constant.FILE_DIR+selectTopic.getDissertation());
+            selectTopicService.deleteById(selectTopic);
+        }
+
+        //删除题目的信息、选题信息、文件
+        deleteFile(Constant.FILE_DIR+selectSubject.getSubFile());
+        return this.deleteById(selectSubject) ? JSONObject.toJSONString(Constant.SUCCESS) : JSONObject.toJSONString(Constant.ERROR);
+    }
+
+    /***
+     * 删除文件
+     * @param sPath 路径+文件名
+     * @return
+     */
+    public  boolean deleteFile(String sPath) {
+        Boolean flag = false;
+        File file = new File(sPath);
+        // 路径为文件且不为空则进行删除
+        if (file.isFile() && file.exists()) {
+            file.delete();
+            flag = true;
+        }
+        return flag;
     }
 }

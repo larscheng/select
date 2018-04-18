@@ -7,14 +7,9 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.slxy.www.common.Constant;
 import com.slxy.www.common.ExcelUtil;
 import com.slxy.www.common.SelectMapStructMapper;
-import com.slxy.www.dao.ISelectDepartmentMapper;
-import com.slxy.www.dao.ISelectMajorMapper;
-import com.slxy.www.dao.ISelectUserBaseMapper;
+import com.slxy.www.dao.*;
 import com.slxy.www.domain.dto.SelectUserBaseDto;
-import com.slxy.www.domain.po.ChangePs;
-import com.slxy.www.domain.po.SelectDepartment;
-import com.slxy.www.domain.po.SelectMajor;
-import com.slxy.www.domain.po.SelectUserBase;
+import com.slxy.www.domain.po.*;
 import com.slxy.www.domain.vo.ImportStuVo;
 import com.slxy.www.domain.vo.ImportTeaVo;
 import com.slxy.www.domain.vo.SelectUserBaseVo;
@@ -23,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -53,7 +49,10 @@ public class SelectUserBaseService extends  ServiceImpl <ISelectUserBaseMapper, 
     private ISelectMajorMapper selectMajorMapper;
     @Autowired
     private ISelectDepartmentMapper selectDepartmentMapper;
-
+    @Autowired
+    private ISelectTopicMapper selectTopicMapper;
+    @Autowired
+    private ISelectSubjectMapper selectSubjectMapper;
 
 
 
@@ -173,15 +172,26 @@ public class SelectUserBaseService extends  ServiceImpl <ISelectUserBaseMapper, 
      */
     
     public String stuAble(SelectUserBaseVo userBaseVo) {
-        SelectUserBase userBase = this.selectById(userBaseVo.getId());
-        SelectMajor selectMajor = selectMajorMapper.selectById(userBase.getStuMajorId());
-        //启用，判断所属专业是否被禁用
-        if (ObjectUtils.isEmpty(selectMajor)||selectMajor.getMajStatus().equals(EnumEnOrDis.DISABLED.getValue())){
-            logger.info(Constant.STU_ABLE_ERROR_MAJ_DISABLE);
-            return JSONObject.toJSONString(Constant.STU_ABLE_ERROR_MAJ_DISABLE);
-        }
-        //todo 判断选题记录是否完成
 
+        if (userBaseVo.getUserStatus().equals(EnumEnOrDis.ENABLED.getValue())){
+            //启用，判断所属专业是否被禁用
+            SelectUserBase userBase = this.selectById(userBaseVo.getId());
+            SelectMajor selectMajor = selectMajorMapper.selectById(userBase.getStuMajorId());
+            if (ObjectUtils.isEmpty(selectMajor)||selectMajor.getMajStatus().equals(EnumEnOrDis.DISABLED.getValue())){
+                logger.info(Constant.STU_ABLE_ERROR_MAJ_DISABLE);
+                return JSONObject.toJSONString(Constant.STU_ABLE_ERROR_MAJ_DISABLE);
+            }
+        }else {
+            //禁用：判断选题记录是否完成
+            SelectTopic selectTopic = selectTopicMapper.selectOne(new SelectTopic()
+                    .setStuId(userBaseVo.getId())
+                    .setDelState(EnumYesOrNo.NO.getValue()));
+            if (!ObjectUtils.isEmpty(selectTopic)){
+                if (!selectTopic.getTeaAuditState().equals(EnumSubState.OVER.getValue())){
+                    return JSONObject.toJSONString(Constant.STU_DISABLE_ERROR_TOPIC);
+                }
+            }
+        }
         SelectUserBase selectUserBase = new SelectUserBase()
                 .setId(userBaseVo.getId())
                 .setUserStatus(userBaseVo.getUserStatus());
@@ -194,12 +204,23 @@ public class SelectUserBaseService extends  ServiceImpl <ISelectUserBaseMapper, 
      * @param userBaseVo
      * @return
      */
-    
+    @Transactional
     public String stuDelete(SelectUserBaseVo userBaseVo) {
-        //todo 存在未完成选题记录不可删除
+        //存在选题记录不可删除
+        SelectTopic selectTopic = selectTopicMapper.selectOne(new SelectTopic().setStuId(userBaseVo.getId())
+            .setDelState(EnumEnOrDis.DISABLED.getValue()));
+        if (!ObjectUtils.isEmpty(selectTopic)){
+            return JSONObject.toJSONString(Constant.STU_DEL_ERROR_EXIST_SELECT);
+        }
+        //不存在则删除：1删除假删除过的记录，2删除学生
+        selectTopic = selectTopicMapper.selectOne(new SelectTopic().setStuId(userBaseVo.getId())
+                .setDelState(EnumEnOrDis.ENABLED.getValue()));
+        if (!ObjectUtils.isEmpty(selectTopic)){
+            selectTopicMapper.deleteById(selectTopic);
+        }
+
         SelectUserBase selectUserBase = new SelectUserBase()
-                .setId(userBaseVo.getId())
-                .setUserStatus(userBaseVo.getUserStatus());
+                .setId(userBaseVo.getId());
         return this.deleteById(selectUserBase) ? JSONObject.toJSONString(Constant.SUCCESS):JSONObject.toJSONString(Constant.ERROR);
     }
 
@@ -210,10 +231,21 @@ public class SelectUserBaseService extends  ServiceImpl <ISelectUserBaseMapper, 
      */
     
     public String stuDeleteAll(Integer[] selectedIDs) {
-        //todo 存在未完成的选题记录不可删除
+        //存在选题记录不可删除
         for (Integer id: selectedIDs){
             SelectUserBase selectUserBase = new SelectUserBase().setId(id);
-
+            //存在选题记录不可删除
+            SelectTopic selectTopic = selectTopicMapper.selectOne(new SelectTopic().setStuId(id)
+                    .setDelState(EnumEnOrDis.DISABLED.getValue()));
+            if (!ObjectUtils.isEmpty(selectTopic)){
+                return JSONObject.toJSONString(Constant.STU_DEL_ERROR_EXIST_SELECT_NAME+selectUserBase.getUserName());
+            }
+            //不存在则删除：1删除假删除过的记录，2删除学生
+            selectTopic = selectTopicMapper.selectOne(new SelectTopic().setStuId(id)
+                    .setDelState(EnumEnOrDis.ENABLED.getValue()));
+            if (!ObjectUtils.isEmpty(selectTopic)){
+                selectTopicMapper.deleteById(selectTopic);
+            }
         }
         return this.deleteBatchIds(Arrays.asList(selectedIDs))?JSONObject.toJSONString(Constant.SUCCESS):JSONObject.toJSONString(Constant.ERROR);
     }
@@ -238,7 +270,7 @@ public class SelectUserBaseService extends  ServiceImpl <ISelectUserBaseMapper, 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
             Date date = new Date();
             Integer year  = Integer.parseInt(sdf.format(date));
-            for (int i = -4; i<2 ;i++){
+            for (int i = -5; i<1 ;i++){
                 yearList.add(new SelectUserBase().setStuYear(Integer.toString(year+i)));
             }
         }
@@ -258,11 +290,7 @@ public class SelectUserBaseService extends  ServiceImpl <ISelectUserBaseMapper, 
     
     public String stuUpdate(SelectUserBase userBase) {
         //校验重复
-        SelectUserBase selectUserBase = this.selectById(userBase.getId());
-//        if (!userBase.getUserCode().equals(selectUserBase.getUserCode())){
-//            String msg = checkCodeAndName(userBase);
-//            if (!StringUtils.isEmpty(msg)) return msg;
-//        }
+
 
         return this.updateById(userBase)?JSONObject.toJSONString(Constant.SUCCESS):JSONObject.toJSONString(Constant.ERROR);
     }
@@ -313,7 +341,7 @@ public class SelectUserBaseService extends  ServiceImpl <ISelectUserBaseMapper, 
             outputStream.close();
             inputStream.close();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+
             e.printStackTrace();
         }
     }
@@ -513,11 +541,27 @@ public class SelectUserBaseService extends  ServiceImpl <ISelectUserBaseMapper, 
      */
     
     public String teaAble(SelectUserBase userBase) {
-        //todo 有题目信息的不可禁用/系别禁用时教师不可启用
+        //有题目信息的不可禁用/系别禁用时教师不可启用
         SelectUserBase selectUserBase = selectUserBaseMapper.selectById(userBase.getId());
         if (ObjectUtils.isEmpty(selectUserBase)){
             return JSONObject.toJSONString(Constant.ERROR);
         }
+        if(userBase.getUserStatus().equals(EnumEnOrDis.DISABLED.getValue())){
+            //有题目信息的不可禁用
+            List<SelectSubject> selectSubjects = selectSubjectMapper.selectList(new EntityWrapper<>(new SelectSubject().setTeaId(userBase.getId())));
+            if (CollectionUtils.isEmpty(selectSubjects)){
+                logger.info(Constant.TEA_DEL_ERROR_EXIST_SELECT);
+                return JSONObject.toJSONString(Constant.TEA_DEL_ERROR_EXIST_SELECT);
+            }
+        }else {
+            //系别禁用时教师不可启用
+            SelectDepartment department = selectDepartmentMapper.selectById(selectUserBase.getTeaDepId());
+            if (department.getDepStatus().equals(EnumEnOrDis.DISABLED.getValue())){
+                return JSONObject.toJSONString(Constant.TEA_DEL_ERROR_EXIST_SELECT);
+            }
+        }
+
+
         return this.updateById(userBase)?JSONObject.toJSONString(Constant.SUCCESS):JSONObject.toJSONString(Constant.ERROR);
     }
 
@@ -577,9 +621,12 @@ public class SelectUserBaseService extends  ServiceImpl <ISelectUserBaseMapper, 
      */
     
     public String teaDelete(SelectUserBase userBase) {
-        //TODO 删除所有相关的题目记录
-
-
+        //是否存在题目信息
+        List<SelectSubject> selectSubjects = selectSubjectMapper.selectList(new EntityWrapper<>(new SelectSubject().setTeaId(userBase.getId())));
+        if (CollectionUtils.isEmpty(selectSubjects)){
+            logger.info(Constant.TEA_DEL_ERROR_EXIST_SELECT);
+            return JSONObject.toJSONString(Constant.TEA_DEL_ERROR_EXIST_SELECT);
+        }
         return this.deleteById(userBase)?JSONObject.toJSONString(Constant.SUCCESS):JSONObject.toJSONString(Constant.ERROR);
     }
 
@@ -590,7 +637,14 @@ public class SelectUserBaseService extends  ServiceImpl <ISelectUserBaseMapper, 
      */
     
     public String teaDeleteAll(Integer[] selectedIDs) {
-        //TODO 删除所有相关的题目记录
+        //存在题目不可删除
+        for (Integer i: selectedIDs) {
+            List<SelectSubject> selectSubjects = selectSubjectMapper.selectList(new EntityWrapper<>(new SelectSubject().setTeaId(i)));
+            if (CollectionUtils.isEmpty(selectSubjects)){
+                logger.info(Constant.TEA_DEL_ERROR_EXIST_SELECT);
+                return JSONObject.toJSONString(Constant.TEA_DEL_ERROR_EXIST_SELECT_NAME);
+            }
+        }
         return this.deleteBatchIds(Arrays.asList(selectedIDs))?JSONObject.toJSONString(Constant.SUCCESS):JSONObject.toJSONString(Constant.ERROR);
     }
 

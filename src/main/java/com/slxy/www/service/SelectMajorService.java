@@ -159,7 +159,7 @@ public class SelectMajorService extends  ServiceImpl <ISelectMajorMapper, Select
     }
 
     /**
-     * 删除
+     * 删除 存在学生不可删除
      * @param selectMajor
      * @return
      */

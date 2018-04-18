@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -55,51 +56,97 @@ public class BaseController {
 
     @ApiOperation(value = "登录页跳转", notes = "")
     @RequestMapping(value = {"/",""} ,method = RequestMethod.GET)
-    public String index(){return "login";}
+    public String index(HttpSession session){
+        SelectUserBase sessionUser = (SelectUserBase)session.getAttribute("sessionUser");
+        if (!ObjectUtils.isEmpty(sessionUser)){
+            return "main";
+        }
+        return "login";}
 
     @ApiOperation(value = "首页跳转", notes = "")
     @RequestMapping(value = "/index" ,method = RequestMethod.GET)
-    public String index2(){return "main";}
+    public String index2(HttpSession session){
+        SelectUserBase sessionUser = (SelectUserBase)session.getAttribute("sessionUser");
+        if (ObjectUtils.isEmpty(sessionUser)){
+            return "login";
+        }
+        return "main";
+    }
 
 
 
     @ApiOperation(value = "登录", notes = "")
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public ModelAndView index(SelectUserBase userBase, ModelAndView  modelAndView,HttpSession session) {
+    @ResponseBody
+    public String login(SelectUserBase userBase, HttpSession session){
         SelectUserBase sessionUser = (SelectUserBase)session.getAttribute("sessionUser");
         if (!ObjectUtils.isEmpty(sessionUser)){
-            modelAndView.setViewName("/login");
-            modelAndView.addObject("msg","请先将已登录的用户注销");
-            return modelAndView;
+//            return JSONObject.toJSONString("请先将已登录的用户注销");
+            return JSONObject.toJSONString(Constant.SUCCESS);
         }
         SelectUserBase user = new SelectUserBase().setUserCode(userBase.getUserCode());
         SelectUserBase selectUserBase = selectUserBaseMapper.selectOne((user));
         if (ObjectUtils.isEmpty(selectUserBase)){
-            modelAndView.setViewName("/login");
-            modelAndView.addObject("msg","该用户不存在，请重新登录");
-            return modelAndView;
+            return JSONObject.toJSONString("该用户不存在，请重新登录");
         }else if (selectUserBase.getUserStatus().equals(EnumEnOrDis.DISABLED.getValue())){
-            modelAndView.setViewName("/login");
-            modelAndView.addObject("msg","该用户已被禁用，请重新登录");
-            return modelAndView;
+
+            return JSONObject.toJSONString("该用户已被禁用，请重新登录");
+
         }else if (!userBase.getUserPassword().equals(selectUserBase.getUserPassword())){
-            modelAndView.setViewName("/login");
-            modelAndView.addObject("msg","账号密码错误，请重新登录");
-            return modelAndView;
+
+            return JSONObject.toJSONString("账号密码错误，请重新登录");
         }
-        if (userBase.getUserPassword().equals(Constant.USER_PASSWORD)){
-            modelAndView.setViewName("changePs");
-        }else {
-            modelAndView.setViewName("main");
-        }
-//        modelAndView.addObject("sessionUser",selectUserBase);
-//        modelAndView.addObject("sessionIp",this.getIp());
-//        modelAndView.addObject("userType",selectUserBase.getUserType());
+
         session.setAttribute("sessionUser",selectUserBase);
         session.setAttribute("sessionIp",this.getIp());
         session.setAttribute("userType",selectUserBase.getUserType());
-        return modelAndView;
+        if (userBase.getUserPassword().equals(Constant.USER_PASSWORD)){
+            return JSONObject.toJSONString("NO");
+        }else {
+            return JSONObject.toJSONString(Constant.SUCCESS);
+        }
+
+
     }
+
+
+
+
+//    public ModelAndView index(SelectUserBase userBase, ModelAndView  modelAndView,HttpSession session) {
+//        SelectUserBase sessionUser = (SelectUserBase)session.getAttribute("sessionUser");
+//        if (!ObjectUtils.isEmpty(sessionUser)){
+//            modelAndView.setViewName("/login");
+//            modelAndView.addObject("msg","请先将已登录的用户注销");
+//            return modelAndView;
+//        }
+//        SelectUserBase user = new SelectUserBase().setUserCode(userBase.getUserCode());
+//        SelectUserBase selectUserBase = selectUserBaseMapper.selectOne((user));
+//        if (ObjectUtils.isEmpty(selectUserBase)){
+//            modelAndView.setViewName("/login");
+//            modelAndView.addObject("msg","该用户不存在，请重新登录");
+//            return modelAndView;
+//        }else if (selectUserBase.getUserStatus().equals(EnumEnOrDis.DISABLED.getValue())){
+//            modelAndView.setViewName("/login");
+//            modelAndView.addObject("msg","该用户已被禁用，请重新登录");
+//            return modelAndView;
+//        }else if (!userBase.getUserPassword().equals(selectUserBase.getUserPassword())){
+//            modelAndView.setViewName("/login");
+//            modelAndView.addObject("msg","账号密码错误，请重新登录");
+//            return modelAndView;
+//        }
+//        if (userBase.getUserPassword().equals(Constant.USER_PASSWORD)){
+//            modelAndView.setViewName("changePs");
+//        }else {
+//            modelAndView.setViewName("main");
+//        }
+////        modelAndView.addObject("sessionUser",selectUserBase);
+////        modelAndView.addObject("sessionIp",this.getIp());
+////        modelAndView.addObject("userType",selectUserBase.getUserType());
+//        session.setAttribute("sessionUser",selectUserBase);
+//        session.setAttribute("sessionIp",this.getIp());
+//        session.setAttribute("userType",selectUserBase.getUserType());
+//        return modelAndView;
+//    }
 
 
     /**
@@ -271,6 +318,16 @@ public class BaseController {
         }
         return JSONObject.toJSONString(map);
     }
+
+    /***
+     * 自动结题，根据流程表中的时间，对本届已选的题目和选题记录修改状态为“已结题”
+     * @param
+     * @return
+     */
+    public String overSelect(){
+       return "";
+    }
+
 
 }
 

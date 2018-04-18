@@ -307,7 +307,7 @@
                 $("#fileField").click();
             } else {
                 //after click the cancel
-                //TODO 跳转到下载页
+                //跳转到下载页
                 window.location.href='${ctx}/selectUserBase/stuFileDown';
             }
         }, {confirmButtonText: '已有模板', cancelButtonText: '下载模板', width: 400});
