@@ -234,9 +234,9 @@
             dataType: "json",
             success: function (msg) {
                 if ("OK" == msg) {
-                    location.href = "${ctx}/index";
+                    location.href = "${ctx}/";
                 } else if ("NO" == msg) {
-                    location.href = "${ctx}/initChangePs";
+                    location.href = "${ctx}/initIndexChangePs";
                 } else {
                     $("#userCode").val("");
                     $("#userPassword").val("");

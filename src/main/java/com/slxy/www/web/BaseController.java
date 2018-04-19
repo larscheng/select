@@ -14,6 +14,7 @@ import com.slxy.www.dao.ISelectUserBaseMapper;
 import com.slxy.www.domain.po.ChangePs;
 import com.slxy.www.domain.po.SelectUserBase;
 import com.slxy.www.enums.EnumEnOrDis;
+import com.slxy.www.filter.LoginRequired;
 import com.slxy.www.service.SelectJavaMailService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -59,9 +60,13 @@ public class BaseController {
     public String index(HttpSession session){
         SelectUserBase sessionUser = (SelectUserBase)session.getAttribute("sessionUser");
         if (!ObjectUtils.isEmpty(sessionUser)){
+            if (sessionUser.getUserPassword().equals(Constant.USER_PASSWORD)){
+                return "changePs";
+            }
             return "main";
         }
-        return "login";}
+        return "login";
+    }
 
     @ApiOperation(value = "首页跳转", notes = "")
     @RequestMapping(value = "/index" ,method = RequestMethod.GET)
@@ -70,20 +75,21 @@ public class BaseController {
         if (ObjectUtils.isEmpty(sessionUser)){
             return "login";
         }
-        return "main";
+        return "redirect:/";
     }
 
+    @RequestMapping(value = {"/login"} ,method = RequestMethod.GET)
+    public String jumplogin(HttpSession session){
+        session.invalidate();
+        return "login";
+    }
 
 
     @ApiOperation(value = "登录", notes = "")
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     @ResponseBody
     public String login(SelectUserBase userBase, HttpSession session){
-        SelectUserBase sessionUser = (SelectUserBase)session.getAttribute("sessionUser");
-        if (!ObjectUtils.isEmpty(sessionUser)){
-//            return JSONObject.toJSONString("请先将已登录的用户注销");
-            return JSONObject.toJSONString(Constant.SUCCESS);
-        }
+
         SelectUserBase user = new SelectUserBase().setUserCode(userBase.getUserCode());
         SelectUserBase selectUserBase = selectUserBaseMapper.selectOne((user));
         if (ObjectUtils.isEmpty(selectUserBase)){
@@ -96,7 +102,15 @@ public class BaseController {
 
             return JSONObject.toJSONString("账号密码错误，请重新登录");
         }
+        SelectUserBase sessionUser = (SelectUserBase)session.getAttribute("sessionUser");
+        if (!ObjectUtils.isEmpty(sessionUser)){
+            if (sessionUser.getUserCode().equals(user.getUserCode())){
+                if (sessionUser.getUserPassword().equals(Constant.USER_PASSWORD)){
+                    return JSONObject.toJSONString("NO");
+                }
+            }
 
+        }
         session.setAttribute("sessionUser",selectUserBase);
         session.setAttribute("sessionIp",this.getIp());
         session.setAttribute("userType",selectUserBase.getUserType());
@@ -195,6 +209,17 @@ public class BaseController {
         return modelAndView;
     }
 
+
+    @ApiOperation(value = "登录后跳转修改密码", notes = "")
+    @RequestMapping(value = "/initIndexChangePs" ,method = RequestMethod.GET)
+    public String initIndexChangePs(HttpSession session){
+        SelectUserBase sessionUser = (SelectUserBase)session.getAttribute("sessionUser");
+        if (ObjectUtils.isEmpty(sessionUser)){
+            return "redirect:/";
+
+        }
+        return "changePs";
+    }
 
 
 

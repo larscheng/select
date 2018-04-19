@@ -100,7 +100,7 @@
                                     <div class="col-lg-offset-1 col-lg-9">
                                         <button type="button" id="updateSubmit" class="btn btn-success">提交</button>
                                         <button type="reset" class="btn btn-info">重填</button>
-                                        <button type="button" class="btn btn-info" onclick="window.history.go(-1);">返回</button>
+                                        <button type="button" class="btn btn-info" onclick="window.location.href='${ctx}/logout'">退出</button>
                                     </div>
                                 </div>
                             </form>
@@ -112,7 +112,7 @@
 
                 </div>
                   <div class="horizontal-links center">
-                  <a href="${ctx}/login">首页</a> | <a href="#">About Us</a> | <a href="#">Contact us</a> | <a href="#">FAQ</a>
+                  <a href="${ctx}/logout">首页</a> | <a href="#">About Us</a> | <a href="#">Contact us</a> | <a href="#">FAQ</a>
                  </div>
 
 
@@ -265,7 +265,7 @@
                             alert(" 😅 "+msg);
                         }else {
                             alert(" 😎 修改成功","",function () {
-                                location.href="${ctx}/";
+                                location.href="${ctx}/login";
                             },{type:"success",confirmButtonText:"好的"});
                         }
 
