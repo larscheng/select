@@ -11,4 +11,5 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 public interface ISelectProcessControlMapper extends BaseMapper<SelectProcessControl> {
 
 
+    SelectProcessControl selectPro();
 }

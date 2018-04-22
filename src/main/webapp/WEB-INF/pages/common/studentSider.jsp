@@ -27,8 +27,8 @@
         <li><a href="${ctx}/selectBugLog/bugInitList" target="mainFrame" ><i class="icon-list-alt"></i> <b style="color: red">bug提交，谢谢 </b> </a></li>
 
         <li><a href="${ctx}/selectUserBase/stuSelfInfo?id=${sessionScope.sessionUser.id}"  target="mainFrame" class=""><i class="icon-home"></i>个人信息变更</a></li>
-        <li><a href="${ctx}/selectUserBase/stuList" target="mainFrame" ><i class="icon-list-alt"></i> 学生信息管理  </a></li>
-        <li><a href="${ctx}/selectUserBase/teaList" target="mainFrame" ><i class="icon-file-alt"></i> 教师信息管理 </a></li>
+        <li><a href="${ctx}/selectUserBase/stuList" target="mainFrame" ><i class="icon-list-alt"></i> 学生信息查看  </a></li>
+        <li><a href="${ctx}/selectUserBase/teaList" target="mainFrame" ><i class="icon-file-alt"></i> 教师信息查看 </a></li>
         <li><a href="${ctx}/selectSubject/stuSubList?selectId=${sessionScope.sessionUser.id}" target="mainFrame" ><i class="icon-file-alt"></i> 论文题目列表 </a></li>
         <li><a href="${ctx}/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}" target="mainFrame" ><i class="icon-file-alt"></i> 选题信息管理 </a></li>
         <li><a href="${ctx}/selectSubject/subAllList?selectId=${sessionScope.sessionUser.id}" target="mainFrame" ><i class="icon-file-alt"></i> 历届论文信息 </a></li>

@@ -10,6 +10,7 @@ package com.slxy.www.web;
 
 import com.alibaba.fastjson.JSONObject;
 import com.slxy.www.common.Constant;
+import com.slxy.www.dao.ISelectProcessControlMapper;
 import com.slxy.www.dao.ISelectUserBaseMapper;
 import com.slxy.www.domain.po.ChangePs;
 import com.slxy.www.domain.po.SelectUserBase;
@@ -55,6 +56,9 @@ public class BaseController {
     @Autowired
     private SelectJavaMailService selectJavaMailService;
 
+    @Autowired
+    private ISelectProcessControlMapper selectProcessControlMapper;
+
     @ApiOperation(value = "登录页跳转", notes = "")
     @RequestMapping(value = {"/",""} ,method = RequestMethod.GET)
     public String index(HttpSession session){
@@ -88,7 +92,7 @@ public class BaseController {
     @ApiOperation(value = "登录", notes = "")
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     @ResponseBody
-    public String login(SelectUserBase userBase, HttpSession session){
+    public String login(SelectUserBase userBase, HttpSession session,HttpServletRequest request){
 
         SelectUserBase user = new SelectUserBase().setUserCode(userBase.getUserCode());
         SelectUserBase selectUserBase = selectUserBaseMapper.selectOne((user));
@@ -114,6 +118,7 @@ public class BaseController {
         session.setAttribute("sessionUser",selectUserBase);
         session.setAttribute("sessionIp",this.getIp());
         session.setAttribute("userType",selectUserBase.getUserType());
+        session.setAttribute("pro",selectProcessControlMapper.selectPro());
         if (userBase.getUserPassword().equals(Constant.USER_PASSWORD)){
             return JSONObject.toJSONString("NO");
         }else {

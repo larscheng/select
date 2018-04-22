@@ -11,5 +11,9 @@
  		<result column="gmt_create" property="gmtCreate" />
  		<result column="gmt_modify" property="gmtModify" />
 	</resultMap>
-
+<select id="selectPro" resultMap="SelectProcessControlResultMap">
+	SELECT * FROM select_process_control a where
+	NOW() <![CDATA[>=]]> a.pro_start_time
+	AND NOW() <![CDATA[<=]]> a.pro_end_time
+</select>
 </mapper>
