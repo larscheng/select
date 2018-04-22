@@ -118,6 +118,7 @@
 
 <!-- JS -->
 <%--<script src="${ctx}/resources/js/jquery.js"></script>--%>
+<link href="${ctx}/resources/beAlert/BeAlert.css" rel="stylesheet">
 <script  src="${ctx}/resources/jquery/jquery-2.2.3.min.js"></script>
 
 
@@ -126,6 +127,8 @@
 <script src="${ctx}/resources/js/bootstrap.js"></script>
 <script src="${ctx}/resources/bg/html5shiv.js"></script>
 <script type="text/javascript" src="${ctx}/resources/js/bootstrapValidator.js"></script>
+
+<script src="${ctx}/resources/beAlert/BeAlert.js"></script> <!-- pop -->
 
 <script type="text/javascript">
     $("input").focus(function(){
@@ -212,6 +215,13 @@
 
 
     function login() {
+        if(window.navigator.cookieEnabled)
+            return true;
+        else{
+            alert("请开启浏览器cookie功能！");
+            return false;
+        }
+
         if (!$("#userCode").validate()) {
             $("#msg").text(" 😅 请填写您的账号");
             return;
@@ -249,6 +259,25 @@
             }
         });
     }
+
+
+
+    function check(){
+        if(window.navigator.cookieEnabled)
+            return true;
+        else{
+            alert("浏览器配置错误，Cookie不可用！");
+            return false;}
+    }
+
+    window.onload=function(){
+        if(window.navigator.cookieEnabled)
+            return true;
+        else{
+            alert("请开启浏览器cookie功能！");
+            return false;
+        }
+    };
 
 </script>
 

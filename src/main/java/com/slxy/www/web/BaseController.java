@@ -28,7 +28,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -92,7 +94,7 @@ public class BaseController {
     @ApiOperation(value = "登录", notes = "")
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     @ResponseBody
-    public String login(SelectUserBase userBase, HttpSession session,HttpServletRequest request){
+    public String login(SelectUserBase userBase, HttpSession session, HttpServletRequest request, HttpServletResponse response){
 
         SelectUserBase user = new SelectUserBase().setUserCode(userBase.getUserCode());
         SelectUserBase selectUserBase = selectUserBaseMapper.selectOne((user));
@@ -115,10 +117,18 @@ public class BaseController {
             }
 
         }
+
         session.setAttribute("sessionUser",selectUserBase);
         session.setAttribute("sessionIp",this.getIp());
         session.setAttribute("userType",selectUserBase.getUserType());
         session.setAttribute("pro",selectProcessControlMapper.selectPro());
+
+
+        Cookie cookie = new Cookie("JSESSIONID",session.getId());
+        cookie.setPath("/");
+        cookie.setMaxAge(30*60);
+        response.addCookie(cookie);
+
         if (userBase.getUserPassword().equals(Constant.USER_PASSWORD)){
             return JSONObject.toJSONString("NO");
         }else {
