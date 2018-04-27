@@ -215,49 +215,45 @@
 
 
     function login() {
-        if(window.navigator.cookieEnabled)
-            return true;
+        if(window.navigator.cookieEnabled){
+
+            if (!$("#userCode").validate()) {
+                $("#msg").text(" 😅 请填写您的账号");
+                return;
+            }
+            if (!$("#userCode").validate()) {
+                $("#msg").text(" 😅 请填写您的密码");
+
+                return;
+            }
+            $.ajax({
+                type: "post",
+                url: "${ctx}/login",
+                data: $("#defaultForm").serialize(),
+                async: true,
+                dataType: "json",
+                success: function (msg) {
+                    if ("OK" == msg) {
+                        location.href = "${ctx}/";
+                    } else if ("NO" == msg) {
+                        location.href = "${ctx}/initIndexChangePs";
+                    } else {
+                        $("#userCode").val("");
+                        $("#userPassword").val("");
+                        $("#msg").text(msg);
+                    }
+
+                },
+                error: function (e) {
+                    alert(" 😥 系统异常，请与我们的工程师小哥哥联系！");
+                }
+            });
+		}
         else{
             alert("请开启浏览器cookie功能！");
             return false;
         }
 
-        if (!$("#userCode").validate()) {
-            $("#msg").text(" 😅 请填写您的账号");
-            return;
-        }
-        if (!$("#userCode").validate()) {
-            $("#msg").text(" 😅 请填写您的密码");
-
-            return;
-        }
-        $.ajax({
-            type: "post",
-            url: "${ctx}/login",
-            data: $("#defaultForm").serialize(),
-//                data: formData,
-            async: true,
-//                // 下面三个参数要指定，如果不指定，会报一个JQuery的错误
-//                cache: false,
-//                contentType: false,
-//                processData: false,
-            dataType: "json",
-            success: function (msg) {
-                if ("OK" == msg) {
-                    location.href = "${ctx}/";
-                } else if ("NO" == msg) {
-                    location.href = "${ctx}/initIndexChangePs";
-                } else {
-                    $("#userCode").val("");
-                    $("#userPassword").val("");
-                    $("#msg").text(msg);
-                }
-
-            },
-            error: function (e) {
-                alert(" 😥 系统异常，请与我们的工程师小哥哥联系！");
-            }
-        });
     }
 
 
