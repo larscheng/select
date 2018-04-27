@@ -122,16 +122,16 @@
                         <b>${sessionScope.get("sessionUser").userName}</b>
                         <c:choose>
                             <c:when test="${sessionScope.get('sessionUser').userType eq 0}">
-                                超级管理员
+                                <span class="label label-success">超级管理员</span>
                             </c:when>
                             <c:when test="${sessionScope.get('sessionUser').userType eq 1}">
-                                管理员
+                                <span class="label label-success">管理员</span>
                             </c:when>
                             <c:when test="${sessionScope.get('sessionUser').userType eq 2}">
-                                老师
+                                <span class="label label-success">老师</span>
                             </c:when>
                             <c:otherwise>
-                                同学
+                                <span class="label label-success">同学</span>
                             </c:otherwise>
                         </c:choose>
 
