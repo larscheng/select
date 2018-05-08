@@ -175,6 +175,9 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
             //发布教师
             SelectUserBase userBase = selectUserBaseMapper.selectById(selectSubjectDto.getTeaId());
             selectSubjectDto.setSubTeaName(userBase.getUserName());
+            //面向系别名称
+            SelectDepartment selectDepartment = selectDepartmentMapper.selectById(selectSubjectDto.getForDepId());
+            selectSubjectDto.setForDepName(selectDepartment.getDepName());
             //审核状态
             selectSubjectDto.setSubState(EnumSubState.toMap().get(selectSubjectDto.getAdmAuditState()));
             //审核人
@@ -186,6 +189,13 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
             selectSubjectDto.setSubSelectStatusName(EnumSubSelectStatus.toMap().get(selectSubjectDto.getSubSelectStatus()));
             modelAndView.addObject("sub",selectSubjectDto);
         }
+        List<SelectDepartment> depList = selectDepartmentMapper.selectList(new EntityWrapper<SelectDepartment>().and("dep_status = ?", EnumEnOrDis.ENABLED.getValue()));
+        if (!CollectionUtils.isEmpty(depList)){
+            modelAndView.addObject("depList",depList);
+        }
+        modelAndView.addObject("subType",EnumSubType.toMap());
+        List<SelectUserBase> yearList = selectUserBaseMapper.selectStuYear();
+        modelAndView.addObject("yearList",yearList);
         return modelAndView;
     }
 
@@ -548,5 +558,20 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
             flag = true;
         }
         return flag;
+    }
+
+
+    /***
+     * 管理员修改题目
+     * @param vo
+     * @return
+     */
+    public String subUpdate(SelectSubjectVo vo) {
+        SelectSubject selectSubject = selectSubjectMapper.selectById(vo.getId());
+        if (ObjectUtils.isEmpty(selectSubject)){
+            return JSONObject.toJSONString(Constant.ERROR);
+        }
+        selectSubject = SelectMapStructMapper.INSTANCE.SelectSubjectVoToPo(vo);
+        return this.updateById(selectSubject) ? JSONObject.toJSONString(Constant.SUCCESS):JSONObject.toJSONString(Constant.ERROR);
     }
 }

@@ -47,8 +47,8 @@
 
         <li class="has_sub"><a href="#"><i class="icon-file-alt"></i> 选题信息管理  <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
             <ul>
-                <li><a href="${ctx}/selectTopic/topicList" target="mainFrame" > 选题信息列表 </a></li>
-                <li><a href="${ctx}/selectTopic/noTopicList?teaId=${sessionScope.sessionUser.id}"  target="mainFrame">待审核记录</a></li>
+                <li><a href="${ctx}/selectTopic/topicList?teaId=${sessionScope.sessionUser.id}" target="mainFrame" > 被选题记录 </a></li>
+                <li><a href="${ctx}/selectTopic/noTopicList?teaId=${sessionScope.sessionUser.id}&teaAuditState=0"  target="mainFrame">待审核记录</a></li>
             </ul>
         </li>
 

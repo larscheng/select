@@ -244,6 +244,12 @@ public class BaseController {
     public String initChangePs(){return "common/changePass";}
 
 
+    @ApiOperation(value = "adm修改密码跳转", notes = "")
+    @RequestMapping(value = "/initChangeAdmPs" ,method = RequestMethod.GET)
+    public String initChangeAdmPs(){return "common/changeAdmPass";}
+
+
+
     @ApiOperation(value = "修改密码", notes = "")
     @RequestMapping(value = "/changePs" ,method = RequestMethod.POST)
     @ResponseBody

@@ -122,9 +122,11 @@
                                     <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                     <a href="#" class="wclose"><i class="icon-remove"></i></a>
                                 </div>
-                                <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
-                                    <button type="button" onclick="exportSubjectInfo()" class="btn btn-info pull-left " style="margin-right: 10px"><i class="icon-remove"></i>导出报表</button>
-                                </div>
+                                <c:if test="${sessionScope.userType eq 1 ||sessionScope.userType eq 0}">
+                                    <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
+                                        <button type="button" onclick="exportSubjectInfo()" class="btn btn-info pull-left " style="margin-right: 10px"><i class="icon-remove"></i>导出报表</button>
+                                    </div>
+                                </c:if>
                                 <div class="clearfix"></div>
                             </div>
 

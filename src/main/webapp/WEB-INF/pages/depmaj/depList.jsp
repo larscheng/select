@@ -58,10 +58,13 @@
                                     <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                     <a href="#" class="wclose"><i class="icon-remove"></i></a>
                                 </div>
-                                <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
+                                <c:if test="${sessionScope.userType eq 0 || sessionScope.userType eq 1}">
+                                    <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
                                         <button type="button" style="margin-right: 10px"  class="btn btn-info pull-left" onclick="depDeleteAll()"><i class="icon-remove"> </i>批量删除</button>
                                         <button type="button" style="margin-right: 10px" onclick="window.location.href='${ctx}/selectDepartment/depInitAdd';" class="btn btn-success pull-left"><i class="icon-edit"> </i>添加系别</button>
-                                </div>
+                                    </div>
+                                </c:if>
+
                                 <div class="clearfix"></div>
                             </div>
 
@@ -106,20 +109,23 @@
                                                     <td><fmt:formatDate value="${dep.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 
                                                     <td>
-                                                        <c:choose>
-                                                            <c:when test="${status eq 0}">
-                                                                <button class="btn btn-xs btn-success" onclick="depAble('${dep.id}')"><i class="icon-ok"></i>启用</button>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <button class="btn btn-xs btn-danger"  onclick="depDisable('${dep.id}')"><i class="icon-remove"></i>禁用</button>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                        <button class="btn btn-xs btn-warning" onclick="window.location.href='${ctx}/selectDepartment/depInitUpdate?id=${dep.id}';"><i class="icon-pencil">编辑</i>
-                                                        </button>
+
+                                                        <c:if test="${sessionScope.userType eq 0 || sessionScope.userType eq 1}">
+                                                            <c:choose>
+                                                                <c:when test="${status eq 0}">
+                                                                    <button class="btn btn-xs btn-success" onclick="depAble('${dep.id}')"><i class="icon-ok"></i>启用</button>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <button class="btn btn-xs btn-danger"  onclick="depDisable('${dep.id}')"><i class="icon-remove"></i>禁用</button>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                            <button class="btn btn-xs btn-warning" onclick="window.location.href='${ctx}/selectDepartment/depInitUpdate?id=${dep.id}';"><i class="icon-pencil">编辑</i>
+                                                            </button>
+                                                        </c:if>
+
                                                         <button class="btn btn-xs btn-info" onclick="window.location.href='${ctx}/selectDepartment/depFind?id=${dep.id}';"><i class="icon-pencil">查看</i>
                                                         </button>
-                                                        <button class="btn btn-xs btn-danger" onclick="depDelete('${dep.id}')"><i class="icon-remove">删除</i>
-                                                        </button>
+
 
                                                     </td>
                                                 </tr>

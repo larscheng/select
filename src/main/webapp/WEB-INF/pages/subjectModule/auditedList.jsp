@@ -181,6 +181,9 @@
                                                         <c:if test="${subject.admAuditState eq 1}">
                                                             <button class="btn btn-xs btn-success" onclick="subSuccess(${subject.id})"><i class="icon-ok-circle"></i>通过</button>
                                                         </c:if>
+                                                        <c:if test="${subject.subSelectStatus eq 0}">
+                                                            <button class="btn btn-xs btn-warning" onclick="subUpdate(${subject.id})"><i class="icon-ok-circle"></i>修改</button>
+                                                        </c:if>
 
                                                     </td>
                                                 </tr>
@@ -323,7 +326,9 @@
         });
     }
 
-
+    function subUpdate(id) {
+        window.location.href="${ctx}/selectSubject/initSubUpdate?id="+id;
+    }
 
     function subjectDetails(id) {
         window.location.href="${ctx}/selectSubject/subjectDetail?id="+id;

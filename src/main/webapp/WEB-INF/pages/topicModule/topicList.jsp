@@ -55,8 +55,8 @@
                         <div class="form-group " style="margin-right: 10px">
                             <select  class="form-control" name="teaId">
                                 <option value="" selected>教师名</option>
-                                <c:forEach var="tea" items="${requestScope.teaList}">
-                                    <option value="${tea.id}">${tea.userName}</option>
+                                <c:forEach var="tea" items="${requestScope.topicList}">
+                                    <option value="${tea.teaId}">${tea.teaName}</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -64,8 +64,8 @@
                         <div class="form-group " style="margin-right: 10px">
                             <select  class="form-control" name="stuId">
                                 <option value="" selected>学生名</option>
-                                <c:forEach var="stu" items="${requestScope.stuList}">
-                                    <option value="${stu.id}">${stu.userName}</option>
+                                <c:forEach var="stu" items="${requestScope.topicList}">
+                                    <option value="${stu.stuId}">${stu.stuName}</option>
                                 </c:forEach>
                             </select>
                         </div>

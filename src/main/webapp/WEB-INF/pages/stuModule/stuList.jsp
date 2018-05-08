@@ -126,7 +126,7 @@
                                     <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                     <a href="#" class="wclose"><i class="icon-remove"></i></a>
                                 </div>
-                                <c:if test="${sessionScope.userType != 3}">
+                                <c:if test="${sessionScope.userType eq 1 ||sessionScope.userType eq 0}">
                                     <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
                                         <button type="button" onclick="stuDeleteAll()" class="btn btn-info pull-left " style="margin-right: 10px"><i class="icon-remove"></i>批量删除</button>
                                         <button type="button" class="btn btn-info pull-left " onclick="upload()" style="margin-right: 10px"><i class="icon-upload"></i>批量导入</button>
@@ -160,7 +160,7 @@
                                         <th>届别</th>
                                         <th>状态</th>
                                         <th>创建时间</th>
-                                        <c:if test="${sessionScope.userType != 3}">
+                                        <c:if test="${sessionScope.userType eq 1 ||sessionScope.userType eq 0}">
                                         <th>操作</th>
                                         </c:if>
                                     </tr>
@@ -197,7 +197,7 @@
                                                         </c:choose>
                                                     </td>
                                                     <td><fmt:formatDate value="${user.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                                    <c:if test="${sessionScope.userType != 3}">
+                                                    <c:if test="${sessionScope.userType eq 1 ||sessionScope.userType eq 0}">
                                                         <td>
                                                             <c:choose>
                                                                 <c:when test="${status eq 0}">

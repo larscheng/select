@@ -168,6 +168,14 @@ public class SelectSubjectController {
         return selectSubjectService.subDetail(modelAndView,vo);
     }
 
+
+    @ApiOperation(value = "adm编辑题目初始化", notes = "")
+    @RequestMapping(value = "/initSubUpdate",method = RequestMethod.GET)
+    public ModelAndView initSubUpdate(ModelAndView  modelAndView, SelectSubjectVo vo) {
+        modelAndView.setViewName("subjectModule/subUpdate");
+        return selectSubjectService.subDetail(modelAndView,vo);
+    }
+
     @ApiOperation(value = "删除题目", notes = "")
     @RequestMapping(value = "/delSub",method = RequestMethod.POST)
     @ResponseBody
@@ -242,7 +250,12 @@ public class SelectSubjectController {
         return selectSubjectService.subAdd(file,vo,request);
     }
 
-
+    @ApiOperation(value = "adm修改题目", notes = "如改动题目的面向系别名称等")
+    @RequestMapping(value = "/subUpdate",method = RequestMethod.POST)
+    @ResponseBody
+    public String subUpdate(SelectSubjectVo vo) {
+        return selectSubjectService.subUpdate(vo);
+    }
     /***
      * 所有通过审核的题目列表
      * @param modelAndView

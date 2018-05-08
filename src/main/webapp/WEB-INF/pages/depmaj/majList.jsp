@@ -58,11 +58,13 @@
                                     <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                     <a href="#" class="wclose"><i class="icon-remove"></i></a>
                                 </div>
-                                <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
-                                        <button type="button" onclick="majDeleteAll()" class="btn btn-info pull-left" style="margin-right: 10px"><i class="icon-remove"> </i>批量删除</button>
-                                        <button type="button" style="margin-right: 10px" onclick="window.location.href='${ctx}/selectMajor/majInitAdd';"  class="btn btn-success pull-left"><i class="icon-edit"> </i>添加专业</button>
+                                <c:if test="${sessionScope.userType eq 0 || sessionScope.userType eq 1}">
+                                    <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
+                                            <button type="button" onclick="majDeleteAll()" class="btn btn-info pull-left" style="margin-right: 10px"><i class="icon-remove"> </i>批量删除</button>
+                                            <button type="button" style="margin-right: 10px" onclick="window.location.href='${ctx}/selectMajor/majInitAdd';"  class="btn btn-success pull-left"><i class="icon-edit"> </i>添加专业</button>
 
-                                </div>
+                                    </div>
+                                </c:if>
                                 <div class="clearfix"></div>
                             </div>
 
@@ -111,20 +113,23 @@
                                                     <td><fmt:formatDate value="${maj.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 
                                                     <td>
-                                                        <c:choose>
-                                                            <c:when test="${status eq 0}">
-                                                                <button class="btn btn-xs btn-success"  onclick="majAble('${maj.id}')"><i class="icon-ok"></i>启用</button>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <button class="btn btn-xs btn-danger"  onclick="majDisAble('${maj.id}')"><i class="icon-remove"></i>禁用</button>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                        <button class="btn btn-xs btn-warning" onclick="window.location.href='${ctx}/selectMajor/majInitUpdate?Id=${maj.id}';"><i class="icon-pencil">编辑</i>
-                                                        </button>
+                                                        <c:if test="${sessionScope.userType eq 0 || sessionScope.userType eq 1}">
+                                                            <c:choose>
+                                                                <c:when test="${status eq 0}">
+                                                                    <button class="btn btn-xs btn-success"  onclick="majAble('${maj.id}')"><i class="icon-ok"></i>启用</button>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <button class="btn btn-xs btn-danger"  onclick="majDisAble('${maj.id}')"><i class="icon-remove"></i>禁用</button>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                            <button class="btn btn-xs btn-warning" onclick="window.location.href='${ctx}/selectMajor/majInitUpdate?Id=${maj.id}';"><i class="icon-pencil">编辑</i>
+                                                            </button>
+                                                            <button class="btn btn-xs btn-danger" onclick="majDelete('${maj.id}')"><i class="icon-remove">删除</i>
+                                                            </button>
+                                                        </c:if>
                                                         <button class="btn btn-xs btn-info" onclick="window.location.href='${ctx}/selectMajor/majFind?Id=${maj.id}';"><i class="icon-pencil">查看</i>
                                                         </button>
-                                                        <button class="btn btn-xs btn-danger" onclick="majDelete('${maj.id}')"><i class="icon-remove">删除</i>
-                                                        </button>
+
 
                                                     </td>
                                                 </tr>

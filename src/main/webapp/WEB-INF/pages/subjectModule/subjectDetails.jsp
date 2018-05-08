@@ -122,7 +122,13 @@
                                         </div>
 
                                     </div>
+                                    <div class="form-group">
+                                        <label class="col-lg-4 control-label">面向系别</label>
 
+                                        <div class="col-lg-4 panel panel-default pdl" >
+                                            ${requestScope.sub.forDepName}
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <label class="col-lg-4 control-label">发布教师</label>
 
