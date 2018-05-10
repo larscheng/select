@@ -4,7 +4,9 @@ import com.slxy.www.common.Constant;
 import com.slxy.www.domain.vo.SelectTopicVo;
 import com.slxy.www.enums.EnumSubSelectStatus;
 import com.slxy.www.enums.EnumYesOrNo;
+import com.slxy.www.filter.LoginRequired;
 import com.slxy.www.service.SelectTopicService;
+import com.slxy.www.service.SelectUserBaseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -45,6 +47,8 @@ import java.util.Map;
 public class SelectTopicController {
     @Autowired
     private SelectTopicService selectTopicService;
+    @Autowired
+    private SelectUserBaseService selectUserBaseService;
 
     /**
      * 选题信息列表 ，根据vo不同权限不同
@@ -337,6 +341,34 @@ public class SelectTopicController {
     @ResponseBody
     public String delTopic(SelectTopicVo vo) {
         return selectTopicService.delTopic(vo);
+    }
+
+    /**
+     * 成绩批量上传模板下载
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    @ApiOperation(value = "成绩批量上传模板下载", notes = "")
+    @LoginRequired(value = "adm")
+    @RequestMapping(value = "/scoreFileDown",method = RequestMethod.GET)
+    public void stuFileDown(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        String fileName= "select_scores.xls";
+        selectUserBaseService.down(request,response,fileName);
+    }
+
+    /***
+     * 批量上传评分
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    @ApiOperation(value = "批量上传评分", notes = "")
+    @LoginRequired(value = "adm")
+    @RequestMapping(value = "/scoreUpload", method = RequestMethod.POST)
+    @ResponseBody
+    public String scoreUpload(HttpServletRequest request) throws IOException {
+        return selectTopicService.scoreUpload(request);
     }
 
 }

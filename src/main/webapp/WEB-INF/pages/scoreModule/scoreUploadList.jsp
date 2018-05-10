@@ -106,13 +106,24 @@
 
                     <div class="widget">
 
-                        <div class="widget-head">
+                        <div class="widget-head" style="position: relative">
                             <div class="pull-left">选题列表</div>
                             <div class="widget-icons pull-right">
                                 <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                 <a href="#" class="wclose"><i class="icon-remove"></i></a>
                             </div>
 
+                            <c:if test="${sessionScope.userType eq 1 || sessionScope.userType eq 0}">
+                                <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
+                                    <button type="button" class="btn btn-info pull-left " onclick="upload()" style="margin-right: 10px"><i class="icon-upload"></i>批量评分</button>
+                                    <div style="display: none">
+                                        <form id="uploadForm"  >
+                                            <input type="file" id="fileField" name="fileField" style="display: none" onchange="ajaxUpload()"/>
+                                        </form>
+                                    </div>
+                                    <button type="button"  onclick="window.location.href='${ctx}/selectTopic/scoreFileDown';" class="btn btn-default pull-left "><i class="icon-upload"></i>模板下载</button>
+                                </div>
+                            </c:if>
                             <div class="clearfix"></div>
                         </div>
 
@@ -260,6 +271,46 @@
     sessionStorage.setItem("userType",${sessionScope.userType});
 
     var manType = sessionStorage.getItem("userType");
+
+
+    function upload() {
+        confirm("导入前请下载好导入模板！","",function (isConfirm) {
+            if (isConfirm) {
+                //after click the confirm
+                $("#fileField").click();
+            } else {
+                //after click the cancel
+                //跳转到下载页
+                window.location.href='${ctx}/selectTopic/scoreFileDown';
+            }
+        }, {confirmButtonText: '已有模板', cancelButtonText: '下载模板', width: 400});
+    }
+
+    function ajaxUpload() {
+//        alert("nininini");
+        $.ajax({
+            type:'POST',
+            url:'${ctx}/selectTopic/scoreUpload', //你处理上传文件的服务端
+            data: new FormData($('#uploadForm')[0]),
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType:"json",
+            success: function (msg) {//调用成功时怎么处理
+                alert(" 😋 "+msg,"",function () {
+                    location.href="${ctx}/selectTopic/topicUploadList";
+                },{type:"success",confirmButtonText:"好的"});
+
+            },//end success
+            error: function(e) {
+                alert(" 😥 系统异常，请与我们的工程师联系！");
+            }
+        });
+    }
+
+
+
 
     $("#search").keydown(function (e) {
         if(event.keyCode == "13") {//判断如果按下的是回车键则执行下面的代码

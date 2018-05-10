@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.slxy.www.domain.dto.SelectTopicDto;
 import com.slxy.www.domain.po.SelectTopic;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.slxy.www.domain.vo.ImportScoreVo;
 import com.slxy.www.domain.vo.SelectTopicVo;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface ISelectTopicMapper extends BaseMapper<SelectTopic> {
     List<SelectTopicDto> getTopicByPage(Page<SelectTopicDto> page, SelectTopicVo vo);
 
     List<SelectTopicDto> selectAllTopic();
+
+    List<SelectTopic> selectByInfo(ImportScoreVo importScoreVo);
 }

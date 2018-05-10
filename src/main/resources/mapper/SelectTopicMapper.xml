@@ -103,4 +103,19 @@
 
 		ORDER BY a.tea_audit_state DESC ,a.gmt_create DESC
 	</select>
+
+	<select id="selectByInfo" resultMap="SelectTopicResultMap">
+		SELECT
+			*
+		FROM
+			select_topic a,
+			select_subject b,
+			select_user_base c
+		WHERE
+			a.sub_id = b.id
+		AND a.stu_id = c.id
+		AND b.sub_name = #{subName}
+		AND c.user_name = #{stuName}
+		AND a.topic_year = #{subYear}
+	</select>
 </mapper>

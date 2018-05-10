@@ -4,12 +4,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.slxy.www.common.Constant;
+import com.slxy.www.common.ExcelUtil;
 import com.slxy.www.common.ExcelUtils;
 import com.slxy.www.common.SelectMapStructMapper;
 import com.slxy.www.dao.ISelectSubjectMapper;
 import com.slxy.www.dao.ISelectUserBaseMapper;
 import com.slxy.www.domain.dto.SelectTopicDto;
 import com.slxy.www.domain.po.*;
+import com.slxy.www.domain.vo.ImportScoreVo;
+import com.slxy.www.domain.vo.ImportStuVo;
 import com.slxy.www.domain.vo.SelectTopicVo;
 import com.slxy.www.enums.EnumEnOrDis;
 import com.slxy.www.enums.EnumSubSelectStatus;
@@ -24,6 +27,7 @@ import com.baomidou.framework.service.impl.ServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -369,5 +373,96 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
         }
         return flag;
     }
+
+    public String scoreUpload(HttpServletRequest request) {
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        MultipartFile importFile = multipartRequest.getFile("fileField");
+        if (importFile == null || !"select_scores.xls".equals(importFile.getOriginalFilename())) {
+            return JSONObject.toJSONString(Constant.STU_IMPORT_ERROR_FILE_NAME_ERROR);
+        }
+        // Excel的表头与文字对应，获取Excel表头
+        LinkedHashMap<String, String> map = new LinkedHashMap<>(7);
+        map.put("题目名称", "subName");
+        map.put("教师名称", "teaName");
+        map.put("学生名称", "stuName");
+        map.put("题目届别", "subYear");
+        map.put("指导老师评分", "tutorScore");
+        map.put("评阅老师评分", "judgeScore");
+        map.put("答辩得分", "defenceScore");
+
+        // 调用Excel共用类，转化成List
+        List<ImportScoreVo> importVOS;
+        try {
+            importVOS = ExcelUtil.excelToList(importFile.getInputStream(), "import", ImportScoreVo.class, map, new String[]{});
+        } catch (Exception e) {
+            logger.info("ERROR -> 成绩导入 : " + e.getMessage());
+            return JSONObject.toJSONString(Constant.STU_IMPORT_ERROR_FILE_ERROR);
+        }
+
+        //导入失败记录
+        List<String> importErrorList = new ArrayList<>();
+        int importSuccessCount = 0;
+
+        for (ImportScoreVo importScoreVo : importVOS) {
+            //检查该选题 不存在则不可导入
+            List<SelectTopic> selectTopics = selectTopicMapper.selectByInfo(importScoreVo);
+            if (selectTopics.size()==1){
+                importScoreVo.setSubId(selectTopics.get(0).getSubId());
+            }
+//            SelectMajor selectMajor = new SelectMajor()
+//                    .setMajName(importScoreVo.getStuMajorName());
+//            selectMajor = selectMajorMapper.selectOne(selectMajor);
+//            if (selectMajor == null) {
+//                importErrorList.add(importScoreVo.getUserName());
+//                logger.info("上传失败 : " + importScoreVo.toString());
+//                continue;
+//            }
+            //学生初始化
+            try {
+                if (!this.initScore(importScoreVo)) {
+                    logger.info("成绩上传失败 : " + importScoreVo.getSubName());
+                    importErrorList.add(importScoreVo.getSubName());
+                    continue;
+                }
+
+            } catch (Exception e) {
+                logger.info("成绩上传失败 : " + importScoreVo.getSubName() + " Cause :" + e.getMessage());
+                importErrorList.add(importScoreVo.getSubName());
+                continue;
+
+            }
+            //记录成功导入车辆数
+            importSuccessCount++;
+            logger.info("成绩上传成功 : " + importScoreVo.getSubName() + " , 本次评分数 : " + importVOS.size() + " , 已导入成绩数 : " + importSuccessCount);
+        }
+        logger.info("本次导入成绩数 : " + importVOS.size() + " , 导入成功 : " + importSuccessCount + " , 导入失败 : " + importErrorList.size());
+
+        return JSONObject.toJSONString("评分成功 : " + importSuccessCount + " , 评分失败 : " + importErrorList.size() + (importErrorList.size() <= 0 ? "" : " , 失败题目名 : " + importErrorList.toString()));
+    }
+
+    private boolean initScore(ImportScoreVo importScoreVo) {
+        //校验分数格式
+        if(importScoreVo.getDefenceScore()>100.0||importScoreVo.getJudgeScore()>100.0||importScoreVo.getJudgeScore()>100.0){
+            logger.info("分数值超过上限"+importScoreVo.getSubName());
+            return false;
+        }
+        List<SelectScorePer> selectScorePers = selectScorePerService.selectList(new EntityWrapper<SelectScorePer>());
+        Double finalTotalScore = importScoreVo.getTutorScore()*(selectScorePers.get(0).getScorePer()/100.00)+
+                importScoreVo.getJudgeScore()*(selectScorePers.get(1).getScorePer()/100.00)+
+                importScoreVo.getDefenceScore()*(selectScorePers.get(2).getScorePer()/100.00);
+        SelectSubject selectSubject = new SelectSubject()
+                .setId(importScoreVo.getSubId())
+                .setJudgeScore(importScoreVo.getJudgeScore())
+                .setDefenceScore(importScoreVo.getDefenceScore())
+                .setTutorScore(importScoreVo.getTutorScore())
+                .setFinalTotalScore(finalTotalScore);
+
+        if (selectSubjectMapper.updateById(selectSubject)<0){
+            logger.info("添加失败 : " + importScoreVo.getSubName());
+            return false;
+        }
+        return true;
+    }
+
 }
 

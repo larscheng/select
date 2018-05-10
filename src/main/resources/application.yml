@@ -7,11 +7,11 @@ server:
     uri-encoding: UTF-8
 spring:
   datasource:
-#    url: jdbc:mysql://127.0.0.1:3306/slxy-select?useUnicode=true&characterEncoding=UTF-8
-    url: jdbc:mysql://rm-bp18j8d8825oq11o6no.mysql.rds.aliyuncs.com:3306/slxy-select?useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://127.0.0.1:3306/slxy-select?useUnicode=true&characterEncoding=UTF-8
+#    url: jdbc:mysql://rm-bp18j8d8825oq11o6no.mysql.rds.aliyuncs.com:3306/slxy-select?useUnicode=true&characterEncoding=UTF-8
     username: root
-    password: zql123456@
-#    password: root
+#    password: zql123456@
+    password: root
     driver-class-name: com.mysql.jdbc.Driver
     sql-script-encoding: UTF-8
     type: com.alibaba.druid.pool.DruidDataSource
