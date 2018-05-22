@@ -5,7 +5,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-    <title>后台管理</title>
+    <title>毕业设计综合信息管理系统</title>
     <link rel="alternate icon" type="image/x-icon" href="${ctx}/resources/favicon.ico">
 </head>
 <frameset rows="66,*,40" cols="*" frameborder="yes" border="0" framespacing="0" scrolling="yes" >

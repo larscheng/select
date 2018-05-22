@@ -22,7 +22,7 @@
 
         <!-- Page heading -->
         <div class="page-head">
-            <h2 class="pull-left"><i class="icon-home"></i> 待审核记录列表</h2>
+            <h2 class="pull-left"><i class="icon-home"></i> 选题信息列表</h2>
             <!-- Breadcrumb -->
             <div class="bread-crumb pull-right">
                 <a href="#"><i class="icon-home"></i> 选题信息管理</a>
@@ -55,8 +55,8 @@
                         <div class="form-group " style="margin-right: 10px">
                             <select  class="form-control" name="teaId">
                                 <option value="" selected>教师名</option>
-                                <c:forEach var="tea" items="${requestScope.teaList}">
-                                    <option value="${tea.id}">${tea.userName}</option>
+                                <c:forEach var="tea" items="${requestScope.topicList}">
+                                    <option value="${tea.teaId}">${tea.teaName}</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -64,8 +64,8 @@
                         <div class="form-group " style="margin-right: 10px">
                             <select  class="form-control" name="stuId">
                                 <option value="" selected>学生名</option>
-                                <c:forEach var="stu" items="${requestScope.stuList}">
-                                    <option value="${stu.id}">${stu.userName}</option>
+                                <c:forEach var="stu" items="${requestScope.topicList}">
+                                    <option value="${stu.stuId}">${stu.stuName}</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -106,8 +106,8 @@
 
                         <div class="widget">
 
-                            <div class="widget-head"  style="position: relative">
-                                <div class="pull-left">教师列表</div>
+                            <div class="widget-head">
+                                <div class="pull-left">选题列表</div>
                                 <div class="widget-icons pull-right">
                                     <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                     <a href="#" class="wclose"><i class="icon-remove"></i></a>
@@ -135,10 +135,9 @@
                                     </tr>
                                     </thead>
                                     <tbody id="items">
-
                                     <c:choose>
                                         <c:when test="${empty requestScope.topicList }">
-                                            <tr><td colspan='9' class='text-center'> 😑 暂无数据！</td></tr>
+                                            <tr><td colspan='12' class='text-center'> 😑 暂无数据！</td></tr>
                                         </c:when>
                                         <c:otherwise>
                                             <c:forEach var="topic" items="${requestScope.topicList}" varStatus="index">
@@ -168,12 +167,14 @@
                                                     <td><fmt:formatDate value="${topic.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>
                                                         <button class="btn btn-xs btn-info" onclick="topicDetails(${topic.id})"><i class="icon-pencil"></i>详情</button>
-                                                        <c:if test="${status eq 0}">
-                                                            <button class="btn btn-xs btn-success" onclick="subSuccess(${topic.id})"><i class="icon-ok-circle"></i>通过</button>
-                                                            <button class="btn btn-xs btn-danger" onclick="cleanAll(${topic.id})"
-                                                                    id="modal-317062" href="#modal-container-317062" role="button"  data-toggle="modal"><i class="icon-remove-sign"></i>不通过</button>
+                                                        <c:if test="${sessionScope.userType eq 3}">
+                                                            <c:if test="${topic.teaAuditState eq 1}">
+                                                                <button  type="button" class="btn  btn-xs  btn-danger" onclick="topicDel(${topic.id})"><i class="icon-warning-sign"></i>删除</button>
+                                                            </c:if>
                                                         </c:if>
-
+                                                        <c:if test="${sessionScope.userType eq 0 || sessionScope.userType eq 1 }">
+                                                            <button  type="button" class="btn  btn-xs  btn-danger" onclick="delTopic(${topic.id})"><i class="icon-warning-sign"></i>删除</button>
+                                                        </c:if>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -184,42 +185,6 @@
                                     </tbody>
                                 </table>
 
-                                <div class="row clearfix">
-                                    <div class="col-md-6 column">
-                                        <div class="modal fade" id="modal-container-317062" role="dialog"
-                                             aria-labelledby="myModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" style="left: 3px">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal"
-                                                                aria-hidden="true">
-                                                        </button>
-                                                        <h4 class="modal-title" id="myModalLabel">审核不通过原因：</h4>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <input type="hidden" id="hid"/>
-                                                        <textarea class="form-control" rows="4" id="reason"
-                                                                  placeholder="原因"></textarea>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default"
-                                                                data-dismiss="modal">关闭
-                                                        </button>
-                                                        <button type="button" class="btn btn-primary"
-                                                                onclick="subFail()">确认
-                                                        </button>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                    <div class="col-md-6 column">
-                                    </div>
-                                </div>
-
                                 <div class="widget-foot center">
                                     <c:choose>
                                         <c:when test="${sessionScope.userType eq 3}">
@@ -228,21 +193,21 @@
                                                     <li><a href="#" class="btn  disabled">上一页</a></li>
                                                 </c:if>
                                                 <c:if test="${page.current-1 > 0}">
-                                                    <li><a class="disabled" href="${ctx}/selectTopic/noTopicList&page=${page.current-1}">上一页</a></li>
-                                                    <li><a href="${ctx}/selectTopic/noTopicList&page=${page.current-1}">${page.current-1}</a></li>
+                                                    <li><a class="disabled" href="${ctx}/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}&page=${page.current-1}">上一页</a></li>
+                                                    <li><a href="${ctx}/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}&page=${page.current-1}">${page.current-1}</a></li>
                                                 </c:if>
 
 
-                                                <li><a href="${ctx}/selectTopic/noTopicList&page=${page.current}">${page.current}</a></li>
+                                                <li><a href="${ctx}/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}&page=${page.current}">${page.current}</a></li>
 
                                                 <c:if test="${page.current+1 <= page.pages}">
-                                                    <li><a href="${ctx}/selectTopic/noTopicList&page=${page.current+1}">${page.current+1}</a></li>
+                                                    <li><a href="${ctx}/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}&page=${page.current+1}">${page.current+1}</a></li>
                                                 </c:if>
                                                 <c:if test="${page.current+2 <= page.pages}">
-                                                    <li><a href="${ctx}/selectTopic/noTopicList&page=${page.current+2}">${page.current+2}</a></li>
+                                                    <li><a href="${ctx}/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}&page=${page.current+2}">${page.current+2}</a></li>
                                                 </c:if>
                                                 <c:if test="${page.current+1 <= page.pages}">
-                                                    <li><a href="${ctx}/selectTopic/noTopicList&page=${page.current+1}">下一页</a></li>
+                                                    <li><a href="${ctx}/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}&page=${page.current+1}">下一页</a></li>
                                                 </c:if>
                                                 <c:if test="${page.current+1 > page.pages}">
                                                     <li><a class="btn  disabled" href="#">下一页</a></li>
@@ -257,21 +222,21 @@
                                                     <li><a href="#" class="btn  disabled">上一页</a></li>
                                                 </c:if>
                                                 <c:if test="${page.current-1 > 0}">
-                                                    <li><a class="disabled" href="${ctx}/selectTopic/noTopicList?page=${page.current-1}">上一页</a></li>
-                                                    <li><a href="${ctx}/selectTopic/noTopicList?page=${page.current-1}">${page.current-1}</a></li>
+                                                    <li><a class="disabled" href="${ctx}/selectTopic/topicList?page=${page.current-1}">上一页</a></li>
+                                                    <li><a href="${ctx}/selectTopic/topicList?page=${page.current-1}">${page.current-1}</a></li>
                                                 </c:if>
 
 
-                                                <li><a href="${ctx}/selectTopic/noTopicList?page=${page.current}">${page.current}</a></li>
+                                                <li><a href="${ctx}/selectTopic/topicList?page=${page.current}">${page.current}</a></li>
 
                                                 <c:if test="${page.current+1 <= page.pages}">
-                                                    <li><a href="${ctx}/selectTopic/noTopicList?page=${page.current+1}">${page.current+1}</a></li>
+                                                    <li><a href="${ctx}/selectTopic/topicList?page=${page.current+1}">${page.current+1}</a></li>
                                                 </c:if>
                                                 <c:if test="${page.current+2 <= page.pages}">
-                                                    <li><a href="${ctx}/selectTopic/noTopicList?page=${page.current+2}">${page.current+2}</a></li>
+                                                    <li><a href="${ctx}/selectTopic/topicList?page=${page.current+2}">${page.current+2}</a></li>
                                                 </c:if>
                                                 <c:if test="${page.current+1 <= page.pages}">
-                                                    <li><a href="${ctx}/selectTopic/noTopicList?page=${page.current+1}">下一页</a></li>
+                                                    <li><a href="${ctx}/selectTopic/topicList?page=${page.current+1}">下一页</a></li>
                                                 </c:if>
                                                 <c:if test="${page.current+1 > page.pages}">
                                                     <li><a class="btn  disabled" href="#">下一页</a></li>
@@ -307,24 +272,18 @@
 
     var manType = sessionStorage.getItem("userType");
 
-
-
-
-
-    function cleanAll(id) {
-        $("#reason").val("");
-        $("#hid").val(id)
-    }
-
     $("#search").keydown(function (e) {
         if(event.keyCode == "13") {//判断如果按下的是回车键则执行下面的代码
             search()
         }
 
     });
-    var url="${ctx}/selectTopic/noTopicAjaxList";
-    function search() {
 
+    function search() {
+        var url = "/selectTopic/stuTopicAjaxList?delState=0";
+        if (manType == 3){
+            url="/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
+        }
         $.ajax({
             type: "post",
             url: url,
@@ -340,7 +299,10 @@
     }
 
     function pageSearch(page) {
-
+        var url = "/selectTopic/stuTopicAjaxList?delState=0";
+        if (manType == 3){
+            url="/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
+        }
         $.ajax({
             type: "post",
             url: url,
@@ -361,8 +323,10 @@
     }
 
     $("#searchSubmit").click(function(){
-
-
+        var url = "/selectTopic/stuTopicAjaxList?delState=0";
+        if (manType == 3){
+            url="/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
+        }
         $.ajax({
             type: "post",
             url: url,
@@ -377,22 +341,46 @@
         });
     });
 
-
-
-    function subSuccess(id){
-        confirm(" 😲 确认审核通过？","",function (isConfirm) {
-            if (isConfirm){
+    function delTopic(id) {
+        confirm(" 😲 确认删除吗？","",function (isconfirm) {
+            if (isconfirm){
                 $.ajax({
                     type:"POST",
-                    url:"${ctx}/selectTopic/topicAudited",
-                    data:{"id":id,"teaAuditState":2},
+                    url:"${ctx}/selectTopic/delTopic",
+                    data:{"id":id},
+                    dataType:"json",
+                    success:function(msg){
+                        if("OK"!=msg){
+                            alert(" 😅 "+msg);
+                        }else{
+                            alert(" 😋 删除成功！","",function () {
+                                location.href="${ctx}/selectTopic/topicList";
+                            },{type:"success",confirmButtonText:"好的"});
+                        }
+                    },
+                    error:function(e){
+                        alert("😥 系统异常，请与我们的工程师联系！");
+                    }
+                });
+            }
+        })
+    }
+
+
+    function topicDel(id){
+        confirm(" 😲 确认删除吗？","",function (isConfirm) {
+            if (isConfirm){
+                $.ajax({
+                    type:"GET",
+                    url:"/selectTopic/topicDel",
+                    data:{"id":id},
                     dataType:"json",
                     success:function(msg){
                         if("OK"!=msg){
                             alert(" 😅 "+msg);
                         }else {
-                            alert(" 😋 审核通过","",function () {
-                                window.location.href= "${ctx}/selectTopic/noTopicList?teaId=${sessionScope.sessionUser.id}";
+                            alert(" 😋 删除成功","",function () {
+                                location.href="/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}";
                             },{type:"success",confirmButtonText:"好的"});
                         }
                     },
@@ -405,36 +393,54 @@
     }
 
 
-    function subFail(){
+    function teaDeleteAll(){
+        var arrayId = new Array();
+        $('input[name="ids"]:checked').each(function(){arrayId.push($(this).val());});
+        if(arrayId.length==0){
+            alert(" 😨 无实例选中");
+            event.preventDefault(); // 兼容标准浏览器
+            window.event.returnValue = false; // 兼容IE6~8
+        }else{
+            confirm(" 😲 确认删除吗？","",function (is) {
+                if (is){
+                    $.ajax({
+                        type:"POST",
+                        url:"${ctx}/selectUserBase/teaDeleteAll",
+                        data: { "selectedIDs": arrayId },
+                        dataType:"json",
+                        traditional: true,
+                        success:function(msg){
+                            if("OK"!=msg){
+                                alert(" 😅 "+msg);
+                            }else{
+                                alert(" 😋 删除成功！","",function () {
+                                    location.href="${ctx}/selectUserBase/teaList";
+                                },{type:"success",confirmButtonText:"好的"});
+                            }
 
-        confirm(" 😲 确认不通过？","",function (isConfirm) {
-            if (isConfirm){
-                $.ajax({
-                    type:"POST",
-                    url:"${ctx}/selectTopic/topicAudited",
-                    data:{"id":$("#hid").val(),"teaAuditState":1,"teaAuditContent":$("#reason").val()},
-                    dataType:"json",
-                    success:function(msg){
-                        if("OK"!=msg){
-                            alert(" 😅 "+msg);
-                        }else{
-                            alert(" 😋 审核完成！","",function () {
-                                window.location.href= "${ctx}/selectTopic/noTopicList?teaId=${sessionScope.sessionUser.id}";
-                            },{type:"success",confirmButtonText:"好的"});
+                        },
+                        error:function(e){
+                            alert("😥 系统异常，请与我们的工程师联系！");
                         }
-                    },
-                    error:function(e){
-                        alert("😥 系统异常，请与我们的工程师联系！");
-                    }
-                });
-            }
-        });
+                    });
+                }
+            })
+
+        }
 
     }
 
     function topicDetails(id) {
         window.location.href="${ctx}/selectTopic/topicDetails?id="+id;
     }
+
+    function teaUpdate(id) {
+        window.location.href='${ctx}/selectUserBase/teaInitUpdate?id='+id;
+    }
+
+
+
+
 
 
     function initTeaPage(obj) {
@@ -464,8 +470,6 @@
                             +"<td>"+time+"</td>"
                             +"<td>" +
                                 "<button onclick='teaDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
-                                " <button class='btn btn-xs btn-success' onclick='subSuccess("+val.id+")'><i class='icon-ok-circle'></i>通过</button> &nbsp;&nbsp;" +
-                                "<button class='btn btn-xs btn-danger' onclick='cleanAll("+val.id+")' id='modal-317062' href='#modal-container-317062' role='button'  data-toggle='modal'><i class='icon-remove-sign'></i>不通过</button>" +
                             "</td>"
                             +"</tr>"
                         ;

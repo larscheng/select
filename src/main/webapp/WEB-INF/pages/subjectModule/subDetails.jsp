@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -149,6 +150,9 @@
                                     <div class="form-group">
 
                                         <label class="col-lg-4 control-label">题目文件</label>
+
+                                        <c:choose>
+                                        <c:when test="${requestScope.sub.subFile != null}">
                                         <div class="col-lg-2 panel panel-default pdl" >
                                             ${requestScope.sub.subFile}
                                         </div>
@@ -158,6 +162,12 @@
                                             <a class="btn btn-info"
                                                href="${ctx}/selectSubject/subFileDown?fileName=${requestScope.sub.subFile}" target="_blank">下载</a>
                                         </div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="col-lg-2 panel panel-default pdl" style="color: red; font-weight: bold" >
+                                                    暂无
+                                            </div>
+                                        </c:otherwise>
                                     </div>
 
 

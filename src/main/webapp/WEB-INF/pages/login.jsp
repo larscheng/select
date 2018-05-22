@@ -168,8 +168,8 @@
                         },
                         stringLength: {
                             min: 6,
-                            max: 30,
-                            message: '用户名长度必须在6到30之间'
+                            max: 20,
+                            message: '密码长度必须在6到20位之间'
                         }
                     }
                 }
@@ -221,7 +221,7 @@
                 $("#msg").text(" 😅 请填写您的账号");
                 return;
             }
-            if (!$("#userCode").validate()) {
+            if (!$("#userPassword").validate()) {
                 $("#msg").text(" 😅 请填写您的密码");
 
                 return;

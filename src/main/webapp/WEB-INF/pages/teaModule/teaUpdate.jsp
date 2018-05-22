@@ -111,14 +111,14 @@
 
                                         <label class="col-lg-1 control-label">所属系别</label>
                                         <div class="col-lg-2" >
-                                            <select name="teaDepName" class="form-control">
+                                            <select name="teaDepId" class="form-control">
                                                 <c:forEach var="teaDepName" items="${requestScope.teaDepList}">
                                                     <c:choose>
                                                         <c:when test="${teaDepName.depName eq requestScope.user.teaDepName}">
-                                                            <option value="${teaDepName.depName}" selected>${teaDepName.depName}</option>
+                                                            <option value="${teaDepName.id}" selected>${teaDepName.depName}</option>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <option value="${teaDepName.depName}">${teaDepName.depName}</option>
+                                                            <option value="${teaDepName.id}">${teaDepName.depName}</option>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </c:forEach>

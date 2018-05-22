@@ -1,6 +1,7 @@
 package com.slxy.www.web;
 
 import com.slxy.www.domain.po.SelectProcessControl;
+import com.slxy.www.filter.LoginRequired;
 import com.slxy.www.service.SelectProcessControlService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -53,6 +54,7 @@ public class SelectProcessControlController {
      * @return
      */
     @ApiOperation(value = "更新流程", notes = "")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/updatePc",method = RequestMethod.POST)
     @ResponseBody
     public String updatePc(SelectProcessControl selectProcessControl) {

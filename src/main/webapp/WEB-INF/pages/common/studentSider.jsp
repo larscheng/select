@@ -24,16 +24,16 @@
     <ul id="nav" style="display: block;">
         <!-- Main menu with font awesome icon -->
         <li><a href="${ctx}/test.jsp" target="mainFrame" ><i class="icon-list-alt"></i> 首页  </a></li>
-        <li><a href="${ctx}/selectBugLog/bugInitList" target="mainFrame" ><i class="icon-list-alt"></i> <b style="color: red">bug提交，谢谢 </b> </a></li>
+        <%--<li><a href="${ctx}/selectBugLog/bugInitList" target="mainFrame" ><i class="icon-list-alt"></i> <b style="color: red">bug提交，谢谢 </b> </a></li>--%>
 
-        <li><a href="${ctx}/selectUserBase/stuSelfInfo?id=${sessionScope.sessionUser.id}"  target="mainFrame" class=""><i class="icon-home"></i>个人信息变更</a></li>
+        <li><a href="${ctx}/selectUserBase/stuSelfInfo"  target="mainFrame" class=""><i class="icon-home"></i>个人信息变更</a></li>
         <li><a href="${ctx}/selectUserBase/stuList" target="mainFrame" ><i class="icon-list-alt"></i> 学生信息查看  </a></li>
         <li><a href="${ctx}/selectUserBase/teaList" target="mainFrame" ><i class="icon-file-alt"></i> 教师信息查看 </a></li>
-        <li><a href="${ctx}/selectSubject/stuSubList?selectId=${sessionScope.sessionUser.id}" target="mainFrame" ><i class="icon-file-alt"></i> 论文题目列表 </a></li>
-        <li><a href="${ctx}/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}" target="mainFrame" ><i class="icon-file-alt"></i> 选题信息管理 </a></li>
-        <li><a href="${ctx}/selectSubject/subAllList?selectId=${sessionScope.sessionUser.id}" target="mainFrame" ><i class="icon-file-alt"></i> 历届论文信息 </a></li>
+        <li><a href="${ctx}/selectSubject/stuSubList" target="mainFrame" ><i class="icon-file-alt"></i> 论文题目列表 </a></li>
+        <li><a href="${ctx}/selectTopic/topicList" target="mainFrame" ><i class="icon-file-alt"></i> 选题信息管理 </a></li>
+        <li><a href="${ctx}/selectSubject/subAllList" target="mainFrame" ><i class="icon-file-alt"></i> 历届论文信息 </a></li>
 
-        <li><a href="${ctx}/selectTopic/topicUploadList?stuId=${sessionScope.sessionUser.id}" target="mainFrame"><i class="icon-calendar"></i>成绩查询</a></li>
+        <li><a href="${ctx}/selectTopic/topicUploadList" target="mainFrame"><i class="icon-calendar"></i>成绩查询</a></li>
         <li><a href="${ctx}/logout" target="_top"><i class="icon-bar-chart"></i>注销</a></li>
 
     </ul>
@@ -43,9 +43,7 @@
 <%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>
 <script>
 
-    function stuSubList() {
-        window.location.href='${ctx}/selectSubject/stuSubList?stuMajorId=${sessionScope.sessionUser.stuMajorId}&stuYear=${sessionScope.sessionUser.stuYear}';
-    }
+
 
 </script>
 </body>

@@ -2,6 +2,7 @@ package com.slxy.www.web;
 
 import com.slxy.www.domain.po.SelectMajor;
 import com.slxy.www.domain.vo.SelectMajorVo;
+import com.slxy.www.filter.LoginRequired;
 import com.slxy.www.service.SelectMajorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -53,6 +54,7 @@ public class SelectMajorController {
      * @return
      */
     @ApiOperation(value = "专业启用禁用、编辑", notes = "")
+    @LoginRequired(value = "adm")
     @RequestMapping(value={"/majDisable","/majUpdate"},method = RequestMethod.POST)
     @ResponseBody
     public String majDisableAndUpdate(SelectMajor selectMajor) {
@@ -65,6 +67,7 @@ public class SelectMajorController {
      * @return
      */
     @ApiOperation(value = "专业添加初始化", notes = "")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/majInitAdd",method = RequestMethod.GET)
     public ModelAndView majInitAdd(ModelAndView modelAndView) {
         return selectMajorService.majInitAdd(modelAndView);
@@ -76,6 +79,7 @@ public class SelectMajorController {
      * @return
      */
     @ApiOperation(value = "专业编辑初始化", notes = "")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/majInitUpdate",method = RequestMethod.GET)
     public ModelAndView majInitUpdate(ModelAndView modelAndView, SelectMajor selectMajor) {
         return selectMajorService.majInitUpdate(modelAndView,selectMajor);
@@ -96,6 +100,7 @@ public class SelectMajorController {
     }
 
     @ApiOperation(value = "专业添加", notes = "")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/majAdd",method = RequestMethod.POST)
     @ResponseBody
     public String majAdd(SelectMajor selectMajor) {
@@ -103,6 +108,7 @@ public class SelectMajorController {
     }
 
     @ApiOperation(value = "专业删除", notes = "")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/majDelete",method = RequestMethod.POST)
     @ResponseBody
     public String majDelete(SelectMajor selectMajor) {
@@ -110,6 +116,7 @@ public class SelectMajorController {
     }
 
     @ApiOperation(value = "专业批量删除", notes = "")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/majDeleteAll",method = RequestMethod.POST)
     @ResponseBody
     public String majDeleteAll(Integer[] selectedIDs) {

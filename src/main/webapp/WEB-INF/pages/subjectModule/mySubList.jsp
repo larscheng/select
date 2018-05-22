@@ -176,6 +176,9 @@
                                                     <td><fmt:formatDate value="${subject.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>
                                                         <button class="btn btn-xs btn-info" onclick="subjectDetails(${subject.id})"><i class="icon-pencil"></i>详情</button>
+                                                        <c:if test="${subject.admAuditState eq 0}">
+                                                            <button class="btn btn-xs btn-warning" onclick="subUpdate(${subject.id})"><i class="icon-pencil"></i>修改</button>
+                                                        </c:if>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -297,6 +300,9 @@
     });
 
 
+    function subUpdate(id) {
+        window.location.href="${ctx}/selectSubject/initSubUpdate?id="+id;
+    }
     function subjectDetails(id) {
         window.location.href="${ctx}/selectSubject/subjectDetail?id="+id;
     }

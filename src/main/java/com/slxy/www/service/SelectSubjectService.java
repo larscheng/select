@@ -6,9 +6,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.slxy.www.common.Constant;
 import com.slxy.www.common.ExcelUtils;
 import com.slxy.www.common.SelectMapStructMapper;
-import com.slxy.www.dao.ISelectDepartmentMapper;
-import com.slxy.www.dao.ISelectMajorMapper;
-import com.slxy.www.dao.ISelectUserBaseMapper;
+import com.slxy.www.dao.*;
 import com.slxy.www.domain.dto.SelectSubjectDto;
 import com.slxy.www.domain.po.*;
 import com.slxy.www.domain.vo.SelectSubjectVo;
@@ -23,16 +21,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.slxy.www.dao.ISelectSubjectMapper;
 import com.baomidou.framework.service.impl.ServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.beans.IntrospectionException;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -61,6 +60,9 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
     private ISelectMajorMapper selectMajorMapper;
     @Autowired
     private SelectTopicService selectTopicService;
+    @Autowired
+    private ISelectProcessControlMapper selectProcessControlMapper;
+
 
 
 
@@ -313,7 +315,7 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
         SelectSubject subject = SelectMapStructMapper.INSTANCE.SelectSubjectVoToPo(vo);
         subject.setGmtCreate(new Date());
         //保存文件
-        if (!ObjectUtils.isEmpty(file)){
+        if (!ObjectUtils.isEmpty(file)&&!ObjectUtils.isEmpty(file.getOriginalFilename())){
 //            String fileDir =request.getServletContext().getRealPath("");
 //            String demoDir = "downFile";
             String fileDir = Constant.FILE_DIR;
@@ -566,12 +568,50 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
      * @param vo
      * @return
      */
-    public String subUpdate(SelectSubjectVo vo) {
+    public String subUpdate(MultipartFile file, SelectSubjectVo vo, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (session.getAttribute("userType")!=null&&(Integer)session.getAttribute("userType")==2){
+            //当前是否处于上传题目阶段
+            SelectProcessControl selectProcessControl = selectProcessControlMapper.selectPro();
+            if (ObjectUtils.isEmpty(selectProcessControl)){
+                return JSONObject.toJSONString(Constant.NOT_UPLOAD_SUBJECT_TIME);
+            }
+            if (!selectProcessControl.getId().equals(1)){
+                return JSONObject.toJSONString(Constant.NOT_UPLOAD_SUBJECT_TIME);
+            }
+        }
         SelectSubject selectSubject = selectSubjectMapper.selectById(vo.getId());
         if (ObjectUtils.isEmpty(selectSubject)){
             return JSONObject.toJSONString(Constant.ERROR);
         }
+
         selectSubject = SelectMapStructMapper.INSTANCE.SelectSubjectVoToPo(vo);
+        //保存文件
+        if (!ObjectUtils.isEmpty(file)&&!ObjectUtils.isEmpty(file.getOriginalFilename())){
+
+            String fileDir = Constant.FILE_DIR;
+            String demoDir = "demo";
+            String demoPath = demoDir + File.separator;
+            String fileName = file.getOriginalFilename();
+            File outFile = new File(fileDir + demoPath);
+            //保存路径字段
+            selectSubject.setSubFile(demoDir+"/"+fileName);
+
+            if (!outFile.exists()) {
+                outFile.mkdirs();
+            }
+            try{
+                InputStream in = file.getInputStream();
+                OutputStream ot = new FileOutputStream(fileDir + demoPath + fileName);
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((-1 != (len = in.read(buffer)))) {
+                    ot.write(buffer, 0, len);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         return this.updateById(selectSubject) ? JSONObject.toJSONString(Constant.SUCCESS):JSONObject.toJSONString(Constant.ERROR);
     }
 }

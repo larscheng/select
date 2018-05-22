@@ -1,6 +1,7 @@
 package com.slxy.www.web;
 
 import com.slxy.www.domain.po.SelectScorePer;
+import com.slxy.www.filter.LoginRequired;
 import com.slxy.www.service.SelectScorePerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -54,6 +55,7 @@ public class SelectScorePerController {
      * @return
      */
     @ApiOperation(value = "成绩比例添加初始化", notes = "")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/addInitScore",method = RequestMethod.GET)
     public ModelAndView addInitScore(ModelAndView  modelAndView) {
         modelAndView.setViewName("adminModule/scoreAdd");
@@ -67,6 +69,7 @@ public class SelectScorePerController {
      */
 
     @ApiOperation(value = "添加比例", notes = "不公开")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/addScore",method = RequestMethod.POST)
     @ResponseBody
     public String addScore(SelectScorePer selectScorePer) {
@@ -93,6 +96,7 @@ public class SelectScorePerController {
      */
 
     @ApiOperation(value = "编辑成绩比例", notes = "")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/updateScore",method = RequestMethod.POST)
     @ResponseBody
     public String updateScore(SelectScorePer selectScorePer) {
@@ -105,6 +109,7 @@ public class SelectScorePerController {
      * @return
      */
     @ApiOperation(value = "删除比例", notes = "不公开")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/delScore",method = RequestMethod.POST)
     @ResponseBody
     public String delScore(@RequestParam("id")String id) {
@@ -118,6 +123,7 @@ public class SelectScorePerController {
      * @return
      */
     @ApiOperation(value = "比例批量删除", notes = "不用开")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/delAllScore",method = RequestMethod.POST)
     @ResponseBody
     public String delAllScore(Integer[] selectedIDs) {

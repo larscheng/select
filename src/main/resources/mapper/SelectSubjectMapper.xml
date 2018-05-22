@@ -95,6 +95,9 @@
 		<if test="@Ognl@isNotEmpty(admAuditState)">
 			and a.adm_audit_state = #{admAuditState}
 		</if>
+		<if test="@Ognl@isNotEmpty(subSelectStatus)">
+			and a.sub_select_status = #{subSelectStatus}
+		</if>
 		<if test="@Ognl@isNotEmpty(subType)">
 			and a.sub_type = #{subType}
 		</if>

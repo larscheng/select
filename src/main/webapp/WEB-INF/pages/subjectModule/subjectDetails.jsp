@@ -157,16 +157,27 @@
                                     <div class="form-group">
 
                                         <label class="col-lg-4 control-label">题目文件</label>
-                                        <div class="col-lg-4 panel panel-default pdl" >
-                                            <%--${requestScope.sub.subFile}--%>
-                                                ${fn:substringAfter( requestScope.sub.subFile, "demo/")}
-                                        </div>
-                                        <div class="col-lg-2">
-                                            <a class="btn btn-info"
-                                               href="http://${sessionScope.sessionIp}:8012/onlinePreview?url=http://${sessionScope.sessionIp}:8012/${requestScope.sub.subFile}" target="_blank">预览</a>
-                                            <a class="btn btn-info"
-                                               href="${ctx}/selectSubject/subFileDown?fileName=${requestScope.sub.subFile}" target="_blank">下载</a>
-                                        </div>
+                                        <c:choose>
+                                            <c:when test="${requestScope.sub.subFile != null}">
+                                                <div class="col-lg-4 panel panel-default pdl" >
+                                                        <%--${requestScope.sub.subFile}--%>
+                                                        ${fn:substringAfter( requestScope.sub.subFile, "demo/")}
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <a class="btn btn-info"
+                                                       href="http://${sessionScope.sessionIp}:8012/onlinePreview?url=http://${sessionScope.sessionIp}:8012/${requestScope.sub.subFile}" target="_blank">预览</a>
+                                                    <a class="btn btn-info"
+                                                       href="${ctx}/selectSubject/subFileDown?fileName=${requestScope.sub.subFile}" target="_blank">下载</a>
+                                                </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="col-lg-4 panel panel-default pdl" style="color: red; font-weight: bold" >
+                                                        <%--${requestScope.sub.subFile}--%>
+                                                        暂无
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
+
                                     </div>
 
                                     <div class="form-group">

@@ -265,7 +265,8 @@ public class SelectUserBaseService extends  ServiceImpl <ISelectUserBaseMapper, 
         if (!ObjectUtils.isEmpty(userBase)){
             modelAndView.addObject("user",userBase);
         }
-        List<SelectUserBase> yearList = selectUserBaseMapper.selectStuYear();
+//        List<SelectUserBase> yearList = selectUserBaseMapper.selectStuYear();
+        List<SelectUserBase> yearList = new ArrayList<>();
         if (CollectionUtils.isEmpty(yearList)){
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
             Date date = new Date();

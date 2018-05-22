@@ -19,7 +19,11 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -29,7 +33,8 @@ import java.util.Objects;
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 
 
-    private static final String[] IGNORE_URI={"/selectUserBase/login"};   //填写XX.do
+    private static final String[] IGNORE_URI={"/selectUserBase/login","/","","/login","/initForgetPs"};   //填写XX.do
+
 
     /**
      * Handler执行之前调用这个方法
@@ -48,6 +53,15 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         String ip  = request.getRemoteAddr();
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         Method method = handlerMethod.getMethod();
+
+        boolean contains = Arrays.asList(IGNORE_URI).contains(name);
+        if (!contains){
+            if (ObjectUtils.isEmpty(admin)){
+                response.getWriter().write("<script>window.open('/','_top')</script>");
+                return false;
+            }
+        }
+
 
         LoginRequired methodAnnotation = method.getAnnotation(LoginRequired.class);
 

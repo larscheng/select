@@ -385,7 +385,7 @@
                         alert(" 😅 "+msg);
                     }else {
                         alert(" 😎 修改成功！","",function () {
-                            location.href="${ctx}/selectUserBase/stuSelfInfo?id=${sessionScope.sessionUser.id}";
+                            location.href="${ctx}/selectUserBase/stuSelfInfo";
                         },{type:"success",confirmButtonText:"好的"});
                     }
 

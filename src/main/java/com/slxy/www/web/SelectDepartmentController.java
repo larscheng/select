@@ -2,6 +2,7 @@ package com.slxy.www.web;
 
 import com.slxy.www.domain.po.SelectDepartment;
 import com.slxy.www.domain.vo.SelectDepartmentVo;
+import com.slxy.www.filter.LoginRequired;
 import com.slxy.www.service.SelectDepartmentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
@@ -56,6 +57,7 @@ public class SelectDepartmentController {
      * @return
      */
     @ApiOperation(value = "跳转添加系别页")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/depInitAdd",method = RequestMethod.GET)
     public ModelAndView depInitAdd(ModelAndView modelAndView) {
         modelAndView.setViewName("depmaj/depAdd");
@@ -67,7 +69,8 @@ public class SelectDepartmentController {
      * @param selectDepartment
      * @return
      */
-    @ApiOperation(value = "跳转添加系别页")
+    @ApiOperation(value = "添加系别")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/depAdd",method = RequestMethod.POST)
     @ResponseBody
     public String depAdd(SelectDepartment selectDepartment) {
@@ -81,6 +84,7 @@ public class SelectDepartmentController {
      * @return
      */
     @ApiOperation(value = "系别启禁用、编辑系别")
+    @LoginRequired(value = "adm")
     @RequestMapping(value={"/depDisable","/depUpdate"},method =RequestMethod.POST )
     @ResponseBody
     public String depDisableAndUpdate(SelectDepartment selectDepartment) {
@@ -94,6 +98,7 @@ public class SelectDepartmentController {
      * @return
      */
     @ApiOperation(value = "初始化系别编辑并跳转页面")
+    @LoginRequired(value = "adm")
     @RequestMapping( value = "/depInitUpdate", method = RequestMethod.GET)
     public ModelAndView depInitUpdate(Integer id, ModelAndView modelAndView) {
         SelectDepartment selectDepartment = selectDepartmentService.selectById(id);
@@ -125,6 +130,7 @@ public class SelectDepartmentController {
      * @return
      */
     @ApiOperation(value = "系别删除")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/depDelete",method = RequestMethod.POST)
     @ResponseBody
     public String depDelete(SelectDepartment selectDepartment) {
@@ -138,6 +144,7 @@ public class SelectDepartmentController {
      * @return
      */
     @ApiOperation(value = "系别批量删除")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/depDeleteAll",method = RequestMethod.POST)
     @ResponseBody
     public String depDeleteAll(Integer[] selectedIDs) {

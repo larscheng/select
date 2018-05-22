@@ -1,15 +1,21 @@
 package com.slxy.www.web;
 
 import com.slxy.www.common.Constant;
+import com.slxy.www.dao.ISelectMajorMapper;
 import com.slxy.www.domain.po.SelectSubject;
+import com.slxy.www.domain.po.SelectUserBase;
 import com.slxy.www.domain.vo.SelectSubjectVo;
+import com.slxy.www.enums.EnumEnOrDis;
+import com.slxy.www.enums.EnumSubSelectStatus;
 import com.slxy.www.enums.EnumSubState;
+import com.slxy.www.enums.EnumUserType;
 import com.slxy.www.service.SelectSubjectService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.beans.IntrospectionException;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -50,6 +57,8 @@ import java.util.Map;
 public class SelectSubjectController {
     @Autowired
     private SelectSubjectService selectSubjectService;
+    @Autowired
+    private ISelectMajorMapper selectMajorMapper;
 
     /**
      * 未审核列表
@@ -86,7 +95,19 @@ public class SelectSubjectController {
      */
     @ApiOperation(value = "历届论文列表", notes = "")
     @RequestMapping(value = "/subAllList",method = RequestMethod.GET)
-    public ModelAndView subAllList(ModelAndView  modelAndView, SelectSubjectVo vo) {
+    public ModelAndView subAllList(ModelAndView  modelAndView, SelectSubjectVo vo,HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (!ObjectUtils.isEmpty(session)){
+            SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
+            if (!ObjectUtils.isEmpty(userBase)){
+                if (EnumUserType.TEACHER.getValue().equals(userBase.getUserType())){
+                    vo.setForDepId(userBase.getTeaDepId());
+                }else if(EnumUserType.STUDENT.getValue().equals(userBase.getUserType())){
+                    vo.setForDepId(selectMajorMapper.selectById(userBase.getStuMajorId()).getDepId());
+                }
+
+            }
+        }
         modelAndView.setViewName("CountModule/subAllList");
         return selectSubjectService.subList(modelAndView,vo);
     }
@@ -201,7 +222,14 @@ public class SelectSubjectController {
      */
     @ApiOperation(value = "获得我的题目（教师）", notes = "")
     @RequestMapping(value = "/mySubList",method = RequestMethod.GET)
-    public ModelAndView mySubList(ModelAndView  modelAndView, SelectSubjectVo vo) {
+    public ModelAndView mySubList(ModelAndView  modelAndView, SelectSubjectVo vo,HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (!ObjectUtils.isEmpty(session)){
+            SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
+            if (!ObjectUtils.isEmpty(userBase)){
+                vo.setTeaId(userBase.getId());
+            }
+        }
         modelAndView.setViewName("subjectModule/mySubList");
         return selectSubjectService.mySubList(modelAndView,vo);
     }
@@ -214,7 +242,15 @@ public class SelectSubjectController {
     @ApiOperation(value = "异步生成我的题目列表（教师）", notes = "")
     @RequestMapping(value = "/mySubListAjax",method = RequestMethod.POST)
     @ResponseBody
-    public String mySubListAjax(SelectSubjectVo vo) {
+    public String mySubListAjax(SelectSubjectVo vo,HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (!ObjectUtils.isEmpty(session)){
+            SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
+            if (!ObjectUtils.isEmpty(userBase)){
+                vo.setTeaId(userBase.getId());
+            }
+        }
+
         return selectSubjectService.mySubListAjax(vo);
     }
 
@@ -253,8 +289,8 @@ public class SelectSubjectController {
     @ApiOperation(value = "adm修改题目", notes = "如改动题目的面向系别名称等")
     @RequestMapping(value = "/subUpdate",method = RequestMethod.POST)
     @ResponseBody
-    public String subUpdate(SelectSubjectVo vo) {
-        return selectSubjectService.subUpdate(vo);
+    public String subUpdate(@RequestParam("subFile") MultipartFile file,SelectSubjectVo vo, HttpServletRequest request) {
+        return selectSubjectService.subUpdate(file,vo,request);
     }
     /***
      * 所有通过审核的题目列表
@@ -263,8 +299,15 @@ public class SelectSubjectController {
      */
     @ApiOperation(value = "通过审核的题目列表", notes = "")
     @RequestMapping(value = "/optionalList",method = RequestMethod.GET)
-    public ModelAndView optionalList(ModelAndView  modelAndView,SelectSubjectVo vo) {
+    public ModelAndView optionalList(ModelAndView  modelAndView,SelectSubjectVo vo,HttpServletRequest request) {
         modelAndView.setViewName("subjectModule/optionalList");
+        HttpSession session = request.getSession();
+        if (!ObjectUtils.isEmpty(session)){
+            SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
+            if (!ObjectUtils.isEmpty(userBase)){
+                vo.setTeaId(userBase.getId()).setAdmAuditState(EnumSubState.SUCCESS.getValue());
+            }
+        }
         vo.setAdmAuditState(EnumSubState.SUCCESS.getValue());
         return selectSubjectService.mySubList(modelAndView,vo);
     }
@@ -278,7 +321,14 @@ public class SelectSubjectController {
     @ApiOperation(value = "异步获取所有通过审核的题目列表", notes = "")
     @RequestMapping(value = "/optionalListAjax",method = RequestMethod.POST)
     @ResponseBody
-    public String optionalListAjax(SelectSubjectVo vo) {
+    public String optionalListAjax(SelectSubjectVo vo,HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (!ObjectUtils.isEmpty(session)){
+            SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
+            if (!ObjectUtils.isEmpty(userBase)){
+                vo.setTeaId(userBase.getId());
+            }
+        }
         vo.setAdmAuditState(EnumSubState.SUCCESS.getValue());
         return selectSubjectService.mySubListAjax(vo);
     }
@@ -311,7 +361,14 @@ public class SelectSubjectController {
      */
     @ApiOperation(value = "获取学生可见的题目列表", notes = "本届、本系")
     @RequestMapping(value = "/stuSubList",method = RequestMethod.GET)
-    public ModelAndView stuSubList(ModelAndView  modelAndView, SelectSubjectVo vo) {
+    public ModelAndView stuSubList(ModelAndView  modelAndView, SelectSubjectVo vo,HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (!ObjectUtils.isEmpty(session)){
+            SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
+            if (!ObjectUtils.isEmpty(userBase)){
+                vo.setSelectId(userBase.getId()).setSubSelectStatus(EnumSubSelectStatus.Untreated.getValue());
+            }
+        }
         modelAndView.setViewName("subjectModule/stuSubList");
         return selectSubjectService.stuSubList(modelAndView,vo);
     }

@@ -284,7 +284,7 @@ public class SelectUserBaseController {
      * @return
      */
     @ApiOperation(value = "学生启用禁用", notes = "")
-    @LoginRequired(value = "admTea")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/stuAble",method = RequestMethod.POST)
     @ResponseBody
     public String stuAble(SelectUserBaseVo userBaseVo) {
@@ -297,7 +297,7 @@ public class SelectUserBaseController {
      * @return
      */
     @ApiOperation(value = "学生删除", notes = "")
-    @LoginRequired(value = "admTea")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/stuDelete",method = RequestMethod.POST)
     @ResponseBody
     public String stuDelete(SelectUserBaseVo userBaseVo) {
@@ -310,7 +310,7 @@ public class SelectUserBaseController {
      * @return
      */
     @ApiOperation(value = "教师批量删除", notes = "")
-    @LoginRequired(value = "admTea")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/stuDeleteAll",method = RequestMethod.POST)
     @ResponseBody
     public String stuDeleteAll(Integer[] selectedIDs) {
@@ -328,7 +328,14 @@ public class SelectUserBaseController {
     @ApiOperation(value = "学生个人信息变更", notes = "")
     @LoginRequired(value = "stu")
     @RequestMapping(value = "/stuSelfInfo",method = RequestMethod.GET)
-    public ModelAndView stuSelfInfo(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
+    public ModelAndView stuSelfInfo(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo,HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (!ObjectUtils.isEmpty(session)){
+            SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
+            if (!ObjectUtils.isEmpty(userBase)){
+                userBaseVo.setId(userBase.getId());
+            }
+        }
         modelAndView.setViewName("/stuModule/stuSelfInfo");
         return selectUserBaseService.stuInitAddAndUpdate(modelAndView,userBaseVo);
     }
@@ -342,7 +349,7 @@ public class SelectUserBaseController {
      * @return
      */
     @ApiOperation(value = "学生修改初始化", notes = "")
-    @LoginRequired(value = "admTea")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/stuInitUpdate",method = RequestMethod.GET)
     public ModelAndView stuInitUpdate(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
         modelAndView.setViewName("/stuModule/stuUpdate");
@@ -355,6 +362,7 @@ public class SelectUserBaseController {
      * @return
      */
     @ApiOperation(value = "学生修改", notes = "")
+//    @LoginRequired(value = "adm")
     @RequestMapping(value = "/stuUpdate",method = RequestMethod.POST)
     @ResponseBody
     public String stuUpdate(SelectUserBase userBase) {
@@ -368,7 +376,7 @@ public class SelectUserBaseController {
      * @return
      */
     @ApiOperation(value = "学生添加初始化", notes = "")
-    @LoginRequired(value = "admTea")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/stuInitAdd",method = RequestMethod.GET)
     public ModelAndView stuInitAdd(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
 
@@ -382,7 +390,7 @@ public class SelectUserBaseController {
      * @return
      */
     @ApiOperation(value = "学生添加", notes = "")
-    @LoginRequired(value = "admTea")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/stuAdd",method = RequestMethod.POST)
     @ResponseBody
     public String stuAdd(SelectUserBase userBase) {
@@ -397,7 +405,7 @@ public class SelectUserBaseController {
      * @throws IOException
      */
     @ApiOperation(value = "学生导入", notes = "")
-    @LoginRequired(value = "admTea")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/stuUpload", method = RequestMethod.POST)
     @ResponseBody
     public String stuUpload(HttpServletRequest request) throws IOException {
@@ -424,7 +432,7 @@ public class SelectUserBaseController {
      * @throws Exception
      */
     @ApiOperation(value = "学生模板下载", notes = "")
-    @LoginRequired(value = "admTea")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/stuFileDown",method = RequestMethod.GET)
     public void stuFileDown(HttpServletRequest request,HttpServletResponse response) throws Exception {
         String fileName= "select_students.xls";
@@ -468,6 +476,7 @@ public class SelectUserBaseController {
      * @return
      */
     @ApiOperation(value = "异步生成教师列表", notes = "")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/teaListAjax",method = RequestMethod.POST)
     @ResponseBody
     public String teaListAjax(SelectUserBaseVo userBaseVo) {
@@ -527,7 +536,14 @@ public class SelectUserBaseController {
     @ApiOperation(value = "教师个人信息编辑（本人）", notes = "")
     @LoginRequired(value = "admTea")
     @RequestMapping(value = "/teaSelfInfo",method = RequestMethod.GET)
-    public ModelAndView teaSelfInfo(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
+    public ModelAndView teaSelfInfo(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo,HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (!ObjectUtils.isEmpty(session)){
+            SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
+            if (!ObjectUtils.isEmpty(userBase)){
+                userBaseVo.setId(userBase.getId());
+            }
+        }
         modelAndView.setViewName("/teaModule/teaSelfInfo");
         return selectUserBaseService.teaInitAddAndUpdate(modelAndView,userBaseVo);
     }
@@ -566,7 +582,7 @@ public class SelectUserBaseController {
      * @return
      */
     @ApiOperation(value = "教师删除", notes = "")
-    @LoginRequired(value = "admTea")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/teaDelete",method = RequestMethod.POST)
     @ResponseBody
     public String teaDelete(SelectUserBase userBase) {
@@ -579,7 +595,7 @@ public class SelectUserBaseController {
      * @return
      */
     @ApiOperation(value = "教师批量删除", notes = "")
-    @LoginRequired(value = "admTea")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/teaDeleteAll",method = RequestMethod.POST)
     @ResponseBody
     public String teaDeleteAll(Integer[] selectedIDs) {
@@ -593,7 +609,6 @@ public class SelectUserBaseController {
      * @return
      */
     @ApiOperation(value = "教师详情", notes = "")
-    @LoginRequired(value = "admTea")
     @RequestMapping(value = "/teaDetails",method = RequestMethod.GET)
     public ModelAndView teaDetails(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
         modelAndView.setViewName("teaModule/teaDetails");
@@ -608,7 +623,7 @@ public class SelectUserBaseController {
      * @throws IOException
      */
     @ApiOperation(value = "教师导入", notes = "")
-    @LoginRequired(value = "admTea")
+    @LoginRequired(value = "adm")
     @RequestMapping(value = "/teaUpload", method = RequestMethod.POST)
     @ResponseBody
     public String teaUpload(HttpServletRequest request) throws IOException {

@@ -172,8 +172,8 @@
                         },
                         stringLength: {
                             min: 6,
-                            max: 19,
-                            message: '用户原始密码长度大于5小于20'
+                            max: 20,
+                            message: '密码长度必须在6到20位之间'
                         },
                         threshold : 6 , //有6字符以上才发送ajax请求，（input中输入一个字符，插件会向服务器发送一次，设置限制，6字符以上才开始）
                         remote: {//ajax验证。server result:{"valid",true or false} 向服务发送当前input name值，获得一个json数据。例表示正确：{"valid",true}
@@ -211,8 +211,8 @@
 //                        },
                         stringLength: {
                             min: 6,
-                            max: 19,
-                            message: '用户新密码长度大于5小于20'
+                            max: 20,
+                            message: '密码长度必须在6到20位之间'
                         },
                         regexp: {
                             regexp: /^[^ ]+$/,
@@ -232,8 +232,8 @@
                         },
                         stringLength: {
                             min: 6,
-                            max: 19,
-                            message: '用户确认密码长度大于5小于20'
+                            max: 20,
+                            message: '密码长度必须在6到20位之间'
                         },
 
                         regexp: {

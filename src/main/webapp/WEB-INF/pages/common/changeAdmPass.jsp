@@ -211,8 +211,8 @@
 //                        },
                         stringLength: {
                             min: 6,
-                            max: 19,
-                            message: '用户新密码长度大于5小于20'
+                            max: 20,
+                            message: '密码长度必须在6到20位之间'
                         },
                         regexp: {
                             regexp: /^[^ ]+$/,
@@ -232,8 +232,8 @@
                         },
                         stringLength: {
                             min: 6,
-                            max: 19,
-                            message: '用户确认密码长度大于5小于20'
+                            max: 20,
+                            message: '密码长度必须在6到20位之间'
                         },
 
                         regexp: {

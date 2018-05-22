@@ -122,7 +122,7 @@
                                             <input type="file" class="form-control" name="subFile">
 
                                         </div>
-                                        <div class="col-lg-2 ">支持pdf、office文件、压缩包</div>
+                                        <div class="col-lg-2 ">支持pdf、office文件</div>
                                     </div>
 
                                     <div class="form-group">

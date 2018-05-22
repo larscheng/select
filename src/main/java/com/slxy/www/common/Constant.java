@@ -75,7 +75,8 @@ public class Constant {
 
 
 
-
+    //流程控制
+    public static final String NOT_UPLOAD_SUBJECT_TIME = "不在上传题目操作时间内，操作失败！";
 
 
     public static final String FILE_DIR = "C:/select_files/";

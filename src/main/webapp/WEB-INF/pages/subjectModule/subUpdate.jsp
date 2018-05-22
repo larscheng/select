@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,7 +26,7 @@
         <!-- Page heading -->
         <h2 class="pull-left">
             <!-- page meta -->
-            <span class="page-meta">题目添加</span>
+            <span class="page-meta">题目修改</span>
         </h2>
 
 
@@ -141,14 +142,30 @@
                                         </div>
                                     </div>
 
-                                    <%--<div class="form-group">--%>
-                                        <%--<label class="col-lg-4 control-label">题目附件</label>--%>
-                                        <%--<div class="col-lg-6">--%>
-                                            <%--<input type="file" class="form-control" name="subFile">--%>
+                                    <div class="form-group">
+                                        <label class="col-lg-4 control-label">题目附件</label>
+                                        <c:choose>
+                                            <c:when test="${requestScope.sub.subFile != null}">
+                                                <div class="col-lg-4 panel panel-default pdl">
+                                                    <input type="file" class="form-control" name="subFile" style="display: none">
+                                                        ${fn:substringAfter( requestScope.sub.subFile, "demo/")}
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <a class="btn btn-info"
+                                                       href="http://${sessionScope.sessionIp}:8012/onlinePreview?url=http://${sessionScope.sessionIp}:8012/${requestScope.sub.subFile}" target="_blank">预览</a>
+                                                    <a class="btn btn-info"
+                                                       href="${ctx}/selectSubject/subFileDown?fileName=${requestScope.sub.subFile}" target="_blank">下载</a>
+                                                </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="col-lg-6">
+                                                    <input type="file" class="form-control" name="subFile">
+                                                </div>
+                                                <div class="col-lg-2 ">支持pdf、office文件</div>
+                                            </c:otherwise>
+                                        </c:choose>
 
-                                        <%--</div>--%>
-                                        <%--<div class="col-lg-2 ">支持pdf、office文件、压缩包</div>--%>
-                                    <%--</div>--%>
+                                    </div>
 
                                     <div class="form-group">
                                         <label class="col-lg-4 control-label">题目内容</label>
@@ -243,7 +260,7 @@
             bootstrapValidator.validate();
 
             if(bootstrapValidator.isValid()){
-            <%--var teaId = ${sessionScope.sessionUser.id}--%>
+            var userid = ${sessionScope.userType};
             <%--$("#teaId").val(teaId);--%>
             var formData = new FormData($( "#updateForm" )[0]);  // 要求使用的html对象
             $.ajax({
@@ -262,7 +279,12 @@
                         alert(" 😅 "+msg);
                     }else {
                         alert(" 😎 修改成功","",function () {
-                            location.href="${ctx}/selectSubject/subList"
+                            if(userid === 2){
+                                location.href="${ctx}/selectSubject/mySubList?teaId=${sessionScope.sessionUser.id}"
+                            }else {
+                                location.href="${ctx}/selectSubject/subList"
+                            }
+
                         },{type:"success",confirmButtonText:"好的"});
                     }
 
