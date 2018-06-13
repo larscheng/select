@@ -68,6 +68,7 @@ public class Constant {
     public static final String SELECT_ERROR_NOT_EXIST = "该选题记录不存在！";
     public static final String SELECT_ERROR_NOT_AUDIT_SUCCESS = "该记录还未通过审核，不能进行此操作！";
     public static final String SELECT_DEL_ERROR = "删除失败！该题目已被选择但尚未结题！";
+    public static final String SELECT_AGAIN = "您存在未过审核的选题记录，请删除后重新选题！";
 
 
     //成绩比例
@@ -77,6 +78,7 @@ public class Constant {
 
     //流程控制
     public static final String NOT_UPLOAD_SUBJECT_TIME = "不在上传题目操作时间内，操作失败！";
+    public static final String NOT_TIME = "该功能不在操作时间内，请稍后再试！";
 
 
     public static final String FILE_DIR = "C:/select_files/";

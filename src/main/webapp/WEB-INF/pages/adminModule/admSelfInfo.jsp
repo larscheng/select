@@ -25,13 +25,13 @@
         <!-- Page heading -->
         <h2 class="pull-left">
             <!-- page meta -->
-            <span class="page-meta">信息编辑</span>
+            <span class="page-meta"><i class="icon-cog"></i> 信息编辑</span>
         </h2>
 
 
         <!-- Breadcrumb -->
         <div class="bread-crumb pull-right">
-            <a href="${ctx}/index" target="_top"><i class="icon-home"></i> 信息编辑</a>
+            <a href="${ctx}/index" target="_top"><i class="icon-cog"></i> 信息编辑</a>
             <!-- Divider -->
             <span class="divider">/</span>
             <a href="#" class="bread-current">首页</a>

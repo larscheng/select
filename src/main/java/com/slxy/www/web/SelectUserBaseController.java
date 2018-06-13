@@ -476,7 +476,7 @@ public class SelectUserBaseController {
      * @return
      */
     @ApiOperation(value = "异步生成教师列表", notes = "")
-    @LoginRequired(value = "adm")
+//    @LoginRequired(value = "adm")
     @RequestMapping(value = "/teaListAjax",method = RequestMethod.POST)
     @ResponseBody
     public String teaListAjax(SelectUserBaseVo userBaseVo) {

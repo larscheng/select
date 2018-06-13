@@ -158,7 +158,7 @@
                                         </div>
                                         <div class="col-lg-2">
                                             <a class="btn btn-info"
-                                               href="http://${sessionScope.sessionIp}:8012/onlinePreview?url=http://${sessionScope.sessionIp}:8012/${requestScope.sub.subFile}" target="_blank">预览</a>
+                                               href="http://${sessionScope.sessionIp}:8012/onlinePreview?url=http://${sessionScope.sessionIp}:8012/${requestScope.sub.subFile}" <%--target="_blank"--%>>预览</a>
                                             <a class="btn btn-info"
                                                href="${ctx}/selectSubject/subFileDown?fileName=${requestScope.sub.subFile}" target="_blank">下载</a>
                                         </div>
@@ -168,6 +168,7 @@
                                                     暂无
                                             </div>
                                         </c:otherwise>
+                                        </c:choose>
                                     </div>
 
 
@@ -305,37 +306,9 @@
 
 
 
-    $(function(){
 
-
-
-        $("#updateSubmit").click(function(){
-
-            $.ajax({
-                type: "post",
-                url: "${ctx}/selectUserBase/teaUpdate",
-                data: $("#updateForm").serialize(),
-                dataType:"json",
-                success:function(msg){
-                    if("OK"!=msg){
-                        alert(" 😅 "+msg);
-                    }else {
-                        alert(" 😎 修改成功","",function () {
-                            location.href="${ctx}/selectUserBase/teaList";
-                        },{type:"success",confirmButtonText:"好的"});
-                    }
-
-                },
-                error: function(e) {
-                    alert(" 😥 系统异常，请与我们的工程师小哥哥联系！");
-                }
-            });
-        });
-    });
 
 
     /* Curve chart ends */
 </script>
-
-</body>
-</html>
+</body></html>

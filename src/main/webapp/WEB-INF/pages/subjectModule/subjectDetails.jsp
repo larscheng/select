@@ -72,7 +72,7 @@
                                 <hr />
                                 <!-- Form starts.  -->
                                 <form class="form-horizontal" role="form" id="updateForm">
-                                    <c:if test="${requestScope.sub.admAuditState eq 2}">
+                                    <c:if test="${requestScope.sub.admAuditState eq 2 && sessionScope.userType !=3}">
                                         <div class="form-group ">
 
                                             <label class="col-lg-1 control-label">总分</label>
@@ -165,9 +165,10 @@
                                                 </div>
                                                 <div class="col-lg-2">
                                                     <a class="btn btn-info"
-                                                       href="http://${sessionScope.sessionIp}:8012/onlinePreview?url=http://${sessionScope.sessionIp}:8012/${requestScope.sub.subFile}" target="_blank">预览</a>
+                                                       href="http://${sessionScope.sessionIp}:8012/onlinePreview?url=http://${sessionScope.sessionIp}:8012/${requestScope.sub.subFile}" >预览</a>
                                                     <a class="btn btn-info"
-                                                       href="${ctx}/selectSubject/subFileDown?fileName=${requestScope.sub.subFile}" target="_blank">下载</a>
+                                                       href="$o"
+   selectSubject/subFileDown?fileName=${requestScope.sub.subFile}" target="_blank">下载</a>
                                                 </div>
                                             </c:when>
                                             <c:otherwise>
@@ -334,33 +335,6 @@
 
 
 
-    $(function(){
-
-
-
-        $("#updateSubmit").click(function(){
-
-            $.ajax({
-                type: "post",
-                url: "${ctx}/selectUserBase/teaUpdate",
-                data: $("#updateForm").serialize(),
-                dataType:"json",
-                success:function(msg){
-                    if("OK"!=msg){
-                        alert(" 😅 "+msg);
-                    }else {
-                        alert(" 😎 修改成功","",function () {
-                            location.href="${ctx}/selectUserBase/teaList";
-                        },{type:"success",confirmButtonText:"好的"});
-                    }
-
-                },
-                error: function(e) {
-                    alert(" 😥 系统异常，请与我们的工程师小哥哥联系！");
-                }
-            });
-        });
-    });
 
 
     /* Curve chart ends */

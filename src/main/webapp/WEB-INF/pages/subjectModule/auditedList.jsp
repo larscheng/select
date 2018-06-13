@@ -327,7 +327,24 @@
     }
 
     function subUpdate(id) {
-        window.location.href="${ctx}/selectSubject/initSubUpdate?id="+id;
+        //流程检测
+        $.ajax({
+            type: "post",
+            url: "${ctx}/selectProcessControl/testPc",
+            data: {"id":2},
+            dataType:"json",
+            success:function(msg){
+                if("OK"!=msg){
+                    alert(" 😅 "+msg);
+                }else {
+                    window.location.href="${ctx}/selectSubject/initSubUpdate?id="+id;
+                }
+            },
+            error: function(e) {
+                alert(" 😥 系统异常，请与我们的工程师联系！");
+            }
+        });
+
     }
 
     function subjectDetails(id) {
@@ -389,10 +406,15 @@
                         +"<td><span class='label label-primary'>"+val.subSelectStatusName+"</span></td>"
                         +"<td>"+time+"</td>"
                         +"<td>" +
-                        "<button onclick='subjectDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
-                        "</td>"
-                        +"</tr>"
-                    ;
+                        "<button onclick='subjectDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>"
+                        ;
+                    if (parseInt(val.subSelectStatus) != 2){
+                        item += "<button class='btn btn-xs btn-danger' onclick='subDel("+val.id+")'  style='margin-right: 5px'><i class='icon-pencil'></i>删除</button>";
+                    }
+                    if(parseInt(val.subSelectStatus) == 0){
+                    item += "<button class='btn btn-xs btn-warning' onclick='subUpdate("+val.id+")'><i class='icon-ok-circle'></i>修改</button>";
+                    }
+                    item += "</td></tr>"
                 }else{
                     item+=
                         "<td><span class='label label-danger'>审核不通过</span></td>"

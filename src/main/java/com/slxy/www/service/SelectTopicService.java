@@ -14,10 +14,7 @@ import com.slxy.www.domain.po.*;
 import com.slxy.www.domain.vo.ImportScoreVo;
 import com.slxy.www.domain.vo.ImportStuVo;
 import com.slxy.www.domain.vo.SelectTopicVo;
-import com.slxy.www.enums.EnumEnOrDis;
-import com.slxy.www.enums.EnumSubSelectStatus;
-import com.slxy.www.enums.EnumSubState;
-import com.slxy.www.enums.EnumUserType;
+import com.slxy.www.enums.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,7 +52,8 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
     private ISelectSubjectMapper selectSubjectMapper;
     @Autowired
     private SelectScorePerService selectScorePerService;
-
+    @Autowired
+    private SelectProcessControlService selectProcessControlService;
 
 
     public ModelAndView topicList(ModelAndView modelAndView, SelectTopicVo vo) {
@@ -129,6 +127,11 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
 
     @Transactional
     public String topicAudited(SelectTopicVo vo) {
+        //流程检测
+        String msg = selectProcessControlService.testPc(EnumProControl.teaAudit.getValue());
+        if (!msg.equalsIgnoreCase(JSONObject.toJSONString(Constant.SUCCESS))){
+            return msg;
+        }
         SelectTopic topic = this.selectById(vo.getId());
         if (ObjectUtils.isEmpty(topic)){
             return JSONObject.toJSONString(Constant.SELECT_ERROR_NOT_EXIST);
@@ -235,6 +238,11 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
      */
 
     public String uploadScore(SelectTopicVo vo) {
+        //流程检测
+        String msg = selectProcessControlService.testPc(EnumProControl.scoreCount.getValue());
+        if (!msg.equalsIgnoreCase(JSONObject.toJSONString(Constant.SUCCESS))){
+            return msg;
+        }
         List<SelectScorePer> selectScorePers = selectScorePerService.selectList(new EntityWrapper<SelectScorePer>());
         SelectTopic selectTopic = this.selectById(vo.getId());
         if (ObjectUtils.isEmpty(selectTopic)){
@@ -374,7 +382,17 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
         return flag;
     }
 
+    /**
+     * 批量评分
+     * @param request
+     * @return
+     */
     public String scoreUpload(HttpServletRequest request) {
+        //流程检测
+        String msg = selectProcessControlService.testPc(EnumProControl.scoreCount.getValue());
+        if (!msg.equalsIgnoreCase(JSONObject.toJSONString(Constant.SUCCESS))){
+            return msg;
+        }
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         MultipartFile importFile = multipartRequest.getFile("fileField");
         if (importFile == null || !"select_scores.xls".equals(importFile.getOriginalFilename())) {
@@ -464,5 +482,26 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
         return true;
     }
 
+
+    /**
+     * 修改上传的文件：1删除原来的文件，2保存新文件，3保存新路径
+     * @param file
+     * @param id
+     * @param type
+     * @return
+     */
+    public String updateFile(MultipartFile file, int id,HttpServletRequest request, int type) {
+        //删除原文件
+        SelectTopic selectTopic = selectTopicMapper.selectById(id);
+        if (type == 1){
+            deleteFile(Constant.FILE_DIR+selectTopic.getTaskFile());
+        }else if (type == 2){
+            deleteFile(Constant.FILE_DIR+selectTopic.getOpeningReport());
+        }else {
+            deleteFile(Constant.FILE_DIR+selectTopic.getDissertation());
+        }
+        //保存新文件
+        return uploadTaskBook(file,id,request,type);
+    }
 }
 

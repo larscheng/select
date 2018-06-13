@@ -60,5 +60,12 @@ public class SelectProcessControlController {
     public String updatePc(SelectProcessControl selectProcessControl) {
         return selectProcessControlService.updatePc(selectProcessControl);
     }
+
+    @ApiOperation(value = "流程检测", notes = "")
+    @RequestMapping(value = "/testPc",method = RequestMethod.POST)
+    @ResponseBody
+    public String testPc(Integer id) {
+        return selectProcessControlService.testPc(id);
+    }
 }
 

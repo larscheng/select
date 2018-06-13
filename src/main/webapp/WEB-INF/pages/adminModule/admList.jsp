@@ -22,11 +22,11 @@
 
         <!-- Page heading -->
         <div class="page-head">
-            <h2 class="pull-left"><i class="icon-home"></i> 管理员列表</h2>
+            <h2 class="pull-left"><i class="icon-user"></i> 管理员列表</h2>
 
             <!-- Breadcrumb -->
             <div class="bread-crumb pull-right">
-                <a href="#"><i class="icon-home"></i> 管理员列表</a>
+                <a href="#"><i class="icon-user"></i> 管理员列表</a>
                 <!-- Divider -->
                 <span class="divider">/</span>
                 <a href="#" class="bread-current">控制台</a>

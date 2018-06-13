@@ -67,13 +67,20 @@
                             <div class="clearfix"></div>
                         </div>
 
+                        <div style="display: none">
+                            <form id="uploadForm"  >
+                                <input type="file" id="fileField" name="fileField" style="display: none" onchange="fileUpload()"/>
+                            </form>
+                        </div>
+
+
                         <div class="widget-content">
                             <div class="padd">
                                 <hr />
                                 <!-- Form starts.  -->
                                 <form class="form-horizontal" role="form" id="updateForm">
 
-                                    <c:if test="${requestScope.topicDetails.teaAuditState eq 2}">
+                                    <c:if test="${requestScope.topicDetails.teaAuditState eq 2 && sessionScope.userType != 3}">
                                         <div class="form-group ">
 
                                             <label class="col-lg-1 control-label">总分</label>
@@ -115,7 +122,7 @@
                                     </c:if>
 
 
-                                    <c:if test="${sessionScope.userType eq 3}">
+                                    <c:if test="${sessionScope.userType eq 3 && requestScope.topicDetails.teaAuditState eq 2}">
                                         <c:choose>
                                             <c:when test="${requestScope.topicDetails.taskFile != null}">
                                                 <div class="form-group">
@@ -126,9 +133,15 @@
                                                     </div>
                                                     <div class="col-lg-2">
                                                         <a class="btn btn-info"
-                                                           href="http://${sessionScope.sessionIp}:8012/onlinePreview?url=http://${sessionScope.sessionIp}:8012/${requestScope.topicDetails.taskFile}" target="_blank">预览</a>
+                                                           href="http://${sessionScope.sessionIp}:8012/onlinePreview?url=http://${sessionScope.sessionIp}:8012/${requestScope.topicDetails.taskFile}" <%--target="_blank"--%>>预览</a>
+                                                        <script>
+                                                            function view() {
+                                                                window.location.href="http://${sessionScope.sessionIp}:8012/onlinePreview?url=http://${sessionScope.sessionIp}:8012/${requestScope.topicDetails.taskFile}"
+                                                            }
+                                                        </script>
                                                         <a class="btn btn-info"
                                                            href="${ctx}/selectSubject/subFileDown?fileName=${requestScope.topicDetails.taskFile}" target="_blank">下载</a>
+                                                        <button type="button" class="btn btn-success icon-upload" onclick="upload(1)">修改</button>
                                                     </div>
                                                 </div>
                                             </c:when>
@@ -153,9 +166,10 @@
                                                     </div>
                                                     <div class="col-lg-2">
                                                         <a class="btn btn-info"
-                                                           href="http://${sessionScope.sessionIp}:8012/onlinePreview?url=http://${sessionScope.sessionIp}:8012/${requestScope.topicDetails.openingReport}" target="_blank">预览</a>
+                                                           href="http://${sessionScope.sessionIp}:8012/onlinePreview?url=http://${sessionScope.sessionIp}:8012/${requestScope.topicDetails.openingReport}" <%--target="_blank"--%>>预览</a>
                                                         <a class="btn btn-info"
                                                            href="${ctx}/selectSubject/subFileDown?fileName=${requestScope.topicDetails.openingReport}" target="_blank">下载</a>
+                                                        <button type="button" class="btn btn-success icon-upload" onclick="upload(2)">修改</button>
                                                     </div>
                                                 </div>
                                             </c:when>
@@ -180,9 +194,10 @@
                                                     </div>
                                                     <div class="col-lg-2">
                                                         <a class="btn btn-info"
-                                                           href="http://${sessionScope.sessionIp}:8012/onlinePreview?url=http://${sessionScope.sessionIp}:8012/${requestScope.topicDetails.dissertation}" target="_blank">预览</a>
+                                                           href="http://${sessionScope.sessionIp}:8012/onlinePreview?url=http://${sessionScope.sessionIp}:8012/${requestScope.topicDetails.dissertation}" <%--target="_blank"--%>>预览</a>
                                                         <a class="btn btn-info"
                                                            href="${ctx}/selectSubject/subFileDown?fileName=${requestScope.topicDetails.dissertation}" target="_blank">下载</a>
+                                                        <button type="button" class="btn btn-success icon-upload" onclick="upload(3)">修改</button>
                                                     </div>
                                                 </div>
                                             </c:when>
@@ -208,7 +223,7 @@
                                                     </div>
                                                     <div class="col-lg-2">
                                                         <a class="btn btn-info"
-                                                           href="http://${sessionScope.sessionIp}:8012/onlinePreview?url=http://${sessionScope.sessionIp}:8012/${requestScope.topicDetails.taskFile}" target="_blank">预览</a>
+                                                           href="http://${sessionScope.sessionIp}:8012/onlinePreview?url=http://${sessionScope.sessionIp}:8012/${requestScope.topicDetails.taskFile}" <%--target="_blank"--%>>预览</a>
                                                         <a class="btn btn-info"
                                                            href="${ctx}/selectSubject/subFileDown?fileName=${requestScope.topicDetails.taskFile}" target="_blank">下载</a>
                                                     </div>
@@ -234,7 +249,7 @@
                                                     </div>
                                                     <div class="col-lg-2">
                                                         <a class="btn btn-info"
-                                                           href="http://${sessionScope.sessionIp}:8012/onlinePreview?url=http://${sessionScope.sessionIp}:8012/${requestScope.topicDetails.openingReport}" target="_blank">预览</a>
+                                                           href="http://${sessionScope.sessionIp}:8012/onlinePreview?url=http://${sessionScope.sessionIp}:8012/${requestScope.topicDetails.openingReport}" <%--target="_blank"--%>>预览</a>
                                                         <a class="btn btn-info"
                                                            href="${ctx}/selectSubject/subFileDown?fileName=${requestScope.topicDetails.openingReport}" target="_blank">下载</a>
                                                     </div>
@@ -260,7 +275,7 @@
                                                     </div>
                                                     <div class="col-lg-2">
                                                         <a class="btn btn-info"
-                                                           href="http://${sessionScope.sessionIp}:8012/onlinePreview?url=http://${sessionScope.sessionIp}:8012/${requestScope.topicDetails.dissertation}" target="_blank">预览</a>
+                                                           href="http://${sessionScope.sessionIp}:8012/onlinePreview?url=http://${sessionScope.sessionIp}:8012/${requestScope.topicDetails.dissertation}" <%--target="_blank"--%>>预览</a>
                                                         <a class="btn btn-info"
                                                            href="${ctx}/selectSubject/subFileDown?fileName=${requestScope.topicDetails.dissertation}" target="_blank">下载</a>
                                                     </div>
@@ -411,7 +426,55 @@
 
 <script type="text/javascript">
 
+var upfileNum;
+    function upload(num) {
+        confirm("确认修改该文件吗！","",function (isConfirm) {
+            if (isConfirm) {
+                //after click the confirm
+                upfileNum = num;
+                $("#fileField").click();
+            } else {
+                //after click the cancel
+                //跳转到下载页
 
+            }
+        }, {confirmButtonText: '修改', cancelButtonText: '取消', width: 400});
+    }
+
+    function fileUpload() {
+        var updateUrl = "${ctx}/selectTopic/updateFile";
+
+        var formData = new FormData($( "#uploadForm" )[0]);
+        formData.append("id",${requestScope.topicDetails.id});
+        formData.append("type",upfileNum);
+        $.ajax({
+            type:"POST",
+            url:updateUrl,
+            data:formData,
+            async: true,
+            // 下面三个参数要指定，如果不指定，会报一个JQuery的错误
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType:"json",
+            success:function(msg){
+                if("OK"!=msg){
+                    alert(" 😅 "+msg);
+                }else {
+                    alert(" 😋 上传成功","",function () {
+                        location.href="${ctx}/selectTopic/topicDetails?id=${requestScope.topicDetails.id}";
+                    },{type:"success",confirmButtonText:"好的"});
+                }
+            },
+            error:function(e){
+                alert("😥 系统异常，请与我们的程序员小哥哥联系！");
+            }
+        });
+
+
+
+
+    }
     function cleanAll() {
         $("#reason").val("");
     }

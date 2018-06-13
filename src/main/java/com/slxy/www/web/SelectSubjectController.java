@@ -108,6 +108,8 @@ public class SelectSubjectController {
 
             }
         }
+        //只查看已结题的题目
+        vo.setSubSelectStatus(EnumSubSelectStatus.OVER.getValue());
         modelAndView.setViewName("CountModule/subAllList");
         return selectSubjectService.subList(modelAndView,vo);
     }

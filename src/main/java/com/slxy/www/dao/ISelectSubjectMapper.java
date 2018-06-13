@@ -20,4 +20,6 @@ public interface ISelectSubjectMapper extends BaseMapper<SelectSubject> {
     List<SelectSubject> getMySubByPage(SelectSubjectVo vo, Page<SelectSubject> page);
 
     List<SelectSubjectDto> selectAllSubject();
+
+    void autoUpdateStatus();
 }

@@ -33,7 +33,7 @@
         <li><a href="${ctx}/selectTopic/topicList" target="mainFrame" ><i class="icon-file-alt"></i> 选题信息管理 </a></li>
         <li><a href="${ctx}/selectSubject/subAllList" target="mainFrame" ><i class="icon-file-alt"></i> 历届论文信息 </a></li>
 
-        <li><a href="${ctx}/selectTopic/topicUploadList" target="mainFrame"><i class="icon-calendar"></i>成绩查询</a></li>
+        <li><a href="javascript:;" onclick="score()" target="mainFrame"><i class="icon-calendar"></i>成绩查询</a></li>
         <li><a href="${ctx}/logout" target="_top"><i class="icon-bar-chart"></i>注销</a></li>
 
     </ul>
@@ -44,6 +44,25 @@
 <script>
 
 
+    function score() {
+
+        $.ajax({
+            type: "post",
+            url: "${ctx}/selectProcessControl/testPc",
+            data: {"id": 7},
+            dataType: "json",
+            success: function (msg) {
+                if ("OK" != msg) {
+                    window.open('times.html','mainFrame')
+                } else {
+                    window.open('selectTopic/topicUploadList','_mainFrame')
+                }
+            },
+            error: function (e) {
+                alert(" 😥 系统异常，请与我们的工程师联系！");
+            }
+        });
+    }
 
 </script>
 </body>

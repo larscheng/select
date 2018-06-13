@@ -10,10 +10,7 @@ import com.slxy.www.dao.*;
 import com.slxy.www.domain.dto.SelectSubjectDto;
 import com.slxy.www.domain.po.*;
 import com.slxy.www.domain.vo.SelectSubjectVo;
-import com.slxy.www.enums.EnumEnOrDis;
-import com.slxy.www.enums.EnumSubSelectStatus;
-import com.slxy.www.enums.EnumSubState;
-import com.slxy.www.enums.EnumSubType;
+import com.slxy.www.enums.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
@@ -62,7 +59,8 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
     private SelectTopicService selectTopicService;
     @Autowired
     private ISelectProcessControlMapper selectProcessControlMapper;
-
+    @Autowired
+    private SelectProcessControlService selectProcessControlService;
 
 
 
@@ -106,8 +104,14 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
         if (!ObjectUtils.isEmpty(vo.getSelectId())){
             //根据专业找系别
             SelectUserBase userBase = selectUserBaseMapper.selectById(vo.getSelectId());
-            SelectMajor major = selectMajorMapper.selectById(userBase.getStuMajorId());
-            vo.setForDepId(major.getDepId());
+            if (!ObjectUtils.isEmpty(userBase)&&userBase.getUserType().equals(EnumUserType.TEACHER.getValue())){
+
+                vo.setForDepId(userBase.getTeaDepId());
+            }else if (!ObjectUtils.isEmpty(userBase)&&userBase.getUserType().equals(EnumUserType.STUDENT.getValue())){
+                SelectMajor major = selectMajorMapper.selectById(userBase.getStuMajorId());
+                vo.setForDepId(major.getDepId());
+            }
+
         }
         Page<SelectSubject> page = new Page<>(vo.getPage(),vo.getPageSize());
         List<SelectSubject> subjectList = selectSubjectMapper.getSubByPage(vo,page);
@@ -137,6 +141,11 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
      */
 
     public String subAudited(SelectSubjectVo vo) {
+        //流程检测
+        String msg = selectProcessControlService.testPc(EnumProControl.auditSub.getValue());
+        if (!msg.equalsIgnoreCase(JSONObject.toJSONString(Constant.SUCCESS))){
+            return msg;
+        }
         SelectSubject selectSubject = selectSubjectMapper.selectById(vo.getId());
         if (ObjectUtils.isEmpty(selectSubject)){
             return JSONObject.toJSONString(Constant.ERROR);
@@ -208,6 +217,11 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
      */
 
     public String subSuccessAll(Integer[] selectedIDs) {
+        //流程检测
+        String msg = selectProcessControlService.testPc(EnumProControl.auditSub.getValue());
+        if (!msg.equalsIgnoreCase(JSONObject.toJSONString(Constant.SUCCESS))){
+            return msg;
+        }
         for (Integer id:selectedIDs){
             SelectSubject selectSubject = new SelectSubject().setId(id)
                     .setAdmAuditState(EnumSubState.SUCCESS.getValue())
@@ -303,6 +317,11 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
      */
 
     public String subAdd(MultipartFile file, SelectSubjectVo vo, HttpServletRequest request) {
+        //流程检测
+        String msg = selectProcessControlService.testPc(EnumProControl.subAdd.getValue());
+        if (!msg.equalsIgnoreCase(JSONObject.toJSONString(Constant.SUCCESS))){
+            return msg;
+        }
         //没有文件也可以添加
         if (StringUtils.isEmpty(vo.getSubName())){
             return JSONObject.toJSONString(Constant.PARAM_ERROR);
@@ -404,7 +423,11 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
 
     @Transactional
     public String stuSelect(SelectSubjectVo vo) {
-
+        //流程检测
+        String msg = selectProcessControlService.testPc(EnumProControl.select.getValue());
+        if (!msg.equalsIgnoreCase(JSONObject.toJSONString(Constant.SUCCESS))){
+            return msg;
+        }
         //1、添加选题记录
         if (ObjectUtils.isEmpty(vo)||StringUtils.isEmpty(vo.getSelectReason())){
             return JSONObject.toJSONString(Constant.PARAM_ERROR);
@@ -424,6 +447,10 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
                 .setDelState(EnumEnOrDis.DISABLED.getValue());
         selectTopic = selectTopicService.selectOne(new EntityWrapper<SelectTopic>(selectTopic));
         if (!ObjectUtils.isEmpty(selectTopic)){
+            if(selectTopic.getTeaAuditState().equals(EnumSubState.FAIL.getValue())){
+                logger.info("您存在未过审核的选题记录，请删除后重新选题！");
+                return JSONObject.toJSONString(Constant.SELECT_AGAIN);
+            }
             logger.info("您已选过题目，请勿重复选择！");
             return JSONObject.toJSONString(Constant.SELECT_ERROR_REPEAT);
         }
@@ -572,11 +599,11 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
         HttpSession session = request.getSession();
         if (session.getAttribute("userType")!=null&&(Integer)session.getAttribute("userType")==2){
             //当前是否处于上传题目阶段
-            SelectProcessControl selectProcessControl = selectProcessControlMapper.selectPro();
-            if (ObjectUtils.isEmpty(selectProcessControl)){
+            List<SelectProcessControl> selectProcessControls = selectProcessControlMapper.selectPro();
+            if (CollectionUtils.isEmpty(selectProcessControls)){
                 return JSONObject.toJSONString(Constant.NOT_UPLOAD_SUBJECT_TIME);
             }
-            if (!selectProcessControl.getId().equals(1)){
+            if (!selectProcessControls.get(0).getId().equals(1)){
                 return JSONObject.toJSONString(Constant.NOT_UPLOAD_SUBJECT_TIME);
             }
         }
@@ -613,5 +640,12 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
             }
         }
         return this.updateById(selectSubject) ? JSONObject.toJSONString(Constant.SUCCESS):JSONObject.toJSONString(Constant.ERROR);
+    }
+
+    /***
+     * 自动结题：所有被选的题目自动结题
+     */
+    public void autoEnd() {
+        selectSubjectMapper.autoUpdateStatus();
     }
 }

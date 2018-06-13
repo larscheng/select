@@ -15,7 +15,6 @@ import com.slxy.www.dao.ISelectUserBaseMapper;
 import com.slxy.www.domain.po.ChangePs;
 import com.slxy.www.domain.po.SelectUserBase;
 import com.slxy.www.enums.EnumEnOrDis;
-import com.slxy.www.filter.LoginRequired;
 import com.slxy.www.service.SelectJavaMailService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,7 +24,6 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
@@ -121,7 +119,7 @@ public class BaseController {
         session.setAttribute("sessionUser",selectUserBase);
         session.setAttribute("sessionIp",this.getIp());
         session.setAttribute("userType",selectUserBase.getUserType());
-        session.setAttribute("pro",selectProcessControlMapper.selectPro());
+        session.setAttribute("pro",selectProcessControlMapper.selectPro().get(0));
 
 
         Cookie cookie = new Cookie("JSESSIONID",session.getId());
@@ -370,6 +368,7 @@ public class BaseController {
      * @param
      * @return
      */
+
     public String overSelect(){
        //TODO
         return "";

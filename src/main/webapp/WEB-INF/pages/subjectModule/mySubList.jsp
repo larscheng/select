@@ -117,7 +117,7 @@
                                     <a href="#" class="wclose"><i class="icon-remove"></i></a>
                                 </div>
                                 <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
-                                    <button type="button"  onclick="window.location.href='${ctx}/selectSubject/initSubAdd';" class="btn btn-info pull-left "><i class="icon-upload"></i>题目添加</button>
+                                    <button type="button"  onclick="subAdd()" class="btn btn-info pull-left "><i class="icon-upload"></i>题目添加</button>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -307,6 +307,28 @@
         window.location.href="${ctx}/selectSubject/subjectDetail?id="+id;
     }
 
+    /***
+     * 上传题目判断
+     */
+    function subAdd() {/**流程检测**/
+        $.ajax({
+            type: "post",
+            url: "${ctx}/selectProcessControl/testPc",
+            data: {"id":1},
+            dataType:"json",
+            success:function(msg){
+                if("OK"!=msg){
+                    alert(" 😅 "+msg);
+                }else {
+                    window.location.href='${ctx}/selectSubject/initSubAdd';
+                }
+            },
+            error: function(e) {
+                alert(" 😥 系统异常，请与我们的工程师联系！");
+            }
+        });
+
+    }
 
     function initsubPage(obj) {
 //        var obj =JSON.parse(objects);

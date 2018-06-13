@@ -82,7 +82,7 @@
                                     <div class="form-group">
                                         <label class="col-lg-4 control-label">邮箱</label>
                                         <div class="col-lg-8">
-                                            <input type="email" value="${sessionScope.sessionUser.userMail}" class="form-control" name="userMail" placeholder="接收新密码的邮箱">
+                                            <input type="email"  value="${sessionScope.sessionUser.userMail}" class="form-control disabled" name="userMail" placeholder="接收新密码的邮箱">
                                             <input type="hidden" id="userId" class="form-control" name="userId" value="${sessionScope.sessionUser.id}" placeholder="">
 
                                         </div>
@@ -271,7 +271,7 @@
                         if("OK"!=msg){
                             alert(" 😅 "+msg);
                         }else {
-                            alert(" 😎 修改成功","",function () {
+                            alert(" 😎 修改成功,下次登录时生效","",function () {
                                 <%--location.href="${ctx}/";--%>
                                 window.top.frames.location.href="${ctx}/";
                             },{type:"success",confirmButtonText:"好的"});

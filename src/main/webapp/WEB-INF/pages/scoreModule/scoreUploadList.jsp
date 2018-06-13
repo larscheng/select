@@ -274,16 +274,33 @@
 
 
     function upload() {
-        confirm("导入前请下载好导入模板！","",function (isConfirm) {
-            if (isConfirm) {
-                //after click the confirm
-                $("#fileField").click();
-            } else {
-                //after click the cancel
-                //跳转到下载页
-                window.location.href='${ctx}/selectTopic/scoreFileDown';
+        //流程检测
+        $.ajax({
+            type: "post",
+            url: "${ctx}/selectProcessControl/testPc",
+            data: {"id":6},
+            dataType:"json",
+            success:function(msg){
+                if("OK"!=msg){
+                    alert(" 😅 "+msg);
+                }else {
+                    confirm("导入前请下载好导入模板！","",function (isConfirm) {
+                        if (isConfirm) {
+                            //after click the confirm
+                            $("#fileField").click();
+                        } else {
+                            //after click the cancel
+                            //跳转到下载页
+                            window.location.href='${ctx}/selectTopic/scoreFileDown';
+                        }
+                    }, {confirmButtonText: '已有模板', cancelButtonText: '下载模板', width: 400});
+                }
+            },
+            error: function(e) {
+                alert(" 😥 系统异常，请与我们的工程师联系！");
             }
-        }, {confirmButtonText: '已有模板', cancelButtonText: '下载模板', width: 400});
+        });
+
     }
 
     function ajaxUpload() {

@@ -30,7 +30,7 @@
 
     <!-- Page heading -->
     <div class="page-head">
-        <h2 class="pull-left"><i class="icon-file-alt"></i> 首页</h2>
+        <h2 class="pull-left"><i class="icon-home"></i> 首页</h2>
 
         <!-- Breadcrumb -->
         <div class="bread-crumb pull-right">
@@ -119,55 +119,141 @@
 
                         </div>
 
+                        <div class="row">
 
-                                <%--折叠--%>
-                        <div class="panel-group" id="accordion">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion"
-                                           href="#collapseOne">
-                                            点击我进行展开，再次点击我进行折叠。第 1 部分
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapseOne" class="panel-collapse collapse ">
-                                    <div class="panel-body">
-                                        合上！！！！
+                            <div class="col-md-12">
+
+                                <div class="widget">
+
+                                    <div class="widget-head">
+                                        <div class="pull-left">版本信息</div>
+                                        <div class="widget-icons pull-right">
+                                            <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+                                            <a href="#" class="wclose"><i class="icon-remove"></i></a>
+                                        </div>
+
+                                        <div class="clearfix"></div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion"
-                                           href="#collapseTwo">
-                                            点击我进行展开，再次点击我进行折叠。第 2 部分
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapseTwo" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！
+
+                                    <div class="widget-content ">
+
+                                        <table class="table table-striped table-bordered table-hover" style="font-size: 14px; text-align: center">
+                                            <thead style="text-align: center">
+                                            <tr>
+                                                <%--<th class=" text-center"><input type="checkbox" id="selectAll"></th>--%>
+                                                <th style="text-align: center">系统版本</th>
+                                                <th style="text-align: center">系统名称</th>
+                                                <th style="text-align: center">开发作者</th>
+                                                <th style="text-align: center">网站地址</th>
+                                                <th style="text-align: center">服务器环境</th>
+                                                <th style="text-align: center">数据库版本</th>
+                                                <th style="text-align: center">最大上传限制</th>
+                                                <th style="text-align: center">当前用户权限</th>
+                                                <th style="text-align: center">当前ip</th>
+                                                <th style="text-align: center">浏览器版本</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="items">
+
+
+                                            <tr>
+                                                <%--<td class=" text-center"><input type="checkbox" name="ids" value="5">--%>
+                                                <%--</td>--%>
+                                                <td>1.0.1</td>
+                                                <td>毕业设计综合信息管理系统</td>
+                                                <td>郑其龙</td>
+                                                <td>192.168.3.232:8080/select</td>
+                                                <td>Windows</td>
+                                                <td>Mysql5.7</td>
+                                                <td>10M</td>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${sessionScope.get('sessionUser').userType eq 0}">
+                                                            <span class="label label-success">超级管理员</span>
+                                                        </c:when>
+                                                        <c:when test="${sessionScope.get('sessionUser').userType eq 1}">
+                                                            <span class="label label-success">管理员</span>
+                                                        </c:when>
+                                                        <c:when test="${sessionScope.get('sessionUser').userType eq 2}">
+                                                            <span class="label label-success">教师</span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span class="label label-success">学生</span>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                                <td>${sessionScope.sessionIp}</td>
+                                                <td id="version">
+
+
+                                                </td>
+                                            </tr>
+
+
+                                            </tbody>
+                                        </table>
+
+                                        <div class="widget-foot center">
+
+                                            <div class="clearfix"></div>
+
+                                        </div>
+
                                     </div>
+
                                 </div>
+
                             </div>
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion"
-                                           href="#collapseThree">
-                                            点击我进行展开，再次点击我进行折叠。第 3 部分
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapseThree" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
+                                <%--折叠--%>
+                        <%--<div class="panel-group" id="accordion">--%>
+                            <%--<div class="panel panel-default">--%>
+                                <%--<div class="panel-heading">--%>
+                                    <%--<h4 class="panel-title">--%>
+                                        <%--<a data-toggle="collapse" data-parent="#accordion"--%>
+                                           <%--href="#collapseOne">--%>
+                                            <%--点击我进行展开，再次点击我进行折叠。第 1 部分--%>
+                                        <%--</a>--%>
+                                    <%--</h4>--%>
+                                <%--</div>--%>
+                                <%--<div id="collapseOne" class="panel-collapse collapse ">--%>
+                                    <%--<div class="panel-body">--%>
+                                        <%--合上！！！！--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                            <%--<div class="panel panel-default">--%>
+                                <%--<div class="panel-heading">--%>
+                                    <%--<h4 class="panel-title">--%>
+                                        <%--<a data-toggle="collapse" data-parent="#accordion"--%>
+                                           <%--href="#collapseTwo">--%>
+                                            <%--点击我进行展开，再次点击我进行折叠。第 2 部分--%>
+                                        <%--</a>--%>
+                                    <%--</h4>--%>
+                                <%--</div>--%>
+                                <%--<div id="collapseTwo" class="panel-collapse collapse">--%>
+                                    <%--<div class="panel-body">--%>
+                                        <%--合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                            <%--<div class="panel panel-default">--%>
+                                <%--<div class="panel-heading">--%>
+                                    <%--<h4 class="panel-title">--%>
+                                        <%--<a data-toggle="collapse" data-parent="#accordion"--%>
+                                           <%--href="#collapseThree">--%>
+                                            <%--点击我进行展开，再次点击我进行折叠。第 3 部分--%>
+                                        <%--</a>--%>
+                                    <%--</h4>--%>
+                                <%--</div>--%>
+                                <%--<div id="collapseThree" class="panel-collapse collapse">--%>
+                                    <%--<div class="panel-body">--%>
+                                        <%--合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！合上！！！！--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
 
                 </div>
             </div>
@@ -236,6 +322,49 @@
             }
         });
     });
+
+    window.onload =function() {
+        var browser = getBrowserInfo() ;
+        console.log(browser);
+        var verinfo = (browser+"").replace(/[^0-9.]/ig,"");
+        console.log(verinfo);
+        $("#version").text(browser)
+    };
+
+    function getBrowserInfo()
+    {
+        var agent = navigator.userAgent.toLowerCase() ;
+
+        var regStr_ie = /msie [\d.]+;/gi ;
+        var regStr_ff = /firefox\/[\d.]+/gi
+        var regStr_chrome = /chrome\/[\d.]+/gi ;
+        var regStr_saf = /safari\/[\d.]+/gi ;
+//IE
+        if(agent.indexOf("msie") > 0)
+        {
+            return agent.match(regStr_ie) ;
+        }
+
+//firefox
+        if(agent.indexOf("firefox") > 0)
+        {
+            return agent.match(regStr_ff) ;
+        }
+
+
+//Safari
+        if(agent.indexOf("safari") > 0 && agent.indexOf("chrome") < 0)
+        {
+            return agent.match(regStr_saf) ;
+        }
+        //Chrome
+        if(agent.indexOf("chrome") > 0)
+        {
+            return agent.match(regStr_chrome) ;
+        }
+
+
+    }
 </script>
 
 </body>

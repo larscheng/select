@@ -240,7 +240,7 @@
     sessionStorage.setItem("userType",${sessionScope.userType});
     var manType = sessionStorage.getItem("userType");
     var url = "${ctx}/selectSubject/subListAjax";
-    if(manType==3){
+    if(manType>1){
         url = "${ctx}/selectSubject/subListAjax?selectId=${sessionScope.sessionUser.id}";
     }
 

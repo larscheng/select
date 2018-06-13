@@ -557,7 +557,7 @@
                         +"<td>"+time+"</td>"
                         ;
                 }
-                if (parseInt(manType)!=3){
+                if (parseInt(manType)<2){
 
                     if (parseInt(val.userStatus) == 1){
                         item+=

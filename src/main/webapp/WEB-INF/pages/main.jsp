@@ -7,6 +7,7 @@
 <head>
     <title>毕业设计综合信息管理系统</title>
     <link rel="alternate icon" type="image/x-icon" href="${ctx}/resources/favicon.ico">
+    <%@include file="/WEB-INF/pages/common/macTopCommon.jsp" %>
 </head>
 <frameset rows="66,*,40" cols="*" frameborder="yes" border="0" framespacing="0" scrolling="yes" >
 
@@ -23,7 +24,7 @@
 
 </frameset>
 <body onunload="window.location='${ctx}/logout'">
-
+<%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>
 </body>
 </html>
 

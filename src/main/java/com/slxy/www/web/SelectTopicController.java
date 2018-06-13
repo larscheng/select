@@ -231,6 +231,12 @@ public class SelectTopicController {
         return selectTopicService.uploadTaskBook(file,Integer.parseInt(id),request,3);
     }
 
+    @ApiOperation(value = "修改上传的文件", notes = "")
+    @RequestMapping(value = "/updateFile",method = RequestMethod.POST)
+    @ResponseBody
+    public String updateFile(@RequestParam("fileField") MultipartFile file, @RequestParam("id")String id,HttpServletRequest request,Integer type) {
+        return selectTopicService.updateFile(file,Integer.parseInt(id),request,type);
+    }
 
     /***
      * 删除选题记录

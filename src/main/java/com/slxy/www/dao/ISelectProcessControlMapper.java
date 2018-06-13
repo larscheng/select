@@ -3,6 +3,8 @@ package com.slxy.www.dao;
 import com.slxy.www.domain.po.SelectProcessControl;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
+import java.util.List;
+
 /**
  *
  * SelectProcessControl 表数据库控制层接口
@@ -11,5 +13,5 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 public interface ISelectProcessControlMapper extends BaseMapper<SelectProcessControl> {
 
 
-    SelectProcessControl selectPro();
+    List<SelectProcessControl> selectPro();
 }

@@ -65,7 +65,6 @@
 <!-- Sidebar ends -->
 <%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>
 <script>
-
 </script>
 </body>
 </html>

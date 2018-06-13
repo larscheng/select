@@ -166,15 +166,24 @@
                                                     <td>${topic.topicYear}级</td>
                                                     <td><fmt:formatDate value="${topic.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>
-                                                        <button class="btn btn-xs btn-info" onclick="topicDetails(${topic.id})"><i class="icon-pencil"></i>详情</button>
+                                                        <c:choose>
+                                                            <c:when test="${sessionScope.userType eq 3&&topic.teaAuditState eq 2}">
+                                                                <button class="btn btn-xs btn-info" onclick="topicDetails2(${topic.id})"><i class="icon-pencil"></i>文档上传</button>
+
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                            <button class="btn btn-xs btn-info" onclick="topicDetails(${topic.id})"><i class="icon-pencil"></i>详情</button>
+
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                         <c:if test="${sessionScope.userType eq 3}">
                                                             <c:if test="${topic.teaAuditState eq 1}">
                                                                 <button  type="button" class="btn  btn-xs  btn-danger" onclick="topicDel(${topic.id})"><i class="icon-warning-sign"></i>删除</button>
                                                             </c:if>
                                                         </c:if>
-                                                        <c:if test="${sessionScope.userType eq 0 || sessionScope.userType eq 1 }">
-                                                            <button  type="button" class="btn  btn-xs  btn-danger" onclick="delTopic(${topic.id})"><i class="icon-warning-sign"></i>删除</button>
-                                                        </c:if>
+                                                        <%--<c:if test="${sessionScope.userType eq 0 || sessionScope.userType eq 1 }">--%>
+                                                            <%--<button  type="button" class="btn  btn-xs  btn-danger" onclick="delTopic(${topic.id})"><i class="icon-warning-sign"></i>删除</button>--%>
+                                                        <%--</c:if>--%>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -430,8 +439,42 @@
 
     }
 
+
+    function topicDetails2(id) {
+
+
+
+        $.ajax({
+            type: "post",
+            url: "${ctx}/selectProcessControl/testPc",
+            data: {"id":5},
+            dataType:"json",
+            success:function(msg){
+                if("OK"!=msg){
+                    alert(" 😅 "+msg);
+                }else {
+                    window.location.href="${ctx}/selectTopic/topicDetails?id="+id;
+                }
+            },
+            error: function(e) {
+                alert(" 😥 系统异常，请与我们的工程师联系！");
+            }
+        });
+
+
+
+
+
+    }
     function topicDetails(id) {
-        window.location.href="${ctx}/selectTopic/topicDetails?id="+id;
+
+            window.location.href="${ctx}/selectTopic/topicDetails?id="+id;
+
+
+
+
+
+
     }
 
     function teaUpdate(id) {
@@ -468,31 +511,36 @@
                             "<td><span class='label label-warning'>未处理</span></td>"
                             +"<td>"+val.topicYear+"级</td>"
                             +"<td>"+time+"</td>"
-                            +"<td>" +
-                                "<button onclick='teaDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
-                            "</td>"
-                            +"</tr>"
+                            +"<td>"
                         ;
                     }else if (parseInt(val.teaAuditState) == 1){
                         item+=
                             "<td><span class='label label-danger'>审核不通过</span></td>"
                             +"<td>"+val.topicYear+"级</td>"
                             +"<td>"+time+"</td>"
-                            +"<td>" +
-                            "<button onclick='teaDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
-                            "</td>"
-                            +"</tr>"
+                            +"<td>"
                         ;
                     }else {
                         item+=
                             "<td><span class='label label-success'>审核通过</span></td>"
                             +"<td>"+val.topicYear+"级</td>"
                             +"<td>"+time+"</td>"
-                            +"<td>" +
-                            "<button onclick='teaDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
-                            "</td>"
-                            +"</tr>"
+                            +"<td>"
                         ;
+                    }
+                    var userType = ${sessionScope.sessionUser.userType}
+                    if(parseInt(userType) == 3){
+                        item += "<button onclick='teaDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>文档上传</button>"
+                            ;
+                        if (parseInt(val.teaAuditState) == 1){
+                            item += "<button  type='button' class='btn  btn-xs  btn-danger' onclick='topicDel("+val.id+")'><i class='icon-warning-sign'></i>删除</button>";
+                        }
+                        item += "</td>"
+                        +"</tr>";
+                    }else{
+                        item += "<button onclick='teaDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
+                            "</td>"
+                            +"</tr>";
                     }
                 $("#items").append(item);
             });

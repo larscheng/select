@@ -418,7 +418,7 @@ public class SelectUserBaseService extends  ServiceImpl <ISelectUserBaseMapper, 
             selectMajor = selectMajorMapper.selectOne(selectMajor);
             if (selectMajor == null) {
                 importErrorList.add(importStuVo.getUserName());
-                logger.info("添加失败 : " + importStuVo.toString());
+                logger.info("专业不存在，添加失败 : " + importStuVo.toString());
                 continue;
             }
             //学生初始化
@@ -696,7 +696,7 @@ public class SelectUserBaseService extends  ServiceImpl <ISelectUserBaseMapper, 
             selectDepartment = selectDepartmentMapper.selectOne(selectDepartment);
             if (selectDepartment == null) {
                 importErrorList.add(importTeaVo.getUserName());
-                logger.info("添加失败 : " + importTeaVo.toString());
+                logger.info("系别不存在，添加失败 : " + importTeaVo.toString());
                 continue;
             }
             //车辆初始化
