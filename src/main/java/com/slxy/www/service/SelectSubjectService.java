@@ -61,6 +61,8 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
     private ISelectProcessControlMapper selectProcessControlMapper;
     @Autowired
     private SelectProcessControlService selectProcessControlService;
+    @Autowired
+    private SelectJavaMailService selectJavaMailService;
 
 
 
@@ -86,11 +88,12 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
         List<SelectSubjectDto> subjectDtos = SelectMapStructMapper.INSTANCE.SelectSubjectsPoToDto(subjectList);
         Set<SelectUserBase> teaSet = new HashSet<>();
         this.setSubDto(subjectDtos, teaSet);
+        List<SelectUserBase> teas = selectUserBaseMapper.selectList(new EntityWrapper<SelectUserBase>().and("user_type=?",EnumUserType.TEACHER.getValue()));
         modelAndView.addObject("subjectList",subjectDtos);
         modelAndView.addObject("depList",depList);
         modelAndView.addObject("page",page);
         modelAndView.addObject("subType", EnumSubType.toMap());
-        modelAndView.addObject("teaSet",teaSet);
+        modelAndView.addObject("teaSet",teas);
         return modelAndView;
     }
 
@@ -248,11 +251,12 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
         Set<SelectUserBase> teaSet = new HashSet<>();
         setSubDto(subjectDtos, teaSet);
         List<SelectDepartment> depList = selectDepartmentMapper.selectList(new EntityWrapper<SelectDepartment>().and("dep_status = ?", EnumEnOrDis.ENABLED.getValue()));
+        List<SelectUserBase> teas = selectUserBaseMapper.selectList(new EntityWrapper<SelectUserBase>().and("user_type=?",EnumUserType.TEACHER.getValue()));
         modelAndView.addObject("subjectList",subjectDtos);
         modelAndView.addObject("depList",depList);
         modelAndView.addObject("page",page);
         modelAndView.addObject("subType",EnumSubType.toMap());
-        modelAndView.addObject("teaSet",teaSet);
+        modelAndView.addObject("teaSet",teas);
         return modelAndView;
     }
 
@@ -263,6 +267,7 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
      * @param teaSet
      */
     private void setSubDto(List<SelectSubjectDto> subjectDtos, Set<SelectUserBase> teaSet) {
+        Set<String> codes = new HashSet<>();
         for (SelectSubjectDto dto:subjectDtos){
             //类型名
             dto.setTypeName(EnumSubType.toMap().get(dto.getSubType()));
@@ -270,7 +275,15 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
             SelectUserBase userBase = selectUserBaseMapper.selectById(dto.getTeaId());
             dto.setSubTeaName(userBase.getUserName()).setTeaPhone(userBase.getUserPhone());
             SelectUserBase tea = selectUserBaseMapper.selectById(dto.getTeaId());
-            teaSet.add(tea);
+
+
+            if (!codes.contains(tea.getUserCode())){
+                teaSet.add(tea);
+            }
+
+            codes.add(tea.getUserCode());
+
+
             //面向系别
             SelectDepartment selectDepartment = selectDepartmentMapper.selectById(dto.getForDepId());
             dto.setForDepName(selectDepartment.getDepName());
@@ -440,7 +453,8 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
             logger.info("该题目已经被选，请重新选择");
             return JSONObject.toJSONString(Constant.SELECT_ERROR_SELECTED);
         }
-
+        //获取教师信息
+        SelectUserBase teaInfo = selectUserBaseMapper.selectById(selectSubject.getTeaId());
         //先判断是否已经选过题目
         SelectTopic selectTopic = new SelectTopic()
                 .setStuId(vo.getSelectId())
@@ -468,7 +482,8 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
                 .setId(selectSubject.getId())
                 .setSubSelectStatus(EnumSubSelectStatus.FAIL.getValue());
         this.updateById(subject);
-
+        //3、邮件通知教师
+        selectJavaMailService.sendHtmlMail(teaInfo.getUserMail(),teaInfo.getUserName(),selectSubject.getSubName(),"通知教师审核");
         return JSONObject.toJSONString(Constant.SUCCESS);
     }
 
@@ -596,16 +611,10 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
      * @return
      */
     public String subUpdate(MultipartFile file, SelectSubjectVo vo, HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        if (session.getAttribute("userType")!=null&&(Integer)session.getAttribute("userType")==2){
-            //当前是否处于上传题目阶段
-            List<SelectProcessControl> selectProcessControls = selectProcessControlMapper.selectPro();
-            if (CollectionUtils.isEmpty(selectProcessControls)){
-                return JSONObject.toJSONString(Constant.NOT_UPLOAD_SUBJECT_TIME);
-            }
-            if (!selectProcessControls.get(0).getId().equals(1)){
-                return JSONObject.toJSONString(Constant.NOT_UPLOAD_SUBJECT_TIME);
-            }
+        //流程检测
+        String msg = selectProcessControlService.testPc(EnumProControl.subAdd.getValue());
+        if (!msg.equalsIgnoreCase(JSONObject.toJSONString(Constant.SUCCESS))){
+            return msg;
         }
         SelectSubject selectSubject = selectSubjectMapper.selectById(vo.getId());
         if (ObjectUtils.isEmpty(selectSubject)){

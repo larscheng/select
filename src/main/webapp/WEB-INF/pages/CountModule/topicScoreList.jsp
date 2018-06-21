@@ -273,9 +273,9 @@
     });
 
     function search() {
-        var url = "${ctx}/selectTopic/stuTopicAjaxList?teaAuditState=2";
+        var url = "${ctx}/selectTopic/stuTopicAjaxList?teaAuditState=2&subState=3";
         if (manType == 3){
-            url="${ctx}/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
+            url="${ctx}/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}&subState=3";
         }
         $.ajax({
             type: "post",
@@ -292,9 +292,9 @@
     }
 
     function pageSearch(page) {
-        var url = "${ctx}/selectTopic/stuTopicAjaxList";
+        var url = "${ctx}/selectTopic/stuTopicAjaxList?subState=3";
         if (manType == 3){
-            url="${ctx}/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
+            url="${ctx}/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}&subState=3";
         }
         $.ajax({
             type: "post",
@@ -316,9 +316,9 @@
     }
 
     $("#searchSubmit").click(function(){
-        var url = "${ctx}/selectTopic/stuTopicAjaxList";
+        var url = "${ctx}/selectTopic/stuTopicAjaxList?subState=3";
         if (manType == 3){
-            url="${ctx}/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
+            url="${ctx}/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}&subState=3";
         }
         $.ajax({
             type: "post",

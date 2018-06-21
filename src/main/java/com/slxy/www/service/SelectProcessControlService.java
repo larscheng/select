@@ -60,6 +60,9 @@ public class SelectProcessControlService extends  ServiceImpl <ISelectProcessCon
      * @return
      */
     public String testPc(Integer id) {
+        //取消流程控制
+//        return JSONObject.toJSONString(Constant.SUCCESS);
+        //流程控制执行逻辑
         List<SelectProcessControl> selectProcessControls = selectProcessControlMapper.selectPro();
         if (CollectionUtils.isEmpty(selectProcessControls)){
             return JSONObject.toJSONString(Constant.NOT_TIME);
@@ -70,6 +73,7 @@ public class SelectProcessControlService extends  ServiceImpl <ISelectProcessCon
                 return JSONObject.toJSONString(Constant.SUCCESS);
             }
         }
+
         return JSONObject.toJSONString(Constant.NOT_TIME);
     }
 }

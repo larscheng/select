@@ -279,9 +279,9 @@
     });
 
     function search() {
-        var url = "${ctx}/selectTopic/stuTopicAjaxList";
+        var url = "${ctx}/selectTopic/stuTopicAjaxList?subState=3";
         if (manType == 3){
-            url="${ctx}/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
+            url="${ctx}/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}&subState=3";
         }
         $.ajax({
             type: "post",
@@ -298,9 +298,9 @@
     }
 
     function pageSearch(page) {
-        var url = "${ctx}/selectTopic/stuTopicAjaxList";
+        var url = "${ctx}/selectTopic/stuTopicAjaxList?subState=3";
         if (manType == 3){
-            url="${ctx}/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
+            url="${ctx}/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}&subState=3";
         }
         $.ajax({
             type: "post",
@@ -322,9 +322,9 @@
     }
 
     $("#searchSubmit").click(function(){
-        var url = "${ctx}/selectTopic/stuTopicAjaxList";
+        var url = "${ctx}/selectTopic/stuTopicAjaxList?subState=3";
         if (manType == 3){
-            url="${ctx}/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
+            url="${ctx}/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}&subState=3";
         }
         $.ajax({
             type: "post",
@@ -410,7 +410,7 @@
                             +"<td>"+val.topicYear+"级</td>"
                             +"<td>"+time+"</td>"
                             +"<td>" +
-                                "<button onclick='teaDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
+                                "<button onclick='topicDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
                             "</td>"
                             +"</tr>"
                         ;
@@ -420,7 +420,7 @@
                             +"<td>"+val.topicYear+"级</td>"
                             +"<td>"+time+"</td>"
                             +"<td>" +
-                            "<button onclick='teaDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
+                            "<button onclick='topicDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
                             "</td>"
                             +"</tr>"
                         ;
@@ -430,7 +430,7 @@
                             +"<td>"+val.topicYear+"级</td>"
                             +"<td>"+time+"</td>"
                             +"<td>" +
-                            "<button onclick='teaDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
+                            "<button onclick='topicDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
                             "</td>"
                             +"</tr>"
                         ;

@@ -3,10 +3,7 @@ package com.slxy.www.web;
 import com.slxy.www.common.Constant;
 import com.slxy.www.domain.po.SelectUserBase;
 import com.slxy.www.domain.vo.SelectTopicVo;
-import com.slxy.www.enums.EnumEnOrDis;
-import com.slxy.www.enums.EnumSubSelectStatus;
-import com.slxy.www.enums.EnumUserType;
-import com.slxy.www.enums.EnumYesOrNo;
+import com.slxy.www.enums.*;
 import com.slxy.www.filter.LoginRequired;
 import com.slxy.www.service.SelectTopicService;
 import com.slxy.www.service.SelectUserBaseService;
@@ -177,6 +174,20 @@ public class SelectTopicController {
         return selectTopicService.topicDetails(modelAndView,vo);
     }
 
+
+
+    /**
+     * 选题详情
+     * @param modelAndView
+     * @param vo
+     * @return
+     */
+    @ApiOperation(value = "选题详情", notes = "")
+    @RequestMapping(value = "/myTopicDetails",method = RequestMethod.GET)
+    public ModelAndView myTopicDetails(ModelAndView  modelAndView, SelectTopicVo vo) {
+        modelAndView.setViewName("topicModule/myTopicDetails");
+        return selectTopicService.topicDetails(modelAndView,vo);
+    }
     /****
      * 教师审核选题
      * @param vo
@@ -262,7 +273,8 @@ public class SelectTopicController {
     @RequestMapping(value = "/topicScoreList",method = RequestMethod.GET)
     public ModelAndView topicScoreList(ModelAndView  modelAndView, SelectTopicVo vo) {
         modelAndView.setViewName("CountModule/topicScoreList");
-        vo.setTeaAuditState(EnumSubSelectStatus.SUCCESS.getValue());
+        vo.setTeaAuditState(EnumSubSelectStatus.SUCCESS.getValue())
+        .setSubState(EnumSubState.OVER.getValue());
         return selectTopicService.topicList(modelAndView,vo);
     }
 
@@ -277,6 +289,7 @@ public class SelectTopicController {
     @RequestMapping(value = "/topicCountList",method = RequestMethod.GET)
     public ModelAndView topicCountList(ModelAndView  modelAndView, SelectTopicVo vo) {
         modelAndView.setViewName("CountModule/topicCountList");
+        vo.setSubState(EnumSubState.OVER.getValue());
         return selectTopicService.topicList(modelAndView,vo);
     }
 
@@ -378,9 +391,13 @@ public class SelectTopicController {
             SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
             if (!ObjectUtils.isEmpty(userBase)){
                 if (userBase.getUserType().equals(EnumUserType.TEACHER.getValue())){
-                    vo.setTeaId(userBase.getId());
+                    vo.setTeaId(userBase.getId())
+                            .setSubState(EnumSubSelectStatus.SUCCESS.getValue());
                 }else if (userBase.getUserType().equals(EnumUserType.STUDENT.getValue())){
-                    vo.setStuId(userBase.getId());
+                    vo.setStuId(userBase.getId())
+                            .setSubState(EnumSubSelectStatus.OVER.getValue());
+                }else{
+                    vo.setSubState(EnumSubSelectStatus.SUCCESS.getValue());
                 }
 
             }

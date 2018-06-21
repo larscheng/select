@@ -75,6 +75,9 @@
 		<if test="@Ognl@isNotEmpty(teaAuditState)">
 			and a.tea_audit_state = #{teaAuditState}
 		</if>
+		<if test="@Ognl@isNotEmpty(subState)">
+			and b.sub_select_status = #{subState}
+		</if>
 		<if test="@Ognl@isNotEmpty(delState)">
 			and a.del_state = #{delState}
 		</if>

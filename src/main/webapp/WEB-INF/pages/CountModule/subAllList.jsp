@@ -239,9 +239,9 @@
 <script type="text/javascript">
     sessionStorage.setItem("userType",${sessionScope.userType});
     var manType = sessionStorage.getItem("userType");
-    var url = "${ctx}/selectSubject/subListAjax";
+    var url = "${ctx}/selectSubject/subListAjax?subSelectStatus=3";
     if(manType>1){
-        url = "${ctx}/selectSubject/subListAjax?selectId=${sessionScope.sessionUser.id}";
+        url = "${ctx}/selectSubject/subListAjax?selectId=${sessionScope.sessionUser.id}&subSelectStatus=3";
     }
 
 

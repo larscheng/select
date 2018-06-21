@@ -110,23 +110,27 @@
 
             <%--<div class="row">--%>
 
+<c:if test="${!empty sessionScope.pro}">
+    <ul class="countdown pull-left">
+        <li><span style="font-size: 20px;vertical-align:super ;">距离
+                    <b style=" font-family: 华文楷体,serif;">
+                            ${sessionScope.pro.proName}
+                    </b>结束还剩：</span>
+        </li>
+        <li><span class="days">00</span>天
+        </li>
+        <li class="seperator">.</li>
+        <li><span class="hours">00</span>小时
+        </li>
+        <li class="seperator">:</li>
+        <li><span class="minutes">00</span>分钟
+        </li>
+        <li class="seperator">:</li>
+        <li><span class="seconds">00</span>秒
+        </li>
+    </ul>
+</c:if>
 
-            <ul class="countdown pull-left">
-                <li><span style="font-size: 20px;vertical-align:super ;">距离<b
-                        style=" font-family: 华文楷体,serif;">${sessionScope.pro.proName}</b>结束还剩：</span>
-                </li>
-                <li><span class="days">00</span>天
-                </li>
-                <li class="seperator">.</li>
-                <li><span class="hours">00</span>小时
-                </li>
-                <li class="seperator">:</li>
-                <li><span class="minutes">00</span>分钟
-                </li>
-                <li class="seperator">:</li>
-                <li><span class="seconds">00</span>秒
-                </li>
-            </ul>
 
             <ul class="pull-right" style="list-style: none;line-height: 60px;">
                 <li class="">
@@ -242,15 +246,19 @@
         return fmt;
     }
 
-    var crtTime = new Date("${sessionScope.pro.proEndTime}");
+    var date = "${sessionScope.pro.proEndTime}";
+    if(date!==""||date!==null){
+        var crtTime = new Date(date);
 
-    <%--console.log( dateFtt("yyyy/MM/dd hh:mm:ss",crtTime));--%>
-    $('.countdown').downCount({
-        date: dateFtt("yyyy/MM/dd hh:mm:ss", crtTime),
-        offset: +10
-    }, function () {
-        alert('倒计时结束!');
-    });
+        <%--console.log( dateFtt("yyyy/MM/dd hh:mm:ss",crtTime));--%>
+        $('.countdown').downCount({
+            date: dateFtt("yyyy/MM/dd hh:mm:ss", crtTime),
+            offset: +10
+        }, function () {
+            alert('倒计时结束!');
+        });
+    }
+
 </script>
 
 </body>

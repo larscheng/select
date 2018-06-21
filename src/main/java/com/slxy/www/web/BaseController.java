@@ -13,6 +13,7 @@ import com.slxy.www.common.Constant;
 import com.slxy.www.dao.ISelectProcessControlMapper;
 import com.slxy.www.dao.ISelectUserBaseMapper;
 import com.slxy.www.domain.po.ChangePs;
+import com.slxy.www.domain.po.SelectProcessControl;
 import com.slxy.www.domain.po.SelectUserBase;
 import com.slxy.www.enums.EnumEnOrDis;
 import com.slxy.www.service.SelectJavaMailService;
@@ -20,6 +21,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,10 +35,7 @@ import javax.servlet.http.HttpSession;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * <p>
@@ -119,8 +118,10 @@ public class BaseController {
         session.setAttribute("sessionUser",selectUserBase);
         session.setAttribute("sessionIp",this.getIp());
         session.setAttribute("userType",selectUserBase.getUserType());
-        session.setAttribute("pro",selectProcessControlMapper.selectPro().get(0));
-
+        List<SelectProcessControl> pc = selectProcessControlMapper.selectPro();
+        if (!CollectionUtils.isEmpty(pc)){
+            session.setAttribute("pro",pc.get(0));
+        }
 
         Cookie cookie = new Cookie("JSESSIONID",session.getId());
         cookie.setPath("/");

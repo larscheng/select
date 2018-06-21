@@ -59,7 +59,7 @@ public class SelectJavaMailService {
      * 发送html格式的邮件
      * @param to
      * @param name
-     * @param passWord
+     * @param passWord 密码，或者是题目名称
      */
     public void sendHtmlMail(String to, String name, String passWord,String subject){
 
@@ -67,7 +67,13 @@ public class SelectJavaMailService {
 
         if (subject.equals("密码重置")){
             content = getString(name, passWord);
-        }else {
+        }else if (subject.equals("选题成功")){
+            content = getString3(name,passWord);
+        }else if (subject.equals("选题失败")){
+            content = getString4(name,passWord);
+        }else if (subject.equals("通知教师审核")){
+            content = getString5(name,passWord);
+        }else {//发送验证码
             content = getString2(name, passWord);
         }
         MimeMessage message = sender.createMimeMessage();
@@ -119,7 +125,56 @@ public class SelectJavaMailService {
                 "</body>\n" +
                 "</html>";
     }
+    /***
+     * 选题成功，邮件模板
+     * @param name
+     * @param passWord
+     * @return
+     */
+    private String getString3(String name, String passWord) {
+        String now = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        return "<html lang='en'>\n" +
+                "<body style='text-align: center;'>\n" +
+                "<h3>"+name+"您好：</h3>\n" +
+                "<p>您所选的毕业设计题目：<b style='color: red'>"+passWord+"</b>在北京时间"+now+"，通过了教师审核<b style='color: red'>选题成功</b>，请登录系统进行查看。</p>\n" +
+                "<h4 style='text-align: right;'>毕设小管家</h4>\n" +
+                "</body>\n" +
+                "</html>";
+    }
 
+    /***
+     * 选题失败，邮件模板
+     * @param name
+     * @param passWord
+     * @return
+     */
+    private String getString4(String name, String passWord) {
+        String now = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        return "<html lang='en'>\n" +
+                "<body style='text-align: center;'>\n" +
+                "<h3>"+name+"您好：</h3>\n" +
+                "<p>您所选的毕业设计题目：<b style='color: red'>"+passWord+"</b>在北京时间"+now+"，未通过教师审核<b style='color: red'>选题失败</b>，请登录系统删除失败记录重新选题。</p>\n" +
+                "<h4 style='text-align: right;'>毕设小管家</h4>\n" +
+                "</body>\n" +
+                "</html>";
+    }
+
+    /***
+     * 通知教师审核选题，邮件模板
+     * @param name
+     * @param passWord
+     * @return
+     */
+    private String getString5(String name, String passWord) {
+        String now = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        return "<html lang='en'>\n" +
+                "<body style='text-align: center;'>\n" +
+                "<h3>"+name+"老师您好：</h3>\n" +
+                "<p>您的毕业设计题目：<b style='color: red'>"+passWord+"</b>在北京时间"+now+"，已被学生选择，请登录系统进行审核。</p>\n" +
+                "<h4 style='text-align: right;'>毕设小管家</h4>\n" +
+                "</body>\n" +
+                "</html>";
+    }
 
     /**
      * 发送带附件的邮件

@@ -70,7 +70,7 @@
                                 <option value="0">禁用</option>
                             </select>
                         </div>
-
+                    <c:if test="${sessionScope.userType !=3}">
                         <div class="form-group " style="margin-right: 10px">
                             <select  class="form-control" name="stuMajorId" id="stuMajorId" onchange="initClass()">
                                 <option value="" selected>专业</option>
@@ -79,6 +79,7 @@
                                 </c:forEach>
                             </select>
                         </div>
+
                         <div class="form-group " style="margin-right: 10px">
                             <select  class="form-control" name="stuClass" id="stuClass">
                                 <option value="" selected>班级</option>
@@ -92,6 +93,7 @@
                                 </c:forEach>
                             </select>
                         </div>
+                        </c:if>
                         <div class="form-group" style="margin-right: 10px">
                                 <div class="input-group date form_datetime">
                                     <input name="searchBgnTime" onclick="aaa()" class="form-control"type="text" placeholder="起始时间" value="" readonly style="width: 140px">

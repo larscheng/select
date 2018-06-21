@@ -55,8 +55,8 @@
                         <div class="form-group " style="margin-right: 10px">
                             <select  class="form-control" name="teaId">
                                 <option value="" selected>教师名</option>
-                                <c:forEach var="tea" items="${requestScope.topicList}">
-                                    <option value="${tea.teaId}">${tea.teaName}</option>
+                                <c:forEach var="tea" items="${requestScope.teaList}">
+                                    <option value="${tea.id}">${tea.userName}</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -64,8 +64,8 @@
                         <div class="form-group " style="margin-right: 10px">
                             <select  class="form-control" name="stuId">
                                 <option value="" selected>学生名</option>
-                                <c:forEach var="stu" items="${requestScope.topicList}">
-                                    <option value="${stu.stuId}">${stu.stuName}</option>
+                                <c:forEach var="stu" items="${requestScope.stuList}">
+                                    <option value="${stu.id}">${stu.userName}</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -291,7 +291,7 @@
     function search() {
         var url = "/selectTopic/stuTopicAjaxList?delState=0";
         if (manType == 3){
-            url="/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
+            url="/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}&delState=0";
         }
         $.ajax({
             type: "post",
@@ -310,7 +310,7 @@
     function pageSearch(page) {
         var url = "/selectTopic/stuTopicAjaxList?delState=0";
         if (manType == 3){
-            url="/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
+            url="/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}&delState=0";
         }
         $.ajax({
             type: "post",
@@ -334,7 +334,7 @@
     $("#searchSubmit").click(function(){
         var url = "/selectTopic/stuTopicAjaxList?delState=0";
         if (manType == 3){
-            url="/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}";
+            url="/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}&delState=0";
         }
         $.ajax({
             type: "post",
@@ -530,7 +530,7 @@
                     }
                     var userType = ${sessionScope.sessionUser.userType}
                     if(parseInt(userType) == 3){
-                        item += "<button onclick='teaDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>文档上传</button>"
+                        item += "<button onclick='topicDetails2("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>文档上传</button>"
                             ;
                         if (parseInt(val.teaAuditState) == 1){
                             item += "<button  type='button' class='btn  btn-xs  btn-danger' onclick='topicDel("+val.id+")'><i class='icon-warning-sign'></i>删除</button>";
@@ -538,7 +538,7 @@
                         item += "</td>"
                         +"</tr>";
                     }else{
-                        item += "<button onclick='teaDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
+                        item += "<button onclick='topicDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
                             "</td>"
                             +"</tr>";
                     }

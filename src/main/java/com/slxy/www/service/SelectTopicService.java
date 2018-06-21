@@ -54,6 +54,8 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
     private SelectScorePerService selectScorePerService;
     @Autowired
     private SelectProcessControlService selectProcessControlService;
+    @Autowired
+    private SelectJavaMailService selectJavaMailService;
 
 
     public ModelAndView topicList(ModelAndView modelAndView, SelectTopicVo vo) {
@@ -140,6 +142,9 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
                 .setId(vo.getId());
         SelectSubject selectSubject = new SelectSubject()
                 .setId(topic.getSubId());
+        //获取学生信息
+        SelectUserBase stuInfo = selectUserBaseMapper.selectById(topic.getStuId());
+        SelectSubject subInfo = selectSubjectMapper.selectById(topic.getSubId());
         //判断操作，通过or不通过
         if (EnumSubState.SUCCESS.getValue().equals(vo.getTeaAuditState())){
             //通过
@@ -147,12 +152,17 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
                     .setTeaAuditContent(Constant.SELECT_SUCCESS_REASON);
             //更新论文状态---》已被选
             selectSubject.setSubSelectStatus(EnumSubSelectStatus.SUCCESS.getValue());
+            //邮件通知学生选题成功
+            selectJavaMailService.sendHtmlMail(stuInfo.getUserMail(),stuInfo.getUserName(),subInfo.getSubName(),"选题成功");
         }else{
             //不通过
             selectTopic.setTeaAuditState(EnumSubState.FAIL.getValue())
                     .setTeaAuditContent(vo.getTeaAuditContent());
             //更新论文状态---》未选
             selectSubject.setSubSelectStatus(EnumSubSelectStatus.Untreated.getValue());
+            //邮件通知学生选题失败
+            logger.info("邮件通知");
+            selectJavaMailService.sendHtmlMail(stuInfo.getUserMail(),stuInfo.getUserName(),subInfo.getSubName(),"选题失败");
         }
         selectSubjectMapper.updateById(selectSubject);
         return this.updateById(selectTopic)?JSONObject.toJSONString(Constant.SUCCESS):JSONObject.toJSONString(Constant.ERROR);
@@ -449,7 +459,7 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
                 continue;
 
             }
-            //记录成功导入车辆数
+            //记录成功导入成绩的人数
             importSuccessCount++;
             logger.info("成绩上传成功 : " + importScoreVo.getSubName() + " , 本次评分数 : " + importVOS.size() + " , 已导入成绩数 : " + importSuccessCount);
         }
@@ -474,7 +484,8 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
                 .setDefenceScore(importScoreVo.getDefenceScore())
                 .setTutorScore(importScoreVo.getTutorScore())
                 .setFinalTotalScore(finalTotalScore);
-
+        //评分同时，该选题状态变更为结题
+        selectSubject.setSubSelectStatus(EnumSubSelectStatus.OVER.getValue());
         if (selectSubjectMapper.updateById(selectSubject)<0){
             logger.info("添加失败 : " + importScoreVo.getSubName());
             return false;

@@ -55,7 +55,7 @@
                 if ("OK" != msg) {
                     window.open('times.html','mainFrame')
                 } else {
-                    window.open('selectTopic/topicUploadList','_mainFrame')
+                    window.open('selectTopic/topicUploadList','mainFrame')
                 }
             },
             error: function (e) {

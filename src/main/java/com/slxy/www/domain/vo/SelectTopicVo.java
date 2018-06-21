@@ -90,5 +90,7 @@ public class SelectTopicVo extends PageVo {
      * 最终总得分
      */
     private Double finalTotalScore;
+
+    private Integer subState;
 }
 

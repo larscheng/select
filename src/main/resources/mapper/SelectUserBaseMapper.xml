@@ -91,7 +91,7 @@
 
 
 
-		ORDER BY a.user_status DESC, a.gmt_create DESC
+		ORDER BY a.user_code,a.user_status DESC, a.gmt_create DESC
 	</select>
 
 

@@ -193,21 +193,21 @@
                                                 <li><a href="#" class="btn  disabled">上一页</a></li>
                                             </c:if>
                                             <c:if test="${page.current-1 > 0}">
-                                                <li><a class="disabled" href="${ctx}/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}&page=${page.current-1}">上一页</a></li>
-                                                <li><a href="${ctx}/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}&page=${page.current-1}">${page.current-1}</a></li>
+                                                <li><a class="disabled" href="${ctx}/selectTopic/topicUploadList?stuId=${sessionScope.sessionUser.id}&page=${page.current-1}">上一页</a></li>
+                                                <li><a href="${ctx}/selectTopic/topicUploadList?stuId=${sessionScope.sessionUser.id}&page=${page.current-1}">${page.current-1}</a></li>
                                             </c:if>
 
 
-                                            <li><a href="${ctx}/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}&page=${page.current}">${page.current}</a></li>
+                                            <li><a href="${ctx}/selectTopic/topicUploadList?stuId=${sessionScope.sessionUser.id}&page=${page.current}">${page.current}</a></li>
 
                                             <c:if test="${page.current+1 <= page.pages}">
-                                                <li><a href="${ctx}/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}&page=${page.current+1}">${page.current+1}</a></li>
+                                                <li><a href="${ctx}/selectTopic/topicUploadList?stuId=${sessionScope.sessionUser.id}&page=${page.current+1}">${page.current+1}</a></li>
                                             </c:if>
                                             <c:if test="${page.current+2 <= page.pages}">
-                                                <li><a href="${ctx}/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}&page=${page.current+2}">${page.current+2}</a></li>
+                                                <li><a href="${ctx}/selectTopic/topicUploadList?stuId=${sessionScope.sessionUser.id}&page=${page.current+2}">${page.current+2}</a></li>
                                             </c:if>
                                             <c:if test="${page.current+1 <= page.pages}">
-                                                <li><a href="${ctx}/selectTopic/topicList?stuId=${sessionScope.sessionUser.id}&page=${page.current+1}">下一页</a></li>
+                                                <li><a href="${ctx}/selectTopic/topicUploadList?stuId=${sessionScope.sessionUser.id}&page=${page.current+1}">下一页</a></li>
                                             </c:if>
                                             <c:if test="${page.current+1 > page.pages}">
                                                 <li><a class="btn  disabled" href="#">下一页</a></li>
@@ -222,21 +222,21 @@
                                                 <li><a href="#" class="btn  disabled">上一页</a></li>
                                             </c:if>
                                             <c:if test="${page.current-1 > 0}">
-                                                <li><a class="disabled" href="${ctx}/selectTopic/topicList?page=${page.current-1}">上一页</a></li>
-                                                <li><a href="${ctx}/selectTopic/topicList?page=${page.current-1}">${page.current-1}</a></li>
+                                                <li><a class="disabled" href="${ctx}/selectTopic/topicUploadList?page=${page.current-1}">上一页</a></li>
+                                                <li><a href="${ctx}/selectTopic/topicUploadList?page=${page.current-1}">${page.current-1}</a></li>
                                             </c:if>
 
 
-                                            <li><a href="${ctx}/selectTopic/topicList?page=${page.current}">${page.current}</a></li>
+                                            <li><a href="${ctx}/selectTopic/topicUploadList?page=${page.current}">${page.current}</a></li>
 
                                             <c:if test="${page.current+1 <= page.pages}">
-                                                <li><a href="${ctx}/selectTopic/topicList?page=${page.current+1}">${page.current+1}</a></li>
+                                                <li><a href="${ctx}/selectTopic/topicUploadList?page=${page.current+1}">${page.current+1}</a></li>
                                             </c:if>
                                             <c:if test="${page.current+2 <= page.pages}">
-                                                <li><a href="${ctx}/selectTopic/topicList?page=${page.current+2}">${page.current+2}</a></li>
+                                                <li><a href="${ctx}/selectTopic/topicUploadList?page=${page.current+2}">${page.current+2}</a></li>
                                             </c:if>
                                             <c:if test="${page.current+1 <= page.pages}">
-                                                <li><a href="${ctx}/selectTopic/topicList?page=${page.current+1}">下一页</a></li>
+                                                <li><a href="${ctx}/selectTopic/topicUploadList?page=${page.current+1}">下一页</a></li>
                                             </c:if>
                                             <c:if test="${page.current+1 > page.pages}">
                                                 <li><a class="btn  disabled" href="#">下一页</a></li>
@@ -337,9 +337,11 @@
     });
 
     function search() {
-        var url = "${ctx}/selectTopic/stuTopicAjaxList?teaAuditState=2&teaId=${sessionScope.sessionUser.id}";
+        var url = "${ctx}/selectTopic/stuTopicAjaxList?teaAuditState=2&teaId=${sessionScope.sessionUser.id}&subState=2";
         if(manType==0||manType==1){
-            url = "${ctx}/selectTopic/stuTopicAjaxList?teaAuditState=2";
+            url = "${ctx}/selectTopic/stuTopicAjaxList?teaAuditState=2&subState=2";
+        }else if(manType ==3){
+            url = "${ctx}/selectTopic/stuTopicAjaxList?teaAuditState=2&subState=3";
         }
         $.ajax({
             type: "post",
@@ -356,9 +358,11 @@
     }
 
     function pageSearch(page) {
-        var url = "${ctx}/selectTopic/stuTopicAjaxList?teaAuditState=2&teaId=${sessionScope.sessionUser.id}";
+        var url = "${ctx}/selectTopic/stuTopicAjaxList?teaAuditState=2&teaId=${sessionScope.sessionUser.id}&subState=2";
         if(manType==0||manType==1){
-            url = "${ctx}/selectTopic/stuTopicAjaxList?teaAuditState=2";
+            url = "${ctx}/selectTopic/stuTopicAjaxList?teaAuditState=2&subState=2";
+        }else if(manType ==3){
+            url = "${ctx}/selectTopic/stuTopicAjaxList?teaAuditState=2&subState=3";
         }
         $.ajax({
             type: "post",
@@ -380,9 +384,11 @@
     }
 
     $("#searchSubmit").click(function(){
-        var url = "${ctx}/selectTopic/stuTopicAjaxList?teaAuditState=2&teaId=${sessionScope.sessionUser.id}";
+        var url = "${ctx}/selectTopic/stuTopicAjaxList?teaAuditState=2&teaId=${sessionScope.sessionUser.id}&subState=2";
         if(manType==0||manType==1){
-            url = "${ctx}/selectTopic/stuTopicAjaxList?teaAuditState=2";
+            url = "${ctx}/selectTopic/stuTopicAjaxList?teaAuditState=2&subState=2";
+        }else if(manType ==3){
+            url = "${ctx}/selectTopic/stuTopicAjaxList?teaAuditState=2&subState=3";
         }
         $.ajax({
             type: "post",
@@ -402,7 +408,8 @@
 
 
     function topicDetails(id) {
-        window.location.href="${ctx}/selectTopic/topicDetails?id="+id;
+        <%--window.location.href="${ctx}/selectTopic/topicDetails?id="+id;--%>
+        window.location.href="${ctx}/selectTopic/myTopicDetails?id="+id;
     }
     function topicInitUpload(id) {
         window.location.href="${ctx}/selectTopic/topicInitUpload?id="+id;
@@ -438,9 +445,12 @@
                     +"<td>"+val.topicYear+"级</td>"
                     +"<td>"+time+"</td>"
                     +"<td>" +
-                    "<button onclick='topicDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
-                    "<button onclick='topicInitUpload("+val.id+")' class='btn btn-xs btn-success' style='margin-right: 5px'><i class='icon-pencil'></i>评分</button>" +
-                    "</td>"
+                    "<button onclick='topicDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" ;
+                        if(manType<3){
+                            item +="<button onclick='topicInitUpload("+val.id+")' class='btn btn-xs btn-success' style='margin-right: 5px'><i class='icon-pencil'></i>评分</button>";
+                        }
+
+                    item+="</td>"
                     +"</tr>"
                 ;
 //

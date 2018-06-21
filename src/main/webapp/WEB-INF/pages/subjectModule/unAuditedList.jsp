@@ -437,7 +437,7 @@
                     +"<td>"+val.forDepName+"</td>"
                     +"<td>"+time+"</td>"
                     +"<td>" +
-                        "<button onclick='subjectDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
+                        "<button onclick='subDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
                         "<button onclick='subSuccess("+val.id+")' class='btn btn-xs btn-success' style='margin-right: 5px'><i class='icon-ok-circle'>通过</i></button>" +
                         "<button onclick='cleanAll("+val.id+")' class='btn btn-xs btn-danger' style='margin-right: 5px' id='modal-317062' href='#modal-container-317062' role='button'  data-toggle='modal'><i class='icon-remove-sign'></i>不通过</button>" +
                     "</td>"

@@ -258,8 +258,11 @@ public class SelectUserBaseController {
      */
     @ApiOperation(value = "学生列表初始化", notes = "")
     @RequestMapping(value = "/stuList",method = RequestMethod.GET)
-    public ModelAndView stuList(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
-        userBaseVo.setUserType(EnumUserType.STUDENT.getValue());
+    public ModelAndView stuList(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo,HttpSession httpSession) {
+
+        SelectUserBase userBase = (SelectUserBase) httpSession.getAttribute("sessionUser");
+        userBaseVo.setUserType(EnumUserType.STUDENT.getValue())
+                .setStuMajorId(userBase.getStuMajorId()).setStuYear(userBase.getStuYear());
         modelAndView.setViewName("/stuModule/stuList");
         return selectUserBaseService.userList(modelAndView,userBaseVo);
     }
@@ -273,8 +276,10 @@ public class SelectUserBaseController {
     @ApiOperation(value = "异步生成学生列表", notes = "")
     @RequestMapping(value = "/stuListAjax",method = RequestMethod.POST)
     @ResponseBody
-    public String stuListAjax(SelectUserBaseVo userBaseVo) {
-        userBaseVo.setUserType(EnumUserType.STUDENT.getValue());
+    public String stuListAjax(SelectUserBaseVo userBaseVo,HttpSession httpSession) {
+        SelectUserBase userBase = (SelectUserBase) httpSession.getAttribute("sessionUser");
+        userBaseVo.setUserType(EnumUserType.STUDENT.getValue())
+                .setStuMajorId(userBase.getStuMajorId()).setStuYear(userBase.getStuYear());
         return selectUserBaseService.stuListAjax(userBaseVo);
     }
 
