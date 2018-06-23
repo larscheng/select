@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
+Source Server         : myMysql
 Source Server Version : 50144
 Source Host           : localhost:3306
 Source Database       : slxy-select
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50144
 File Encoding         : 65001
 
-Date: 2018-06-21 17:35:40
+Date: 2018-06-23 20:21:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
