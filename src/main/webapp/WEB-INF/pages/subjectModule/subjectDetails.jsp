@@ -167,8 +167,7 @@
                                                     <a class="btn btn-info"
                                                        href="http://${sessionScope.sessionIp}:8012/onlinePreview?url=http://${sessionScope.sessionIp}:8012/${requestScope.sub.subFile}" >预览</a>
                                                     <a class="btn btn-info"
-                                                       href="$o"
-   selectSubject/subFileDown?fileName=${requestScope.sub.subFile}" target="_blank">下载</a>
+                                                       href="${ctx}/selectSubject/subFileDown?fileName=${requestScope.sub.subFile}" target="_blank">下载</a>
                                                 </div>
                                             </c:when>
                                             <c:otherwise>

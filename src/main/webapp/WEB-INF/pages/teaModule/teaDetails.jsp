@@ -98,13 +98,14 @@
 
                                     </div>
 
-
-                                    <div class="form-group">
-                                        <label class="col-lg-4 control-label">教师账号</label>
-                                        <div class="col-lg-6 panel panel-default pdl" >
-                                            ${requestScope.user.userCode}
+                                    <c:if test="${sessionScope.sessionUser.userType eq 1|| sessionScope.sessionUser.userType eq 0|| sessionScope.sessionUser.userType eq 2}">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">教师账号</label>
+                                            <div class="col-lg-6 panel panel-default pdl" >
+                                                    ${requestScope.user.userCode}
+                                            </div>
                                         </div>
-                                    </div>
+                                    </c:if>
 
                                     <div class="form-group">
                                         <label class="col-lg-4 control-label">教师姓名</label>

@@ -151,7 +151,9 @@
                                         <th class=" text-center"><input type="checkbox" id="selectAll"></th>
                                         <th>序号</th>
                                         <th>姓名</th>
-                                        <th>账号</th>
+                                        <c:if test="${sessionScope.sessionUser.userType eq 1|| sessionScope.sessionUser.userType eq 0|| sessionScope.sessionUser.userType eq 2}">
+                                            <th>账号</th>
+                                        </c:if>
                                         <th>性别</th>
                                         <th>邮箱</th>
                                         <th>电话</th>
@@ -177,7 +179,9 @@
                                                     <td  class=" text-center"><input type="checkbox" name="ids" value="${user.id}" /></td>
                                                     <td>${index.count}</td>
                                                     <td>${user.userName}</td>
-                                                    <td>${user.userCode}</td>
+                                                    <c:if test="${sessionScope.sessionUser.userType eq 1|| sessionScope.sessionUser.userType eq 0|| sessionScope.sessionUser.userType eq 2}">
+                                                        <td>${user.userCode}</td>
+                                                    </c:if>
                                                     <td>${user.sex}</td>
                                                     <td><a href="mailto:${user.userMail}">${user.userMail}</a></td>
                                                     <td>${user.userPhone}</td>
@@ -510,22 +514,27 @@
             $(teaList).each(function (index) {
                 var val = teaList[index];
                 var time = getLocalTime(val.gmtCreate);
+                var manType = sessionStorage.getItem("userType");
                 var item =
                     "<tr>"
                     +"<td class='text-center'>"+"<input type='checkbox' name='ids' value='"+val.id+"'/>"+"</td>"
                     +"<td>"+(parseInt(index)+1)+"</td>"
                     +"<td>"+val.userName+"</td>"
-                    +"<td>"+val.userCode+"</td>"
-                    +"<td>"+val.sex+"</td>"
+
+                ;
+                if (parseInt(manType) != 3){
+                    item += "<td>"+val.userCode+"</td>";
+                }
+
+                item +=
+                    "<td>"+val.sex+"</td>"
                     +"<td><a href='mailto:"+val.userMail+"'>"+val.userMail+"</a></td>"
                     +"<td>"+val.userPhone+"</td>"
                     +"<td><a href='tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin="+val.userQq+"'>"+val.userQq+"</a></td>"
                     +"<td>"+val.teaDepName+"</td>"
                     +"<td><span class='label label-primary'>"+val.teaPositionZ+"</span></td>"
-                    +"<td><span class='label label-warning'>"+val.teaEducationZ+"</span></td>"
+                    +"<td><span class='label label-warning'>"+val.teaEducationZ+"</span></td>";
 
-                ;
-                var manType = sessionStorage.getItem("userType");
                 if (parseInt(manType) == 1 ||parseInt(manType) == 0){
                     if (parseInt(val.userStatus) == 1){
                         item +=
