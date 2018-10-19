@@ -9,7 +9,7 @@ spring:
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/slxy-select?useUnicode=true&characterEncoding=UTF-8
     username: root
-    password: 123456
+    password:
     driver-class-name: com.mysql.jdbc.Driver
     sql-script-encoding: UTF-8
     type: com.alibaba.druid.pool.DruidDataSource
