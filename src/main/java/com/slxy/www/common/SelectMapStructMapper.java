@@ -36,6 +36,8 @@ public interface SelectMapStructMapper {
     SelectTopicDto SelectTopicPoToDto(SelectTopic topic);
 
     SelectTopic SelectTopicVoToPo(SelectTopicVo vo);
+
+    SelectSubjectVo SelectSubjectPoToVo(SelectSubject selectSubject);
 }
 
 

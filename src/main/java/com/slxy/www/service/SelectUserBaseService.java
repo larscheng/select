@@ -826,4 +826,35 @@ public class SelectUserBaseService extends  ServiceImpl <ISelectUserBaseMapper, 
 
         return JSONObject.toJSONString(map);
     }
+
+    public String stuDisAbleAll(Integer[] selectedIDs,Integer state) {
+        List<SelectUserBase> userBases = new ArrayList<>();
+        if (EnumEnOrDis.ENABLED.getValue().equals(state)){
+            for (Integer id:selectedIDs){
+                //启用，判断所属专业是否被禁用
+                SelectUserBase userBase = this.selectById(id);
+                SelectMajor selectMajor = selectMajorMapper.selectById(userBase.getStuMajorId());
+                if (ObjectUtils.isEmpty(selectMajor)||selectMajor.getMajStatus().equals(EnumEnOrDis.DISABLED.getValue())){
+                    logger.info(Constant.STU_ABLE_ERROR_MAJ_DISABLE);
+                    return JSONObject.toJSONString(Constant.STU_ABLE_ERROR_MAJ_DISABLE+"  学生："+userBase.getUserName());
+                }
+                userBases.add(userBase.setUserStatus(EnumEnOrDis.ENABLED.getValue()));
+            }
+        }else {
+            for (Integer id:selectedIDs){
+                //禁用：判断选题记录是否完成
+                SelectUserBase userBase = this.selectById(id);
+                SelectTopic selectTopic = selectTopicMapper.selectOne(new SelectTopic()
+                        .setStuId(id)
+                        .setDelState(EnumYesOrNo.NO.getValue()));
+                if (!ObjectUtils.isEmpty(selectTopic)){
+                    if (!selectTopic.getTeaAuditState().equals(EnumSubState.OVER.getValue())){
+                        return JSONObject.toJSONString(Constant.STU_DISABLE_ERROR_TOPIC+"  学生："+userBase.getUserName());
+                    }
+                }
+                userBases.add(userBase.setUserStatus(EnumEnOrDis.DISABLED.getValue()));
+            }
+        }
+        return this.updateBatchById(userBases)?JSONObject.toJSONString(Constant.SUCCESS):JSONObject.toJSONString(Constant.ERROR);
+    }
 }

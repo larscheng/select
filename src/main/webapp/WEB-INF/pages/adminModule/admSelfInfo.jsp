@@ -74,8 +74,28 @@
                                 <hr />
                                 <!-- Form starts.  -->
                                 <form class="form-horizontal" role="form" id="updateForm">
-
-
+                                    <%--<c:if test="${sessionScope.sessionUser.userType eq 1 }">--%>
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">面向系别</label>
+                                            <div class="col-lg-8">
+                                                <select name="teaDepId" disabled  class="form-control" id="teaDepId">
+                                                    <c:if test="${empty requestScope.user.teaDepId }">
+                                                        <option value="" selected="selected">全部系别</option>
+                                                    </c:if>
+                                                    <c:forEach var="dep" items="${requestScope.depList}">
+                                                        <c:choose>
+                                                            <c:when test="${dep.id eq requestScope.user.teaDepId}">
+                                                                <option value="${dep.id}" selected="selected">${dep.depName}</option>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <option value="${dep.id}">${dep.depName}</option>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    <%--</c:if>--%>
                                     <div class="form-group">
                                         <label class="col-lg-4 control-label">账号</label>
                                         <div class="col-lg-8">

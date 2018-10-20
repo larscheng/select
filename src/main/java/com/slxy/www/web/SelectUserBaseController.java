@@ -4,13 +4,16 @@ package com.slxy.www.web;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.slxy.www.common.Constant;
+import com.slxy.www.dao.ISelectDepartmentMapper;
 import com.slxy.www.dao.ISelectUserBaseMapper;
 import com.slxy.www.domain.po.ChangePs;
+import com.slxy.www.domain.po.SelectDepartment;
 import com.slxy.www.domain.po.SelectUserBase;
 import com.slxy.www.domain.vo.SelectUserBaseVo;
 import com.slxy.www.enums.EnumEnOrDis;
 import com.slxy.www.enums.EnumUserType;
 import com.slxy.www.filter.LoginRequired;
+import com.slxy.www.service.SelectDepartmentService;
 import com.slxy.www.service.SelectUserBaseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -150,6 +153,10 @@ public class SelectUserBaseController {
         return selectUserBaseService.userList(modelAndView,userBaseVo);
     }
 
+
+    @Autowired
+    private ISelectDepartmentMapper selectDepartmentMapper;
+
     /**
      * 初始化添加
      * @param modelAndView
@@ -159,7 +166,9 @@ public class SelectUserBaseController {
     @LoginRequired(value = "adm")
     @RequestMapping(value = "/initAddAdmin",method = RequestMethod.GET)
     public ModelAndView initAddAdmin(ModelAndView  modelAndView) {
+        List<SelectDepartment> depList = selectDepartmentMapper.selectTeaDep();
         modelAndView.setViewName("adminModule/admAdd");
+        modelAndView.addObject("depList",depList);
         return modelAndView;
     }
 
@@ -230,7 +239,25 @@ public class SelectUserBaseController {
     @LoginRequired(value = "adm")
     @RequestMapping(value = "/admSelfInfo",method = RequestMethod.GET)
     public ModelAndView admSelfInfo(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
+        List<SelectDepartment> depList = selectDepartmentMapper.selectTeaDep();
+        modelAndView.addObject("depList",depList);
         modelAndView.setViewName("/adminModule/admSelfInfo");
+        return selectUserBaseService.stuInitAddAndUpdate(modelAndView,userBaseVo);
+    }
+
+    /***
+     * 管理员个人信息变更
+     * @param modelAndView
+     * @param userBaseVo
+     * @return
+     */
+    @ApiOperation(value = "管理员信息修改", notes = "")
+    @LoginRequired(value = "adm")
+    @RequestMapping(value = "/admInitUpdate",method = RequestMethod.GET)
+    public ModelAndView admInitUpdate(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
+        List<SelectDepartment> depList = selectDepartmentMapper.selectTeaDep();
+        modelAndView.addObject("depList",depList);
+        modelAndView.setViewName("/adminModule/admUpdate");
         return selectUserBaseService.stuInitAddAndUpdate(modelAndView,userBaseVo);
     }
 
@@ -278,8 +305,11 @@ public class SelectUserBaseController {
     @ResponseBody
     public String stuListAjax(SelectUserBaseVo userBaseVo,HttpSession httpSession) {
         SelectUserBase userBase = (SelectUserBase) httpSession.getAttribute("sessionUser");
-        userBaseVo.setUserType(EnumUserType.STUDENT.getValue())
-                .setStuMajorId(userBase.getStuMajorId()).setStuYear(userBase.getStuYear());
+        if (userBase.getUserType().equals(EnumUserType.STUDENT.getValue())){
+            userBaseVo.setUserType(EnumUserType.STUDENT.getValue())
+                    .setStuMajorId(userBase.getStuMajorId()).setStuYear(userBase.getStuYear());
+        }
+        userBaseVo.setUserType(EnumUserType.STUDENT.getValue());
         return selectUserBaseService.stuListAjax(userBaseVo);
     }
 
@@ -320,6 +350,20 @@ public class SelectUserBaseController {
     @ResponseBody
     public String stuDeleteAll(Integer[] selectedIDs) {
         return selectUserBaseService.stuDeleteAll(selectedIDs);
+    }
+
+
+    /***
+     * 学生批量启用禁用
+     * @param selectedIDs
+     * @return
+     */
+    @ApiOperation(value = "学生批量启用禁用", notes = "")
+    @LoginRequired(value = "adm")
+    @RequestMapping(value = "/stuDisAbleAll",method = RequestMethod.POST)
+    @ResponseBody
+    public String stuDisAbleAll(Integer[] selectedIDs,Integer state) {
+        return selectUserBaseService.stuDisAbleAll(selectedIDs,state);
     }
 
 

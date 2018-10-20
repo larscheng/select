@@ -130,6 +130,8 @@
                                 </div>
                                 <c:if test="${sessionScope.userType eq 1 ||sessionScope.userType eq 0}">
                                     <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
+                                        <button type="button" onclick="stuAbleAll()" class="btn btn-info pull-left " style="margin-right: 10px"><i class="icon-remove"></i>批量启用</button>
+                                        <button type="button" onclick="stuDisAbleAll()" class="btn btn-info pull-left " style="margin-right: 10px"><i class="icon-remove"></i>批量禁用</button>
                                         <button type="button" onclick="stuDeleteAll()" class="btn btn-info pull-left " style="margin-right: 10px"><i class="icon-remove"></i>批量删除</button>
                                         <button type="button" class="btn btn-info pull-left " onclick="upload()" style="margin-right: 10px"><i class="icon-upload"></i>批量导入</button>
                                         <div style="display: none">
@@ -478,6 +480,79 @@
                 });
             }
         })
+
+    }
+
+    function stuDisAbleAll(){
+        var arrayId = new Array();
+        $('input[name="ids"]:checked').each(function(){arrayId.push($(this).val());});
+        if(arrayId.length==0){
+            alert(" 😨 无实例选中");
+            event.preventDefault(); // 兼容标准浏览器
+            window.event.returnValue = false; // 兼容IE6~8
+        }else{
+            confirm(" 😲 确认禁用吗？","",function (is) {
+                if (is){
+                    $.ajax({
+                        type:"POST",
+                        url:"${ctx}/selectUserBase/stuDisAbleAll",
+                        data: { "selectedIDs": arrayId ,"state":0},
+                        dataType:"json",
+                        traditional: true,
+                        success:function(msg){
+                            if("OK"!=msg){
+                                alert(" 😅 "+msg);
+                            }else{
+                                alert(" 😋 禁用成功！","",function () {
+                                    location.href="${ctx}/selectUserBase/stuList";
+                                },{type:"success",confirmButtonText:"好的"});
+                            }
+
+                        },
+                        error:function(e){
+                            alert("😥 系统异常，请与我们的工程师联系！");
+                        }
+                    });
+                }
+            })
+
+        }
+
+    }
+    function stuAbleAll(){
+        var arrayId = new Array();
+        $('input[name="ids"]:checked').each(function(){arrayId.push($(this).val());});
+        if(arrayId.length==0){
+            alert(" 😨 无实例选中");
+            event.preventDefault(); // 兼容标准浏览器
+            window.event.returnValue = false; // 兼容IE6~8
+        }else{
+            confirm(" 😲 确认禁用吗？","",function (is) {
+                if (is){
+                    $.ajax({
+                        type:"POST",
+                        url:"${ctx}/selectUserBase/stuDisAbleAll",
+                        data: { "selectedIDs": arrayId ,"state":1},
+                        dataType:"json",
+                        traditional: true,
+                        success:function(msg){
+                            if("OK"!=msg){
+                                alert(" 😅 "+msg);
+                            }else{
+                                alert(" 😋 禁用成功！","",function () {
+                                    location.href="${ctx}/selectUserBase/stuList";
+                                },{type:"success",confirmButtonText:"好的"});
+                            }
+
+                        },
+                        error:function(e){
+                            alert("😥 系统异常，请与我们的工程师联系！");
+                        }
+                    });
+                }
+            })
+
+        }
 
     }
 

@@ -107,11 +107,24 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
         if (!ObjectUtils.isEmpty(vo.getSelectId())){
             //根据专业找系别
             SelectUserBase userBase = selectUserBaseMapper.selectById(vo.getSelectId());
-            if (!ObjectUtils.isEmpty(userBase)&&userBase.getUserType().equals(EnumUserType.TEACHER.getValue())){
 
+            if (!ObjectUtils.isEmpty(userBase)&&userBase.getUserType().equals(EnumUserType.TEACHER.getValue())){
+                //要查的系别是不是自己所属系别
+                if (!ObjectUtils.isEmpty(userBase.getTeaDepId())&&!ObjectUtils.isEmpty(vo.getForDepId())&&
+                        !vo.getForDepId().equals(userBase.getTeaDepId())){
+                    Map<String,Object> map = new HashMap<>();
+                    map.put("subjectList",null);
+                    return JSONObject.toJSONString(map);
+                }
                 vo.setForDepId(userBase.getTeaDepId());
             }else if (!ObjectUtils.isEmpty(userBase)&&userBase.getUserType().equals(EnumUserType.STUDENT.getValue())){
                 SelectMajor major = selectMajorMapper.selectById(userBase.getStuMajorId());
+                //要查的系别是不是自己所属系别
+                if (!ObjectUtils.isEmpty(vo.getForDepId())&&!vo.getForDepId().equals(major.getDepId())){
+                    Map<String,Object> map = new HashMap<>();
+                    map.put("subjectList",null);
+                    return JSONObject.toJSONString(map);
+                }
                 vo.setForDepId(major.getDepId());
             }
 
@@ -150,7 +163,8 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
             return msg;
         }
         SelectSubject selectSubject = selectSubjectMapper.selectById(vo.getId());
-        if (ObjectUtils.isEmpty(selectSubject)){
+        SelectUserBase userBase = selectUserBaseMapper.selectById(selectSubject.getTeaId());
+        if (ObjectUtils.isEmpty(selectSubject) || ObjectUtils.isEmpty(userBase)){
             return JSONObject.toJSONString(Constant.ERROR);
         }
         selectSubject.setAdmAuditId(vo.getAdmAuditId());
@@ -159,6 +173,7 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
             if (vo.getAdmAuditState().equals(EnumSubState.FAIL.getValue())){
                 selectSubject.setAdmAuditContent(vo.getAdmAuditContent());
                 selectSubject.setAdmAuditState(vo.getAdmAuditState());
+                selectJavaMailService.sendHtmlMail(userBase.getUserMail(),userBase.getUserName(),selectSubject.getSubName(),"题目审核失败");
             }else{
                 selectSubject.setAdmAuditContent(Constant.AUDIT_SUCCESS_REASON);
                 selectSubject.setAdmAuditState(vo.getAdmAuditState());
@@ -166,10 +181,11 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
             return this.updateById(selectSubject)?JSONObject.toJSONString(Constant.SUCCESS):JSONObject.toJSONString(Constant.ERROR);
         }
         //第二次
-        if (selectSubject.getAdmAuditState().equals(EnumSubState.FAIL.getValue())){
+        if (selectSubject.getAdmAuditState().equals(EnumSubState.FAIL.getValue())&&vo.getAdmAuditState().equals(EnumSubState.SUCCESS.getValue())){
             selectSubject.setAdmAuditContent(Constant.AUDIT_SUCCESS_REASON);
             selectSubject.setAdmAuditState(vo.getAdmAuditState());
         }
+
         return this.updateById(selectSubject)?JSONObject.toJSONString(Constant.SUCCESS):JSONObject.toJSONString(Constant.ERROR);
     }
 
@@ -656,5 +672,12 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
      */
     public void autoEnd() {
         selectSubjectMapper.autoUpdateStatus();
+    }
+
+    public String updateSubFile(MultipartFile file, int i, HttpServletRequest request) {
+        SelectSubject selectSubject = selectSubjectMapper.selectById(i);
+        deleteFile(Constant.FILE_DIR+selectSubject.getSubFile());
+        SelectSubjectVo vo = SelectMapStructMapper.INSTANCE.SelectSubjectPoToVo(selectSubject);
+        return subUpdate(file,vo,request);
     }
 }

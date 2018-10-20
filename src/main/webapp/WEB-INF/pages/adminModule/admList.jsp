@@ -79,6 +79,7 @@
                                         <th>邮箱</th>
                                         <th>电话</th>
                                         <th>qq</th>
+                                        <th>所属系别</th>
                                         <th>创建时间</th>
                                         <th>状态</th>
                                         <c:if test="${sessionScope.sessionUser.userType eq 0 }">
@@ -101,6 +102,7 @@
                                                     <td>${user.userMail}</td>
                                                     <td>${user.userPhone}</td>
                                                     <td>${user.userQq}</td>
+                                                    <td>${user.teaDepName}</td>
                                                     <td><fmt:formatDate value="${user.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>
                                                         <c:set var="status" value="${user.userStatus}"/>
@@ -321,7 +323,7 @@ function aaa() {
 
 
     function admUpdate(id) {
-        window.location.href='${ctx}/selectUserBase/admSelfInfo?id='+id;
+        window.location.href='${ctx}/selectUserBase/admInitUpdate?id='+id;
     }
 
 

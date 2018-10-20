@@ -72,6 +72,18 @@
                                 <form class="form-horizontal" role="form" id="addForm">
 
                                     <div class="form-group">
+                                        <label class="col-lg-4 control-label">面向系别</label>
+                                        <div class="col-lg-8">
+                                            <select name="teaDepId" class="form-control">
+                                                <option value="" selected>---请选择---</option>
+                                                <c:forEach var="dep" items="${requestScope.depList}">
+                                                    <option value="${dep.id}">${dep.depName}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
                                         <label class="col-lg-4 control-label">账号</label>
                                         <div class="col-lg-8">
                                             <input type="text" class="form-control" name="userCode" placeholder="请输入账号">

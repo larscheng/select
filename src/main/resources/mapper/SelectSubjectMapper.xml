@@ -123,7 +123,7 @@
 			DATE_FORMAT(a.gmt_create,'%Y-%m-%d')  &lt;= '${searchEndTime}'
 			)
 		</if>
-		ORDER BY a.adm_audit_state DESC ,a.gmt_create DESC
+		ORDER BY a.adm_audit_state DESC ,a.gmt_create DESC,a.sub_year desc
 	</select>
 
 	<select id="selectAllSubject" resultMap="BaseResultDtoMap">

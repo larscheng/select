@@ -73,6 +73,8 @@ public class SelectJavaMailService {
             content = getString4(name,passWord);
         }else if (subject.equals("通知教师审核")){
             content = getString5(name,passWord);
+        }else if (subject.equals("题目审核失败")){
+            content = getString6(name,passWord);
         }else {//发送验证码
             content = getString2(name, passWord);
         }
@@ -92,6 +94,24 @@ public class SelectJavaMailService {
             logger.error("发送html邮件时发生异常！", e);
         }
     }
+
+    /**
+     * 教师题目审核失败，驳回
+     * @param name
+     * @param passWord
+     * @return
+     */
+    private String getString6(String name, String passWord) {
+        String now = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        return "<html lang='en'>\n" +
+                "<body style='text-align: center;'>\n" +
+                "<h3>"+name+"老师您好：</h3>\n" +
+                "<p>您的毕业设计题目：<b style='color: red'>"+passWord+"</b>在北京时间"+now+"，被驳回, <b style='color: red'>审核失败</b>，请登录系统进行修改。</p>\n" +
+                "<h4 style='text-align: right;'>毕设小管家</h4>\n" +
+                "</body>\n" +
+                "</html>";
+    }
+
 
     /***
      * 重置密码，邮件模板

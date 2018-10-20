@@ -66,6 +66,12 @@
                             <div class="clearfix"></div>
                         </div>
 
+                        <div style="display: none">
+                            <form id="uploadForm"  >
+                                <input type="file" id="fileField" name="fileField" style="display: none" onchange="fileUpload()"/>
+                            </form>
+                        </div>
+
                         <div class="widget-content">
                             <div class="padd">
                                 <hr />
@@ -138,7 +144,7 @@
                                         <label class="col-lg-4 control-label">题目名称</label>
                                         <div class="col-lg-8">
                                             <input type="hidden" class="form-control" id="id" name="id" value="${requestScope.sub.id}" >
-                                            <input type="text" disabled class="form-control" id="subName" name="subName"  value="${requestScope.sub.subName}">
+                                            <input type="text"  class="form-control" id="subName" name="subName"  value="${requestScope.sub.subName}">
                                         </div>
                                     </div>
 
@@ -155,11 +161,12 @@
                                                        href="http://${sessionScope.sessionIp}:8012/onlinePreview?url=http://${sessionScope.sessionIp}:8012/${requestScope.sub.subFile}" <%--target="_blank"--%>>预览</a>
                                                     <a class="btn btn-info"
                                                        href="${ctx}/selectSubject/subFileDown?fileName=${requestScope.sub.subFile}" target="_blank">下载</a>
+                                                    <button type="button" class="btn btn-success icon-upload" onclick="upload()">修改</button>
                                                 </div>
                                             </c:when>
                                             <c:otherwise>
                                                 <div class="col-lg-6">
-                                                    <input type="file" class="form-control" name="subFile">
+                                                    <input type="file" id="subFiles" class="form-control" name="subFile">
                                                 </div>
                                                 <div class="col-lg-2 ">支持pdf、office文件</div>
                                             </c:otherwise>
@@ -250,6 +257,53 @@
             }
         });
     });
+
+
+    function upload() {
+        confirm("确认修改该文件吗！","",function (isConfirm) {
+            if (isConfirm) {
+                //after click the confirm
+                $("#fileField").click();
+            } else {
+                //after click the cancel
+                //跳转到下载页
+
+            }
+        }, {confirmButtonText: '修改', cancelButtonText: '取消', width: 400});
+    }
+    function fileUpload() {
+        var updateUrl = "${ctx}/selectSubject/updateSubFile";
+
+        var formData = new FormData($( "#uploadForm" )[0]);
+        formData.append("id",${requestScope.sub.id});
+        $.ajax({
+            type:"POST",
+            url:updateUrl,
+            data:formData,
+            async: true,
+            // 下面三个参数要指定，如果不指定，会报一个JQuery的错误
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType:"json",
+            success:function(msg){
+                if("OK"!=msg){
+                    alert(" 😅 "+msg);
+                }else {
+                    alert(" 😋 上传成功","",function () {
+                        location.href="${ctx}/selectSubject/initSubUpdate?id=${requestScope.sub.id}";
+                    },{type:"success",confirmButtonText:"好的"});
+                }
+            },
+            error:function(e){
+                alert("😥 系统异常，请与我们的程序员小哥哥联系！");
+            }
+        });
+
+
+
+
+    }
 
     $(function(){
 

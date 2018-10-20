@@ -19,7 +19,7 @@ public class PageVo {
     /**
      * 每页数量
      */
-    private Integer pageSize = 10;
+    private Integer pageSize = 15;
 
     /**
      * 搜索关键词

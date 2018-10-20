@@ -25,13 +25,13 @@
         <!-- Page heading -->
         <h2 class="pull-left">
             <!-- page meta -->
-            <span class="page-meta">我的信息</span>
+            <span class="page-meta"><i class="icon-cog"></i> 信息编辑</span>
         </h2>
 
 
         <!-- Breadcrumb -->
         <div class="bread-crumb pull-right">
-            <a href="${ctx}/index" target="_top"><i class="icon-home"></i> 我的信息</a>
+            <a href="${ctx}/index" target="_top"><i class="icon-cog"></i> 信息编辑</a>
             <!-- Divider -->
             <span class="divider">/</span>
             <a href="#" class="bread-current">首页</a>
@@ -64,7 +64,7 @@
                             </div>
                             <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
 
-                                <button type="button"  onclick="window.location.href='${ctx}/initChangePs';" style="margin-right: 10px" class="btn btn-info pull-left "><i class="icon-upload"></i>密码修改</button>
+                                <button type="button"  onclick="window.location.href='${ctx}/initChangeAdmPs';" style="margin-right: 10px" class="btn btn-info pull-left "><i class="icon-upload"></i>密码修改</button>
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -74,71 +74,28 @@
                                 <hr />
                                 <!-- Form starts.  -->
                                 <form class="form-horizontal" role="form" id="updateForm">
-
-                                    <div class="form-group ">
-
-                                        <label class="col-lg-1 control-label">专业</label>
-                                        <div class="col-lg-2">
-                                            <select name="stuMajorId" disabled  class="form-control" id="stuMajorId" onchange="initClass()">
-                                                <c:forEach var="major" items="${requestScope.majorList}">
-                                                    <c:choose>
-                                                        <c:when test="${major.id eq requestScope.user.stuMajorId}">
-                                                            <option value="${major.id}" selected="selected">${major.majName}</option>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <option value="${major.id}">${major.majName}</option>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </c:forEach>
-                                            </select>
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">面向系别</label>
+                                            <div class="col-lg-8">
+                                                <select name="teaDepId"   class="form-control" id="teaDepId">
+                                                    <c:if test="${empty requestScope.user.teaDepId }">
+                                                        <option value="" selected="selected">全部系别</option>
+                                                    </c:if>
+                                                    <c:forEach var="dep" items="${requestScope.depList}">
+                                                        <c:choose>
+                                                            <c:when test="${dep.id eq requestScope.user.teaDepId}">
+                                                                <option value="${dep.id}" selected="selected">${dep.depName}</option>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <option value="${dep.id}">${dep.depName}</option>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
                                         </div>
-
-
-
-
-                                        <label class="col-lg-1 control-label">班级</label>
-                                        <div class="col-lg-2">
-                                            <%--${requestScope.classList}--%>
-                                            <select name="stuClass" disabled class="form-control" id="stuClass">
-                                                <c:forEach var="cla" items="${requestScope.classList}">
-                                                    <c:choose>
-                                                        <c:when test="${cla.stuClass eq requestScope.user.stuClass}">
-                                                            <option value="${cla.stuClass}" selected>${cla.stuClass}班</option>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <option value="${cla.stuClass}">${cla.stuClass}班</option>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-
-
-
-
-                                        <label class="col-lg-1 control-label">届别</label>
-                                        <div class="col-lg-2" >
-                                            <select name="stuYear" disabled class="form-control">
-                                                <c:forEach var="year" items="${requestScope.yearList}">
-                                                    <c:choose>
-                                                        <c:when test="${year.stuYear eq requestScope.user.stuYear}">
-                                                            <option value="${year.stuYear}" selected>${year.stuYear}级</option>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <option value="${year.stuYear}">${year.stuYear}级</option>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </c:forEach>
-                                            </select>
-                                        </div>
-
-
-
-                                    </div>
-
-
                                     <div class="form-group">
-                                        <label class="col-lg-4 control-label">学生账号</label>
+                                        <label class="col-lg-4 control-label">账号</label>
                                         <div class="col-lg-8">
                                             <input type="hidden" class="form-control" name="id" value="${requestScope.user.id}" placeholder="学生账号">
                                             <input type="text" disabled class="form-control" name="userCode" value="${requestScope.user.userCode}" placeholder="学生账号">
@@ -146,14 +103,14 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-lg-4 control-label">学生姓名</label>
+                                        <label class="col-lg-4 control-label">姓名</label>
                                         <div class="col-lg-8">
                                             <input type="text" class="form-control" name="userName" value="${requestScope.user.userName}" placeholder="学生姓名">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-lg-4 control-label">学生性别</label>
+                                        <label class="col-lg-4 control-label">性别</label>
                                         <div class="col-lg-8">
                                             <c:if test="${requestScope.user.userSex eq 1}">
                                                 <label class="radio-inline">
@@ -164,7 +121,7 @@
                                                 </label>
                                             </c:if>
 
-                                            <c:if test="${requestScope.user.userSex eq 0}">
+                                            <c:if test="${requestScope.user.userSex eq 2}">
                                                 <label class="radio-inline">
                                                     <input type="radio" name="userSex"  value="1" >男
                                                 </label>
@@ -202,6 +159,7 @@
                                         <div class="col-lg-offset-1 col-lg-9">
                                             <button type="button" id="updateSubmit" class="btn btn-success">提交</button>
                                             <button type="reset" class="btn btn-info">重填</button>
+                                            <button type="button" class="btn btn-info" onclick="window.history.go(-1);">返回</button>
                                         </div>
                                     </div>
                                 </form>
@@ -230,36 +188,6 @@
 
 <script type="text/javascript">
 
-
-    /***
-     * 根据专业查询并生成班级下拉
-     */
-    function initClass() {
-        $.ajax({
-            type: "post",
-            url: "${ctx}/selectUserBase/initClass",
-            data:{"stuMajorId":$("#stuMajorId").val()},
-            dataType:"json",
-            success:function(msg){
-                if (parseInt(msg)>0){
-                    $("#stuClass").html(null);
-                    $("#stuClass").append( "<option value='' selected>--请选择--</option>" );
-                    for (var i =1 ; i<=msg ; i++){
-                        $("#stuClass").append( "<option value="+i+">"+i+"班</option>" );
-                    }
-                }else {
-//                    alert(" 😥 "+msg);
-                    $("#stuClass").html(null);
-                    $("#stuClass").append( "<option value='' selected>--请选择--</option>" );
-                }
-            },//end success
-            error: function(e) {
-                alert(" 😥 系统异常，请与我们的工程师联系！");
-            }
-        });
-    }
-
-
     $(document).ready(function() {
         /**
          * 下面是进行插件初始化
@@ -273,30 +201,6 @@
                 validating: 'glyphicon glyphicon-refresh'
             },
             fields: {/*验证*/
-                stuMajorId: {/*键名username和input name值对应*/
-                    message: 'The username is not valid',
-                    validators: {
-                        notEmpty: {/*非空提示*/
-                            message: '专业不能为空'
-                        }
-                    }
-                },
-                stuClass: {/*键名username和input name值对应*/
-                    message: 'The username is not valid',
-                    validators: {
-                        notEmpty: {/*非空提示*/
-                            message: '班级不能为空'
-                        }
-                    }
-                },
-                stuYear: {/*键名username和input name值对应*/
-                    message: 'The username is not valid',
-                    validators: {
-                        notEmpty: {/*非空提示*/
-                            message: '届别不能为空'
-                        }
-                    }
-                },
                 userCode: {/*键名username和input name值对应*/
                     message: 'The username is not valid',
                     validators: {
@@ -366,6 +270,8 @@
     });
 
 
+
+
     $(function(){
 
         $("#updateSubmit").click(function(){
@@ -375,17 +281,19 @@
             bootstrapValidator.validate();
 
             if(bootstrapValidator.isValid()){
+                //表单提交的方法、比如ajax提交
             $.ajax({
                 type: "post",
-                url: "${ctx}/selectUserBase/stuUpdate",
+                url: "${ctx}/selectUserBase/admUpdate",
                 data: $("#updateForm").serialize(),
                 dataType:"json",
                 success:function(msg){
-                    if("OK"!=msg){
+                    console.log(msg);
+                    if("OK" !== msg){
                         alert(" 😅 "+msg);
                     }else {
                         alert(" 😎 修改成功！","",function () {
-                            location.href="${ctx}/selectUserBase/stuSelfInfo";
+                            location.href="${ctx}/selectUserBase/admList";
                         },{type:"success",confirmButtonText:"好的"});
                     }
 

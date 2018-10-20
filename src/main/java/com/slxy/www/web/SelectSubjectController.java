@@ -1,5 +1,6 @@
 package com.slxy.www.web;
 
+import com.alibaba.fastjson.JSONObject;
 import com.slxy.www.common.Constant;
 import com.slxy.www.dao.ISelectMajorMapper;
 import com.slxy.www.domain.po.SelectSubject;
@@ -68,8 +69,14 @@ public class SelectSubjectController {
      */
     @ApiOperation(value = "获取未审核论文", notes = "")
     @RequestMapping(value = "/unSubList",method = RequestMethod.GET)
-    public ModelAndView unSubList(ModelAndView  modelAndView, SelectSubjectVo vo) {
+    public ModelAndView unSubList(ModelAndView  modelAndView, SelectSubjectVo vo,HttpSession session) {
         modelAndView.setViewName("subjectModule/unAuditedList");
+        if (!ObjectUtils.isEmpty(session)){
+            SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
+            if (!ObjectUtils.isEmpty(userBase)&&userBase.getUserType().equals(EnumUserType.ADMIN.getValue())){
+                vo.setForDepId(userBase.getTeaDepId());
+            }
+        }
         vo.setAdmAuditState(EnumSubState.Untreated.getValue());
         return selectSubjectService.subList(modelAndView,vo);
     }
@@ -82,7 +89,13 @@ public class SelectSubjectController {
      */
     @ApiOperation(value = "获取已审核论文", notes = "")
     @RequestMapping(value = "/subList",method = RequestMethod.GET)
-    public ModelAndView subList(ModelAndView  modelAndView, SelectSubjectVo vo) {
+    public ModelAndView subList(ModelAndView  modelAndView, SelectSubjectVo vo ,HttpSession session) {
+        if (!ObjectUtils.isEmpty(session)){
+            SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
+            if (!ObjectUtils.isEmpty(userBase)&&userBase.getUserType().equals(EnumUserType.ADMIN.getValue())){
+                vo.setForDepId(userBase.getTeaDepId());
+            }
+        }
         modelAndView.setViewName("subjectModule/auditedList");
         return selectSubjectService.subList(modelAndView,vo);
     }
@@ -122,7 +135,18 @@ public class SelectSubjectController {
     @ApiOperation(value = "异步生成未审核列表", notes = "")
     @RequestMapping(value = "/unSubListAjax",method = RequestMethod.POST)
     @ResponseBody
-    public String unSubListAjax(SelectSubjectVo vo) {
+    public String unSubListAjax(SelectSubjectVo vo,HttpSession session) {
+        if (!ObjectUtils.isEmpty(session)){
+            SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
+            if (!ObjectUtils.isEmpty(userBase)&&userBase.getUserType().equals(EnumUserType.ADMIN.getValue())){
+                //要查的系别是不是自己所属系别
+                if (!ObjectUtils.isEmpty(vo.getForDepId())&&!ObjectUtils.isEmpty(userBase.getTeaDepId())&&!vo.getForDepId().equals(userBase.getTeaDepId())){
+                    Map<String,Object> map = new HashMap<>();
+                    map.put("subjectList",null);
+                    return JSONObject.toJSONString(map);
+                }
+            }
+        }
         vo.setAdmAuditState(EnumSubState.Untreated.getValue());
         return selectSubjectService.subListAjax(vo);
     }
@@ -135,7 +159,18 @@ public class SelectSubjectController {
     @ApiOperation(value = "异步生成论文列表", notes = "")
     @RequestMapping(value = "/subListAjax",method = RequestMethod.POST)
     @ResponseBody
-    public String subListAjax(SelectSubjectVo vo) {
+    public String subListAjax(SelectSubjectVo vo,HttpSession session) {
+        if (!ObjectUtils.isEmpty(session)){
+            SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
+            if (!ObjectUtils.isEmpty(userBase)&&userBase.getUserType().equals(EnumUserType.ADMIN.getValue())){
+                if (!ObjectUtils.isEmpty(vo.getForDepId())&&!ObjectUtils.isEmpty(userBase.getTeaDepId())&&!vo.getForDepId().equals(userBase.getTeaDepId())){
+                    Map<String,Object> map = new HashMap<>();
+                    map.put("subjectList",null);
+                    String object = JSONObject.toJSONString(map);
+                    return object;
+                }
+            }
+        }
         return selectSubjectService.subListAjax(vo);
     }
 
@@ -293,6 +328,14 @@ public class SelectSubjectController {
     @ResponseBody
     public String subUpdate(@RequestParam("subFile") MultipartFile file,SelectSubjectVo vo, HttpServletRequest request) {
         return selectSubjectService.subUpdate(file,vo,request);
+    }
+
+
+    @ApiOperation(value = "修改上传的文件", notes = "")
+    @RequestMapping(value = "/updateSubFile",method = RequestMethod.POST)
+    @ResponseBody
+    public String updateSubFile(@RequestParam("fileField") MultipartFile file, @RequestParam("id")String id,HttpServletRequest request) {
+        return selectSubjectService.updateSubFile(file,Integer.parseInt(id),request);
     }
     /***
      * 所有通过审核的题目列表
