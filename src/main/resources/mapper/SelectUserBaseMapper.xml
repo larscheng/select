@@ -82,16 +82,19 @@
 		<if test="@Ognl@isNotEmpty(teaDepId)">
 			and a.tea_dep_id = #{teaDepId}
 		</if>
+		<if test="@Ognl@isNotEmpty(majorIds)">
+			and a.stu_major_id in
+			<foreach collection="majorIds" index="index" item="item" open="(" separator="," close=")">
+				#{majorIds[${index}]}
+			</foreach>
+		</if>
 		<if test="@Ognl@isNotEmpty(searchBgnTime)">
 			and DATE_FORMAT(a.gmt_create,'%Y-%m-%d')  <![CDATA[>=]]> #{searchBgnTime}
 		</if>
 		<if test="@Ognl@isNotEmpty(searchEndTime)">
 			and DATE_FORMAT(a.gmt_create,'%Y-%m-%d')  <![CDATA[<=]]> #{searchEndTime}
 		</if>
-
-
-
-		ORDER BY a.user_code,a.user_status DESC, a.gmt_create DESC
+		ORDER BY a.stu_year desc, a.user_code,a.user_status DESC, a.gmt_create DESC
 	</select>
 
 

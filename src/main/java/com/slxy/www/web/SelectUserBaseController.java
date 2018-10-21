@@ -5,9 +5,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.slxy.www.common.Constant;
 import com.slxy.www.dao.ISelectDepartmentMapper;
+import com.slxy.www.dao.ISelectMajorMapper;
 import com.slxy.www.dao.ISelectUserBaseMapper;
 import com.slxy.www.domain.po.ChangePs;
 import com.slxy.www.domain.po.SelectDepartment;
+import com.slxy.www.domain.po.SelectMajor;
 import com.slxy.www.domain.po.SelectUserBase;
 import com.slxy.www.domain.vo.SelectUserBaseVo;
 import com.slxy.www.enums.EnumEnOrDis;
@@ -52,6 +54,8 @@ public class SelectUserBaseController {
     @Autowired
     private ISelectUserBaseMapper selectUserBaseMapper;
 
+    @Autowired
+    private ISelectDepartmentMapper selectDepartmentMapper;
 
 
     @ApiOperation(value = "登录", notes = "")
@@ -154,8 +158,6 @@ public class SelectUserBaseController {
     }
 
 
-    @Autowired
-    private ISelectDepartmentMapper selectDepartmentMapper;
 
     /**
      * 初始化添加
@@ -277,6 +279,9 @@ public class SelectUserBaseController {
 
 
     /******************************************    学生   *****************************************************/
+
+    @Autowired
+    private ISelectMajorMapper selectMajorMapper;
     /**
      * 学生列表初始化
      * @param modelAndView
@@ -286,10 +291,21 @@ public class SelectUserBaseController {
     @ApiOperation(value = "学生列表初始化", notes = "")
     @RequestMapping(value = "/stuList",method = RequestMethod.GET)
     public ModelAndView stuList(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo,HttpSession httpSession) {
-
+        userBaseVo.setUserType(EnumUserType.STUDENT.getValue());
         SelectUserBase userBase = (SelectUserBase) httpSession.getAttribute("sessionUser");
-        userBaseVo.setUserType(EnumUserType.STUDENT.getValue())
-                .setStuMajorId(userBase.getStuMajorId()).setStuYear(userBase.getStuYear());
+        if (EnumUserType.STUDENT.getValue().equals(userBase.getUserType())){
+
+            userBaseVo.setUserType(EnumUserType.STUDENT.getValue())
+                    .setStuMajorId(userBase.getStuMajorId()).setStuYear(userBase.getStuYear());
+        }else if (EnumUserType.ADMIN.getValue().equals(userBase.getUserType())){
+            List<SelectMajor> majors = selectMajorMapper.selectList(new EntityWrapper<>(new SelectMajor().setDepId(userBase.getTeaDepId())));
+            userBaseVo.setUserType(EnumUserType.STUDENT.getValue());
+            if (!CollectionUtils.isEmpty(majors)){
+                List<Integer> ids = new ArrayList<>();
+                majors.forEach(a->ids.add(a.getId()));
+                userBaseVo.setMajorIds(ids);
+            }
+        }
         modelAndView.setViewName("/stuModule/stuList");
         return selectUserBaseService.userList(modelAndView,userBaseVo);
     }
@@ -305,11 +321,18 @@ public class SelectUserBaseController {
     @ResponseBody
     public String stuListAjax(SelectUserBaseVo userBaseVo,HttpSession httpSession) {
         SelectUserBase userBase = (SelectUserBase) httpSession.getAttribute("sessionUser");
-        if (userBase.getUserType().equals(EnumUserType.STUDENT.getValue())){
-            userBaseVo.setUserType(EnumUserType.STUDENT.getValue())
-                    .setStuMajorId(userBase.getStuMajorId()).setStuYear(userBase.getStuYear());
-        }
         userBaseVo.setUserType(EnumUserType.STUDENT.getValue());
+        if (EnumUserType.STUDENT.getValue().equals(userBase.getUserType())){
+
+            userBaseVo.setStuMajorId(userBase.getStuMajorId()).setStuYear(userBase.getStuYear());
+        }else if (EnumUserType.ADMIN.getValue().equals(userBase.getUserType())){
+            List<SelectMajor> majors = selectMajorMapper.selectList(new EntityWrapper<>(new SelectMajor().setDepId(userBase.getTeaDepId())));
+            if (!CollectionUtils.isEmpty(majors)){
+                List<Integer> ids = new ArrayList<>();
+                majors.forEach(a->ids.add(a.getId()));
+                userBaseVo.setMajorIds(ids);
+            }
+        }
         return selectUserBaseService.stuListAjax(userBaseVo);
     }
 
@@ -513,8 +536,15 @@ public class SelectUserBaseController {
      */
     @ApiOperation(value = "教师列表初始化", notes = "")
     @RequestMapping(value = "/teaList",method = RequestMethod.GET)
-    public ModelAndView teaList(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo) {
+    public ModelAndView teaList(ModelAndView  modelAndView,SelectUserBaseVo userBaseVo,HttpSession session) {
         userBaseVo.setUserType(EnumUserType.TEACHER.getValue());
+
+        if (!ObjectUtils.isEmpty(session)){
+            SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
+            if (!ObjectUtils.isEmpty(userBase)&&userBase.getUserType().equals(EnumUserType.ADMIN.getValue())){
+                userBaseVo.setTeaDepId(userBase.getTeaDepId());
+            }
+        }
         modelAndView.setViewName("/teaModule/teaList");
         return selectUserBaseService.userList(modelAndView,userBaseVo);
     }
@@ -528,8 +558,14 @@ public class SelectUserBaseController {
 //    @LoginRequired(value = "adm")
     @RequestMapping(value = "/teaListAjax",method = RequestMethod.POST)
     @ResponseBody
-    public String teaListAjax(SelectUserBaseVo userBaseVo) {
+    public String teaListAjax(SelectUserBaseVo userBaseVo,HttpSession session) {
         userBaseVo.setUserType(EnumUserType.TEACHER.getValue());
+        if (!ObjectUtils.isEmpty(session)){
+            SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
+            if (!ObjectUtils.isEmpty(userBase)&&userBase.getUserType().equals(EnumUserType.ADMIN.getValue())){
+                userBaseVo.setTeaDepId(userBase.getTeaDepId());
+            }
+        }
         return selectUserBaseService.teaListAjax(userBaseVo);
     }
 

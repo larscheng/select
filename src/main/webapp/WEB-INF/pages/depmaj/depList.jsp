@@ -58,7 +58,7 @@
                                     <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                     <a href="#" class="wclose"><i class="icon-remove"></i></a>
                                 </div>
-                                <c:if test="${sessionScope.userType eq 0 || sessionScope.userType eq 1}">
+                                <c:if test="${sessionScope.userType eq 0 }">
                                     <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
                                         <button type="button" style="margin-right: 10px"  class="btn btn-info pull-left" onclick="depDeleteAll()"><i class="icon-remove"> </i>批量删除</button>
                                         <button type="button" style="margin-right: 10px" onclick="window.location.href='${ctx}/selectDepartment/depInitAdd';" class="btn btn-success pull-left"><i class="icon-edit"> </i>添加系别</button>
@@ -110,7 +110,7 @@
 
                                                     <td>
 
-                                                        <c:if test="${sessionScope.userType eq 0 || sessionScope.userType eq 1}">
+                                                        <c:if test="${sessionScope.userType eq 0}">
                                                             <c:choose>
                                                                 <c:when test="${status eq 0}">
                                                                     <button class="btn btn-xs btn-success" onclick="depAble('${dep.id}')"><i class="icon-ok"></i>启用</button>

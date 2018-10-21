@@ -35,10 +35,10 @@
             </ul>
         </li>
 
-        <li><a href="${ctx}/selectUserBase/stuList" target="mainFrame" ><i class="icon-list-alt"></i> 学生信息管理  </a></li>
+        <li><a href="${ctx}/selectUserBase/stuList" target="mainFrame" ><i class="icon-list-alt"></i> 学生信息查看  </a></li>
         <li><a href="${ctx}/selectUserBase/teaList" target="mainFrame" ><i class="icon-file-alt"></i> 教师信息查看 </a></li>
 
-        <li class="has_sub"><a href="#"><i class="icon-file-alt"></i> 论文题目审核  <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
+        <li class="has_sub"><a href="#"><i class="icon-file-alt"></i> 论文题目管理  <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
             <ul>
                 <li><a href="${ctx}/selectSubject/mySubList" target="mainFrame">我的题目</a></li>
                 <li><a href="${ctx}/selectSubject/optionalList"  target="mainFrame">已通过列表</a></li>

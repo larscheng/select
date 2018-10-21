@@ -66,9 +66,19 @@ public class SelectUserBaseService extends  ServiceImpl <ISelectUserBaseMapper, 
         List<SelectUserBase> yearList = selectUserBaseMapper.selectStuYear();
         List<SelectMajor> majorList = selectMajorMapper.selectList(new EntityWrapper<SelectMajor>()
                 .and("maj_status=?", EnumEnOrDis.ENABLED.getValue()));
+        if (!ObjectUtils.isEmpty(userBaseVo.getMajorIds())){
+            majorList = selectMajorMapper.selectList(new EntityWrapper<SelectMajor>()
+                    .and("maj_status=?", EnumEnOrDis.ENABLED.getValue()).in("id",userBaseVo.getMajorIds()));
+        }
+
         List<SelectUserBase> classList = selectUserBaseMapper.selectStuClass();
         List<SelectUserBase> depList = selectUserBaseMapper.selectTeaDep();
+
         List<SelectDepartment> teaDepList = selectDepartmentMapper.selectTeaDep();
+        if (!ObjectUtils.isEmpty(userBaseVo.getTeaDepId())){
+            teaDepList = selectDepartmentMapper.selectList(new EntityWrapper<SelectDepartment>()
+                    .and("id = ?" ,userBaseVo.getTeaDepId()));
+        }
         modelAndView.addObject("userList", userBaseDto);
         modelAndView.addObject("page",page);
         modelAndView.addObject("yearList",yearList);

@@ -1,10 +1,12 @@
 package com.slxy.www.domain.vo;
 
+import com.slxy.www.domain.po.SelectMajor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -109,5 +111,9 @@ public class SelectUserBaseVo extends PageVo {
      */
     private Date gmtModify;
 
+    /***
+     * 专业id集合
+     */
+    private List<Integer> majorIds;
 
 }

@@ -25,12 +25,18 @@
         <!-- Main menu with font awesome icon -->
         <li><a href="${ctx}/test.jsp" target="mainFrame" ><i class="icon-list-alt"></i> 首页  </a></li>
         <%--<li><a href="${ctx}/selectBugLog/bugInitList" target="mainFrame" ><i class="icon-list-alt"></i> <b style="color: red">bug提交，谢谢 </b> </a></li>--%>
-        <li class="has_sub"><a href="#"><i class="icon-list-alt"></i> 管理员信息  <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
-            <ul>
-                <li><a href="${ctx}/selectUserBase/admList" target="mainFrame" >管理员列表</a></li>
-                <li><a href="${ctx}/selectUserBase/admSelfInfo?id=${sessionScope.sessionUser.id}" target="mainFrame" >我的信息</a></li>
-            </ul>
-        </li>
+        <c:if test="${sessionScope.sessionUser.userType eq 0 }">
+            <li class="has_sub"><a href="#"><i class="icon-list-alt"></i> 管理员信息  <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
+                <ul>
+                    <li><a href="${ctx}/selectUserBase/admList" target="mainFrame" >管理员列表</a></li>
+                    <li><a href="${ctx}/selectUserBase/admSelfInfo?id=${sessionScope.sessionUser.id}" target="mainFrame" >我的信息</a></li>
+                </ul>
+            </li>
+        </c:if>
+
+        <c:if test="${sessionScope.sessionUser.userType eq 1 }">
+            <li><a href="${ctx}/selectUserBase/admSelfInfo?id=${sessionScope.sessionUser.id}" target="mainFrame" ><i class="icon-list-alt"></i>管理个人信息</a></li>
+        </c:if>
 
         <li class="has_sub"><a href="#"><i class="icon-list-alt"></i> 院系专业  <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
             <ul>

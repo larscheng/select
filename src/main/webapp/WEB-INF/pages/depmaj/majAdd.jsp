@@ -89,9 +89,12 @@
                                         <label class="col-lg-4 control-label">所属系别</label>
                                         <div class="col-lg-8">
                                             <select class="form-control" name="depId">
-                                                <option value=""> --- 请选择 --- </option>
+                                                <%--<option value=""> --- 请选择 --- </option>--%>
                                                 <c:forEach  var="dep" items="${requestScope.depNameList}">
-                                                    <option value="${dep.id}">${dep.depName}</option>
+                                                    <%--<option value="${dep.id}">${dep.depName}</option>--%>
+                                                    <c:if test="${sessionScope.sessionUser.teaDepId eq dep.id}">
+                                                        <option value="${dep.id}"> ${dep.depName} </option>
+                                                    </c:if>
                                                 </c:forEach>
                                             </select>
                                         </div>
