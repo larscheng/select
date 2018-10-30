@@ -10,6 +10,7 @@ import com.slxy.www.dao.*;
 import com.slxy.www.domain.dto.SelectSubjectDto;
 import com.slxy.www.domain.po.*;
 import com.slxy.www.domain.vo.SelectSubjectVo;
+import com.slxy.www.domain.vo.SelectTopicVo;
 import com.slxy.www.enums.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -74,7 +75,7 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
      */
 
     public ModelAndView subList(ModelAndView modelAndView, SelectSubjectVo vo) {
-        List<SelectDepartment> depList = selectDepartmentMapper.selectList(new EntityWrapper<SelectDepartment>().and("dep_status = ?", EnumEnOrDis.ENABLED.getValue()));
+        List<SelectDepartment> depList = selectDepartmentMapper.selectList(new EntityWrapper<>(new SelectDepartment().setDepStatus(EnumEnOrDis.ENABLED.getValue()).setId(vo.getForDepId())));
         if (!ObjectUtils.isEmpty(vo.getSelectId())){
             //根据专业找系别
             SelectUserBase userBase = selectUserBaseMapper.selectById(vo.getSelectId());
@@ -535,9 +536,10 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
     }
 
 
-    public XSSFWorkbook exportExcelInfo() throws InvocationTargetException, ClassNotFoundException, IntrospectionException, ParseException, IllegalAccessException {
+    public XSSFWorkbook exportExcelInfo(SelectSubjectVo vo) throws InvocationTargetException, ClassNotFoundException, IntrospectionException, ParseException, IllegalAccessException {
         //根据条件查询数据，把数据装载到一个list中
-        List<SelectSubjectDto> subjectDtos = selectSubjectMapper.selectAllSubject();
+        vo.setSubSelectStatus(3);
+        List<SelectSubjectDto> subjectDtos = SelectMapStructMapper.INSTANCE.SelectSubjectsPoToDto(selectSubjectMapper.getSubByPage(vo));
         subjectDtos.stream()
                 .map(subjectDto ->
                         subjectDto.setTypeName(EnumSubType.toMap().get(subjectDto.getSubType()))

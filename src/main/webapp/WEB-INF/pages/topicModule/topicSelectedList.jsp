@@ -310,7 +310,9 @@
                 "search":$(" input[ name='search' ] ").val(),
                 "teaId":$(" select[ name='teaId' ] ").val(),
                 "stuId":$(" select[ name='stuId' ] ").val(),
-                "teaAuditState":$(" select[ name='teaAuditState' ] ").val()
+                "teaAuditState":$(" select[ name='teaAuditState' ] ").val(),
+                "searchBgnTime":$(" input[ name='searchBgnTime' ] ").val(),
+                "searchEndTime":$(" input[ name='searchEndTime' ] ").val()
             },
             dataType:"json",
             success:function(objects){

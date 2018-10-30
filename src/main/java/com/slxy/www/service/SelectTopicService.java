@@ -7,8 +7,7 @@ import com.slxy.www.common.Constant;
 import com.slxy.www.common.ExcelUtil;
 import com.slxy.www.common.ExcelUtils;
 import com.slxy.www.common.SelectMapStructMapper;
-import com.slxy.www.dao.ISelectSubjectMapper;
-import com.slxy.www.dao.ISelectUserBaseMapper;
+import com.slxy.www.dao.*;
 import com.slxy.www.domain.dto.SelectTopicDto;
 import com.slxy.www.domain.po.*;
 import com.slxy.www.domain.vo.ImportScoreVo;
@@ -19,7 +18,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.slxy.www.dao.ISelectTopicMapper;
 import com.baomidou.framework.service.impl.ServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -56,22 +54,39 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
     private SelectProcessControlService selectProcessControlService;
     @Autowired
     private SelectJavaMailService selectJavaMailService;
+    @Autowired
+    private ISelectDepartmentMapper selectDepartmentMapper;
 
+    @Autowired
+    private ISelectMajorMapper selectMajorMapper;
 
     public ModelAndView topicList(ModelAndView modelAndView, SelectTopicVo vo) {
         Page<SelectTopicDto> page = new Page<>(vo.getPage(), vo.getPageSize());
         List<SelectTopicDto> list = selectTopicMapper.getTopicByPage(page, vo);
-
+        list.stream().map(a-> a.setDepName(selectDepartmentMapper.selectById(a.getForDepId()).getDepName())
+                .setMajorName(getMajorByUserId(a.getStuId()))).collect(Collectors.toList());
         page.setRecords(list);
         List<SelectUserBase> teaList = selectUserBaseMapper.selectList(new EntityWrapper<SelectUserBase>()
                 .and("user_type = ?", EnumUserType.TEACHER.getValue()).and("user_status = ?", EnumEnOrDis.ENABLED.getValue()));
         List<SelectUserBase> stuList = selectUserBaseMapper.selectList(new EntityWrapper<SelectUserBase>()
                 .and("user_type = ?", EnumUserType.STUDENT.getValue()).and("user_status = ?", EnumEnOrDis.ENABLED.getValue()));
+
+        List<SelectDepartment> depList = selectDepartmentMapper.selectList(new EntityWrapper<>(new SelectDepartment().setDepStatus(EnumEnOrDis.ENABLED.getValue()).setId(vo.getForDepId())));
+
         modelAndView.addObject("page", page);
         modelAndView.addObject("topicList", list);
+        modelAndView.addObject("depList", depList);
         modelAndView.addObject("teaList", teaList);
         modelAndView.addObject("stuList", stuList);
         return modelAndView;
+    }
+
+    public String getMajorByUserId(Integer id){
+        SelectUserBase userBase = selectUserBaseMapper.selectById(id);
+        if (ObjectUtils.isEmpty(userBase)||ObjectUtils.isEmpty(userBase.getStuMajorId())){
+            return null;
+        }
+        return selectMajorMapper.selectById(userBase.getStuMajorId()).getMajName();
     }
 
     /**
@@ -84,6 +99,8 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
         Page<SelectTopicDto> page = new Page<>(vo.getPage(), vo.getPageSize());
         List<SelectTopicDto> list = selectTopicMapper.getTopicByPage(page, vo);
 //        page.setRecords(list);
+        list.stream().map(a-> a.setDepName(selectDepartmentMapper.selectById(a.getForDepId()).getDepName())
+                .setMajorName(getMajorByUserId(a.getStuId()))).collect(Collectors.toList());
         Map<String,Object> map = new HashMap<>();
         map.put("topicList",list);
         map.put("page",page);
@@ -294,9 +311,12 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
 
     public XSSFWorkbook exportExcelInfo(SelectTopicVo vo) throws InvocationTargetException, ClassNotFoundException, IntrospectionException, ParseException, IllegalAccessException {
         //根据条件查询数据，把数据装载到一个list中
-        List<SelectTopicDto> selectTopics = selectTopicMapper.selectAllTopic();
+        vo.setDelState(0);
+        List<SelectTopicDto> selectTopics = selectTopicMapper.getTopicByPage(vo);
         selectTopics.stream()
-                .map(selectTopicDto ->selectTopicDto.setTeaAuditStateName(EnumSubState.toMap().get(selectTopicDto.getTeaAuditState())))
+                .map(selectTopicDto ->selectTopicDto.setTeaAuditStateName(EnumSubState.toMap().get(selectTopicDto.getTeaAuditState()))
+                .setDepName(selectDepartmentMapper.selectById(selectTopicDto.getForDepId()).getDepName())
+                .setMajorName(getMajorByUserId(selectTopicDto.getStuId())))
                 .collect(Collectors.toList());
         List<ExcelBean> excel=new ArrayList<>();
         Map<Integer,List<ExcelBean>> map=new LinkedHashMap<>();
@@ -309,6 +329,8 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
         excel.add(new ExcelBean("学生电话","stuPhone",0));
         excel.add(new ExcelBean("审核状态","teaAuditStateName",0));
         excel.add(new ExcelBean("题目届别(级)","topicYear",0));
+        excel.add(new ExcelBean("系别","depName",0));
+        excel.add(new ExcelBean("专业","majorName",0));
         map.put(0, excel);
         String sheetName = "月份收入";
         //调用ExcelUtils的方法
@@ -327,9 +349,15 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
      * @throws IllegalAccessException
      */
 
-    public XSSFWorkbook exportExcelScoreInfo() throws InvocationTargetException, ClassNotFoundException, IntrospectionException, ParseException, IllegalAccessException {
+    public XSSFWorkbook exportExcelScoreInfo(SelectTopicVo vo) throws InvocationTargetException, ClassNotFoundException, IntrospectionException, ParseException, IllegalAccessException {
         //根据条件查询数据，把数据装载到一个list中
-        List<SelectTopicDto> selectTopics = selectTopicMapper.selectAllTopic();
+        vo.setDelState(0);
+        List<SelectTopicDto> selectTopics = selectTopicMapper.getTopicByPage(vo);
+        selectTopics.stream()
+                .map(selectTopicDto ->selectTopicDto.setTeaAuditStateName(EnumSubState.toMap().get(selectTopicDto.getTeaAuditState()))
+                        .setDepName(selectDepartmentMapper.selectById(selectTopicDto.getForDepId()).getDepName())
+                        .setMajorName(getMajorByUserId(selectTopicDto.getStuId())))
+                .collect(Collectors.toList());
         List<ExcelBean> excel=new ArrayList<>();
         Map<Integer,List<ExcelBean>> map=new LinkedHashMap<>();
         XSSFWorkbook xssfWorkbook=null;
@@ -344,6 +372,8 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
         excel.add(new ExcelBean("答辩的分","defenceScore",0));
         excel.add(new ExcelBean("最终得分","finalTotalScore",0));
         excel.add(new ExcelBean("题目届别(级)","topicYear",0));
+        excel.add(new ExcelBean("系别","depName",0));
+        excel.add(new ExcelBean("专业","majorName",0));
         map.put(0, excel);
         String sheetName = "月份收入";
         //调用ExcelUtils的方法
@@ -513,6 +543,34 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
         }
         //保存新文件
         return uploadTaskBook(file,id,request,type);
+    }
+
+    /***
+     * adm撤销题目
+     * @param selectedIDs
+     * @return
+     */
+    public String selectRevoke(Integer[] selectedIDs) {
+        for (Integer id : selectedIDs){
+            SelectTopic selectTopic = selectTopicMapper.selectById(id);
+            SelectSubject selectSubject = selectSubjectMapper.selectById(selectTopic.getSubId());
+            if (selectSubject.getSubSelectStatus().equals(EnumSubSelectStatus.OVER.getValue())){
+                return JSONObject.toJSONString(Constant.SELECT_REV_ERROR+selectSubject.getSubName());
+            }
+            //删除记录，删除文件
+            deleteFile(Constant.FILE_DIR+selectTopic.getTaskFile());
+            deleteFile(Constant.FILE_DIR+selectTopic.getOpeningReport());
+            deleteFile(Constant.FILE_DIR+selectTopic.getDissertation());
+            SelectTopic topic = new SelectTopic()
+                    .setId(id)
+                    .setDelState(EnumEnOrDis.ENABLED.getValue());
+            this.updateById(topic);
+            SelectSubject subject = new SelectSubject()
+                    .setId(selectSubject.getId())
+                    .setSubSelectStatus(EnumSubSelectStatus.Untreated.getValue());
+            selectSubjectMapper.updateById(subject);
+        }
+        return JSONObject.toJSONString(Constant.SUCCESS);
     }
 }
 

@@ -245,9 +245,6 @@
     }
 
 
-    function exportSubjectInfo() {
-        window.location.href="${ctx}/selectSubject/export";
-    }
 
 
 
@@ -287,7 +284,9 @@
                 "admAuditState":$(" select[ name='admAuditState' ] ").val(),
                 "subType":$(" select[ name='subType' ] ").val(),
                 "forDepId":$(" select[ name='forDepId' ] ").val(),
-                "teaId":$(" select[ name='teaId' ] ").val()
+                "teaId":$(" select[ name='teaId' ] ").val(),
+                "searchBgnTime":$(" input[ name='searchBgnTime' ] ").val(),
+                "searchEndTime":$(" input[ name='searchEndTime' ] ").val()
             },
             dataType:"json",
             success:function(objects){
@@ -298,6 +297,22 @@
             }
         });
     }
+
+
+
+    function exportSubjectInfo() {
+        var search=$(" input[ name='search' ] ").val();
+        var teaId=$(" select[ name='teaId' ] ").val();
+        var forDepId=$(" select[ name='forDepId' ] ").val();
+        var subType=$(" select[ name='subType' ] ").val();
+        var admAuditState=$(" select[ name='admAuditState' ] ").val();
+        var searchBgnTime=$(" input[ name='searchBgnTime' ] ").val();
+        var searchEndTime=$(" input[ name='searchEndTime' ] ").val();
+
+
+        window.location.href="${ctx}/selectSubject/export?search="+search+"&teaId="+teaId+"&forDepId="+forDepId+"&subType="+subType+"&admAuditState="+admAuditState+"&searchBgnTime="+searchBgnTime+"&searchEndTime="+searchEndTime;
+    }
+
 
     $("#searchSubmit").click(function(){
         $.ajax({

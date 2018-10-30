@@ -259,7 +259,9 @@
                 "admAuditState":$(" select[ name='admAuditState' ] ").val(),
                 "subType":$(" select[ name='subType' ] ").val(),
                 "forDepId":$(" select[ name='forDepId' ] ").val(),
-                "teaId":$(" select[ name='teaId' ] ").val()
+                "teaId":$(" select[ name='teaId' ] ").val(),
+                "searchBgnTime":$(" input[ name='searchBgnTime' ] ").val(),
+                "searchEndTime":$(" input[ name='searchEndTime' ] ").val()
             },
             dataType:"json",
             success:function(objects){

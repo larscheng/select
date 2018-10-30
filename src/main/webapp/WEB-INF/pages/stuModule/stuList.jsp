@@ -372,7 +372,9 @@
                 "userStatus":$(" select[ name='userStatus' ] ").val(),
                 "stuClass":$(" select[ name='stuClass' ] ").val(),
                 "stuYear":$(" select[ name='stuYear' ] ").val(),
-                "stuMajorName":$(" select[ name='stuMajorName' ] ").val()
+                "stuMajorId":$(" select[ name='stuMajorId' ] ").val(),
+                "searchBgnTime":$(" input[ name='searchBgnTime' ] ").val(),
+                "searchEndTime":$(" input[ name='searchEndTime' ] ").val()
             },
             dataType:"json",
             success:function(objects){

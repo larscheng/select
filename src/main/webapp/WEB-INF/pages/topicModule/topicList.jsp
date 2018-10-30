@@ -47,12 +47,12 @@
 
                     <form class="navbar-form center" role="search" id="searchForm">
 
-                        <div class="form-group " style="position: relative;margin-right: 10px">
-                            <input type="text" class="form-control" id="search" name="search" placeholder="题目名称/题目届别">
-                            <span onclick="search()" style="position: absolute;left: 155px;top: 6px;cursor: pointer"><i class="icon-search" ></i></span>
+                        <div class="form-group " style="position: relative;margin-right: 3px">
+                            <input type="text" class="form-control" size="10" id="search" name="search" placeholder="题目名称/届别">
+                            <span onclick="search()" style="position: absolute;left: 90px;top: 6px;cursor: pointer"><i class="icon-search" ></i></span>
                         </div>
 
-                        <div class="form-group " style="margin-right: 10px">
+                        <div class="form-group " style="margin-right: 3px">
                             <select  class="form-control" name="teaId">
                                 <option value="" selected>教师名</option>
                                 <c:forEach var="tea" items="${requestScope.teaList}">
@@ -61,7 +61,7 @@
                             </select>
                         </div>
 
-                        <div class="form-group " style="margin-right: 10px">
+                        <div class="form-group " style="margin-right: 3px">
                             <select  class="form-control" name="stuId">
                                 <option value="" selected>学生名</option>
                                 <c:forEach var="stu" items="${requestScope.stuList}">
@@ -69,7 +69,7 @@
                                 </c:forEach>
                             </select>
                         </div>
-                        <div class="form-group " style="margin-right: 10px">
+                        <div class="form-group " style="margin-right: 3px">
                             <select  class="form-control" name="teaAuditState">
                                 <option value="" selected>审核状态</option>
                                 <option value="0">未处理</option>
@@ -78,7 +78,25 @@
                             </select>
                         </div>
 
-                        <div class="form-group" style="margin-right: 10px">
+                        <div class="form-group " style="margin-right: 5px">
+                            <select  class="form-control" name="forDepId" id="forDepId" onchange="initMajor()">
+                                <option value="" selected>面向系别</option>
+                                <c:forEach var="dep" items="${requestScope.depList}">
+                                    <option value="${dep.id}">${dep.depName}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="form-group " style="margin-right: 3px">
+                            <select  class="form-control" name="stuMajorId" id="stuMajorId" onchange="initClass()">
+                                <option value="" selected>专业</option>
+                            </select>
+                        </div>
+                        <div class="form-group " style="margin-right: 3px">
+                            <select  class="form-control" name="stuClass" id="stuClass">
+                                <option value="" selected>班级</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-right: 3px">
                             <div class="input-group date form_datetime">
                                 <input name="searchBgnTime" onclick="aaa()" class="form-control"type="text" placeholder="起始时间" value="" readonly style="width: 140px">
                                 <span class="input-group-addon" onclick="aaa()"><i class="glyphicon glyphicon-remove icon-remove"></i></span>
@@ -106,13 +124,17 @@
 
                         <div class="widget">
 
-                            <div class="widget-head">
+                            <div class="widget-head"  style="position: relative">
                                 <div class="pull-left">选题列表</div>
                                 <div class="widget-icons pull-right">
                                     <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                     <a href="#" class="wclose"><i class="icon-remove"></i></a>
                                 </div>
-
+                                <c:if test="${sessionScope.sessionUser.userType eq 1|| sessionScope.sessionUser.userType eq 0 }">
+                                    <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
+                                        <button type="button" onclick="selectRevoke()" class="btn btn-info pull-left " style="margin-right: 10px"><i class="icon-remove"></i>撤销选题</button>
+                                    </div>
+                                </c:if>
                                 <div class="clearfix"></div>
                             </div>
 
@@ -128,6 +150,8 @@
                                         <th>教师电话</th>
                                         <th>学生姓名</th>
                                         <th>学生电话</th>
+                                        <th>系别</th>
+                                        <th>专业</th>
                                         <th>审核状态</th>
                                         <th>题目届别</th>
                                         <th>创建时间</th>
@@ -149,6 +173,8 @@
                                                     <td>${topic.teaPhone}</td>
                                                     <td>${topic.stuName}</td>
                                                     <td>${topic.stuPhone}</td>
+                                                    <td>${topic.depName}</td>
+                                                    <td>${topic.majorName}</td>
                                                     <td>
                                                         <c:set var="status" value="${topic.teaAuditState}"/>
                                                         <c:choose>
@@ -277,6 +303,65 @@
     <div class="clearfix"></div>
 <%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>
 <script type="text/javascript">
+
+
+
+    /***
+     * 根据系别生成专业
+     */
+    function initMajor() {
+        $.ajax({
+            type: "post",
+            url: "${ctx}/selectUserBase/initMajor",
+            data:{"forDepId":$("#forDepId").val()},
+            dataType:"json",
+            success:function(object){
+                var majorList = object.majorList;
+                if (jQuery.isEmptyObject(majorList)){
+                    $("#stuMajorId").html(null);
+                    $("#stuMajorId").append( "<option value='' selected>专业</option>" );
+
+                }else {
+                    $("#stuMajorId").html(null);
+                    $("#stuMajorId").append( "<option value='' selected>专业</option>" );
+                    $(majorList).each(function (index) {
+                        var val = majorList[index];
+                        $("#stuMajorId").append( "<option value="+val.id+">"+val.majName+"</option>" );
+                    });
+                }
+            },//end success
+            error: function(e) {
+                alert(" 😥 系统异常，请与我们的工程师联系！");
+            }
+        });
+    }  /***
+     * 根据专业查询并生成班级下拉
+     */
+    function initClass() {
+        $.ajax({
+            type: "post",
+            url: "${ctx}/selectUserBase/initClass",
+            data:{"stuMajorId":$("#stuMajorId").val()},
+            dataType:"json",
+            success:function(msg){
+                if (parseInt(msg)>0){
+                    $("#stuClass").html(null);
+                    $("#stuClass").append( "<option value='' selected>班级</option>" );
+                    for (var i =1 ; i<=msg ; i++){
+                        $("#stuClass").append( "<option value="+i+">"+i+"班</option>" );
+                    }
+                }else {
+                    $("#stuClass").html(null);
+                    $("#stuClass").append( "<option value='' selected>班级</option>" );
+//                        alert(" 😥 "+msg);
+                }
+            },//end success
+            error: function(e) {
+                alert(" 😥 系统异常，请与我们的工程师联系！");
+            }
+        });
+    }
+
     sessionStorage.setItem("userType",${sessionScope.userType});
 
     var manType = sessionStorage.getItem("userType");
@@ -319,7 +404,12 @@
                 "search":$(" input[ name='search' ] ").val(),
                 "teaId":$(" select[ name='teaId' ] ").val(),
                 "stuId":$(" select[ name='stuId' ] ").val(),
-                "teaAuditState":$(" select[ name='teaAuditState' ] ").val()
+                "teaAuditState":$(" select[ name='teaAuditState' ] ").val(),
+                "searchBgnTime":$(" input[ name='searchBgnTime' ] ").val(),
+                "searchEndTime":$(" input[ name='searchEndTime' ] ").val(),
+                "forDepId":$(" select[ name='forDepId' ] ").val(),
+                "stuMajorId":$(" select[ name='stuMajorId' ] ").val(),
+                "stuClass":$(" select[ name='stuClass' ] ").val(),
             },
             dataType:"json",
             success:function(objects){
@@ -402,7 +492,7 @@
     }
 
 
-    function teaDeleteAll(){
+    function selectRevoke(){
         var arrayId = new Array();
         $('input[name="ids"]:checked').each(function(){arrayId.push($(this).val());});
         if(arrayId.length==0){
@@ -410,11 +500,11 @@
             event.preventDefault(); // 兼容标准浏览器
             window.event.returnValue = false; // 兼容IE6~8
         }else{
-            confirm(" 😲 确认删除吗？","",function (is) {
+            confirm(" 😲 确认撤销吗？","",function (is) {
                 if (is){
                     $.ajax({
                         type:"POST",
-                        url:"${ctx}/selectUserBase/teaDeleteAll",
+                        url:"${ctx}/selectTopic/selectRevoke",
                         data: { "selectedIDs": arrayId },
                         dataType:"json",
                         traditional: true,
@@ -422,11 +512,10 @@
                             if("OK"!=msg){
                                 alert(" 😅 "+msg);
                             }else{
-                                alert(" 😋 删除成功！","",function () {
-                                    location.href="${ctx}/selectUserBase/teaList";
+                                alert(" 😋 撤销成功！","",function () {
+                                    location.href="${ctx}/selectTopic/topicList";
                                 },{type:"success",confirmButtonText:"好的"});
                             }
-
                         },
                         error:function(e){
                             alert("😥 系统异常，请与我们的工程师联系！");
@@ -505,6 +594,8 @@
                     +"<td>"+val.teaPhone+"</td>"
                     +"<td>"+val.stuName+"</td>"
                     +"<td>"+val.stuPhone+"</td>"
+                    +"<td>"+val.depName+"</td>"
+                    +"<td>"+val.majorName+"</td>"
                 ;
                     if (parseInt(val.teaAuditState) == 0){
                         item +=

@@ -3,6 +3,7 @@ package com.slxy.www.service;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.slxy.www.common.Constant;
+import com.slxy.www.config.AutoFinishSelect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,9 @@ import java.util.List;
 public class SelectProcessControlService extends  ServiceImpl <ISelectProcessControlMapper, SelectProcessControl>  {
     @Autowired
     private ISelectProcessControlMapper selectProcessControlMapper;
+
+    @Autowired
+    private AutoFinishSelect autoFinishSelect;
     /***
      * 查询流程列表
      * @param modelAndView
@@ -50,6 +54,9 @@ public class SelectProcessControlService extends  ServiceImpl <ISelectProcessCon
         }
         if (ObjectUtils.isEmpty(selectProcessControl.getProStartTime())||ObjectUtils.isEmpty(selectProcessControl.getProEndTime())){
             return JSONObject.toJSONString(Constant.PARAM_ERROR);
+        }
+        if (selectProcessControl.getId().equals(6)){
+            autoFinishSelect.update(selectProcessControl.getProEndTime());
         }
         return this.updateById(selectProcessControl)? JSONObject.toJSONString(Constant.SUCCESS):JSONObject.toJSONString(Constant.ERROR);
     }

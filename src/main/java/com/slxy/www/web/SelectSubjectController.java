@@ -1,11 +1,14 @@
 package com.slxy.www.web;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.slxy.www.common.Constant;
 import com.slxy.www.dao.ISelectMajorMapper;
+import com.slxy.www.domain.po.SelectMajor;
 import com.slxy.www.domain.po.SelectSubject;
 import com.slxy.www.domain.po.SelectUserBase;
 import com.slxy.www.domain.vo.SelectSubjectVo;
+import com.slxy.www.domain.vo.SelectTopicVo;
 import com.slxy.www.enums.EnumEnOrDis;
 import com.slxy.www.enums.EnumSubSelectStatus;
 import com.slxy.www.enums.EnumSubState;
@@ -16,6 +19,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,7 +39,9 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URLEncoder;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -117,8 +123,9 @@ public class SelectSubjectController {
                     vo.setForDepId(userBase.getTeaDepId());
                 }else if(EnumUserType.STUDENT.getValue().equals(userBase.getUserType())){
                     vo.setForDepId(selectMajorMapper.selectById(userBase.getStuMajorId()).getDepId());
+                }else if (EnumUserType.ADMIN.getValue().equals(userBase.getUserType())){
+                    vo.setForDepId(userBase.getTeaDepId());
                 }
-
             }
         }
         //只查看已结题的题目
@@ -446,7 +453,16 @@ public class SelectSubjectController {
     @ApiOperation(value = "导出论文题目记录", notes = "")
     @RequestMapping(value = "/export",method = RequestMethod.GET)
     @ResponseBody
-    public String export(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, IntrospectionException, IllegalAccessException, ParseException, InvocationTargetException, UnsupportedEncodingException {
+    public String export(HttpServletRequest request, HttpServletResponse response, SelectSubjectVo vo) throws ClassNotFoundException, IntrospectionException, IllegalAccessException, ParseException, InvocationTargetException, UnsupportedEncodingException {
+        HttpSession session = request.getSession();
+        if (!ObjectUtils.isEmpty(session)){
+            SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
+            if (!ObjectUtils.isEmpty(userBase)){
+                if (EnumUserType.ADMIN.getValue().equals(userBase.getUserType())|| EnumUserType.TEACHER.getValue().equals(userBase.getUserType())){
+                    vo.setForDepId(userBase.getTeaDepId());
+                }
+            }
+        }
         String fileName = "论文题目记录";
         fileName = URLEncoder.encode(fileName, "UTF-8");
         response.reset(); //清除buffer缓存
@@ -459,7 +475,7 @@ public class SelectSubjectController {
         response.setDateHeader("Expires", 0);
         XSSFWorkbook workbook = null;
         //导出Excel对象
-        workbook = selectSubjectService.exportExcelInfo();
+        workbook = selectSubjectService.exportExcelInfo(vo);
         OutputStream output;
         try {
             output = response.getOutputStream();

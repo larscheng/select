@@ -12,6 +12,7 @@ import com.slxy.www.domain.dto.SelectUserBaseDto;
 import com.slxy.www.domain.po.*;
 import com.slxy.www.domain.vo.ImportStuVo;
 import com.slxy.www.domain.vo.ImportTeaVo;
+import com.slxy.www.domain.vo.SelectTopicVo;
 import com.slxy.www.domain.vo.SelectUserBaseVo;
 import com.slxy.www.enums.*;
 import org.slf4j.Logger;
@@ -866,5 +867,15 @@ public class SelectUserBaseService extends  ServiceImpl <ISelectUserBaseMapper, 
             }
         }
         return this.updateBatchById(userBases)?JSONObject.toJSONString(Constant.SUCCESS):JSONObject.toJSONString(Constant.ERROR);
+    }
+
+    public String initMajor(SelectTopicVo vo) {
+        List<SelectMajor> selectMajors = new ArrayList<>();
+        if (!ObjectUtils.isEmpty(vo.getForDepId())){
+            selectMajors = selectMajorMapper.selectList(new EntityWrapper<>(new SelectMajor().setDepId(vo.getForDepId())));
+        }
+        Map<String,Object> map = new HashMap<>();
+        map.put("majorList",selectMajors);
+        return JSONObject.toJSONString(map);
     }
 }

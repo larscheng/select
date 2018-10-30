@@ -11,6 +11,7 @@ import com.slxy.www.domain.po.ChangePs;
 import com.slxy.www.domain.po.SelectDepartment;
 import com.slxy.www.domain.po.SelectMajor;
 import com.slxy.www.domain.po.SelectUserBase;
+import com.slxy.www.domain.vo.SelectTopicVo;
 import com.slxy.www.domain.vo.SelectUserBaseVo;
 import com.slxy.www.enums.EnumEnOrDis;
 import com.slxy.www.enums.EnumUserType;
@@ -294,7 +295,6 @@ public class SelectUserBaseController {
         userBaseVo.setUserType(EnumUserType.STUDENT.getValue());
         SelectUserBase userBase = (SelectUserBase) httpSession.getAttribute("sessionUser");
         if (EnumUserType.STUDENT.getValue().equals(userBase.getUserType())){
-
             userBaseVo.setUserType(EnumUserType.STUDENT.getValue())
                     .setStuMajorId(userBase.getStuMajorId()).setStuYear(userBase.getStuYear());
         }else if (EnumUserType.ADMIN.getValue().equals(userBase.getUserType())){
@@ -323,7 +323,6 @@ public class SelectUserBaseController {
         SelectUserBase userBase = (SelectUserBase) httpSession.getAttribute("sessionUser");
         userBaseVo.setUserType(EnumUserType.STUDENT.getValue());
         if (EnumUserType.STUDENT.getValue().equals(userBase.getUserType())){
-
             userBaseVo.setStuMajorId(userBase.getStuMajorId()).setStuYear(userBase.getStuYear());
         }else if (EnumUserType.ADMIN.getValue().equals(userBase.getUserType())){
             List<SelectMajor> majors = selectMajorMapper.selectList(new EntityWrapper<>(new SelectMajor().setDepId(userBase.getTeaDepId())));
@@ -494,6 +493,17 @@ public class SelectUserBaseController {
     @ResponseBody
     public String initClass(SelectUserBase userBase) {
         return selectUserBaseService.initClass(userBase);
+    }
+    /**
+     * 根据系别查询专业
+     * @param vo
+     * @return
+     */
+    @ApiOperation(value = "根据系别查询专业", notes = "")
+    @RequestMapping(value = "/initMajor", method = RequestMethod.POST)
+    @ResponseBody
+    public String initMajor(SelectTopicVo vo) {
+        return selectUserBaseService.initMajor(vo);
     }
 
 

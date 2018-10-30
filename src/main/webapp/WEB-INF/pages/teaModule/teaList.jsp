@@ -345,7 +345,9 @@
                 "userStatus":$(" select[ name='userStatus' ] ").val(),
                 "teaPosition":$(" select[ name='teaPosition' ] ").val(),
                 "teaEducation":$(" select[ name='teaEducation' ] ").val(),
-                "teaDepId":$(" select[ name='teaDepId' ] ").val()
+                "teaDepId":$(" select[ name='teaDepId' ] ").val(),
+                "searchBgnTime":$(" input[ name='searchBgnTime' ] ").val(),
+                "searchEndTime":$(" input[ name='searchEndTime' ] ").val()
             },
             dataType:"json",
             success:function(objects){

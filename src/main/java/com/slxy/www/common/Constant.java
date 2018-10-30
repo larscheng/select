@@ -68,6 +68,7 @@ public class Constant {
     public static final String SELECT_ERROR_NOT_EXIST = "该选题记录不存在！";
     public static final String SELECT_ERROR_NOT_AUDIT_SUCCESS = "该记录还未通过审核，不能进行此操作！";
     public static final String SELECT_DEL_ERROR = "删除失败！该题目已被选择但尚未结题！";
+    public static final String SELECT_REV_ERROR = "撤销失败！该题目已结题 : ";
     public static final String SELECT_AGAIN = "您存在未过审核的选题记录，请删除后重新选题！";
 
 

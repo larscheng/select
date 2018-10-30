@@ -1,5 +1,6 @@
 package com.slxy.www.web;
 
+import com.alibaba.fastjson.JSONObject;
 import com.slxy.www.common.Constant;
 import com.slxy.www.domain.po.SelectUserBase;
 import com.slxy.www.domain.vo.SelectTopicVo;
@@ -68,6 +69,8 @@ public class SelectTopicController {
             if (!ObjectUtils.isEmpty(userBase)){
                 if (EnumUserType.STUDENT.getValue().equals(userBase.getUserType())){
                     vo.setStuId(userBase.getId());
+                }else if (EnumUserType.ADMIN.getValue().equals(userBase.getUserType())||EnumUserType.TEACHER.getValue().equals(userBase.getUserType())){
+                    vo.setForDepId(userBase.getTeaDepId());
                 }
             }
         }
@@ -108,6 +111,8 @@ public class SelectTopicController {
                     vo.setTeaId(userBase.getId());
                 }else if (EnumUserType.STUDENT.getValue().equals(userBase.getUserType())){
                     vo.setStuId(userBase.getId());
+                }else if (EnumUserType.ADMIN.getValue().equals(userBase.getUserType())){
+                    vo.setForDepId(userBase.getTeaDepId());
                 }
             }
         }
@@ -271,10 +276,18 @@ public class SelectTopicController {
     @ApiOperation(value = "报表统计：成绩列表获取", notes = "")
     @LoginRequired(value = "admTea")
     @RequestMapping(value = "/topicScoreList",method = RequestMethod.GET)
-    public ModelAndView topicScoreList(ModelAndView  modelAndView, SelectTopicVo vo) {
+    public ModelAndView topicScoreList(ModelAndView  modelAndView, SelectTopicVo vo,HttpSession session) {
         modelAndView.setViewName("CountModule/topicScoreList");
         vo.setTeaAuditState(EnumSubSelectStatus.SUCCESS.getValue())
         .setSubState(EnumSubState.OVER.getValue());
+        if (!ObjectUtils.isEmpty(session)){
+            SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
+            if (!ObjectUtils.isEmpty(userBase)){
+                if (EnumUserType.TEACHER.getValue().equals(userBase.getUserType())||EnumUserType.ADMIN.getValue().equals(userBase.getUserType())){
+                    vo.setForDepId(userBase.getTeaDepId());
+                }
+            }
+        }
         return selectTopicService.topicList(modelAndView,vo);
     }
 
@@ -287,9 +300,19 @@ public class SelectTopicController {
     @ApiOperation(value = "报表统计：选题记录获取", notes = "")
     @LoginRequired(value = "admTea")
     @RequestMapping(value = "/topicCountList",method = RequestMethod.GET)
-    public ModelAndView topicCountList(ModelAndView  modelAndView, SelectTopicVo vo) {
+    public ModelAndView topicCountList(ModelAndView  modelAndView, SelectTopicVo vo,HttpSession session) {
         modelAndView.setViewName("CountModule/topicCountList");
         vo.setSubState(EnumSubState.OVER.getValue());
+        if (!ObjectUtils.isEmpty(session)){
+            SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
+            if (!ObjectUtils.isEmpty(userBase)){
+                if (EnumUserType.TEACHER.getValue().equals(userBase.getUserType())){
+                    vo.setForDepId(userBase.getTeaDepId());
+                }else if (EnumUserType.ADMIN.getValue().equals(userBase.getUserType())){
+                    vo.setForDepId(userBase.getTeaDepId());
+                }
+            }
+        }
         return selectTopicService.topicList(modelAndView,vo);
     }
 
@@ -312,6 +335,15 @@ public class SelectTopicController {
     @RequestMapping(value = "/export",method = RequestMethod.GET)
     @ResponseBody
     public String export(HttpServletRequest request, HttpServletResponse response, SelectTopicVo vo) throws ClassNotFoundException, IntrospectionException, IllegalAccessException, ParseException, InvocationTargetException, UnsupportedEncodingException {
+        HttpSession session = request.getSession();
+        if (!ObjectUtils.isEmpty(session)){
+            SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
+            if (!ObjectUtils.isEmpty(userBase)){
+                if (EnumUserType.ADMIN.getValue().equals(userBase.getUserType())|| EnumUserType.TEACHER.getValue().equals(userBase.getUserType())){
+                    vo.setForDepId(userBase.getTeaDepId());
+                }
+            }
+        }
         String fileName = "选题记录";
         fileName = URLEncoder.encode(fileName, "UTF-8");
         response.reset(); //清除buffer缓存
@@ -335,7 +367,7 @@ public class SelectTopicController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return Constant.SUCCESS;
+        return JSONObject.toJSONString(Constant.SUCCESS);
     }
 
 
@@ -343,7 +375,16 @@ public class SelectTopicController {
     @LoginRequired(value = "admTea")
     @RequestMapping(value = "/exportScore",method = RequestMethod.GET)
     @ResponseBody
-    public String exportScore(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, IntrospectionException, IllegalAccessException, ParseException, InvocationTargetException, UnsupportedEncodingException {
+    public String exportScore(HttpServletRequest request, HttpServletResponse response,SelectTopicVo vo) throws ClassNotFoundException, IntrospectionException, IllegalAccessException, ParseException, InvocationTargetException, UnsupportedEncodingException {
+        HttpSession session = request.getSession();
+        if (!ObjectUtils.isEmpty(session)){
+            SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
+            if (!ObjectUtils.isEmpty(userBase)){
+                if (EnumUserType.ADMIN.getValue().equals(userBase.getUserType())|| EnumUserType.TEACHER.getValue().equals(userBase.getUserType())){
+                    vo.setForDepId(userBase.getTeaDepId());
+                }
+            }
+        }
         String fileName = "选题成绩记录";
         fileName = URLEncoder.encode(fileName, "UTF-8");
         response.reset(); //清除buffer缓存
@@ -356,7 +397,7 @@ public class SelectTopicController {
         response.setDateHeader("Expires", 0);
         XSSFWorkbook workbook = null;
         //导出Excel对象
-        workbook = selectTopicService.exportExcelScoreInfo();
+        workbook = selectTopicService.exportExcelScoreInfo(vo);
         OutputStream output;
         checkException(response, workbook);
         return Constant.SUCCESS;
@@ -474,6 +515,14 @@ public class SelectTopicController {
     @ResponseBody
     public String scoreUpload(HttpServletRequest request) throws IOException {
         return selectTopicService.scoreUpload(request);
+    }
+
+    @ApiOperation(value = "撤销选题", notes = "")
+    @LoginRequired(value = "adm")
+    @RequestMapping(value = "/selectRevoke",method = RequestMethod.POST)
+    @ResponseBody
+    public String selectRevoke(Integer[] selectedIDs) {
+        return selectTopicService.selectRevoke(selectedIDs);
     }
 
 }

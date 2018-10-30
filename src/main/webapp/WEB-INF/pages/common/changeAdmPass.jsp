@@ -75,15 +75,15 @@
                                     <div class="form-group">
                                         <label class="col-lg-4 control-label">用户名</label>
                                         <div class="col-lg-8">
-                                            <input type="text" disabled class="form-control" value="${sessionScope.sessionUser.userName}" placeholder="原始密码">
+                                            <input type="text" disabled class="form-control" value="${requestScope.user.userName}" placeholder="原始密码">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="col-lg-4 control-label">邮箱</label>
                                         <div class="col-lg-8">
-                                            <input type="email" value="${sessionScope.sessionUser.userMail}" class="form-control" name="userMail" placeholder="接收新密码的邮箱">
-                                            <input type="hidden" id="userId" class="form-control" name="userId" value="${sessionScope.sessionUser.id}" placeholder="">
+                                            <input type="email" value="${requestScope.user.userMail}" class="form-control" name="userMail" placeholder="接收新密码的邮箱">
+                                            <input type="hidden" id="userId" class="form-control" name="userId" value="${requestScope.user.id}" placeholder="">
 
                                         </div>
                                     </div>

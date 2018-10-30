@@ -64,7 +64,7 @@
                             </div>
                             <div class="row navbar-form " style="position: absolute; top: -5px; right: 50px">
 
-                                <button type="button"  onclick="window.location.href='${ctx}/initChangeAdmPs';" style="margin-right: 10px" class="btn btn-info pull-left "><i class="icon-upload"></i>密码修改</button>
+                                <button type="button"  onclick="window.location.href='${ctx}/initChangeAdmPs?id=${requestScope.user.id}';" style="margin-right: 10px" class="btn btn-info pull-left "><i class="icon-upload"></i>密码修改</button>
                             </div>
                             <div class="clearfix"></div>
                         </div>

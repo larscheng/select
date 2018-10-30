@@ -109,7 +109,29 @@ public class SelectTopicDto extends PageVo {
      */
     private String teaAuditStateName;
 
+    /***
+     * 系
+     */
+    private String depName;
+    /**
+     * 专业
+     */
+    private String majorName;
 
+    /**
+     * 面向系别id
+     */
+    private String forDepId;
+
+
+    public String getForDepId() {
+        return forDepId;
+    }
+
+    public SelectTopicDto setForDepId(String forDepId) {
+        this.forDepId = forDepId;
+        return this;
+    }
 
     public SelectTopicDto() {
     }
@@ -218,6 +240,24 @@ public class SelectTopicDto extends PageVo {
 
     public Double getJudgeScore() {
         return judgeScore;
+    }
+
+    public String getDepName() {
+        return depName;
+    }
+
+    public SelectTopicDto setDepName(String depName) {
+        this.depName = depName;
+        return this;
+    }
+
+    public String getMajorName() {
+        return majorName;
+    }
+
+    public SelectTopicDto setMajorName(String majorName) {
+        this.majorName = majorName;
+        return this;
     }
 
     public SelectTopicDto setJudgeScore(Double judgeScore) {

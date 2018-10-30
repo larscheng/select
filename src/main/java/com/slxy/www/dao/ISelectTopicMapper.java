@@ -22,4 +22,6 @@ public interface ISelectTopicMapper extends BaseMapper<SelectTopic> {
     List<SelectTopicDto> selectAllTopic();
 
     List<SelectTopic> selectByInfo(ImportScoreVo importScoreVo);
+
+    List<SelectTopicDto> getTopicByPage(SelectTopicVo vo);
 }

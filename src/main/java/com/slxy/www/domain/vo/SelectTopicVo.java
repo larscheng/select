@@ -92,5 +92,11 @@ public class SelectTopicVo extends PageVo {
     private Double finalTotalScore;
 
     private Integer subState;
+
+    private Integer forDepId;
+    private Integer majorId;
+    private Integer stuClass;
+
+
 }
 

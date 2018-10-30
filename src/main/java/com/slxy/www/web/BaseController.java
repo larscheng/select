@@ -15,6 +15,7 @@ import com.slxy.www.dao.ISelectUserBaseMapper;
 import com.slxy.www.domain.po.ChangePs;
 import com.slxy.www.domain.po.SelectProcessControl;
 import com.slxy.www.domain.po.SelectUserBase;
+import com.slxy.www.domain.vo.SelectUserBaseVo;
 import com.slxy.www.enums.EnumEnOrDis;
 import com.slxy.www.service.SelectJavaMailService;
 import io.swagger.annotations.Api;
@@ -23,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -238,14 +240,19 @@ public class BaseController {
 
 
 
-    @ApiOperation(value = "修改密码跳转", notes = "")
+    @ApiOperation(value = "修改密码跳转", notes = "需校验原始密码")
     @RequestMapping(value = "/initChangePs" ,method = RequestMethod.GET)
     public String initChangePs(){return "common/changePass";}
 
 
-    @ApiOperation(value = "adm修改密码跳转", notes = "")
+    @ApiOperation(value = "adm修改密码跳转", notes = "无需原始密码")
     @RequestMapping(value = "/initChangeAdmPs" ,method = RequestMethod.GET)
-    public String initChangeAdmPs(){return "common/changeAdmPass";}
+    public ModelAndView initChangeAdmPs(SelectUserBaseVo vo, ModelAndView modelAndView){
+        SelectUserBase selectUserBase = selectUserBaseMapper.selectById(vo.getId());
+        modelAndView.setViewName("common/changeAdmPass");
+        modelAndView.addObject("user",selectUserBase);
+        return modelAndView;
+    }
 
 
 

@@ -22,10 +22,10 @@
 
         <!-- Page heading -->
         <div class="page-head">
-            <h2 class="pull-left"><i class="icon-home"></i> 选题信息列表</h2>
+            <h2 class="pull-left"><i class="icon-home"></i> 选题成绩列表</h2>
             <!-- Breadcrumb -->
             <div class="bread-crumb pull-right">
-                <a href="#"><i class="icon-home"></i> 选题信息管理</a>
+                <a href="#"><i class="icon-home"></i> 报表统计</a>
                 <!-- Divider -->
                 <span class="divider">/</span>
                 <a href="#" class="bread-current">首页</a>
@@ -47,12 +47,12 @@
 
                     <form class="navbar-form center" role="search" id="searchForm">
 
-                        <div class="form-group " style="position: relative;margin-right: 10px">
-                            <input type="text" class="form-control" id="search" name="search" placeholder="题目名称/题目届别">
-                            <span onclick="search()" style="position: absolute;left: 155px;top: 6px;cursor: pointer"><i class="icon-search" ></i></span>
+                        <div class="form-group " style="position: relative;margin-right: 3px">
+                            <input type="text" class="form-control" size="10" id="search" name="search" placeholder="题目名称/届别">
+                            <span onclick="search()" style="position: absolute;left: 90px;top: 6px;cursor: pointer"><i class="icon-search" ></i></span>
                         </div>
 
-                        <div class="form-group " style="margin-right: 10px">
+                        <div class="form-group " style="margin-right: 3px">
                             <select  class="form-control" name="teaId">
                                 <option value="" selected>教师名</option>
                                 <c:forEach var="tea" items="${requestScope.teaList}">
@@ -61,7 +61,7 @@
                             </select>
                         </div>
 
-                        <div class="form-group " style="margin-right: 10px">
+                        <div class="form-group " style="margin-right: 3px">
                             <select  class="form-control" name="stuId">
                                 <option value="" selected>学生名</option>
                                 <c:forEach var="stu" items="${requestScope.stuList}">
@@ -69,14 +69,35 @@
                                 </c:forEach>
                             </select>
                         </div>
-                        <div class="form-group " style="margin-right: 10px">
-                            <select  class="form-control" name="teaAuditState">
+                        <div class="form-group " style="margin-right: 3px">
+                            <select  class="form-control"  name="teaAuditState">
                                 <option value="" selected>审核状态</option>
                                 <option value="0">未处理</option>
                                 <option value="1">审核不通过</option>
                                 <option value="2">审核通过</option>
                             </select>
                         </div>
+                        <div class="form-group " style="margin-right: 3px">
+                            <select  class="form-control" name="forDepId" id="forDepId" onchange="initMajor()">
+                                <option value="" selected>面向系别</option>
+                                <c:forEach var="dep" items="${requestScope.depList}">
+                                    <option value="${dep.id}">${dep.depName}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+
+                        <div class="form-group " style="margin-right: 3px">
+                            <select  class="form-control" name="stuMajorId" id="stuMajorId" onchange="initClass()">
+                                <option value="" selected>专业</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group " style="margin-right: 3px">
+                            <select  class="form-control" name="stuClass" id="stuClass">
+                                <option value="" selected>班级</option>
+                            </select>
+                        </div>
+
 
                         <div class="form-group" style="margin-right: 10px">
                             <div class="input-group date form_datetime">
@@ -261,6 +282,67 @@
     <div class="clearfix"></div>
 <%@include file="/WEB-INF/pages/common/macDownCommon.jsp" %>
 <script type="text/javascript">
+
+
+    /***
+     * 根据系别生成专业
+     */
+    function initMajor() {
+        $.ajax({
+            type: "post",
+            url: "${ctx}/selectUserBase/initMajor",
+            data:{"forDepId":$("#forDepId").val()},
+            dataType:"json",
+            success:function(object){
+                var majorList = object.majorList;
+                if (jQuery.isEmptyObject(majorList)){
+                    $("#stuMajorId").html(null);
+                    $("#stuMajorId").append( "<option value='' selected>专业</option>" );
+
+                }else {
+                    $("#stuMajorId").html(null);
+                    $("#stuMajorId").append( "<option value='' selected>专业</option>" );
+                    $(majorList).each(function (index) {
+                        var val = majorList[index];
+                        $("#stuMajorId").append( "<option value="+val.id+">"+val.majName+"</option>" );
+                    });
+                }
+            },//end success
+            error: function(e) {
+                alert(" 😥 系统异常，请与我们的工程师联系！");
+            }
+        });
+    }  /***
+     * 根据专业查询并生成班级下拉
+     */
+    function initClass() {
+        $.ajax({
+            type: "post",
+            url: "${ctx}/selectUserBase/initClass",
+            data:{"stuMajorId":$("#stuMajorId").val()},
+            dataType:"json",
+            success:function(msg){
+                if (parseInt(msg)>0){
+                    $("#stuClass").html(null);
+                    $("#stuClass").append( "<option value='' selected>班级</option>" );
+                    for (var i =1 ; i<=msg ; i++){
+                        $("#stuClass").append( "<option value="+i+">"+i+"班</option>" );
+                    }
+                }else {
+                    $("#stuClass").html(null);
+                    $("#stuClass").append( "<option value='' selected>班级</option>" );
+//                        alert(" 😥 "+msg);
+                }
+            },//end success
+            error: function(e) {
+                alert(" 😥 系统异常，请与我们的工程师联系！");
+            }
+        });
+    }
+
+
+
+
     sessionStorage.setItem("userType",${sessionScope.userType});
 
     var manType = sessionStorage.getItem("userType");
@@ -303,7 +385,11 @@
                 "search":$(" input[ name='search' ] ").val(),
                 "teaId":$(" select[ name='teaId' ] ").val(),
                 "stuId":$(" select[ name='stuId' ] ").val(),
-                "teaAuditState":$(" select[ name='teaAuditState' ] ").val()
+                "teaAuditState":$(" select[ name='teaAuditState' ] ").val(),
+                "forDepId":$(" select[ name='forDepId' ] ").val(),
+                "stuMajorId":$(" select[ name='stuMajorId' ] ").val(),
+                "searchBgnTime":$(" input[ name='searchBgnTime' ] ").val(),
+                "searchEndTime":$(" input[ name='searchEndTime' ] ").val()
             },
             dataType:"json",
             success:function(objects){
@@ -314,6 +400,27 @@
             }
         });
     }
+
+
+
+
+    function exportScoreInfo() {
+
+        var search=$(" input[ name='search' ] ").val();
+        var teaId=$(" select[ name='teaId' ] ").val();
+        var stuId=$(" select[ name='stuId' ] ").val();
+        var forDepId=$(" select[ name='forDepId' ] ").val();
+        var stuMajorId=$(" select[ name='stuMajorId' ] ").val();
+        var stuClass=$(" select[ name='stuClass' ] ").val();
+        var teaAuditState=$(" select[ name='teaAuditState' ] ").val();
+        var searchBgnTime=$(" input[ name='searchBgnTime' ] ").val();
+        var searchEndTime=$(" input[ name='searchEndTime' ] ").val();
+
+
+        window.location.href="${ctx}/selectTopic/exportScore?search="+search+"&teaId="+teaId+"&stuId="+stuId+"&forDepId="+forDepId+
+            "&stuMajorId="+stuMajorId+"&stuClass="+stuClass+"&teaAuditState="+teaAuditState+"&searchBgnTime="+searchBgnTime+"&searchEndTime="+searchEndTime;
+    }
+
 
     $("#searchSubmit").click(function(){
         var url = "${ctx}/selectTopic/stuTopicAjaxList?subState=3";
@@ -461,9 +568,6 @@
         window.location.href='${ctx}/selectUserBase/teaInitUpdate?id='+id;
     }
 
-    function exportScoreInfo() {
-        window.location.href="${ctx}/selectTopic/exportScore";
-    }
 
 
 
