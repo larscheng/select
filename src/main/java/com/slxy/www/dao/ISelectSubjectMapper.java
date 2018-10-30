@@ -24,4 +24,8 @@ public interface ISelectSubjectMapper extends BaseMapper<SelectSubject> {
     void autoUpdateStatus();
 
     List<SelectSubject> getSubByPage(SelectSubjectVo vo);
+
+    List<SelectSubject> countSubByPage(SelectSubjectVo vo, Page<SelectSubject> page);
+
+    List<SelectSubject> countSubByPage(SelectSubjectVo vo);
 }

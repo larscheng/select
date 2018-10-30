@@ -62,9 +62,15 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
 
     public ModelAndView topicList(ModelAndView modelAndView, SelectTopicVo vo) {
         Page<SelectTopicDto> page = new Page<>(vo.getPage(), vo.getPageSize());
+
         List<SelectTopicDto> list = selectTopicMapper.getTopicByPage(page, vo);
+
+        if (!ObjectUtils.isEmpty(vo.getCountType())&&vo.getCountType()==1){
+            list = selectTopicMapper.countTopicByPage(page, vo);
+        }
         list.stream().map(a-> a.setDepName(selectDepartmentMapper.selectById(a.getForDepId()).getDepName())
-                .setMajorName(getMajorByUserId(a.getStuId()))).collect(Collectors.toList());
+                .setMajorName(getMajorByUserId(a.getStuId()))
+        ).collect(Collectors.toList());
         page.setRecords(list);
         List<SelectUserBase> teaList = selectUserBaseMapper.selectList(new EntityWrapper<SelectUserBase>()
                 .and("user_type = ?", EnumUserType.TEACHER.getValue()).and("user_status = ?", EnumEnOrDis.ENABLED.getValue()));
@@ -312,7 +318,7 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
     public XSSFWorkbook exportExcelInfo(SelectTopicVo vo) throws InvocationTargetException, ClassNotFoundException, IntrospectionException, ParseException, IllegalAccessException {
         //根据条件查询数据，把数据装载到一个list中
         vo.setDelState(0);
-        List<SelectTopicDto> selectTopics = selectTopicMapper.getTopicByPage(vo);
+        List<SelectTopicDto> selectTopics = selectTopicMapper.countTopicByPage(vo);
         selectTopics.stream()
                 .map(selectTopicDto ->selectTopicDto.setTeaAuditStateName(EnumSubState.toMap().get(selectTopicDto.getTeaAuditState()))
                 .setDepName(selectDepartmentMapper.selectById(selectTopicDto.getForDepId()).getDepName())
@@ -352,7 +358,7 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
     public XSSFWorkbook exportExcelScoreInfo(SelectTopicVo vo) throws InvocationTargetException, ClassNotFoundException, IntrospectionException, ParseException, IllegalAccessException {
         //根据条件查询数据，把数据装载到一个list中
         vo.setDelState(0);
-        List<SelectTopicDto> selectTopics = selectTopicMapper.getTopicByPage(vo);
+        List<SelectTopicDto> selectTopics = selectTopicMapper.countTopicByPage(vo);
         selectTopics.stream()
                 .map(selectTopicDto ->selectTopicDto.setTeaAuditStateName(EnumSubState.toMap().get(selectTopicDto.getTeaAuditState()))
                         .setDepName(selectDepartmentMapper.selectById(selectTopicDto.getForDepId()).getDepName())
@@ -571,6 +577,28 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
             selectSubjectMapper.updateById(subject);
         }
         return JSONObject.toJSONString(Constant.SUCCESS);
+    }
+
+    public String topicCountAjaxList(SelectTopicVo vo) {
+        Page<SelectTopicDto> page = new Page<>(vo.getPage(), vo.getPageSize());
+        List<SelectTopicDto> list = selectTopicMapper.countTopicByPage(page, vo);
+        list.stream().map(a-> a.setDepName(selectDepartmentMapper.selectById(a.getForDepId()).getDepName())
+                .setMajorName(getMajorByUserId(a.getStuId()))
+        ).collect(Collectors.toList());
+        Map<String,Object> map = new HashMap<>();
+        map.put("topicList",list);
+        map.put("page",page);
+        String object = JSONObject.toJSONString(map);
+        return object;
+    }
+
+
+    public String setSubState(Integer state){
+        if (state.equals(EnumSubSelectStatus.OVER.getValue())){
+            return "已结题";
+        }else {
+            return "未结题";
+        }
     }
 }
 

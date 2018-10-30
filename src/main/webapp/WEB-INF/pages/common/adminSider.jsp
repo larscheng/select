@@ -59,7 +59,7 @@
 
         <li class="has_sub"><a href="#"><i class="icon-file-alt"></i> 报表统计  <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
             <ul>
-                <li><a href="${ctx}/selectSubject/subAllList" target="mainFrame">题目列表</a></li>
+                <li><a href="${ctx}/selectSubject/countSubList" target="mainFrame">题目列表</a></li>
                 <li><a href="${ctx}/selectTopic/topicCountList"  target="mainFrame">选题列表</a></li>
                 <li><a href="${ctx}/selectTopic/topicScoreList"  target="mainFrame">成绩列表</a></li>
             </ul>

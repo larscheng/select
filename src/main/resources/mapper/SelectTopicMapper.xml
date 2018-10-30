@@ -45,10 +45,63 @@
 		<result column="stu_phone" property="stuPhone" />
 		<result column="del_state" property="delState" />
 		<result column="for_dep_id" property="forDepId" />
+		<result column="sub_select_status" property="subSelectStatus" />
 	</resultMap>
 
 
-
+	<select id="countTopicByPage" resultMap="BaseResultDtoMap">
+		SELECT
+		a.*, b.sub_name,b.for_dep_id ,b.sub_select_status,b.tutor_score, b.judge_score, b.defence_score, b.final_total_score,
+		c.user_name AS stu_name,
+		c.user_phone AS stu_phone,
+		d.user_name AS tea_name,
+		d.user_phone AS tea_phone
+		FROM
+		select_topic a
+		LEFT JOIN select_subject b ON a.sub_id = b.id
+		LEFT JOIN select_user_base c ON a.stu_id = c.id
+		LEFT JOIN select_user_base d ON a.tea_id = d.id
+		WHERE 1=1
+		and a.del_state = 0
+		<if test="@Ognl@isNotEmpty(search)">
+			and (b.sub_name like '%${search}%' or
+			a.topic_year like '%${search}%')
+		</if>
+		<if test="@Ognl@isNotEmpty(stuId)">
+			and a.stu_id = #{stuId}
+		</if>
+		<if test="@Ognl@isNotEmpty(teaId)">
+			and a.tea_id = #{teaId}
+		</if>
+		<if test="@Ognl@isNotEmpty(teaAuditState)">
+			and a.tea_audit_state = #{teaAuditState}
+		</if>
+		<if test="@Ognl@isEmpty(subState)">
+			and b.sub_select_status <![CDATA[>=]]> 2
+		</if>
+		<if test="@Ognl@isNotEmpty(subState)">
+			and b.sub_select_status = #{subState}
+		</if>
+		<if test="@Ognl@isNotEmpty(delState)">
+			and a.del_state = #{delState}
+		</if>
+		<if test="@Ognl@isNotEmpty(forDepId)">
+			and b.for_dep_id = #{forDepId}
+		</if>
+		<if test="@Ognl@isNotEmpty(majorId)">
+			and c.stu_major_id = #{majorId}
+		</if>
+		<if test="@Ognl@isNotEmpty(stuClass)">
+			and c.stu_class = #{stuClass}
+		</if>
+		<if test="@Ognl@isNotEmpty(searchBgnTime)">
+			and DATE_FORMAT(a.gmt_create,'%Y-%m-%d')  <![CDATA[>=]]> #{searchBgnTime}
+		</if>
+		<if test="@Ognl@isNotEmpty(searchEndTime)">
+			and DATE_FORMAT(a.gmt_create,'%Y-%m-%d')  <![CDATA[<=]]> #{searchEndTime}
+		</if>
+		ORDER BY a.tea_audit_state DESC ,a.gmt_create DESC
+	</select>
 
 	<select id="getTopicByPage" resultMap="BaseResultDtoMap">
 		SELECT

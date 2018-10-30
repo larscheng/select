@@ -294,7 +294,7 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
             SelectUserBase tea = selectUserBaseMapper.selectById(dto.getTeaId());
 
 
-            if (!codes.contains(tea.getUserCode())){
+            if (!codes.contains(tea.getUserCode())&&teaSet!=null){
                 teaSet.add(tea);
             }
 
@@ -306,6 +306,7 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
             dto.setForDepName(selectDepartment.getDepName());
             //选题状态
             dto.setSubSelectStatusName(EnumSubSelectStatus.toMap().get(dto.getSubSelectStatus()));
+
         }
     }
 
@@ -538,13 +539,14 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
 
     public XSSFWorkbook exportExcelInfo(SelectSubjectVo vo) throws InvocationTargetException, ClassNotFoundException, IntrospectionException, ParseException, IllegalAccessException {
         //根据条件查询数据，把数据装载到一个list中
-        vo.setSubSelectStatus(3);
-        List<SelectSubjectDto> subjectDtos = SelectMapStructMapper.INSTANCE.SelectSubjectsPoToDto(selectSubjectMapper.getSubByPage(vo));
+//        vo.setSubSelectStatus(3);
+        List<SelectSubjectDto> subjectDtos = SelectMapStructMapper.INSTANCE.SelectSubjectsPoToDto(selectSubjectMapper.countSubByPage(vo));
         subjectDtos.stream()
                 .map(subjectDto ->
                         subjectDto.setTypeName(EnumSubType.toMap().get(subjectDto.getSubType()))
                                 .setAdmAuditName(EnumSubState.toMap().get(subjectDto.getAdmAuditState()))
                 ).collect(Collectors.toList());
+        setSubDto(subjectDtos,null);
         List<ExcelBean> excel=new ArrayList<>();
         Map<Integer,List<ExcelBean>> map=new LinkedHashMap<>();
         XSSFWorkbook xssfWorkbook=null;
@@ -681,5 +683,49 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
         deleteFile(Constant.FILE_DIR+selectSubject.getSubFile());
         SelectSubjectVo vo = SelectMapStructMapper.INSTANCE.SelectSubjectPoToVo(selectSubject);
         return subUpdate(file,vo,request);
+    }
+
+    public ModelAndView countSubList(ModelAndView modelAndView, SelectSubjectVo vo) {
+        List<SelectDepartment> depList = selectDepartmentMapper.selectList(new EntityWrapper<>(new SelectDepartment().setDepStatus(EnumEnOrDis.ENABLED.getValue()).setId(vo.getForDepId())));
+
+        Page<SelectSubject> page = new Page<>(vo.getPage(),vo.getPageSize());
+        List<SelectSubject> subjectList = selectSubjectMapper.countSubByPage(vo,page);
+        List<SelectSubjectDto> subjectDtos = SelectMapStructMapper.INSTANCE.SelectSubjectsPoToDto(subjectList);
+        Set<SelectUserBase> teaSet = new HashSet<>();
+        this.setSubDto(subjectDtos, teaSet);
+        List<SelectUserBase> teas = selectUserBaseMapper.selectList(new EntityWrapper<SelectUserBase>().and("user_type=?",EnumUserType.TEACHER.getValue()));
+        modelAndView.addObject("subjectList",subjectDtos);
+        modelAndView.addObject("depList",depList);
+        modelAndView.addObject("page",page);
+        modelAndView.addObject("subType", EnumSubType.toMap());
+        modelAndView.addObject("teaSet",teas);
+        return modelAndView;
+    }
+
+
+    public String subCountListAjax(SelectSubjectVo vo) {
+            Page<SelectSubject> page = new Page<>(vo.getPage(),vo.getPageSize());
+            List<SelectSubject> subjectList = selectSubjectMapper.countSubByPage(vo,page);
+            List<SelectSubjectDto> subjectDtos = SelectMapStructMapper.INSTANCE.SelectSubjectsPoToDto(subjectList);
+            for (SelectSubjectDto dto:subjectDtos){
+                dto.setTypeName(EnumSubType.toMap().get(dto.getSubType()));
+                SelectUserBase userBase = selectUserBaseMapper.selectById(dto.getTeaId());
+                //教师名、电话
+                dto.setSubTeaName(userBase.getUserName()).setTeaPhone(userBase.getUserPhone());
+                //面向系别
+                SelectDepartment selectDepartment = selectDepartmentMapper.selectById(dto.getForDepId());
+                dto.setForDepName(selectDepartment.getDepName());
+                if (dto.getSubSelectStatus().equals(EnumSubSelectStatus.OVER.getValue())){
+                    dto.setSubSelectStatusName("已结题");
+                }else {
+                    dto.setSubSelectStatusName("未结题");
+                }
+            }
+            Map<String,Object> map = new HashMap<>();
+            map.put("subjectList",subjectDtos);
+            map.put("page",page);
+            String object = JSONObject.toJSONString(map);
+            return object;
+
     }
 }

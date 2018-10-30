@@ -97,6 +97,10 @@ public class SelectTopicVo extends PageVo {
     private Integer majorId;
     private Integer stuClass;
 
+    private Integer countType;
+
+
+
 
 }
 

@@ -106,12 +106,7 @@ public class SelectSubjectController {
         return selectSubjectService.subList(modelAndView,vo);
     }
 
-    /***
-     * 历届论文列表
-     * @param modelAndView
-     * @param vo
-     * @return
-     */
+
     @ApiOperation(value = "历届论文列表", notes = "")
     @RequestMapping(value = "/subAllList",method = RequestMethod.GET)
     public ModelAndView subAllList(ModelAndView  modelAndView, SelectSubjectVo vo,HttpServletRequest request) {
@@ -133,6 +128,8 @@ public class SelectSubjectController {
         modelAndView.setViewName("CountModule/subAllList");
         return selectSubjectService.subList(modelAndView,vo);
     }
+
+
 
     /***
      * 异步生成未审核论文列表
@@ -487,6 +484,36 @@ public class SelectSubjectController {
             e.printStackTrace();
         }
         return Constant.SUCCESS;
+    }
+
+    @ApiOperation(value = "题目列表", notes = "报表统计")
+    @RequestMapping(value = "/countSubList",method = RequestMethod.GET)
+    public ModelAndView countSubList(ModelAndView  modelAndView, SelectSubjectVo vo,HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (!ObjectUtils.isEmpty(session)){
+            SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
+            if (!ObjectUtils.isEmpty(userBase)){
+                if (EnumUserType.ADMIN.getValue().equals(userBase.getUserType())){
+                    vo.setForDepId(userBase.getTeaDepId());
+                }
+            }
+        }
+        modelAndView.setViewName("CountModule/subCountList");
+        return selectSubjectService.countSubList(modelAndView,vo);
+    }
+
+
+    @ApiOperation(value = "异步生成题目列表", notes = "报表统计")
+    @RequestMapping(value = "/subCountListAjax",method = RequestMethod.POST)
+    @ResponseBody
+    public String subCountListAjax(SelectSubjectVo vo,HttpSession session) {
+        if (!ObjectUtils.isEmpty(session)){
+            SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
+            if (!ObjectUtils.isEmpty(userBase)&&userBase.getUserType().equals(EnumUserType.ADMIN.getValue())){
+              vo.setForDepId(userBase.getTeaDepId());
+            }
+        }
+        return selectSubjectService.subCountListAjax(vo);
     }
 
 }

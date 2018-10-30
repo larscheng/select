@@ -123,6 +123,28 @@ public class SelectTopicDto extends PageVo {
      */
     private String forDepId;
 
+    private Integer subSelectStatus;
+
+    private String subSelectStatusName;
+
+
+    public String getSubSelectStatusName() {
+        return subSelectStatusName;
+    }
+
+    public SelectTopicDto setSubSelectStatusName(String subSelectStatusName) {
+        this.subSelectStatusName = subSelectStatusName;
+        return this;
+    }
+
+    public Integer getSubSelectStatus() {
+        return subSelectStatus;
+    }
+
+    public SelectTopicDto setSubSelectStatus(Integer subSelectStatus) {
+        this.subSelectStatus = subSelectStatus;
+        return this;
+    }
 
     public String getForDepId() {
         return forDepId;

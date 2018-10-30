@@ -53,6 +53,43 @@
 		tutor_score,judge_score, defence_score, final_total_score, sub_year, for_dep_id, gmt_create, gmt_modify
 	</sql>
 
+
+	<select id="countSubByPage" resultMap="SelectSubjectResultMap">
+		SELECT <include refid="Base_Column_List"/> FROM select_subject a WHERE 1=1
+		<if test="@Ognl@isNotEmpty(search)">
+			and (a.sub_name like '%${search}%' or
+			a.sub_year like '%${search}%')
+		</if>
+		<if test="@Ognl@isNotEmpty(admAuditState)">
+			and a.adm_audit_state = #{admAuditState}
+		</if>
+		<if test="@Ognl@isNotEmpty(subType)">
+			and a.sub_type = #{subType}
+		</if>
+		<if test="@Ognl@isNotEmpty(teaId)">
+			and a.tea_id = #{teaId}
+		</if>
+		<if test="@Ognl@isNotEmpty(forDepId)">
+			and a.for_dep_id = #{forDepId}
+		</if>
+		<if test="@Ognl@isEmpty(admAuditState)">
+			and a.adm_audit_state in  (1,2)
+		</if>
+		<if test="@Ognl@isNotEmpty(subSelectStatus)">
+			and a.sub_select_status = #{subSelectStatus}
+		</if>
+		<if test="@Ognl@isEmpty(subSelectStatus)">
+			and a.sub_select_status <![CDATA[>=]]> 2
+		</if>
+		<if test="@Ognl@isNotEmpty(searchBgnTime)">
+			and DATE_FORMAT(a.gmt_create,'%Y-%m-%d')  <![CDATA[>=]]> #{searchBgnTime}
+		</if>
+		<if test="@Ognl@isNotEmpty(searchEndTime)">
+			and DATE_FORMAT(a.gmt_create,'%Y-%m-%d')  <![CDATA[<=]]> #{searchEndTime}
+		</if>
+		ORDER BY a.adm_audit_state DESC ,a.gmt_create DESC
+	</select>
+
 	<select id="getSubByPage" resultMap="SelectSubjectResultMap">
 		SELECT <include refid="Base_Column_List"/> FROM select_subject a WHERE 1=1
 		<if test="@Ognl@isNotEmpty(search)">

@@ -279,7 +279,7 @@ public class SelectTopicController {
     public ModelAndView topicScoreList(ModelAndView  modelAndView, SelectTopicVo vo,HttpSession session) {
         modelAndView.setViewName("CountModule/topicScoreList");
         vo.setTeaAuditState(EnumSubSelectStatus.SUCCESS.getValue())
-        .setSubState(EnumSubState.OVER.getValue());
+        .setCountType(EnumYesOrNo.YES.getValue());
         if (!ObjectUtils.isEmpty(session)){
             SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
             if (!ObjectUtils.isEmpty(userBase)){
@@ -302,7 +302,7 @@ public class SelectTopicController {
     @RequestMapping(value = "/topicCountList",method = RequestMethod.GET)
     public ModelAndView topicCountList(ModelAndView  modelAndView, SelectTopicVo vo,HttpSession session) {
         modelAndView.setViewName("CountModule/topicCountList");
-        vo.setSubState(EnumSubState.OVER.getValue());
+        vo.setCountType(EnumYesOrNo.YES.getValue());
         if (!ObjectUtils.isEmpty(session)){
             SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
             if (!ObjectUtils.isEmpty(userBase)){
@@ -316,6 +316,27 @@ public class SelectTopicController {
         return selectTopicService.topicList(modelAndView,vo);
     }
 
+
+    /***
+     * 异步生成学生选题信息列表
+     * @param vo
+     * @return
+     */
+    @ApiOperation(value = "异步生成报表统计", notes = "")
+    @RequestMapping(value = "/topicCountAjaxList",method = RequestMethod.POST)
+    @ResponseBody
+    public String topicCountAjaxList(SelectTopicVo vo,HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (!ObjectUtils.isEmpty(session)){
+            SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
+            if (!ObjectUtils.isEmpty(userBase)){
+                if (EnumUserType.ADMIN.getValue().equals(userBase.getUserType())){
+                    vo.setForDepId(userBase.getTeaDepId());
+                }
+            }
+        }
+        return selectTopicService.topicCountAjaxList(vo);
+    }
 
     /***
      * 导出选题报表

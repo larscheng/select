@@ -61,14 +61,14 @@
                             </select>
                         </div>
 
-                        <div class="form-group " style="margin-right: 5px">
-                            <select  class="form-control" name="stuId">
-                                <option value="" selected>学生名</option>
-                                <c:forEach var="stu" items="${requestScope.stuList}">
-                                    <option value="${stu.id}">${stu.userName}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
+                        <%--<div class="form-group " style="margin-right: 5px">--%>
+                            <%--<select  class="form-control" name="stuId">--%>
+                                <%--<option value="" selected>学生名</option>--%>
+                                <%--<c:forEach var="stu" items="${requestScope.stuList}">--%>
+                                    <%--<option value="${stu.id}">${stu.userName}</option>--%>
+                                <%--</c:forEach>--%>
+                            <%--</select>--%>
+                        <%--</div>--%>
                         <%--<div class="form-group" style="margin-right: 5px">--%>
                             <%--<select  class="form-control" name="teaAuditState">--%>
                                 <%--<option value="" selected>审核状态</option>--%>
@@ -77,6 +77,14 @@
                                 <%--<option value="2">审核通过</option>--%>
                             <%--</select>--%>
                         <%--</div>--%>
+
+                        <div class="form-group " style="margin-right: 3px">
+                            <select  class="form-control" name="subState">
+                                <option value="" selected>是否结题</option>
+                                <option value="2">未结题</option>
+                                <option value="3">已结题</option>
+                            </select>
+                        </div>
 
                         <div class="form-group " style="margin-right: 5px">
                             <select  class="form-control" name="forDepId" id="forDepId" onchange="initMajor()">
@@ -149,6 +157,7 @@
                                         <th>教师电话</th>
                                         <th>学生姓名</th>
                                         <th>学生电话</th>
+                                        <th>是否结题</th>
                                         <th>审核状态</th>
                                         <th>题目届别</th>
                                         <th>创建时间</th>
@@ -170,6 +179,19 @@
                                                     <td>${topic.teaPhone}</td>
                                                     <td>${topic.stuName}</td>
                                                     <td>${topic.stuPhone}</td>
+
+
+                                                    <td>
+                                                        <c:set var="subState" value="${topic.subSelectStatus}"/>
+                                                        <c:choose>
+                                                            <c:when test="${subState eq 3}">
+                                                                <span class="label label-warning">已结题</span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="label label-primary">未结题</span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
                                                     <td>
                                                         <c:set var="status" value="${topic.teaAuditState}"/>
                                                         <c:choose>
@@ -185,6 +207,7 @@
                                                         </c:choose>
                                                     </td>
                                                     <td>${topic.topicYear}级</td>
+
                                                     <td><fmt:formatDate value="${topic.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                                     <td>
                                                         <button class="btn btn-xs btn-info" onclick="topicDetails(${topic.id})"><i class="icon-pencil"></i>详情</button>
@@ -359,7 +382,7 @@
     });
 
     function search() {
-        var url = "${ctx}/selectTopic/stuTopicAjaxList?subState=3";
+        var url = "${ctx}/selectTopic/topicCountAjaxList";
         if (manType == 3){
             url="${ctx}/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}&subState=3";
         }
@@ -378,7 +401,7 @@
     }
 
     function pageSearch(page) {
-        var url = "${ctx}/selectTopic/stuTopicAjaxList?subState=3";
+        var url = "${ctx}/selectTopic/topicCountAjaxList";
         if (manType == 3){
             url="${ctx}/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}&subState=3";
         }
@@ -388,11 +411,11 @@
             data:{"page":page,
                 "search":$(" input[ name='search' ] ").val(),
                 "teaId":$(" select[ name='teaId' ] ").val(),
-                "stuId":$(" select[ name='stuId' ] ").val(),
+                // "stuId":$(" select[ name='stuId' ] ").val(),
                 "forDepId":$(" select[ name='forDepId' ] ").val(),
                 "stuMajorId":$(" select[ name='stuMajorId' ] ").val(),
                 "stuClass":$(" select[ name='stuClass' ] ").val(),
-                // "teaAuditState":$(" select[ name='teaAuditState' ] ").val(),
+                "subState":$(" select[ name='subState' ] ").val(),
                 "searchBgnTime":$(" input[ name='searchBgnTime' ] ").val(),
                 "searchEndTime":$(" input[ name='searchEndTime' ] ").val()
             },
@@ -411,21 +434,20 @@
     function exportTopicInfo() {
         var search=$(" input[ name='search' ] ").val();
         var teaId=$(" select[ name='teaId' ] ").val();
-        var stuId=$(" select[ name='stuId' ] ").val();
+        // var stuId=$(" select[ name='stuId' ] ").val();
         var forDepId=$(" select[ name='forDepId' ] ").val();
         var stuMajorId=$(" select[ name='stuMajorId' ] ").val();
         var stuClass=$(" select[ name='stuClass' ] ").val();
-        // var teaAuditState=$(" select[ name='teaAuditState' ] ").val();
+        var subState=$(" select[ name='subState' ] ").val();
         var searchBgnTime=$(" input[ name='searchBgnTime' ] ").val();
         var searchEndTime=$(" input[ name='searchEndTime' ] ").val();
-
-        window.location.href="${ctx}/selectTopic/export?search="+search+"&teaId="+teaId+"&stuId="+stuId+"&forDepId="+forDepId+
+        window.location.href="${ctx}/selectTopic/export?search="+search+"&teaId="+teaId+"&subState="+subState+"&forDepId="+forDepId+
             "&stuMajorId="+stuMajorId+"&stuClass="+stuClass+"&searchBgnTime="+searchBgnTime+"&searchEndTime="+searchEndTime;
     }
 
 
     $("#searchSubmit").click(function(){
-        var url = "${ctx}/selectTopic/stuTopicAjaxList?subState=3";
+        var url = "${ctx}/selectTopic/topicCountAjaxList";
         if (manType == 3){
             url="${ctx}/selectTopic/stuTopicAjaxList?stuId=${sessionScope.sessionUser.id}&subState=3";
         }
@@ -504,6 +526,12 @@
                     +"<td>"+val.stuName+"</td>"
                     +"<td>"+val.stuPhone+"</td>"
                 ;
+                if (parseInt(val.subSelectStatus) == 3){
+                    item +="<td><span class='label label-warning'>已结题</span></td>"
+                } else {
+                    item +="<td><span class='label label-primary'>未结题</span></td>"
+                }
+
                     if (parseInt(val.teaAuditState) == 0){
                         item +=
                             "<td><span class='label label-warning'>未处理</span></td>"
