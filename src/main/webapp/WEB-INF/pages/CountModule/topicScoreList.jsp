@@ -159,14 +159,16 @@
                                         <th>教师姓名</th>
                                         <th>教师电话</th>
                                         <th>学生姓名</th>
+                                        <th>学号</th>
                                         <th>学生电话</th>
-                                        <th>指导老师评分</th>
-                                        <th>评阅老师评分</th>
+                                        <th>专业</th>
+                                        <th>指导评分</th>
+                                        <th>评阅评分</th>
                                         <th>答辩的分</th>
                                         <th>最终得分</th>
-                                        <th>题目届别</th>
                                         <th>是否结题</th>
-                                        <th>创建时间</th>
+                                        <th>题目届别</th>
+                                        <%--<th>创建时间</th>--%>
                                         <th>操作</th>
                                     </tr>
                                     </thead>
@@ -184,13 +186,15 @@
                                                     <td>${topic.teaName}</td>
                                                     <td>${topic.teaPhone}</td>
                                                     <td>${topic.stuName}</td>
+                                                    <td>${topic.userCode}</td>
                                                     <td>${topic.stuPhone}</td>
+                                                    <td>${topic.majorName}</td>
                                                     <td>${topic.tutorScore}</td>
                                                     <td>${topic.judgeScore}</td>
                                                     <td>${topic.defenceScore}</td>
                                                     <td><b style="color: red">${topic.finalTotalScore}</b></td>
 
-                                                    <td>${topic.topicYear}级</td>
+
 
                                                     <td>
                                                         <c:set var="subState" value="${topic.subSelectStatus}"/>
@@ -203,7 +207,8 @@
                                                             </c:otherwise>
                                                         </c:choose>
                                                     </td>
-                                                    <td><fmt:formatDate value="${topic.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                    <td>${topic.topicYear}级</td>
+                                                    <%--<td><fmt:formatDate value="${topic.gmtCreate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>--%>
                                                     <td>
                                                         <button class="btn btn-xs btn-info" onclick="topicDetails(${topic.id})"><i class="icon-pencil"></i>详情</button>
                                                         <c:if test="${sessionScope.userType eq 3}">
@@ -612,18 +617,19 @@
                     +"<td>"+val.teaName+"</td>"
                     +"<td>"+val.teaPhone+"</td>"
                     +"<td>"+val.stuName+"</td>"
+                    +"<td>"+val.userCode+"</td>"
                     +"<td>"+val.stuPhone+"</td>"
+                    +"<td>"+val.majorName+"</td>"
                     +"<td>"+val.tutorScore+"</td>"
                     +"<td>"+val.judgeScore+"</td>"
                     +"<td>"+val.defenceScore+"</td>"
-                    +"<td><b style='color: red'>"+val.finalTotalScore+"</b> </td>"
-                    +"<td>"+val.topicYear+"级</td>";
+                    +"<td><b style='color: red'>"+val.finalTotalScore+"</b> </td>";
                     if (parseInt(val.subSelectStatus) == 3){
                         item +="<td><span class='label label-warning'>已结题</span></td>";
                     } else {
                         item +="<td><span class='label label-primary'>未结题</span></td>";
                     }
-                    item+="<td>"+time+"</td>"
+                    item+="<td>"+val.topicYear+"级</td>"
                     +"<td>" +
                     "<button onclick='topicDetails("+val.id+")' class='btn btn-xs btn-info' style='margin-right: 5px'><i class='icon-pencil'></i>详情</button>" +
                     "</td>"

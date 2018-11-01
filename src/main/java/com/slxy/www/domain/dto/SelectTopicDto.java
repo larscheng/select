@@ -127,6 +127,16 @@ public class SelectTopicDto extends PageVo {
 
     private String subSelectStatusName;
 
+    private String userCode;
+
+    public String getUserCode() {
+        return userCode;
+    }
+
+    public SelectTopicDto setUserCode(String userCode) {
+        this.userCode = userCode;
+        return this;
+    }
 
     public String getSubSelectStatusName() {
         return subSelectStatusName;

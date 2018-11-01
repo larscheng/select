@@ -46,6 +46,7 @@
 		<result column="del_state" property="delState" />
 		<result column="for_dep_id" property="forDepId" />
 		<result column="sub_select_status" property="subSelectStatus" />
+		<result column="user_code" property="userCode" />
 	</resultMap>
 
 
@@ -53,7 +54,7 @@
 		SELECT
 		a.*, b.sub_name,b.for_dep_id ,b.sub_select_status,b.tutor_score, b.judge_score, b.defence_score, b.final_total_score,
 		c.user_name AS stu_name,
-		c.user_phone AS stu_phone,
+		c.user_phone AS stu_phone,c.user_code,
 		d.user_name AS tea_name,
 		d.user_phone AS tea_phone
 		FROM

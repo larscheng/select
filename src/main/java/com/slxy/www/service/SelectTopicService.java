@@ -332,6 +332,7 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
         excel.add(new ExcelBean("发布教师","teaName",0));
         excel.add(new ExcelBean("教师电话","teaPhone",0));
         excel.add(new ExcelBean("选题学生","stuName",0));
+        excel.add(new ExcelBean("学生学号","userCode",0));
         excel.add(new ExcelBean("学生电话","stuPhone",0));
         excel.add(new ExcelBean("审核状态","teaAuditStateName",0));
         excel.add(new ExcelBean("题目届别(级)","topicYear",0));
@@ -372,6 +373,7 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
         excel.add(new ExcelBean("发布教师","teaName",0));
         excel.add(new ExcelBean("教师电话","teaPhone",0));
         excel.add(new ExcelBean("选题学生","stuName",0));
+        excel.add(new ExcelBean("学生学号","userName",0));
         excel.add(new ExcelBean("学生电话","stuPhone",0));
         excel.add(new ExcelBean("指导老师评分","tutorScore",0));
         excel.add(new ExcelBean("评阅老师评分","judgeScore",0));

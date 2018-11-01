@@ -156,7 +156,9 @@
                                         <th>教师姓名</th>
                                         <th>教师电话</th>
                                         <th>学生姓名</th>
+                                        <th>学号</th>
                                         <th>学生电话</th>
+                                        <th>专业</th>
                                         <th>是否结题</th>
                                         <th>审核状态</th>
                                         <th>题目届别</th>
@@ -178,7 +180,9 @@
                                                     <td>${topic.teaName}</td>
                                                     <td>${topic.teaPhone}</td>
                                                     <td>${topic.stuName}</td>
+                                                    <td>${topic.userCode}</td>
                                                     <td>${topic.stuPhone}</td>
+                                                    <td>${topic.majorName}</td>
 
 
                                                     <td>
@@ -524,7 +528,9 @@
                     +"<td>"+val.teaName+"</td>"
                     +"<td>"+val.teaPhone+"</td>"
                     +"<td>"+val.stuName+"</td>"
+                    +"<td>"+val.userCode+"</td>"
                     +"<td>"+val.stuPhone+"</td>"
+                    +"<td>"+val.majorName+"</td>"
                 ;
                 if (parseInt(val.subSelectStatus) == 3){
                     item +="<td><span class='label label-warning'>已结题</span></td>"
