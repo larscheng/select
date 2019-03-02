@@ -631,10 +631,18 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
      * @return
      */
     public String subUpdate(MultipartFile file, SelectSubjectVo vo, HttpServletRequest request) {
-        //流程检测
-        String msg = selectProcessControlService.testPc(EnumProControl.subAdd.getValue());
-        if (!msg.equalsIgnoreCase(JSONObject.toJSONString(Constant.SUCCESS))){
-            return msg;
+        HttpSession session = request.getSession();
+        if (!ObjectUtils.isEmpty(session)){
+            SelectUserBase userBase = (SelectUserBase) session.getAttribute("sessionUser");
+            if (!ObjectUtils.isEmpty(userBase)){
+                if (userBase.getUserType()>1){
+                    //流程检测
+                    String msg = selectProcessControlService.testPc(EnumProControl.subAdd.getValue());
+                    if (!msg.equalsIgnoreCase(JSONObject.toJSONString(Constant.SUCCESS))){
+                        return msg;
+                    }
+                }
+            }
         }
         SelectSubject selectSubject = selectSubjectMapper.selectById(vo.getId());
         if (ObjectUtils.isEmpty(selectSubject)){
