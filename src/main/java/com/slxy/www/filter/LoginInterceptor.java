@@ -32,8 +32,11 @@ import java.util.Objects;
 
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 
-
-    private static final String[] IGNORE_URI={"/selectUserBase/login","/","","/login","/initForgetPs"};   //填写XX.do
+    //不用session即可请求的url
+    private static final String[] IGNORE_URI={
+            "/selectUserBase/login","/","","/login",
+            "/initForgetPs","/checkMail","/sendSixCode","/checkSixCode","/changePs"
+    };   //填写XX.do
 
 
     /**

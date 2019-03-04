@@ -56,7 +56,7 @@ public class MybatisPlusConfig {
     @Bean
     public MybatisPlusSqlInterceptor mybatisPlusSqlInterceptor() {
         MybatisPlusSqlInterceptor pi = new MybatisPlusSqlInterceptor();
-        pi.setExecuteTime(-1L);
+        pi.setExecuteTime(100L);
         return pi;
     }
 //    @Bean
