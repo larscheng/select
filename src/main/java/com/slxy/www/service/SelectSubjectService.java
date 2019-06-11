@@ -33,6 +33,8 @@ import javax.servlet.http.HttpSession;
 import java.beans.IntrospectionException;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -208,7 +210,8 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
             selectSubjectDto.setSubTeaName(userBase.getUserName());
             //面向系别名称
             SelectDepartment selectDepartment = selectDepartmentMapper.selectById(selectSubjectDto.getForDepId());
-            selectSubjectDto.setForDepName(selectDepartment.getDepName());
+            selectSubjectDto.setForDepName(selectDepartment.getDepName())
+                    .setFinalTotalScore(new BigDecimal(selectSubjectDto.getFinalTotalScore().toString()).setScale(2, RoundingMode.UP).doubleValue());
             //审核状态
             selectSubjectDto.setSubState(EnumSubState.toMap().get(selectSubjectDto.getAdmAuditState()));
             //审核人
@@ -560,7 +563,7 @@ public class SelectSubjectService extends  ServiceImpl <ISelectSubjectMapper, Se
         excel.add(new ExcelBean("面向系别","forDepName",0));
         excel.add(new ExcelBean("创建时间","gmtCreate",0));
         map.put(0, excel);
-        String sheetName = "月份收入";
+        String sheetName = "题目列表";
         //调用ExcelUtils的方法
         xssfWorkbook = ExcelUtils.createExcelFile(SelectSubjectDto.class, subjectDtos, map, sheetName);
         return xssfWorkbook;

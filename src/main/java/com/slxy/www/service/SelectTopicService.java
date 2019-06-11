@@ -29,6 +29,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.beans.IntrospectionException;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -69,7 +71,7 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
             list = selectTopicMapper.countTopicByPage(page, vo);
         }
         list.stream().map(a-> a.setDepName(selectDepartmentMapper.selectById(a.getForDepId()).getDepName())
-                .setMajorName(getMajorByUserId(a.getStuId()))
+                .setMajorName(getMajorByUserId(a.getStuId())).setFinalTotalScore(new BigDecimal(a.getFinalTotalScore().toString()).setScale(2, RoundingMode.UP).doubleValue())
         ).collect(Collectors.toList());
         page.setRecords(list);
         List<SelectUserBase> teaList = selectUserBaseMapper.selectList(new EntityWrapper<SelectUserBase>()
@@ -126,7 +128,7 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
                         .setTutorScore(selectSubject.getTutorScore())
                         .setJudgeScore(selectSubject.getJudgeScore())
                         .setDefenceScore(selectSubject.getDefenceScore())
-                        .setFinalTotalScore(selectSubject.getFinalTotalScore());
+                        .setFinalTotalScore(new BigDecimal(selectSubject.getFinalTotalScore().toString()).setScale(2, RoundingMode.UP).doubleValue());
                 SelectUserBase teacher = selectUserBaseMapper.selectById(selectSubject.getTeaId());
                 //教师名
                 dto.setTeaName(teacher.getUserName());
@@ -299,7 +301,7 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
         Double finalTotalScore = selectSubject.getTutorScore()*(selectScorePers.get(0).getScorePer()/100.00)+
                 selectSubject.getJudgeScore()*(selectScorePers.get(1).getScorePer()/100.00)+
                 selectSubject.getDefenceScore()*(selectScorePers.get(2).getScorePer()/100.00);
-        selectSubject.setFinalTotalScore(finalTotalScore);
+        selectSubject.setFinalTotalScore(new BigDecimal(finalTotalScore.toString()).setScale(2, RoundingMode.UP).doubleValue());
 
         return selectSubjectMapper.updateById(selectSubject) > 0 ? JSONObject.toJSONString(Constant.SUCCESS) : JSONObject.toJSONString(Constant.ERROR);
     }
@@ -339,7 +341,7 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
         excel.add(new ExcelBean("系别","depName",0));
         excel.add(new ExcelBean("专业","majorName",0));
         map.put(0, excel);
-        String sheetName = "月份收入";
+        String sheetName = "选题记录";
         //调用ExcelUtils的方法
         xssfWorkbook = ExcelUtils.createExcelFile(SelectTopicDto.class, selectTopics, map, sheetName);
         return xssfWorkbook;
@@ -363,7 +365,8 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
         selectTopics.stream()
                 .map(selectTopicDto ->selectTopicDto.setTeaAuditStateName(EnumSubState.toMap().get(selectTopicDto.getTeaAuditState()))
                         .setDepName(selectDepartmentMapper.selectById(selectTopicDto.getForDepId()).getDepName())
-                        .setMajorName(getMajorByUserId(selectTopicDto.getStuId())))
+                        .setMajorName(getMajorByUserId(selectTopicDto.getStuId()))
+                        .setFinalTotalScore(new BigDecimal(selectTopicDto.getFinalTotalScore().toString()).setScale(2, RoundingMode.UP).doubleValue()))
                 .collect(Collectors.toList());
         List<ExcelBean> excel=new ArrayList<>();
         Map<Integer,List<ExcelBean>> map=new LinkedHashMap<>();
@@ -373,7 +376,7 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
         excel.add(new ExcelBean("发布教师","teaName",0));
         excel.add(new ExcelBean("教师电话","teaPhone",0));
         excel.add(new ExcelBean("选题学生","stuName",0));
-        excel.add(new ExcelBean("学生学号","userName",0));
+        excel.add(new ExcelBean("学生学号","userCode",0));
         excel.add(new ExcelBean("学生电话","stuPhone",0));
         excel.add(new ExcelBean("指导老师评分","tutorScore",0));
         excel.add(new ExcelBean("评阅老师评分","judgeScore",0));
@@ -383,7 +386,7 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
         excel.add(new ExcelBean("系别","depName",0));
         excel.add(new ExcelBean("专业","majorName",0));
         map.put(0, excel);
-        String sheetName = "月份收入";
+        String sheetName = "选题成绩记录";
         //调用ExcelUtils的方法
         xssfWorkbook = ExcelUtils.createExcelFile(SelectTopicDto.class, selectTopics, map, sheetName);
         return xssfWorkbook;
@@ -521,7 +524,7 @@ public class SelectTopicService extends  ServiceImpl <ISelectTopicMapper, Select
                 .setJudgeScore(importScoreVo.getJudgeScore())
                 .setDefenceScore(importScoreVo.getDefenceScore())
                 .setTutorScore(importScoreVo.getTutorScore())
-                .setFinalTotalScore(finalTotalScore);
+                .setFinalTotalScore(new BigDecimal(finalTotalScore.toString()).setScale(2, RoundingMode.UP).doubleValue());
         //评分同时，该选题状态变更为结题
         selectSubject.setSubSelectStatus(EnumSubSelectStatus.OVER.getValue());
         if (selectSubjectMapper.updateById(selectSubject)<0){
